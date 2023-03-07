@@ -4,7 +4,7 @@
   "description": "Snape node - for studio management",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --outDir dist",
     "start": "nodemon --watch './**/*.ts' --exec 'ts-node' src/index.ts",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\""
   },
