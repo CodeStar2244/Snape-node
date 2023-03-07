@@ -13,7 +13,15 @@ class App {
     constructor() {
         this.app = express();
         this.app.use(cookieParser());
-        // this.app.use(multipart());
+        this.app.use(bodyParser.json({ limit: "50mb" }));
+        this.app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
+        this.app.use(bodyParser.json(), (error, req, res, next) => {
+            if (error) {
+                return res.status(400).json({ message: req.t("ERR_GENRIC_SYNTAX") });
+            }
+            next();
+        });
+        this.app.use(bodyParser.json({ type: "application/vnd.api+json" }));
         this.app.all("/*", (req, res, next) => {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Request-Headers", "*");
@@ -30,14 +38,7 @@ class App {
                 next();
             }
         });
-        this.app.use(bodyParser.json({ limit: "50mb" }));
-        this.app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
-        this.app.use(bodyParser.json(), (error, req, res, next) => {
-            if (error) {
-                return res.status(400).json({ message: req.t("ERR_GENRIC_SYNTAX") });
-            }
-            next();
-        });
+        
         this.app.use(async (err, req, res, next) => {
             if (err) {
                 // logger.error(err);
@@ -51,7 +52,7 @@ class App {
             }
         });
 
-        this.app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+        
     }
 }
 
