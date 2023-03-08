@@ -28,4 +28,4 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: pwd
-    - run: cp -r _work/Snape-node/Snape-node/* /home/centos/snapebackend/
+    - run: cp -r ./* /home/centos/snapebackend/
