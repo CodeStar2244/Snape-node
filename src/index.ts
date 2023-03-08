@@ -6,5 +6,5 @@ const PORT = process.env.PORT || 3000;
 const httpServer = http.createServer(App);
 
 httpServer.listen(PORT, () => {
-    console.log("Ganpati Bappa Morya - First server start1");
+    console.log("Ganpati Bappa Morya - First server start");
 });
