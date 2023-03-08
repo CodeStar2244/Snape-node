@@ -1,0 +1,19 @@
+export = {
+   type: 'postgres',
+   host: process.env.POSTGRES_HOST,
+   port: process.env.POSTGRES_PORT,
+   username: process.env.POSTGRES_USER,
+   password: process.env.POSTGRES_PASSWORD,
+   database: process.env.POSTGRES_DB,
+   synchronize: false,
+   migrationsTransactionMode: 'each',
+   logging: true,
+   entities: ['src/**/*.ts'],
+   migrations: ['scripts/migration/**/*.ts'],
+   subscribers: ['src/subscriber/**/*.ts'],
+   cli: {
+      entitiesDir: 'src/**/entity',
+      migrationsDir: 'scripts/migration',
+      subscribersDir: 'src/**/subscriber',
+   },
+};
