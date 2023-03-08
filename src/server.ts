@@ -2,6 +2,7 @@ import * as express from 'express';
 import { Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import * as bodyParser from "body-parser";
+import { Routes } from './route';
 const cookieParser = require("cookie-parser");
 
 dotenv.config();
@@ -11,6 +12,7 @@ class App {
     app: express.Application;
 
     constructor() {
+        const NODE_ENV = process.env.NODE_ENV;
         this.app = express();
         this.app.use(cookieParser());
         this.app.use(bodyParser.json({ limit: "50mb" }));
@@ -22,6 +24,8 @@ class App {
             next();
         });
         this.app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+        const routes = new Routes(NODE_ENV);
+        this.app.use("/api/v1", routes.path());
         this.app.all("/*", (req, res, next) => {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Request-Headers", "*");
