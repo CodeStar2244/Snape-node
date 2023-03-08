@@ -3,10 +3,6 @@ import * as constant from "../config/constants";
 
 export class Failure extends Error {
   public static error(err: any, data?: any) {
-    if (err instanceof SpFailure) {
-      err.data = err.data === undefined ? data : err.data;
-      return err;
-    }
     if (err instanceof Failure) {
       err.type  = err.type ? err.type : constant.BAD_DATA;
       err.data = err.data === undefined ? data : err.data;
@@ -58,10 +54,10 @@ export class Failure extends Error {
   }
 }
 
-export class SpFailure extends Failure {
-  constructor(title, description: string, isSpError: boolean, data?: Json) {
-    super(title, description);
-    super.type = isSpError ? constant.CODE : constant.BAD_DATA;
-    super.data = data;
-  }
-}
+// export class SpFailure extends Failure {
+//   constructor(title, description: string, isSpError: boolean, data?: Json) {
+//     super(title, description);
+//     super.type = isSpError ? constant.CODE : constant.BAD_DATA;
+//     super.data = data;
+//   }
+// }
