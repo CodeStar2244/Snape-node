@@ -17,7 +17,7 @@ const AppDataSource = new DataSource({
     logging: false,
     connectTimeoutMS:60 * 60 * 1000,
     entities: [
-       "src/entity/**/*.ts"
+       "src/entities/**/*.ts"
     ],
     migrations: [
        "src/migration/**/*.ts"
