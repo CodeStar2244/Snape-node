@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 
 const httpServer = http.createServer(App);
 
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
     type: "postgres",
     host: process.env.DB_HOST,
     port: +process.env.DB_PORT,
