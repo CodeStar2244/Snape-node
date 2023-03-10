@@ -2,11 +2,12 @@ import App from './server';
 import * as http from 'http';
 import { DataSource } from "typeorm";
 import * as  path from 'path';
+import { Log } from './helpers/logger';
 
 const PORT = process.env.PORT || 3000;
 
 const httpServer = http.createServer(App);
-
+const logger = new Log();
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: process.env.DB_HOST,
@@ -28,7 +29,7 @@ export const AppDataSource = new DataSource({
     ],
     
 })
-console.log(path.join(__dirname,"/entities/*.js"))
+
 
 AppDataSource.initialize()
     .then(() => {
@@ -40,5 +41,5 @@ AppDataSource.initialize()
 
 
 httpServer.listen(PORT, () => {
-    console.log(`Server is listing on port ${PORT}`);
+    logger.info(`Server is listing on port ${PORT}`);
 });
