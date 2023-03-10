@@ -1,6 +1,7 @@
 import App from './server';
 import * as http from 'http';
-import { DataSource } from "typeorm"
+import { DataSource } from "typeorm";
+import * as  path from 'path';
 
 const PORT = process.env.PORT || 3000;
 
@@ -17,7 +18,7 @@ export const AppDataSource = new DataSource({
     logging: false,
     connectTimeoutMS:60 * 60 * 1000,
     entities: [
-       "src/entities/**/*.ts"
+       `${path.join(__dirname,"/entities/*.js")}`
     ],
     migrations: [
        "src/migration/**/*.ts"
@@ -27,6 +28,7 @@ export const AppDataSource = new DataSource({
     ],
     
 })
+console.log(path.join(__dirname,"/entities/*.js"))
 
 AppDataSource.initialize()
     .then(() => {
