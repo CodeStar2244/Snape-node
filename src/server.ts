@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import * as dotenv from 'dotenv';
 import * as bodyParser from "body-parser";
 import { Routes } from './route';
+import * as morgan from 'morgan';
 const cookieParser = require("cookie-parser");
 
 dotenv.config();
@@ -24,6 +25,7 @@ class App {
             next();
         });
         this.app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+        this.app.use(morgan("dev"))
         const routes = new Routes(NODE_ENV);
         this.app.use("/api/v1", routes.path());
         this.app.all("/*", (req, res, next) => {
