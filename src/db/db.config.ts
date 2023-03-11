@@ -14,10 +14,10 @@ export const AppDataSource = new DataSource({
     connectTimeoutMS:60 * 60 * 1000,
     migrationsTableName:"migration_info_table",
     entities: [
-       `${path.join(__dirname,"/entities/*.js")}`
+       `${path.join(__dirname,"../entities/*.js")}`
     ],
     migrations: [
-        `${path.join(__dirname,"/migration/*.js")}`
+        `${path.join(__dirname,"../migration/*.js")}`
     ],
     subscribers: [
        "src/subscriber/**/*.ts"
