@@ -1,4 +1,4 @@
-import { AppDataSource } from "../.."
+import { AppDataSource } from "../../db/db.config";
 import Collections from "../../entities/Collection"
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 

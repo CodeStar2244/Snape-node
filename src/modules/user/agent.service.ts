@@ -1,5 +1,5 @@
 import { getRepository, Repository } from "typeorm";
-import { AppDataSource } from "../..";
+import { AppDataSource } from "../../db/db.config";
 import { Tblagent } from "../../entities/Tblagent";
 import { Jwt } from "../../helpers/jwt";
 import { PasswordDecryptor } from "../../helpers/passwordDecryptor";

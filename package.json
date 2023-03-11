@@ -6,7 +6,13 @@
   "scripts": {
     "build": "tsc --outDir dist",
     "start": "tsc --watch & nodemon --inspect dist",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\""
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d src/db/db.config.ts",
+    "schema:sync": "npm run typeorm schema:sync -- -d src/db/db.config.ts",
+    "migration:show": "npm run typeorm migration:show -- -d src/db/db.config.ts",
+    "migration:generate": "npm run typeorm migration:generate -- --dataSource src/db/db.config.ts src/migration ",
+    "migration:create": "npm run typeorm migration:create"
   },
   "repository": {
     "type": "git",
@@ -33,6 +39,7 @@
     "moment-timezone": "^0.5.41",
     "morgan": "^1.10.0",
     "pg": "^8.10.0",
+    "ts-node": "^10.9.1",
     "typeorm": "^0.3.12",
     "winston": "^3.8.2"
   },

@@ -4,8 +4,8 @@ import { Jwt } from "./helpers/jwt";
 import { Log } from "./helpers/logger";
 import { getRepository } from "typeorm";
 import { Request, Response, NextFunction } from "express";
-import { AppDataSource } from ".";
 import { Tblagent } from "./entities/Tblagent";
+import { AppDataSource } from "./db/db.config";
 
 export class Middleware {
 	private logger = new  Log();
