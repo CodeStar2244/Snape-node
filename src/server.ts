@@ -1,10 +1,13 @@
-import * as express from 'express';
+import express from 'express';
 import { Request, Response } from 'express';
-import * as dotenv from 'dotenv';
-import * as bodyParser from "body-parser";
+import dotenv from 'dotenv';
+import bodyParser from "body-parser";
 import { Routes } from './route';
-import * as morgan from 'morgan';
-const cookieParser = require("cookie-parser");
+import morgan from 'morgan';
+import cookieParser from "cookie-parser"
+import i18Backend from "i18next-fs-backend";
+import i18next from 'i18next';
+import i18middleware from "i18next-http-middleware";
 
 dotenv.config();
 
@@ -24,6 +27,20 @@ class App {
             }
             next();
         });
+        const i18nObject = i18next
+            .use(i18Backend)
+            .use(i18middleware.LanguageDetector)
+            .init({
+                initImmediate: false,
+                preload: ["en"],
+                fallbackLng: "en",
+                debug: false,
+                backend: {
+                    loadPath: "src/locales/{{lng}}/translation.json",
+                },
+            });
+
+        this.app.use(i18middleware.handle(i18next));
         this.app.use(bodyParser.json({ type: "application/vnd.api+json" }));
         this.app.use(morgan("dev"))
         const routes = new Routes(NODE_ENV);
@@ -44,7 +61,7 @@ class App {
                 next();
             }
         });
-        
+
         this.app.use(async (err, req, res, next) => {
             if (err) {
                 // logger.error(err);
@@ -58,7 +75,7 @@ class App {
             }
         });
 
-        
+
     }
 }
 
