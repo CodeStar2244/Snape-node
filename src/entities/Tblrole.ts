@@ -9,8 +9,6 @@ import { Tblagent } from "./Tblagent";
 import { Tblclient } from "./Tblclient";
 import { Tbluser } from "./Tbluser";
 
-@Index("tblrole_pkey", ["id"], { unique: true })
-@Index("tblrole_rolename_key", ["rolename"], { unique: true })
 @Entity("tblrole", { schema: "public" })
 export class Tblrole {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })

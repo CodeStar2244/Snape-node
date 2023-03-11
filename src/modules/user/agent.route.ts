@@ -10,5 +10,4 @@ const userController:UserController = new UserController()
 
 //Signup
 router.post(USER_ROUTES.LOGIN , userController.login );
-
  export const UserRoute: Router = router;

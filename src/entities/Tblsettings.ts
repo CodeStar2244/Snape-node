@@ -1,6 +1,5 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
-@Index("tblsettings_pkey", ["id"], { unique: true })
 @Entity("tblsettings", { schema: "public" })
 export class Tblsettings {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })

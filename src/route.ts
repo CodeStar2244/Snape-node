@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import * as express from "express";
 import { UserRoute } from "./modules/user/agent.route";
+import { Middleware } from "./middleware";
+import { CollectionRoute } from "./modules/collections/collections.route";
 export class Routes {
+  private middleware = new Middleware();
   protected basePath: string;
 
   constructor(NODE_ENV: string) {
@@ -24,6 +27,7 @@ export class Routes {
   public path() {
     const router = express.Router();
     router.use("/agent", UserRoute);
+    router.use("/collection",this.middleware.authenticateUser,CollectionRoute);
 
     router.all("/*", (req: Request, res: Response) => {
       return res.status(404).json({

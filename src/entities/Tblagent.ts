@@ -8,8 +8,7 @@ import {
 } from "typeorm";
 import { Tblrole } from "./Tblrole";
 
-@Index("tblagent_pkey", ["id"], { unique: true })
-@Index("tblagent_phone_key", ["phone"], { unique: true })
+
 @Entity("tblagent", { schema: "public" })
 export class Tblagent {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })
@@ -93,14 +92,12 @@ export class Tblagent {
   @Column("double precision", {
     name: "photograpyrate",
     nullable: true,
-    precision: 53,
   })
   photograpyrate: number | null;
 
   @Column("double precision", {
     name: "videograpyrate",
     nullable: true,
-    precision: 53,
   })
   videograpyrate: number | null;
 
@@ -134,15 +131,13 @@ export class Tblagent {
 
   @Column("double precision", {
     name: "latitude",
-    nullable: true,
-    precision: 53,
+    nullable: true
   })
   latitude: number | null;
 
   @Column("double precision", {
     name: "longitude",
-    nullable: true,
-    precision: 53,
+    nullable: true
   })
   longitude: number | null;
 
@@ -184,8 +179,7 @@ export class Tblagent {
 
   @Column("double precision", {
     name: "bothrate",
-    nullable: true,
-    precision: 53,
+    nullable: true
   })
   bothrate: number | null;
 

@@ -1,6 +1,5 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
-@Index("tblmediaschool_pkey", ["id"], { unique: true })
 @Entity("tblmediaschool", { schema: "public" })
 export class Tblmediaschool {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })
@@ -11,15 +10,13 @@ export class Tblmediaschool {
 
   @Column("double precision", {
     name: "latitude",
-    nullable: true,
-    precision: 53,
+    nullable: true
   })
   latitude: number | null;
 
   @Column("double precision", {
     name: "longitude",
-    nullable: true,
-    precision: 53,
+    nullable: true
   })
   longitude: number | null;
 

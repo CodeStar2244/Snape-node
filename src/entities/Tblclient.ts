@@ -8,8 +8,7 @@ import {
 } from "typeorm";
 import { Tblrole } from "./Tblrole";
 
-@Index("tblclient_pkey", ["id"], { unique: true })
-@Index("tblclient_phone_key", ["phone"], { unique: true })
+
 @Entity("tblclient", { schema: "public" })
 export class Tblclient {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })
@@ -91,14 +90,12 @@ export class Tblclient {
   @Column("double precision", {
     name: "latitude",
     nullable: true,
-    precision: 53,
   })
   latitude: number | null;
 
   @Column("double precision", {
     name: "longitude",
     nullable: true,
-    precision: 53,
   })
   longitude: number | null;
 

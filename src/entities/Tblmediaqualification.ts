@@ -1,6 +1,5 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
-@Index("tblmediaqualification_pkey", ["id"], { unique: true })
 @Entity("tblmediaqualification", { schema: "public" })
 export class Tblmediaqualification {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })

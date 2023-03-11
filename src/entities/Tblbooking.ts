@@ -1,6 +1,5 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
-@Index("tblbooking_pkey", ["id"], { unique: true })
 @Entity("tblbooking", { schema: "public" })
 export class Tblbooking {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })
@@ -57,15 +56,13 @@ export class Tblbooking {
 
   @Column("double precision", {
     name: "latitude",
-    nullable: true,
-    precision: 53,
+    nullable: true
   })
   latitude: number | null;
 
   @Column("double precision", {
     name: "longitude",
-    nullable: true,
-    precision: 53,
+    nullable: true
   })
   longitude: number | null;
 
@@ -81,7 +78,6 @@ export class Tblbooking {
   @Column("double precision", {
     name: "subtotal",
     nullable: true,
-    precision: 53,
     default: () => "0",
   })
   subtotal: number | null;
@@ -89,7 +85,6 @@ export class Tblbooking {
   @Column("double precision", {
     name: "discount",
     nullable: true,
-    precision: 53,
     default: () => "0",
   })
   discount: number | null;
@@ -97,7 +92,6 @@ export class Tblbooking {
   @Column("double precision", {
     name: "tax",
     nullable: true,
-    precision: 53,
     default: () => "0",
   })
   tax: number | null;
@@ -105,7 +99,6 @@ export class Tblbooking {
   @Column("double precision", {
     name: "totalamount",
     nullable: true,
-    precision: 53,
     default: () => "0",
   })
   totalamount: number | null;
@@ -172,7 +165,6 @@ export class Tblbooking {
   @Column("double precision", {
     name: "cancellationfee",
     nullable: true,
-    precision: 53,
     default: () => "0",
   })
   cancellationfee: number | null;
@@ -180,7 +172,6 @@ export class Tblbooking {
   @Column("double precision", {
     name: "refundamount",
     nullable: true,
-    precision: 53,
     default: () => "0",
   })
   refundamount: number | null;
@@ -225,8 +216,7 @@ export class Tblbooking {
 
   @Column("double precision", {
     name: "tipamount",
-    nullable: true,
-    precision: 53,
+    nullable: true
   })
   tipamount: number | null;
 
@@ -241,7 +231,6 @@ export class Tblbooking {
   @Column("double precision", {
     name: "transportationcharge",
     nullable: true,
-    precision: 53,
     default: () => "0",
   })
   transportationcharge: number | null;

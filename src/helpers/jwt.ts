@@ -17,7 +17,7 @@ export class Jwt {
     * decodeAuthToken
     */
     public static decodeAuthToken(token) {
-        const decodedToken = JWT.decode(token);
+        const decodedToken = JWT.verify(token,process.env.JWT_SECRET);
         if (decodedToken) {
             return decodedToken;
         } else {

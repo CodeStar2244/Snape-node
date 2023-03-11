@@ -8,8 +8,7 @@ import {
 } from "typeorm";
 import { Tblrole } from "./Tblrole";
 
-@Index("tbluser_pkey", ["id"], { unique: true })
-@Index("tbluser_phone_key", ["phone"], { unique: true })
+
 @Entity("tbluser", { schema: "public" })
 export class Tbluser {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })
