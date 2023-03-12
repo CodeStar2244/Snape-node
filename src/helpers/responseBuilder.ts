@@ -35,7 +35,6 @@ export class ResponseBuilder {
   public static data(result, msg?: string): ResponseBuilder {
     const rb: ResponseBuilder = new ResponseBuilder();
     rb.code = 200;
-    result.status = true;
     result.code = 200;
     result.data = msg ? { message:  msg,  ...result.data} : {  ...result.data };
     rb.result = result;

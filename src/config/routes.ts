@@ -4,4 +4,5 @@ export const USER_ROUTES = {
 export const COLLECTION_ROUTES = {
     CREATE_COLLECTION : "/",
     GET_COLLECTIONS : "/",
+    UPDATE_COLLECTION : "/:id",
 }
