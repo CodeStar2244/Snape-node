@@ -34,7 +34,23 @@ export class CollectionService {
             return ResponseBuilder.data(collections);
 
         } catch (error) {
-            console.log(error)
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
+    public getCollectionByID = async (userDetails,id) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const collection = await collectionRepository.findOneBy({id:id , createdBy:userDetails.id});
+            if(!collection){
+                return ResponseBuilder.badRequest("Collection Not Found" , 404);
+            }
+            return ResponseBuilder.data(collection);
+
+        } catch (error) {
             throw ResponseBuilder.error(error)
 
         }
