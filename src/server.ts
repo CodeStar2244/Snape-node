@@ -44,7 +44,7 @@ class App {
         this.app.use(bodyParser.json({ type: "application/vnd.api+json" }));
         this.app.use(morgan("dev"))
         const routes = new Routes(NODE_ENV);
-        this.app.use("/api/v1", routes.path());
+        
         this.app.all("/*", (req, res, next) => {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Request-Headers", "*");
@@ -61,6 +61,7 @@ class App {
                 next();
             }
         });
+        this.app.use("/api/v1", routes.path());
 
         this.app.use(async (err, req, res, next) => {
             if (err) {
