@@ -7,7 +7,7 @@ export class CollectionTags{
     @PrimaryGeneratedColumn()
     id:number
 
-    @Column()
+    @Column({unique:true})
     tag:string
 
     @ManyToMany(()=>Collections,(collection)=>collection.id)

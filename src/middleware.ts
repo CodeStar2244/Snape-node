@@ -12,6 +12,7 @@ export class Middleware {
     
 
 	public authenticateUser = async (req, res, next: () => void) => {
+        try {
 		const unAuthPayload = {
 			error: {
 				message: req.i18n.t("ERR_USER_NOT_VERIFIED"),
@@ -49,5 +50,9 @@ export class Middleware {
 			res.status(401).send(unAuthPayload.error);
 			return;
 		}
+    } catch (error) {
+        
+            
+    }
 	};
 }

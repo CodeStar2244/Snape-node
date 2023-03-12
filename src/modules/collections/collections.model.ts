@@ -20,6 +20,7 @@ export class CreateCollectionModel extends Model {
 export class UpdateCollectionModel extends Model {
     @MinLength(2)
     @IsString()
+
     public name: string;
     @IsString()
     public url: string;
@@ -35,11 +36,19 @@ export class UpdateCollectionModel extends Model {
     @IsString()
     @IsOptional()
     public downloadPin: string;
+
+    @IsString()
+    @IsOptional()
+    public tags: string;
    
     
     @IsBoolean()
     @IsOptional()
     public download :boolean
+
+    @IsBoolean()
+    @IsOptional()
+    public socialSharing :boolean
     
     
     
@@ -57,6 +66,8 @@ export class UpdateCollectionModel extends Model {
         this.download=body.download
         this.downloadPin=body.downloadPin
         this.password=body.password
+        this.tags=body.tags
+        this.socialSharing = body.socialSharing
     }
 }
 
