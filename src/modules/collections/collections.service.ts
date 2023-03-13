@@ -8,7 +8,7 @@ export class CollectionService {
     public createCollection = async (body, userDetails) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
-            const collection = await collectionRepository.insert({
+            const collection = await collectionRepository.save({
                 name: body.name,
                 eventDate: body.eventDate,
                 createdBy: userDetails.id
