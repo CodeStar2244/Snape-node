@@ -50,6 +50,10 @@ export default class Collections{
     @Column({nullable:true,default:0})
     videos:number
 
+
+    @Column({nullable:true,default:"https://s3.amazonaws.com/dev-media.snape.com/collectionphoto.jpg"})
+    coverPhoto:string
+
     @ManyToOne(()=>Tblagent,(agent)=>agent.id)
     @JoinColumn({name:"agentId"})
     createdBy
