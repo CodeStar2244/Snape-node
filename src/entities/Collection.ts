@@ -45,6 +45,11 @@ export default class Collections{
     @Column({nullable:true})
     downloadPin:string
 
+    @Column({nullable:true,default:0})
+    photos:number
+    @Column({nullable:true,default:0})
+    videos:number
+
     @ManyToOne(()=>Tblagent,(agent)=>agent.id)
     @JoinColumn({name:"agentId"})
     createdBy
