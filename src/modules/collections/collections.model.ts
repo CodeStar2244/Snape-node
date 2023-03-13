@@ -22,7 +22,9 @@ export class UpdateCollectionModel extends Model {
     @IsString()
 
     public name: string;
+    
     @IsString()
+    @IsOptional()
     public url: string;
     
     @IsDate()
