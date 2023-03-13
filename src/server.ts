@@ -53,7 +53,7 @@ class App {
                 "Access-Control-Allow-Headers",
                 "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Headers, Accept-Language, Authorization"
             );
-            res.header("Access-Control-Allow-Methods", "GET, POST ,PUT ,DELETE .PATCH");
+            res.header("Access-Control-Allow-Methods", "GET, POST ,PUT ,DELETE ,PATCH");
             if (req.method === "OPTIONS") {
                 // res.writeHead(constant.RES_CODE.success);
                 res.end();
