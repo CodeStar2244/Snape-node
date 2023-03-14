@@ -69,7 +69,7 @@ export class CollectionService {
             }
 
             const { name, url, eventDate, download, downloadPin, socialSharing,status, password,tags } = new UpdateCollectionModel(body);
-            const tagsArr = tags.split(',');
+            const tagsArr = tags ? tags?.split(','):[];
             const collectionTagsArr = [];
             for(const tag of tagsArr){
                 const prevTag = await tagRepo.findOneBy({tag:tag.trim()});
@@ -86,6 +86,7 @@ export class CollectionService {
             return ResponseBuilder.data(updateObject);
         }
         catch (error) {
+            console.log(error , "error")
             if (+error.code === 23505) {
                 throw ResponseBuilder.errorMessage("Url already exists")
             }
