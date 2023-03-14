@@ -1,6 +1,7 @@
 import { AppDataSource } from "../../db/db.config";
 import Collections from "../../entities/Collection"
 import { CollectionTags } from "../../entities/CollectionTags";
+import FilesEntity from "../../entities/Files";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { UpdateCollectionModel } from "./collections.model";
 
@@ -84,6 +85,46 @@ export class CollectionService {
 
             await collectioRepo.save({ ...collection, ...updateObject,tags:collectionTagsArr })
             return ResponseBuilder.data(updateObject);
+        }
+        catch (error) {
+            console.log(error , "error")
+            if (+error.code === 23505) {
+                throw ResponseBuilder.errorMessage("Url already exists")
+            }
+            throw ResponseBuilder.error(error, "Internal Server Error")
+
+        }
+
+
+
+    }
+    public uploadFiles = async (params, body, userDetails) => {
+        try {
+            const collectioRepo = AppDataSource.getRepository(Collections);
+            const fileRepo = AppDataSource.getRepository(FilesEntity);
+            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
+            if (!collection) {
+                return ResponseBuilder.badRequest("Collection Not Found", 404);
+            }
+            const files = body.files;
+            const filesUploadArr = [];
+            for(const file of files){
+                filesUploadArr.push(fileRepo.save({
+                    name:file.name,
+                    url:file.url,
+                    size:file.size,
+                    type:file.type,
+                    collection:params.id
+                }));
+             }
+
+             const reponse = await Promise.all(filesUploadArr);
+
+            return ResponseBuilder.data(reponse,"Files Uploaded")
+
+
+            
+           
         }
         catch (error) {
             console.log(error , "error")

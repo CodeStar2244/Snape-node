@@ -8,7 +8,7 @@ export enum FileType {
   }
 
 @Entity("files",{schema:"public"})
-export default class Files{
+export default class FilesEntity{
 
     @PrimaryGeneratedColumn()
     id:number;

@@ -41,7 +41,7 @@ export class CollectoinController{
     public filesUpload = async (req,res)=>{
         try {
             console.log("helo")
-            const result = await this.collectionService.updateCollection(req.params,req.body,req.user);
+            const result = await this.collectionService.uploadFiles(req.params,req.body,req.user);
             return res.status(result.code).json(result);
             
         } catch (error) {
