@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class latestmigration1678558536597 implements MigrationInterface {
-    name = 'latestmigration1678558536597'
+export class latestmigration1678759554083 implements MigrationInterface {
+    name = 'latestmigration1678759554083'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "tblbooking" ALTER COLUMN "subtotal" SET DEFAULT 0`);
