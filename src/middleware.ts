@@ -3,9 +3,10 @@ import { isEmpty } from "lodash";
 import { Jwt } from "./helpers/jwt";
 import { Log } from "./helpers/logger";
 import { getRepository } from "typeorm";
-import { Request, Response, NextFunction } from "express";
+import e, { Request, Response, NextFunction } from "express";
 import { Tblagent } from "./entities/Tblagent";
 import { AppDataSource } from "./db/db.config";
+import {TokenExpiredError} from "jsonwebtoken"
 
 export class Middleware {
 	private logger = new  Log();
@@ -51,6 +52,18 @@ export class Middleware {
 			return;
 		}
     } catch (error) {
+        const unAuthPayload = {
+			error: {
+				message: req.i18n.t("ERR_UNAUTH"),
+				code: 401,
+				status: false,
+			},
+		}; 
+        if(error.name === "TokenExpiredError"){
+            return res.status(401).send(unAuthPayload.error);
+            
+        }
+        
         
             
     }

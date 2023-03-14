@@ -1,15 +1,17 @@
 import * as dotenv from "dotenv";
 import * as l10n from "jm-ez-l10n";
-import * as JWT from "jsonwebtoken";
+import  JWT from "jsonwebtoken";
 // import { ResponseBuilder } from "./responseBuilder";
 // import * as Constant from "../shared/constants/app.const"
 dotenv.config();
 import * as fs from "fs";
+import { ResponseBuilder } from "./responseBuilder";
 export class Jwt {
     /*
     * getAuthToken
     */
     public static getAuthToken(payload) {
+        
         return JWT.sign({ payload }, process.env.JWT_SECRET, { expiresIn: process.env.JwtExpireTime });
     }
 
