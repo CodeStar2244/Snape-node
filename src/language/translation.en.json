@@ -8,6 +8,7 @@
     "CREATECATEGORY": "Category created successfully.",
     "SAVECATEGORY": "Save category successfully.",
     "EMAIL_ALREADY_EXIST": "Email already exist",
+    "ERR_INVALID_TOKEN":"Token is invalid.Please Login again",
     "EMAIL_NOT_EXIST": "Email not exist",
     "INVALID_OTP": "Invalid OTP",
     "EMAIL_NOT_VERIFIED": "Email is not verified please verify your email",

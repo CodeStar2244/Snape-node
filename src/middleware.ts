@@ -62,6 +62,9 @@ export class Middleware {
         if(error.name === "TokenExpiredError"){
             return res.status(401).send(unAuthPayload.error);
             
+        }else{
+            unAuthPayload.error.message=req.i18n.t("ERR_INVALID_TOKEN")
+            return res.status(401).send(unAuthPayload.error);
         }
         
         
