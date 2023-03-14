@@ -1,20 +1,36 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import Collections from "./Collection";
 
+
+export enum FileType {
+    PHOTO="PHOTO",
+    VIDEO="VIDEO"
+  }
 
 @Entity("files",{schema:"public"})
 export default class Files{
 
     @PrimaryGeneratedColumn()
-    id:number
+    id:number;
 
     @Column()
-    name:string
+    name:string;
 
     @Column()
-    url:string
+    url:string;
     
     @Column()
-    size:number
+    size:number;
+
+    @Column({
+        type: "enum",
+        enum: FileType,
+        default: FileType.PHOTO
+    })
+    type:FileType
+
+    @ManyToOne(()=>Collections,(collection)=>collection.id)
+    collection:Collections;
 
     @CreateDateColumn({type:'timestamptz'})
     createdAt: Date;

@@ -1,6 +1,9 @@
-import { IsBoolean, IsDate, IsEnum, IsNotEmpty ,IsOptional,IsString , MinLength} from "class-validator";
+import { ArrayMinSize, IsArray, IsBoolean, IsDate, IsEnum, IsNotEmpty ,IsNumber,IsObject,IsOptional,IsString , MinLength, ValidateNested} from "class-validator";
 import { CollectionStatus } from "../../entities/Collection";
+import { FileType } from "../../entities/Files";
 import { Model } from "../../helpers/model";
+import { Type } from 'class-transformer';
+
 
 export class CreateCollectionModel extends Model {
     @MinLength(2)
@@ -72,4 +75,42 @@ export class UpdateCollectionModel extends Model {
         this.socialSharing = body.socialSharing
     }
 }
+
+class FileClass extends Model {
+    @IsString()
+    name:string;
+
+    @IsString()
+    url:string;
+    
+    @IsNumber()
+    size:number;
+
+    @IsEnum(FileType)
+    type:FileType
+   
+
+}
+
+export class UploadFilesModel extends Model {
+ 
+
+
+    @ValidateNested({ each: true })
+    @ArrayMinSize(1)
+    @IsArray()
+    @Type(() => FileClass)
+    files:FileClass[]
+
+   
+   
+
+    constructor(body: any,params:any) {
+        super();
+        this.files=body.files
+        
+    }
+}
+
+
 
