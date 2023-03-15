@@ -21,12 +21,6 @@ class App {
         this.app.use(cookieParser());
         this.app.use(bodyParser.json({ limit: "50mb" }));
         this.app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
-        this.app.use(bodyParser.json(), (error, req, res, next) => {
-            if (error) {
-                return res.status(400).json({ message: req.t("ERR_GENRIC_SYNTAX") });
-            }
-            next();
-        });
         const i18nObject = i18next
             .use(i18Backend)
             .use(i18middleware.LanguageDetector)
@@ -43,6 +37,12 @@ class App {
         this.app.use(i18middleware.handle(i18next));
         this.app.use(bodyParser.json({ type: "application/vnd.api+json" }));
         this.app.use(morgan("dev"))
+        this.app.use(bodyParser.json(), (error, req, res, next) => {
+            if (error) {
+                return res.status(400).json({ message: "Json Syntax Error" });
+            }
+            next();
+        });
         const routes = new Routes(NODE_ENV);
         
         this.app.all("/*", (req, res, next) => {

@@ -78,17 +78,28 @@ export class UpdateCollectionModel extends Model {
 
 class FileClass extends Model {
     @IsString()
+    @IsNotEmpty()
     name:string;
 
     @IsString()
+    @IsNotEmpty()
     url:string;
     
     @IsNumber()
+    @IsNotEmpty()
     size:number;
 
     @IsEnum(FileType)
+    @IsNotEmpty()
     type:FileType
+    
    
+
+    constructor() {
+        super();
+      
+        
+    }
 
 }
 
@@ -96,10 +107,9 @@ export class UploadFilesModel extends Model {
  
 
 
-    @ValidateNested({ each: true })
     @ArrayMinSize(1)
     @IsArray()
-    @Type(() => FileClass)
+    @ValidateNested()
     files:FileClass[]
 
    
@@ -107,7 +117,16 @@ export class UploadFilesModel extends Model {
 
     constructor(body: any,params:any) {
         super();
-        this.files=body.files
+        const fileArr :FileClass[]=[];
+        for(const file of body.files){
+            const fileObj = new FileClass();
+            fileObj.name = file.name;
+            fileObj.size=file.size;
+            fileObj.type=file.type;
+            fileObj.url=file.url
+            fileArr.push(fileObj);
+        }
+        this.files = fileArr;
         
     }
 }
