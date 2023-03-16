@@ -1,10 +1,16 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import AssetCategory from "./assetCategory";
 
 
+export enum AssetStatus {
+    ACTIVE="Active",
+    FORSALE="For Sale",
+    LOST="Lost",
+    FORRENT="For Rent"
+}
 
-
-@Entity("assetCategory",{schema:"public"})
-export default class AssetCategory{
+@Entity("assets",{schema:"public"})
+export default class Assets{
 
     @PrimaryGeneratedColumn()
     id:number;
@@ -18,8 +24,15 @@ export default class AssetCategory{
     @Column()
     price:number;
 
+    @Column({
+        type:"enum",
+        enum:AssetStatus
+    })
+    status:AssetStatus
+
     @ManyToOne(()=>AssetCategory,(category)=>category.id)
     category:AssetCategory
+
 
   
     @CreateDateColumn({type:'timestamptz'})
