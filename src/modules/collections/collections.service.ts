@@ -108,6 +108,9 @@ export class CollectionService {
             }
             const files = body.files;
             const filesUploadArr = [];
+            if(collection.photos === 0){
+                collectioRepo.save({...collection,coverPhoto:files[0]?.url})
+            }
             for(const file of files){
                 filesUploadArr.push(fileRepo.save({
                     name:file.name,
@@ -119,8 +122,9 @@ export class CollectionService {
              }
 
              const reponse = await Promise.all(filesUploadArr);
+            
 
-            return ResponseBuilder.data(reponse,"Files Uploaded")
+            return ResponseBuilder.data(reponse,"Files Uploaded");
 
 
             
