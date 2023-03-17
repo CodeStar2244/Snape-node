@@ -31,7 +31,8 @@ export class CollectionService {
             const collections = await collectionRepository.find({
                 where: {
                     createdBy: userDetails.id
-                }
+                },
+                order:{createdAt:'DESC'}
             });
             return ResponseBuilder.data(collections);
 
@@ -53,6 +54,27 @@ export class CollectionService {
             return ResponseBuilder.data(collection);
 
         } catch (error) {
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
+    public getCollectionFiles = async (userDetails, id) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const fileRepo = AppDataSource.getRepository(FilesEntity);
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            if (!collection) {
+                return ResponseBuilder.badRequest("Collection Not Found", 404);
+            }
+            const files = await fileRepo.createQueryBuilder("files")
+            .where({collection:id}).loadAllRelationIds().orderBy({"files.createdAt":"ASC"}).getMany();
+            return ResponseBuilder.data(files);
+    
+        } catch (error) {
+            console.log(error)
             throw ResponseBuilder.error(error)
 
         }

@@ -13,5 +13,6 @@ router.post(COLLECTION_ROUTES.CREATE_COLLECTION,v.validate(CreateCollectionModel
 router.post(COLLECTION_ROUTES.UPLOAD_FILES,v.validate(UploadFilesModel),collectoinController.filesUpload);
 router.get(COLLECTION_ROUTES.GET_COLLECTIONS,collectoinController.getCollections);
 router.get(COLLECTION_ROUTES.GET_COLLECTION_BY_ID,collectoinController.getCollectionByID);
+router.get(COLLECTION_ROUTES.GET_FILES,collectoinController.getCollectionFiles);
 router.put(COLLECTION_ROUTES.UPDATE_COLLECTION,v.validate(UpdateCollectionModel),collectoinController.updateCollection);
 export  const  CollectionRoute:Router = router;
