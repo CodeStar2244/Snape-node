@@ -85,6 +85,10 @@ class FileClass extends Model {
     @IsNotEmpty()
     url:string;
     
+    @IsString()
+    @IsNotEmpty()
+    key:string;
+    
     @IsNumber()
     @IsNotEmpty()
     size:number;
@@ -124,6 +128,7 @@ export class UploadFilesModel extends Model {
             fileObj.size=file.size;
             fileObj.type=file.type;
             fileObj.url=file.url
+            fileObj.key=file.key
             fileArr.push(fileObj);
         }
         this.files = fileArr;

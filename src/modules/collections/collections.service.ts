@@ -2,10 +2,12 @@ import { AppDataSource } from "../../db/db.config";
 import Collections from "../../entities/Collection"
 import { CollectionTags } from "../../entities/CollectionTags";
 import FilesEntity from "../../entities/Files";
+import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { UpdateCollectionModel } from "./collections.model";
 
 export class CollectionService {
+    private s3 = new AWSS3();
     public createCollection = async (body, userDetails) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
@@ -64,11 +66,19 @@ export class CollectionService {
     public deleteCollection = async (userDetails, id) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
+            const fileRepo = AppDataSource.getRepository(FilesEntity);
             const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
+            const files = await fileRepo.createQueryBuilder("files")
+            .where({collection:id}).loadAllRelationIds().orderBy({"files.createdAt":"ASC"}).getMany();
+            for(const file of files){
+                this.s3.deleteS3File(file.key);
+
+            }
             await collectionRepository.delete({id:id});
+            
             return ResponseBuilder.data(collection);
 
         } catch (error) {

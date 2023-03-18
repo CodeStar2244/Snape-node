@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser"
 import i18Backend from "i18next-fs-backend";
 import i18next from 'i18next';
 import i18middleware from "i18next-http-middleware";
+import { AWSS3 } from './helpers/awss3';
 
 dotenv.config();
 

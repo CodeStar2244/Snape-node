@@ -19,6 +19,9 @@ export default class FilesEntity{
     @Column()
     url:string;
     
+    @Column({default:"test"})
+    key:string;
+    
     @Column()
     size:number;
 
