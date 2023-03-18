@@ -1,0 +1,1 @@
+//# sourceMappingURL=assetRegistry.route.js.map
