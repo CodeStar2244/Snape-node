@@ -29,7 +29,7 @@ export default class FilesEntity{
     })
     type:FileType
 
-    @ManyToOne(()=>Collections,(collection)=>collection.id)
+    @ManyToOne(()=>Collections,(collection)=>collection.id,{onDelete:"CASCADE"})
     collection:Collections;
 
     @CreateDateColumn({type:'timestamptz'})

@@ -61,6 +61,24 @@ export class CollectionService {
 
 
     }
+    public deleteCollection = async (userDetails, id) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            if (!collection) {
+                return ResponseBuilder.badRequest("Collection Not Found", 404);
+            }
+            await collectionRepository.delete({id:id});
+            return ResponseBuilder.data(collection);
+
+        } catch (error) {
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
     public getCollectionFiles = async (userDetails, id) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
