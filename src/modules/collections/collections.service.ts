@@ -32,7 +32,9 @@ export class CollectionService {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const collections = await collectionRepository.find({
                 where: {
-                    createdBy: userDetails.id
+                    createdBy: {
+                        id:userDetails.id
+                    }
                 },
                 order:{createdAt:'DESC'}
             });
