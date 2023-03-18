@@ -28,6 +28,7 @@ var express = __importStar(require("express"));
 var agent_route_1 = require("./modules/user/agent.route");
 var middleware_1 = require("./middleware");
 var collections_route_1 = require("./modules/collections/collections.route");
+var dashboard_routes_1 = require("./modules/dashboard/dashboard.routes");
 var Routes = /** @class */ (function () {
     function Routes(NODE_ENV) {
         this.middleware = new middleware_1.Middleware();
@@ -49,6 +50,7 @@ var Routes = /** @class */ (function () {
         var router = express.Router();
         router.use("/agent", agent_route_1.UserRoute);
         router.use("/collection", this.middleware.authenticateUser, collections_route_1.CollectionRoute);
+        router.use("/dashboard", this.middleware.authenticateUser, dashboard_routes_1.DashboardRoute);
         router.all("/*", function (req, res) {
             return res.status(404).json({
                 message: "ERR_URL_NOT_FOUND",

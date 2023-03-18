@@ -3,6 +3,7 @@ import * as express from "express";
 import { UserRoute } from "./modules/user/agent.route";
 import { Middleware } from "./middleware";
 import { CollectionRoute } from "./modules/collections/collections.route";
+import { DashboardRoute } from "./modules/dashboard/dashboard.routes";
 export class Routes {
   private middleware = new Middleware();
   protected basePath: string;
@@ -28,6 +29,7 @@ export class Routes {
     const router = express.Router();
     router.use("/agent", UserRoute);
     router.use("/collection",this.middleware.authenticateUser,CollectionRoute);
+    router.use("/dashboard",this.middleware.authenticateUser,DashboardRoute);
 
     router.all("/*", (req: Request, res: Response) => {
       return res.status(404).json({

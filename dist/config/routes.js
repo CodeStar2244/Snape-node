@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.DASHBOARD_ROTUES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login"
 };
@@ -12,5 +12,8 @@ exports.COLLECTION_ROUTES = {
     UPLOAD_FILES: "/:id",
     DELETE_COLLECTION: "/:id",
     GET_FILES: "/files/:id"
+};
+exports.DASHBOARD_ROTUES = {
+    GET_SUMMARY: "/summary",
 };
 //# sourceMappingURL=routes.js.map

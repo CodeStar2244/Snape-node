@@ -31,6 +31,9 @@ export const COLLECTION_STATUS={
   PUBLISH:"PUBLISH",
   UNPUBLISH:"UNPUBLISH"
 }
+export const PAYMENT_STATUS={
+  SUCESS:"success"
+}
 
 
 

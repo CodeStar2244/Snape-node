@@ -10,3 +10,6 @@ export const COLLECTION_ROUTES = {
     DELETE_COLLECTION:"/:id",
     GET_FILES:"/files/:id"
 }
+export const DASHBOARD_ROTUES = {
+    GET_SUMMARY : "/summary",
+}
