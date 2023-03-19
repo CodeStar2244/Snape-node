@@ -30,7 +30,7 @@ export class UpdateCollectionModel extends Model {
     @IsOptional()
     public url: string;
     
-    @IsDate()
+    @IsString()
     @IsOptional()
     public eventDate: Date;
     
@@ -63,9 +63,10 @@ export class UpdateCollectionModel extends Model {
     public status : CollectionStatus
 
     constructor(body: any,params?:any) {
+        console.log(body.eventDate , "dasta")
         super();
         this.name = body.name
-        this.eventDate = new Date(body.eventDate)
+        this.eventDate = body.eventDate
         this.url = body.url
         this.status=body.status
         this.download=body.download

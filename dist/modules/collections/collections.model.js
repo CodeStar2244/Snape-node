@@ -53,9 +53,11 @@ exports.CreateCollectionModel = CreateCollectionModel;
 var UpdateCollectionModel = /** @class */ (function (_super) {
     __extends(UpdateCollectionModel, _super);
     function UpdateCollectionModel(body, params) {
-        var _this = _super.call(this) || this;
+        var _this = this;
+        console.log(body.eventDate, "dasta");
+        _this = _super.call(this) || this;
         _this.name = body.name;
-        _this.eventDate = new Date(body.eventDate);
+        _this.eventDate = body.eventDate;
         _this.url = body.url;
         _this.status = body.status;
         _this.download = body.download;
@@ -76,7 +78,7 @@ var UpdateCollectionModel = /** @class */ (function (_super) {
         __metadata("design:type", String)
     ], UpdateCollectionModel.prototype, "url", void 0);
     __decorate([
-        (0, class_validator_1.IsDate)(),
+        (0, class_validator_1.IsString)(),
         (0, class_validator_1.IsOptional)(),
         __metadata("design:type", Date)
     ], UpdateCollectionModel.prototype, "eventDate", void 0);
