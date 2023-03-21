@@ -15,5 +15,6 @@ exports.COLLECTION_ROUTES = {
 };
 exports.DASHBOARD_ROTUES = {
     GET_SUMMARY: "/summary",
+    RECENT_CUSTOMERS: "/recent-customers",
 };
 //# sourceMappingURL=routes.js.map

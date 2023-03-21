@@ -1,4 +1,5 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Tblclient } from "./Tblclient";
 
 @Entity("tblbooking", { schema: "public" })
 export class Tblbooking {
@@ -69,7 +70,9 @@ export class Tblbooking {
   @Column("integer", { name: "bookingstatusid", nullable: true })
   bookingstatusid: number | null;
 
-  @Column("integer", { name: "clientid", nullable: true })
+
+  @ManyToOne(()=>Tblclient,(client)=>client.id,{onDelete:"CASCADE",onUpdate:"CASCADE"})
+  @JoinColumn({name:"clientid"})
   clientid: number | null;
 
   @Column("integer", { name: "agentid", nullable: true })

@@ -7,4 +7,5 @@ const router: Router = Router();
 const collectoinController = new DashboardController();
 
 router.get(DASHBOARD_ROTUES.GET_SUMMARY,collectoinController.getSummary);
+router.get(DASHBOARD_ROTUES.RECENT_CUSTOMERS,collectoinController.recentCustomers);
 export  const  DashboardRoute:Router = router;

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tblbooking = void 0;
 var typeorm_1 = require("typeorm");
+var Tblclient_1 = require("./Tblclient");
 var Tblbooking = /** @class */ (function () {
     function Tblbooking() {
     }
@@ -94,7 +95,8 @@ var Tblbooking = /** @class */ (function () {
         __metadata("design:type", Number)
     ], Tblbooking.prototype, "bookingstatusid", void 0);
     __decorate([
-        (0, typeorm_1.Column)("integer", { name: "clientid", nullable: true }),
+        (0, typeorm_1.ManyToOne)(function () { return Tblclient_1.Tblclient; }, function (client) { return client.id; }, { onDelete: "CASCADE", onUpdate: "CASCADE" }),
+        (0, typeorm_1.JoinColumn)({ name: "clientid" }),
         __metadata("design:type", Number)
     ], Tblbooking.prototype, "clientid", void 0);
     __decorate([

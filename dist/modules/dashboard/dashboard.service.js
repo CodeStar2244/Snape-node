@@ -85,6 +85,33 @@ var DashboardService = /** @class */ (function () {
                 }
             });
         }); };
+        this.recentCustomers = function (userDetails) { return __awaiter(_this, void 0, void 0, function () {
+            var bookingRepo, recentCustomers, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        bookingRepo = db_config_1.AppDataSource.getRepository(Tblbooking_1.Tblbooking);
+                        return [4 /*yield*/, bookingRepo.createQueryBuilder("bookings")
+                                .innerJoinAndSelect("bookings.clientid", "clients")
+                                .select("bookings.startdatetime")
+                                .addSelect("bookings.enddatetime")
+                                .addSelect("clients.firstname")
+                                .addSelect("clients.lastname")
+                                .where({ agentid: userDetails.id })
+                                .andWhere({ bookingstatusid: 10 })
+                                .getMany()];
+                    case 1:
+                        recentCustomers = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ recentCustomers: recentCustomers })];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.log(error_2);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return DashboardService;
 }());

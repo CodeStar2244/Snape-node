@@ -31,4 +31,23 @@ export class DashboardService{
     }
 
     }
+    public recentCustomers = async(userDetails)=>{
+        try {
+       const bookingRepo = AppDataSource.getRepository(Tblbooking);
+       const recentCustomers = await bookingRepo.createQueryBuilder("bookings")
+       .innerJoinAndSelect("bookings.clientid","clients")
+       .select("bookings.startdatetime")
+       .addSelect("bookings.enddatetime")
+       .addSelect("clients.firstname")
+       .addSelect("clients.lastname")
+       .where({agentid:userDetails.id})
+       .andWhere({ bookingstatusid:10})
+       .getMany(); 
+       return ResponseBuilder.data({recentCustomers});
+    } catch (error) {
+        console.log(error)
+            
+    }
+
+    }
 }
