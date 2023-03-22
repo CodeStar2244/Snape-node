@@ -35,8 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DashboardService = void 0;
+var moment_1 = __importDefault(require("moment"));
 var constants_1 = require("../../config/constants");
 var db_config_1 = require("../../db/db.config");
 var Tblbooking_1 = require("../../entities/Tblbooking");
@@ -45,38 +49,55 @@ var DashboardService = /** @class */ (function () {
     function DashboardService() {
         var _this = this;
         this.getSummary = function (userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var bookingRepo, clients, photoGraphy, videoGraphy, revenue, error_1;
+            var customDate, todayDate, bookingRepo, clients, photoGraphy, videoGraphy, revenue, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
+                        customDate = (0, moment_1.default)().subtract(7, "days").format(constants_1.TIME_STAMP_FORMAT);
+                        todayDate = (0, moment_1.default)().format(constants_1.TIME_STAMP_FORMAT);
                         bookingRepo = db_config_1.AppDataSource.getRepository(Tblbooking_1.Tblbooking);
                         return [4 /*yield*/, bookingRepo.createQueryBuilder("bookings")
                                 .where({ agentid: userDetails.id })
+                                .andWhere("\"bookings\".\"enddatetime\" >= '".concat(customDate, "'"))
+                                .andWhere("\"bookings\".\"enddatetime\" <= '".concat(todayDate, "'"))
+                                .andWhere({ paymentstatus: constants_1.PAYMENT_STATUS.SUCESS })
+                                .andWhere({ bookingstatusid: 10 })
                                 .groupBy("clientid,bookings.id")
                                 .getCount()];
                     case 1:
                         clients = _a.sent();
                         return [4 /*yield*/, bookingRepo.createQueryBuilder("bookings")
                                 .where({ agentid: userDetails.id })
+                                .andWhere("\"bookings\".\"enddatetime\" >= '".concat(customDate, "'"))
+                                .andWhere("\"bookings\".\"enddatetime\" <= '".concat(todayDate, "'"))
                                 .andWhere("(speciality=3 OR speciality=2)")
+                                .andWhere({ paymentstatus: constants_1.PAYMENT_STATUS.SUCESS })
+                                .andWhere({ bookingstatusid: 10 })
                                 .getCount()];
                     case 2:
                         photoGraphy = _a.sent();
                         return [4 /*yield*/, bookingRepo.createQueryBuilder("bookings")
                                 .where({ agentid: userDetails.id })
+                                .andWhere("\"bookings\".\"enddatetime\" >= '".concat(customDate, "'"))
+                                .andWhere("\"bookings\".\"enddatetime\" <= '".concat(todayDate, "'"))
                                 .andWhere("(speciality=3 OR speciality=1)")
+                                .andWhere({ paymentstatus: constants_1.PAYMENT_STATUS.SUCESS })
+                                .andWhere({ bookingstatusid: 10 })
                                 .getCount()];
                     case 3:
                         videoGraphy = _a.sent();
                         return [4 /*yield*/, bookingRepo.createQueryBuilder("bookings")
                                 .select('SUM(bookings.totalamount)', 'totalamount')
                                 .where({ agentid: userDetails.id })
+                                .andWhere("\"bookings\".\"enddatetime\" >= '".concat(customDate, "'"))
+                                .andWhere("\"bookings\".\"enddatetime\" <= '".concat(todayDate, "'"))
                                 .andWhere({ paymentstatus: constants_1.PAYMENT_STATUS.SUCESS })
+                                .andWhere({ bookingstatusid: 10 })
                                 .getRawOne()];
                     case 4:
                         revenue = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ clients: clients, photoGraphy: photoGraphy, videoGraphy: videoGraphy, revenue: revenue === null || revenue === void 0 ? void 0 : revenue.totalamount })];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ clients: clients, photoGraphy: photoGraphy, videoGraphy: videoGraphy, revenue: (revenue === null || revenue === void 0 ? void 0 : revenue.totalamount) ? revenue.totalamount : 0 })];
                     case 5:
                         error_1 = _a.sent();
                         console.log(error_1);
@@ -86,11 +107,13 @@ var DashboardService = /** @class */ (function () {
             });
         }); };
         this.recentCustomers = function (userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var bookingRepo, recentCustomers, error_2;
+            var customDate, todayDate, bookingRepo, recentCustomers, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
+                        customDate = (0, moment_1.default)().subtract(7, "days").format(constants_1.TIME_STAMP_FORMAT);
+                        todayDate = (0, moment_1.default)().format(constants_1.TIME_STAMP_FORMAT);
                         bookingRepo = db_config_1.AppDataSource.getRepository(Tblbooking_1.Tblbooking);
                         return [4 /*yield*/, bookingRepo.createQueryBuilder("bookings")
                                 .innerJoinAndSelect("bookings.clientid", "clients")
@@ -99,6 +122,8 @@ var DashboardService = /** @class */ (function () {
                                 .addSelect("clients.firstname")
                                 .addSelect("clients.lastname")
                                 .where({ agentid: userDetails.id })
+                                .andWhere("\"bookings\".\"enddatetime\" >= '".concat(customDate, "'"))
+                                .andWhere("\"bookings\".\"enddatetime\" <= '".concat(todayDate, "'"))
                                 .andWhere({ bookingstatusid: 10 })
                                 .getMany()];
                     case 1:
