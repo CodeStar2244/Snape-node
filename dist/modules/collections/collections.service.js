@@ -85,28 +85,37 @@ var CollectionService = /** @class */ (function () {
                 }
             });
         }); };
-        this.getCollections = function (userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, collections, error_2;
+        this.getCollections = function (userDetails, search, order, sort) { return __awaiter(_this, void 0, void 0, function () {
+            var collectionRepository, query, collections, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 3, , 4]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
-                        return [4 /*yield*/, collectionRepository.find({
-                                where: {
-                                    createdBy: {
-                                        id: userDetails.id
-                                    }
-                                },
-                                order: { createdAt: 'DESC' }
-                            })];
+                        return [4 /*yield*/, collectionRepository.createQueryBuilder("collections")
+                                .select("collections.name", "name")
+                                .addSelect("collections.coverPhoto", "coverPhoto")
+                                .addSelect("collections.photos", "photos")
+                                .addSelect("collections.videos", "videos")
+                                .addSelect("collections.eventDate", "eventDate")
+                                .where("collections.createdBy = :agentId", { agentId: userDetails.id })
+                                .loadRelationIdAndMap("agentId", "collections.createdBy")];
                     case 1:
+                        query = _a.sent();
+                        if (search) {
+                            query.andWhere('collections.name like :name', { name: "%".concat(search, "%") });
+                        }
+                        if (sort && order) {
+                            query.addOrderBy("collections.".concat(sort), order.toUpperCase());
+                        }
+                        return [4 /*yield*/, query.getRawMany()];
+                    case 2:
                         collections = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collections)];
-                    case 2:
+                    case 3:
                         error_2 = _a.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_2);
-                    case 3: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };

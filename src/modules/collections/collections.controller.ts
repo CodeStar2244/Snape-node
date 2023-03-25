@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { CollectionService } from "./collections.service";
 
 export class CollectoinController{
@@ -11,9 +12,10 @@ export class CollectoinController{
             return res.status(error.code).json(error);        
         }
     }
-    public getCollections = async (req,res)=>{
+    public getCollections = async (req:any,res)=>{
         try {
-            const result = await this.collectionService.getCollections(req.user);
+            const {search,order,sort} = req.query;
+            const result = await this.collectionService.getCollections(req.user,search,order,sort);
             return res.status(result.code).json(result);
             
         } catch (error) {

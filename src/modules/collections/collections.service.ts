@@ -27,17 +27,24 @@ export class CollectionService {
 
 
     }
-    public getCollections = async (userDetails) => {
+    public getCollections = async (userDetails,search,order,sort) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
-            const collections = await collectionRepository.find({
-                where: {
-                    createdBy: {
-                        id:userDetails.id
-                    }
-                },
-                order:{createdAt:'DESC'}
-            });
+            const query = await collectionRepository.createQueryBuilder("collections")
+            .select("collections.name","name")
+            .addSelect("collections.coverPhoto","coverPhoto")
+            .addSelect("collections.photos","photos")
+            .addSelect("collections.videos","videos")
+            .addSelect("collections.eventDate","eventDate")
+            .where("collections.createdBy = :agentId",{agentId:userDetails.id})
+            .loadRelationIdAndMap("agentId","collections.createdBy")
+            if(search){
+                query.andWhere('collections.name like :name',{name:`%${search}%`})
+            }
+            if(sort && order){
+                query.addOrderBy(`collections.${sort}`,order.toUpperCase())
+            }
+            const collections = await query.getRawMany();
             return ResponseBuilder.data(collections);
 
         } catch (error) {

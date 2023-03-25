@@ -60,17 +60,18 @@ var CollectoinController = /** @class */ (function () {
             });
         }); };
         this.getCollections = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var result, error_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, search, order, sort, result, error_2;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.collectionService.getCollections(req.user)];
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.query, search = _a.search, order = _a.order, sort = _a.sort;
+                        return [4 /*yield*/, this.collectionService.getCollections(req.user, search, order, sort)];
                     case 1:
-                        result = _a.sent();
+                        result = _b.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_2 = _a.sent();
+                        error_2 = _b.sent();
                         return [2 /*return*/, res.status(error_2.code).json(error_2)];
                     case 3: return [2 /*return*/];
                 }
