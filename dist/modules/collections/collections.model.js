@@ -70,6 +70,7 @@ var UpdateCollectionModel = /** @class */ (function (_super) {
     __decorate([
         (0, class_validator_1.MinLength)(2),
         (0, class_validator_1.IsString)(),
+        (0, class_validator_1.IsOptional)(),
         __metadata("design:type", String)
     ], UpdateCollectionModel.prototype, "name", void 0);
     __decorate([

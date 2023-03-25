@@ -23,7 +23,7 @@ export class CreateCollectionModel extends Model {
 export class UpdateCollectionModel extends Model {
     @MinLength(2)
     @IsString()
-
+    @IsOptional()
     public name: string;
     
     @IsString()
