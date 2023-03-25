@@ -32,6 +32,7 @@ export class CollectionService {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const query = await collectionRepository.createQueryBuilder("collections")
             .select("collections.name","name")
+            .addSelect("collections.id","id")
             .addSelect("collections.coverPhoto","coverPhoto")
             .addSelect("collections.photos","photos")
             .addSelect("collections.videos","videos")
