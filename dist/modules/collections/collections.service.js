@@ -94,6 +94,7 @@ var CollectionService = /** @class */ (function () {
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         return [4 /*yield*/, collectionRepository.createQueryBuilder("collections")
                                 .select("collections.name", "name")
+                                .addSelect("collections.id", "id")
                                 .addSelect("collections.coverPhoto", "coverPhoto")
                                 .addSelect("collections.photos", "photos")
                                 .addSelect("collections.videos", "videos")
