@@ -16,5 +16,6 @@ exports.COLLECTION_ROUTES = {
 exports.DASHBOARD_ROTUES = {
     GET_SUMMARY: "/summary",
     RECENT_CUSTOMERS: "/recent-customers",
+    UPCOMING_BOOKINGS: "/upcoming-bookings",
 };
 //# sourceMappingURL=routes.js.map

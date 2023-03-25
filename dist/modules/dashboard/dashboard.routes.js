@@ -8,5 +8,6 @@ var router = (0, express_1.Router)();
 var collectoinController = new dashboard_controller_1.DashboardController();
 router.get(routes_1.DASHBOARD_ROTUES.GET_SUMMARY, collectoinController.getSummary);
 router.get(routes_1.DASHBOARD_ROTUES.RECENT_CUSTOMERS, collectoinController.recentCustomers);
+router.get(routes_1.DASHBOARD_ROTUES.UPCOMING_BOOKINGS, collectoinController.upcomingBookings);
 exports.DashboardRoute = router;
 //# sourceMappingURL=dashboard.routes.js.map

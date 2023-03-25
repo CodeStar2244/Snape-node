@@ -20,5 +20,15 @@ export class DashboardController{
             return res.status(error.code).json(error);        
         }
     }
+    public upcomingBookings = async (req,res)=>{
+        try {
+            const {date} = req.query;
+            const result = await this.dashboardService.upcomingBookings(req.user,date);
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
 
 }

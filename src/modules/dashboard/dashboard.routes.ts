@@ -8,4 +8,5 @@ const collectoinController = new DashboardController();
 
 router.get(DASHBOARD_ROTUES.GET_SUMMARY,collectoinController.getSummary);
 router.get(DASHBOARD_ROTUES.RECENT_CUSTOMERS,collectoinController.recentCustomers);
+router.get(DASHBOARD_ROTUES.UPCOMING_BOOKINGS,collectoinController.upcomingBookings);
 export  const  DashboardRoute:Router = router;

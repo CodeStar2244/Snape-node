@@ -72,4 +72,27 @@ export class DashboardService{
     }
 
     }
+    public upcomingBookings = async(userDetails,date)=>{
+        try {
+       const startDate = moment(date).startOf('day').format(TIME_STAMP_FORMAT);
+       const endDate = moment(date).endOf('day').format(TIME_STAMP_FORMAT);
+       const bookingRepo = AppDataSource.getRepository(Tblbooking);
+       const recentCustomers = await bookingRepo.createQueryBuilder("bookings")
+       .innerJoinAndSelect("bookings.clientid","clients")
+       .select("bookings.startdatetime")
+       .addSelect("bookings.enddatetime")
+       .addSelect("clients.firstname")
+       .addSelect("clients.lastname")
+       .where({agentid:userDetails.id})
+       .andWhere(`"bookings"."startdatetime" >= '${startDate}'`)
+       .andWhere(`"bookings"."startdatetime" <= '${endDate}'`)
+       .andWhere({ bookingstatusid:10})
+       .getMany(); 
+       return ResponseBuilder.data({recentCustomers});
+    } catch (error) {
+        console.log(error)
+            
+    }
+
+    }
 }

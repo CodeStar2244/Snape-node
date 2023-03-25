@@ -13,4 +13,5 @@ export const COLLECTION_ROUTES = {
 export const DASHBOARD_ROTUES = {
     GET_SUMMARY : "/summary",
     RECENT_CUSTOMERS : "/recent-customers",
+    UPCOMING_BOOKINGS : "/upcoming-bookings",
 }
