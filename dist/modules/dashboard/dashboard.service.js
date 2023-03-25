@@ -55,7 +55,7 @@ var DashboardService = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
                         customDate = (0, moment_1.default)().subtract(7, "days").format(constants_1.TIME_STAMP_FORMAT);
-                        todayDate = (0, moment_1.default)().format(constants_1.TIME_STAMP_FORMAT);
+                        todayDate = (0, moment_1.default)().endOf('day').format(constants_1.TIME_STAMP_FORMAT);
                         bookingRepo = db_config_1.AppDataSource.getRepository(Tblbooking_1.Tblbooking);
                         return [4 /*yield*/, bookingRepo.createQueryBuilder("bookings")
                                 .where({ agentid: userDetails.id })
@@ -113,19 +113,22 @@ var DashboardService = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         customDate = (0, moment_1.default)().subtract(7, "days").format(constants_1.TIME_STAMP_FORMAT);
-                        todayDate = (0, moment_1.default)().format(constants_1.TIME_STAMP_FORMAT);
+                        todayDate = (0, moment_1.default)().endOf("day").format(constants_1.TIME_STAMP_FORMAT);
                         bookingRepo = db_config_1.AppDataSource.getRepository(Tblbooking_1.Tblbooking);
                         return [4 /*yield*/, bookingRepo.createQueryBuilder("bookings")
                                 .innerJoinAndSelect("bookings.clientid", "clients")
-                                .select("bookings.startdatetime")
-                                .addSelect("bookings.enddatetime")
-                                .addSelect("clients.firstname")
-                                .addSelect("clients.lastname")
+                                .innerJoin("tblimages", "images", "bookings.clientid = images.entityid AND entitytype = 'client'")
+                                .select("bookings.startdatetime", "bookingStartTime")
+                                .addSelect("bookings.enddatetime", 'bookingEndTime')
+                                .addSelect("bookings.session", 'session')
+                                .addSelect("clients.firstname", "clientfirstName")
+                                .addSelect("clients.lastname", "clientLastName")
+                                .addSelect("images.imagepath", "profile")
                                 .where({ agentid: userDetails.id })
                                 .andWhere("\"bookings\".\"enddatetime\" >= '".concat(customDate, "'"))
                                 .andWhere("\"bookings\".\"enddatetime\" <= '".concat(todayDate, "'"))
                                 .andWhere({ bookingstatusid: 10 })
-                                .getMany()];
+                                .getRawMany()];
                     case 1:
                         recentCustomers = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ recentCustomers: recentCustomers })];
@@ -148,15 +151,18 @@ var DashboardService = /** @class */ (function () {
                         bookingRepo = db_config_1.AppDataSource.getRepository(Tblbooking_1.Tblbooking);
                         return [4 /*yield*/, bookingRepo.createQueryBuilder("bookings")
                                 .innerJoinAndSelect("bookings.clientid", "clients")
-                                .select("bookings.startdatetime")
-                                .addSelect("bookings.enddatetime")
-                                .addSelect("clients.firstname")
-                                .addSelect("clients.lastname")
+                                .innerJoin("tblimages", "images", "bookings.clientid = images.entityid AND entitytype = 'client'")
+                                .select("bookings.startdatetime", "bookingStartTime")
+                                .addSelect("bookings.enddatetime", 'bookingEndTime')
+                                .addSelect("bookings.session", 'session')
+                                .addSelect("clients.firstname", "clientfirstName")
+                                .addSelect("clients.lastname", "clientLastName")
+                                .addSelect("images.imagepath", "profile")
                                 .where({ agentid: userDetails.id })
                                 .andWhere("\"bookings\".\"startdatetime\" >= '".concat(startDate, "'"))
                                 .andWhere("\"bookings\".\"startdatetime\" <= '".concat(endDate, "'"))
-                                .andWhere({ bookingstatusid: 10 })
-                                .getMany()];
+                                .andWhere({ bookingstatusid: 3 })
+                                .getRawMany()];
                     case 1:
                         recentCustomers = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ recentCustomers: recentCustomers })];

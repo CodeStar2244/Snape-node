@@ -8,7 +8,7 @@ export class DashboardService{
     public getSummary = async(userDetails)=>{
         try {
        const customDate = moment().subtract(7,"days").format(TIME_STAMP_FORMAT);
-       const todayDate = moment().format(TIME_STAMP_FORMAT);
+       const todayDate = moment().endOf('day').format(TIME_STAMP_FORMAT);
        const bookingRepo = AppDataSource.getRepository(Tblbooking);
        const clients = await bookingRepo.createQueryBuilder("bookings")
        .where({agentid:userDetails.id})
@@ -52,19 +52,22 @@ export class DashboardService{
     public recentCustomers = async(userDetails)=>{
         try {
        const customDate = moment().subtract(7,"days").format(TIME_STAMP_FORMAT);
-       const todayDate = moment().format(TIME_STAMP_FORMAT);
+       const todayDate = moment().endOf("day").format(TIME_STAMP_FORMAT);
        const bookingRepo = AppDataSource.getRepository(Tblbooking);
        const recentCustomers = await bookingRepo.createQueryBuilder("bookings")
        .innerJoinAndSelect("bookings.clientid","clients")
-       .select("bookings.startdatetime")
-       .addSelect("bookings.enddatetime")
-       .addSelect("clients.firstname")
-       .addSelect("clients.lastname")
+       .innerJoin("tblimages","images","bookings.clientid = images.entityid AND entitytype = 'client'")
+       .select("bookings.startdatetime","bookingStartTime")
+       .addSelect("bookings.enddatetime",'bookingEndTime')
+       .addSelect("bookings.session",'session')
+       .addSelect("clients.firstname","clientfirstName")
+       .addSelect("clients.lastname","clientLastName")
+       .addSelect("images.imagepath","profile")
        .where({agentid:userDetails.id})
        .andWhere(`"bookings"."enddatetime" >= '${customDate}'`)
        .andWhere(`"bookings"."enddatetime" <= '${todayDate}'`)
        .andWhere({ bookingstatusid:10})
-       .getMany(); 
+       .getRawMany(); 
        return ResponseBuilder.data({recentCustomers});
     } catch (error) {
         console.log(error)
@@ -79,15 +82,18 @@ export class DashboardService{
        const bookingRepo = AppDataSource.getRepository(Tblbooking);
        const recentCustomers = await bookingRepo.createQueryBuilder("bookings")
        .innerJoinAndSelect("bookings.clientid","clients")
-       .select("bookings.startdatetime")
-       .addSelect("bookings.enddatetime")
-       .addSelect("clients.firstname")
-       .addSelect("clients.lastname")
+       .innerJoin("tblimages","images","bookings.clientid = images.entityid AND entitytype = 'client'")
+       .select("bookings.startdatetime","bookingStartTime")
+       .addSelect("bookings.enddatetime",'bookingEndTime')
+       .addSelect("bookings.session",'session')
+       .addSelect("clients.firstname","clientfirstName")
+       .addSelect("clients.lastname","clientLastName")
+       .addSelect("images.imagepath","profile")
        .where({agentid:userDetails.id})
        .andWhere(`"bookings"."startdatetime" >= '${startDate}'`)
        .andWhere(`"bookings"."startdatetime" <= '${endDate}'`)
-       .andWhere({ bookingstatusid:10})
-       .getMany(); 
+       .andWhere({ bookingstatusid:3})
+       .getRawMany(); 
        return ResponseBuilder.data({recentCustomers});
     } catch (error) {
         console.log(error)
