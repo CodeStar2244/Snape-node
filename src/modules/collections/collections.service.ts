@@ -1,3 +1,4 @@
+import { In } from "typeorm";
 import { AppDataSource } from "../../db/db.config";
 import Collections from "../../entities/Collection"
 import { CollectionTags } from "../../entities/CollectionTags";
@@ -99,7 +100,7 @@ export class CollectionService {
 
 
     }
-    public getCollectionFiles = async (userDetails, id) => {
+    public deleteFiles = async (userDetails, id,ids) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const fileRepo = AppDataSource.getRepository(FilesEntity);
@@ -107,8 +108,51 @@ export class CollectionService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
-            const files = await fileRepo.createQueryBuilder("files")
-            .where({collection:id}).loadAllRelationIds().orderBy({"files.createdAt":"ASC"}).getMany();
+            const idsArr:Number[] = ids;
+            const queryOptions = {
+                where:{
+                    collection:{
+                        id
+                    },
+                    id:In(idsArr)
+                }
+            }
+            const files = await fileRepo.find(queryOptions);
+            console.log(files , "fa")
+            for(const file of files){
+                this.s3.deleteS3File(file.key);
+
+            }
+            const filesToBeDeleted = await fileRepo.delete(ids);
+            
+            return ResponseBuilder.data(filesToBeDeleted);
+
+        } catch (error) {
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
+    public getCollectionFiles = async (userDetails, id,search,sort,order) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const fileRepo = AppDataSource.getRepository(FilesEntity);
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            if (!collection) {
+                return ResponseBuilder.badRequest("Collection Not Found", 404);
+            }
+            const query = await fileRepo.createQueryBuilder("files")
+            .where({collection:id}).loadAllRelationIds();
+
+            if(search){
+                query.andWhere('files.name like :name',{name:`%${search}%`})
+            }
+            if(sort && order){
+                query.addOrderBy(`files.${sort}`,order.toUpperCase())
+            }
+            const files = await  query.getRawMany()
             return ResponseBuilder.data(files);
     
         } catch (error) {
@@ -158,6 +202,26 @@ export class CollectionService {
 
 
     }
+    public changeCoverPhoto = async (params, body, userDetails) => {
+        try {
+            const collectioRepo = AppDataSource.getRepository(Collections);
+            const tagRepo = AppDataSource.getRepository(CollectionTags)
+            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
+            if (!collection) {
+                return ResponseBuilder.badRequest("Collection Not Found", 404);
+            }
+
+            const updateCollection = await collectioRepo.update(params.id,{coverPhoto:body.url});
+            return ResponseBuilder.data(updateCollection);
+        }
+        catch (error) {
+            throw ResponseBuilder.error(error, "Internal Server Error")
+
+        }
+
+
+
+    }
     public uploadFiles = async (params, body, userDetails) => {
         try {
             const collectioRepo = AppDataSource.getRepository(Collections);
@@ -177,6 +241,7 @@ export class CollectionService {
                     url:file.url,
                     size:file.size,
                     type:file.type,
+                    key:file.key,
                     collection:params.id
                 }));
              }

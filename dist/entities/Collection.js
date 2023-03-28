@@ -16,7 +16,7 @@ var Tblagent_1 = require("./Tblagent");
 var CollectionStatus;
 (function (CollectionStatus) {
     CollectionStatus["PUBLISH"] = "PUBLISH";
-    CollectionStatus["UNPUBLISH"] = "UNPUBLISH";
+    CollectionStatus["HIDDEN"] = "HIDDEN";
 })(CollectionStatus = exports.CollectionStatus || (exports.CollectionStatus = {}));
 var Collections = /** @class */ (function () {
     function Collections() {
@@ -41,7 +41,7 @@ var Collections = /** @class */ (function () {
         (0, typeorm_1.Column)({
             type: "enum",
             enum: CollectionStatus,
-            default: CollectionStatus.UNPUBLISH
+            default: CollectionStatus.HIDDEN
         }),
         __metadata("design:type", String)
     ], Collections.prototype, "status", void 0);
@@ -79,7 +79,7 @@ var Collections = /** @class */ (function () {
         __metadata("design:type", String)
     ], Collections.prototype, "coverPhoto", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }),
+        (0, typeorm_1.ManyToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
         (0, typeorm_1.JoinColumn)({ name: "agentId" }),
         __metadata("design:type", Object)
     ], Collections.prototype, "createdBy", void 0);

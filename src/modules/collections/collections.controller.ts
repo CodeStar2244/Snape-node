@@ -33,7 +33,8 @@ export class CollectoinController{
     }
     public getCollectionFiles = async (req,res)=>{
         try {
-            const result = await this.collectionService.getCollectionFiles(req.user,req.params.id);
+            const {search,sort,order} = req.query;
+            const result = await this.collectionService.getCollectionFiles(req.user,req.params.id,search,sort,order);
             return res.status(result.code).json(result);
             
         } catch (error) {
@@ -49,6 +50,15 @@ export class CollectoinController{
             return res.status(error.code).json(error);        
         }
     }
+    public changeCoverPhoto = async (req,res)=>{
+        try {
+            const result = await this.collectionService.changeCoverPhoto(req.params,req.body,req.user);
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
     public deleteCollection = async (req,res)=>{
         try {
             const result = await this.collectionService.deleteCollection(req.user,req.params.id);
@@ -58,9 +68,18 @@ export class CollectoinController{
             return res.status(error.code).json(error);        
         }
     }
+    public deleteFiles = async (req,res)=>{
+        try {
+            const {ids} = req.body;
+            const result = await this.collectionService.deleteFiles(req.user,req.params.id,ids);
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
     public filesUpload = async (req,res)=>{
         try {
-            console.log("helo")
             const result = await this.collectionService.uploadFiles(req.params,req.body,req.user);
             return res.status(result.code).json(result);
             

@@ -16,5 +16,7 @@ router.get(routes_1.COLLECTION_ROUTES.GET_COLLECTION_BY_ID, collectoinController
 router.get(routes_1.COLLECTION_ROUTES.GET_FILES, collectoinController.getCollectionFiles);
 router.put(routes_1.COLLECTION_ROUTES.UPDATE_COLLECTION, v.validate(collections_model_1.UpdateCollectionModel), collectoinController.updateCollection);
 router.delete(routes_1.COLLECTION_ROUTES.DELETE_COLLECTION, collectoinController.deleteCollection);
+router.delete(routes_1.COLLECTION_ROUTES.DELETE_FILES, collectoinController.deleteFiles);
+router.put(routes_1.COLLECTION_ROUTES.CHANGE_COVERPHOTO, collectoinController.changeCoverPhoto);
 exports.CollectionRoute = router;
 //# sourceMappingURL=collections.route.js.map

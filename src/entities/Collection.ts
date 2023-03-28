@@ -4,7 +4,7 @@ import { Tblagent } from "./Tblagent";
 
 export enum CollectionStatus {
     PUBLISH="PUBLISH",
-    UNPUBLISH="UNPUBLISH"
+    HIDDEN="HIDDEN"
   }
 
 @Entity("collections",{schema:"public"})
@@ -25,7 +25,7 @@ export default class Collections{
     @Column({
         type: "enum",
         enum: CollectionStatus,
-        default: CollectionStatus.UNPUBLISH
+        default: CollectionStatus.HIDDEN
     })
     status:CollectionStatus
 
@@ -54,7 +54,7 @@ export default class Collections{
     @Column({nullable:true,default:"https://s3.amazonaws.com/dev-media.snape.com/collectionphoto.jpg"})
     coverPhoto:string
 
-    @ManyToOne(()=>Tblagent,(agent)=>agent.id)
+    @ManyToOne(()=>Tblagent,(agent)=>agent.id,{onDelete:"CASCADE"})
     @JoinColumn({name:"agentId"})
     createdBy
 

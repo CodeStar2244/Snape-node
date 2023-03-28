@@ -11,7 +11,9 @@ exports.COLLECTION_ROUTES = {
     UPDATE_COLLECTION: "/:id",
     UPLOAD_FILES: "/:id",
     DELETE_COLLECTION: "/:id",
-    GET_FILES: "/files/:id"
+    GET_FILES: "/files/:id",
+    DELETE_FILES: "/files/:id",
+    CHANGE_COVERPHOTO: "/coverphoto/:id"
 };
 exports.DASHBOARD_ROTUES = {
     GET_SUMMARY: "/summary",
