@@ -41,7 +41,7 @@ export class CollectionService {
             .where("collections.createdBy = :agentId",{agentId:userDetails.id})
             .loadRelationIdAndMap("agentId","collections.createdBy")
             if(search){
-                query.andWhere('collections.name like :name',{name:`%${search}%`})
+                query.andWhere('collections.name ILIKE :name',{name:`%${search}%`})
             }
             if(sort && order){
                 query.addOrderBy(`collections.${sort}`,order.toUpperCase())

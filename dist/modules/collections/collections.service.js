@@ -105,7 +105,7 @@ var CollectionService = /** @class */ (function () {
                     case 1:
                         query = _a.sent();
                         if (search) {
-                            query.andWhere('collections.name like :name', { name: "%".concat(search, "%") });
+                            query.andWhere('collections.name ILIKE :name', { name: "%".concat(search, "%") });
                         }
                         if (sort && order) {
                             query.addOrderBy("collections.".concat(sort), order.toUpperCase());
