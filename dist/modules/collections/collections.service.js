@@ -94,14 +94,18 @@ var CollectionService = /** @class */ (function () {
                         _a.trys.push([0, 3, , 4]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         return [4 /*yield*/, collectionRepository.createQueryBuilder("collections")
+                                .leftJoin("collection_tag_join", "tagsJoin", "tagsJoin.collectionsId=collections.id")
+                                .leftJoin("collection_tags", "tags", "tagsJoin.collectionTagsId=tags.id")
                                 .select("collections.name", "name")
                                 .addSelect("collections.id", "id")
+                                .addSelect("ARRAY_AGG(tags.tag)", "tags")
                                 .addSelect("collections.coverPhoto", "coverPhoto")
                                 .addSelect("collections.photos", "photos")
                                 .addSelect("collections.videos", "videos")
                                 .addSelect("collections.eventDate", "eventDate")
                                 .where("collections.createdBy = :agentId", { agentId: userDetails.id })
-                                .loadRelationIdAndMap("agentId", "collections.createdBy")];
+                                .loadRelationIdAndMap("agentId", "collections.createdBy")
+                                .addGroupBy("collections.id")];
                     case 1:
                         query = _a.sent();
                         if (search) {
