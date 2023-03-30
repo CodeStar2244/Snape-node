@@ -32,18 +32,14 @@ export class CollectionService {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const query = await collectionRepository.createQueryBuilder("collections")
-            .leftJoin("collection_tag_join","tagsJoin","tagsJoin.collectionsId=collections.id")
-            .leftJoin("collection_tags","tags","tagsJoin.collectionTagsId=tags.id")
             .select("collections.name","name")
             .addSelect("collections.id","id")
-            .addSelect("ARRAY_AGG(tags.tag)","tags")
             .addSelect("collections.coverPhoto","coverPhoto")
             .addSelect("collections.photos","photos")
             .addSelect("collections.videos","videos")
             .addSelect("collections.eventDate","eventDate")
             .where("collections.createdBy = :agentId",{agentId:userDetails.id})
             .loadRelationIdAndMap("agentId","collections.createdBy")
-            .addGroupBy("collections.id")
             if(search){
                 query.andWhere('collections.name ILIKE :name',{name:`%${search}%`})
             }
