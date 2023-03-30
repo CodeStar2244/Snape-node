@@ -64,7 +64,30 @@ export class CollectionService {
     public getCollectionByID = async (userDetails, id) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            // const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            const collection = await collectionRepository.createQueryBuilder("collections")
+            .leftJoin("collection_tag_join","tagsJoin","tagsJoin.collectionsId=collections.id")
+            .leftJoin("collection_tags","tags","tagsJoin.collectionTagsId=tags.id")
+            .select("collections.name","name")
+            .addSelect("collections.id","id")
+            .addSelect("collections.socialSharing","socialSharing")
+            .addSelect("collections.download","download")
+            .addSelect("collections.password","password")
+            .addSelect("collections.downloadPin","downloadPin")
+            .addSelect("collections.url","url")
+            .addSelect("collections.status","status")
+            .addSelect("ARRAY_AGG(tags.tag)","tags")
+            .addSelect("collections.coverPhoto","coverPhoto")
+            .addSelect("collections.photos","photos")
+            .addSelect("collections.videos","videos")
+            .addSelect("collections.eventDate","eventDate")
+            .addSelect("collections.createdAt","createdAt")
+            .addSelect("collections.updatedAt","updatedAt")
+            .where("collections.createdBy = :agentId",{agentId:userDetails.id})
+            .andWhere("collections.id =:id",{id:Number(id)})
+            .loadRelationIdAndMap("agentId","collections.createdBy")
+            .addGroupBy("collections.id")
+            .getRawMany()
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
