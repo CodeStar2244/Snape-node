@@ -83,7 +83,7 @@ export class CollectionService {
             .andWhere("collections.id =:id",{id:Number(id)})
             .loadRelationIdAndMap("agentId","collections.createdBy")
             .addGroupBy("collections.id")
-            .getRawMany()
+            .getRawOne()
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }

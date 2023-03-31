@@ -150,7 +150,7 @@ var CollectionService = /** @class */ (function () {
                                 .andWhere("collections.id =:id", { id: Number(id) })
                                 .loadRelationIdAndMap("agentId", "collections.createdBy")
                                 .addGroupBy("collections.id")
-                                .getRawMany()];
+                                .getRawOne()];
                     case 1:
                         collection = _a.sent();
                         if (!collection) {
