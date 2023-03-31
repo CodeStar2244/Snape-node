@@ -22,7 +22,6 @@ var AWSS3 = /** @class */ (function () {
                     Bucket: process.env.S3_BUCKET_NAME,
                     Key: key
                 };
-                console.log(params, 'df');
                 _this.s3.deleteObject(params, function (err, data) {
                     if (err)
                         console.log(err);

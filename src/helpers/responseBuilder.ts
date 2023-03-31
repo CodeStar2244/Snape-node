@@ -13,14 +13,12 @@ export class ResponseBuilder {
   }
 
   public static errorMessage(msg?: any): ResponseBuilder {
-    console.log("msg",msg)
     const rb: ResponseBuilder = new ResponseBuilder();
     
     rb.code = 500;
     rb.status = RES_STATUS.FAIL;
     rb.error = msg != null ? msg : l10n.t("ERR_INTERNAL_SERVER");
     // rb.error = msg.message ? msg.message : l10n.t("ERR_INTERNAL_SERVER");
-    console.log("rb",rb)
     return rb;
   }
 

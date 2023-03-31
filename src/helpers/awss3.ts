@@ -15,7 +15,6 @@ export class AWSS3 {
                 Key: key
 
             }
-            console.log(params , 'df')
             this.s3.deleteObject(params, function (err, data) {
                 if (err) console.log(err);
                 else console.log(data);

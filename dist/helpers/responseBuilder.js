@@ -48,13 +48,11 @@ var ResponseBuilder = /** @class */ (function () {
         return rb;
     };
     ResponseBuilder.errorMessage = function (msg) {
-        console.log("msg", msg);
         var rb = new ResponseBuilder();
         rb.code = 500;
         rb.status = constants_1.RES_STATUS.FAIL;
         rb.error = msg != null ? msg : l10n.t("ERR_INTERNAL_SERVER");
         // rb.error = msg.message ? msg.message : l10n.t("ERR_INTERNAL_SERVER");
-        console.log("rb", rb);
         return rb;
     };
     ResponseBuilder.badRequest = function (msg, code, extraPayload) {

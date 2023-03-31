@@ -223,7 +223,6 @@ var CollectionService = /** @class */ (function () {
                         return [4 /*yield*/, fileRepo.find(queryOptions)];
                     case 2:
                         files = _a.sent();
-                        console.log(files, "fa");
                         for (_i = 0, files_2 = files; _i < files_2.length; _i++) {
                             file = files_2[_i];
                             this.s3.deleteS3File(file.key);
@@ -254,6 +253,15 @@ var CollectionService = /** @class */ (function () {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
                         return [4 /*yield*/, fileRepo.createQueryBuilder("files")
+                                .select("files.id", "id")
+                                .addSelect("files.name", "name")
+                                .addSelect("files.key", "key")
+                                .addSelect("files.size", "size")
+                                .addSelect("files.url", "url")
+                                .addSelect("files.type", "type")
+                                .addSelect("files.createdAt", "createdAt")
+                                .addSelect("files.updatedAt", "updatedAt")
+                                .addSelect("files.collectionId", "collectionId")
                                 .where({ collection: id }).loadAllRelationIds()];
                     case 2:
                         query = _a.sent();

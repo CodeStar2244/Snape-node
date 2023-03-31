@@ -141,7 +141,6 @@ export class CollectionService {
                 }
             }
             const files = await fileRepo.find(queryOptions);
-            console.log(files , "fa")
             for(const file of files){
                 this.s3.deleteS3File(file.key);
 
@@ -167,8 +166,17 @@ export class CollectionService {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
             const query = await fileRepo.createQueryBuilder("files")
+            .select("files.id","id")
+            .addSelect("files.name","name")
+            .addSelect("files.key","key")
+            .addSelect("files.size","size")
+            .addSelect("files.url","url")
+            .addSelect("files.type","type")
+            .addSelect("files.createdAt","createdAt")
+            .addSelect("files.updatedAt","updatedAt")
+            .addSelect("files.collectionId","collectionId")
             .where({collection:id}).loadAllRelationIds();
-
+          
             if(search){
                 query.andWhere('files.name like :name',{name:`%${search}%`})
             }
