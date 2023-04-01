@@ -79,7 +79,7 @@ export class UpdateCollectionModel extends Model {
 }
 
 
-export class CollectionDesign extends Model {
+export class CollectionDesignModel extends Model {
     @IsString()
     @IsOptional()
     typography: string

@@ -6,7 +6,7 @@ import { CollectionTags } from "../../entities/CollectionTags";
 import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
-import { UpdateCollectionModel } from "./collections.model";
+import { UpdateCollectionModel , CollectionDesignModel } from "./collections.model";
 
 export class CollectionService {
     private s3 = new AWSS3();
@@ -236,21 +236,22 @@ export class CollectionService {
     }
     public collectionDesign = async (params, body, userDetails) => {
         try {
+            console.log("run")
             const collectioRepo = AppDataSource.getRepository(Collections);
             const designRepo = AppDataSource.getRepository(CollectionDesign);
             const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
+            console.log(collection)
             const collectionDesign = await designRepo.findOneBy({ collections:{
                 id:collection.id
             }});
 
 
-            const { name, url, eventDate, download, downloadPin, socialSharing,status, password,tags } = new UpdateCollectionModel(body);
+            const { theme , x,y,gridSpacing,gridStyle,typography } = new CollectionDesignModel(body);
             const updateObject = {
-                name,
-                url, eventDate, download, downloadPin, status, password,socialSharing,
+                theme , focusX:x,focusY:y,gridSpacing,gridStyle,typography
             }
 
             await designRepo.save({ ...collectionDesign, ...updateObject})

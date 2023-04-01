@@ -344,11 +344,12 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.collectionDesign = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, designRepo, collection, collectionDesign, _a, name_2, url, eventDate, download, downloadPin, socialSharing, status_2, password, tags, updateObject, error_8;
+            var collectioRepo, designRepo, collection, collectionDesign, _a, theme, x, y, gridSpacing, gridStyle, typography, updateObject, error_8;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 4, , 5]);
+                        console.log("run");
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         designRepo = db_config_1.AppDataSource.getRepository(collectionDesign_1.CollectionDesign);
                         return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
@@ -357,21 +358,19 @@ var CollectionService = /** @class */ (function () {
                         if (!collection) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
+                        console.log(collection);
                         return [4 /*yield*/, designRepo.findOneBy({ collections: {
                                     id: collection.id
                                 } })];
                     case 2:
                         collectionDesign = _b.sent();
-                        _a = new collections_model_1.UpdateCollectionModel(body), name_2 = _a.name, url = _a.url, eventDate = _a.eventDate, download = _a.download, downloadPin = _a.downloadPin, socialSharing = _a.socialSharing, status_2 = _a.status, password = _a.password, tags = _a.tags;
+                        _a = new collections_model_1.CollectionDesignModel(body), theme = _a.theme, x = _a.x, y = _a.y, gridSpacing = _a.gridSpacing, gridStyle = _a.gridStyle, typography = _a.typography;
                         updateObject = {
-                            name: name_2,
-                            url: url,
-                            eventDate: eventDate,
-                            download: download,
-                            downloadPin: downloadPin,
-                            status: status_2,
-                            password: password,
-                            socialSharing: socialSharing,
+                            theme: theme,
+                            focusX: x, focusY: y,
+                            gridSpacing: gridSpacing,
+                            gridStyle: gridStyle,
+                            typography: typography
                         };
                         return [4 /*yield*/, designRepo.save(__assign(__assign({}, collectionDesign), updateObject))];
                     case 3:

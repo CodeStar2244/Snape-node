@@ -104,6 +104,7 @@ var Middleware = /** @class */ (function () {
                             return [2 /*return*/, res.status(401).send(unAuthPayload.error)];
                         }
                         else {
+                            console.log(error_1);
                             unAuthPayload.error.message = req.i18n.t("ERR_INVALID_TOKEN");
                             return [2 /*return*/, res.status(401).send(unAuthPayload.error)];
                         }

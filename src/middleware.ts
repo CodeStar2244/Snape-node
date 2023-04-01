@@ -63,6 +63,7 @@ export class Middleware {
             return res.status(401).send(unAuthPayload.error);
             
         }else{
+            console.log(error)
             unAuthPayload.error.message=req.i18n.t("ERR_INVALID_TOKEN")
             return res.status(401).send(unAuthPayload.error);
         }
