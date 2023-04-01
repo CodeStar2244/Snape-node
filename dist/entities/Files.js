@@ -57,11 +57,11 @@ var FilesEntity = /** @class */ (function () {
     ], FilesEntity.prototype, "collection", void 0);
     __decorate([
         (0, typeorm_1.CreateDateColumn)({ type: 'timestamptz' }),
-        __metadata("design:type", Date)
+        __metadata("design:type", Object)
     ], FilesEntity.prototype, "createdAt", void 0);
     __decorate([
         (0, typeorm_1.UpdateDateColumn)({ type: "timestamptz" }),
-        __metadata("design:type", Date)
+        __metadata("design:type", Object)
     ], FilesEntity.prototype, "updatedAt", void 0);
     FilesEntity = __decorate([
         (0, typeorm_1.Entity)("files", { schema: "public" })

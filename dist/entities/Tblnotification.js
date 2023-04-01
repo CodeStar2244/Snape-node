@@ -52,14 +52,14 @@ var Tblnotification = /** @class */ (function () {
     ], Tblnotification.prototype, "isactive", void 0);
     __decorate([
         (0, typeorm_1.Column)("timestamp without time zone", { name: "createdondate" }),
-        __metadata("design:type", Date)
+        __metadata("design:type", Object)
     ], Tblnotification.prototype, "createdondate", void 0);
     __decorate([
         (0, typeorm_1.Column)("timestamp without time zone", {
             name: "updatedondate",
             nullable: true,
         }),
-        __metadata("design:type", Date)
+        __metadata("design:type", Object)
     ], Tblnotification.prototype, "updatedondate", void 0);
     Tblnotification = __decorate([
         (0, typeorm_1.Entity)("tblnotification", { schema: "public" })

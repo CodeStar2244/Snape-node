@@ -54,11 +54,11 @@ var Assets = /** @class */ (function () {
     ], Assets.prototype, "category", void 0);
     __decorate([
         (0, typeorm_1.CreateDateColumn)({ type: 'timestamptz' }),
-        __metadata("design:type", Date)
+        __metadata("design:type", Object)
     ], Assets.prototype, "createdAt", void 0);
     __decorate([
         (0, typeorm_1.UpdateDateColumn)({ type: "timestamptz" }),
-        __metadata("design:type", Date)
+        __metadata("design:type", Object)
     ], Assets.prototype, "updatedAt", void 0);
     Assets = __decorate([
         (0, typeorm_1.Entity)("assets", { schema: "public" })
