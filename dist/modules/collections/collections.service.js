@@ -285,7 +285,7 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.updateCollection = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, tagRepo, collection, _a, name, url, eventDate, download, downloadPin, socialSharing, status, password, tags, tagsArr, collectionTagsArr, _i, tagsArr_1, tag, prevTag, newTag, updateObject, error_7;
+            var collectioRepo, tagRepo, collection, _a, name_1, url, eventDate, download, downloadPin, socialSharing, status_1, password, tags, tagsArr, collectionTagsArr, _i, tagsArr_1, tag, prevTag, newTag, updateObject, error_7;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -298,7 +298,7 @@ var CollectionService = /** @class */ (function () {
                         if (!collection) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
-                        _a = new collections_model_1.UpdateCollectionModel(body), name = _a.name, url = _a.url, eventDate = _a.eventDate, download = _a.download, downloadPin = _a.downloadPin, socialSharing = _a.socialSharing, status = _a.status, password = _a.password, tags = _a.tags;
+                        _a = new collections_model_1.UpdateCollectionModel(body), name_1 = _a.name, url = _a.url, eventDate = _a.eventDate, download = _a.download, downloadPin = _a.downloadPin, socialSharing = _a.socialSharing, status_1 = _a.status, password = _a.password, tags = _a.tags;
                         tagsArr = tags ? tags === null || tags === void 0 ? void 0 : tags.split(',') : [];
                         collectionTagsArr = [];
                         _i = 0, tagsArr_1 = tagsArr;
@@ -319,12 +319,12 @@ var CollectionService = /** @class */ (function () {
                         return [3 /*break*/, 2];
                     case 6:
                         updateObject = {
-                            name: name,
+                            name: name_1,
                             url: url,
                             eventDate: eventDate,
                             download: download,
                             downloadPin: downloadPin,
-                            status: status,
+                            status: status_1,
                             password: password,
                             socialSharing: socialSharing,
                         };

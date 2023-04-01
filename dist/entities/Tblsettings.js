@@ -52,14 +52,14 @@ var Tblsettings = /** @class */ (function () {
     ], Tblsettings.prototype, "termsconditions", void 0);
     __decorate([
         (0, typeorm_1.Column)("timestamp without time zone", { name: "createdondate" }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblsettings.prototype, "createdondate", void 0);
     __decorate([
         (0, typeorm_1.Column)("timestamp without time zone", {
             name: "updatedondate",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblsettings.prototype, "updatedondate", void 0);
     Tblsettings = __decorate([
         (0, typeorm_1.Entity)("tblsettings", { schema: "public" })

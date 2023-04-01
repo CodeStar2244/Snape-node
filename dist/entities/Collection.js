@@ -21,7 +21,6 @@ var CollectionStatus;
 var Collections = /** @class */ (function () {
     function Collections() {
     }
-    var _a;
     __decorate([
         (0, typeorm_1.PrimaryGeneratedColumn)(),
         __metadata("design:type", Number)
@@ -32,7 +31,7 @@ var Collections = /** @class */ (function () {
     ], Collections.prototype, "name", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Collections.prototype, "eventDate", void 0);
     __decorate([
         (0, typeorm_1.Column)({ unique: true, nullable: true }),
@@ -53,7 +52,7 @@ var Collections = /** @class */ (function () {
     ], Collections.prototype, "tags", void 0);
     __decorate([
         (0, typeorm_1.Column)({ default: false }),
-        __metadata("design:type", typeof (_a = typeof Boolean !== "undefined" && Boolean) === "function" ? _a : Object)
+        __metadata("design:type", Boolean)
     ], Collections.prototype, "socialSharing", void 0);
     __decorate([
         (0, typeorm_1.Column)({ nullable: true }),
@@ -86,11 +85,11 @@ var Collections = /** @class */ (function () {
     ], Collections.prototype, "createdBy", void 0);
     __decorate([
         (0, typeorm_1.CreateDateColumn)({ type: 'timestamptz' }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Collections.prototype, "createdAt", void 0);
     __decorate([
         (0, typeorm_1.UpdateDateColumn)({ type: "timestamptz" }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Collections.prototype, "updatedAt", void 0);
     Collections = __decorate([
         (0, typeorm_1.Entity)("collections", { schema: "public" })

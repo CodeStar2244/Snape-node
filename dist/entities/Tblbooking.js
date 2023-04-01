@@ -32,7 +32,7 @@ var Tblbooking = /** @class */ (function () {
             name: "bookingdatetime",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblbooking.prototype, "bookingdatetime", void 0);
     __decorate([
         (0, typeorm_1.Column)("integer", { name: "session", nullable: true }),
@@ -43,14 +43,14 @@ var Tblbooking = /** @class */ (function () {
             name: "startdatetime",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblbooking.prototype, "startdatetime", void 0);
     __decorate([
         (0, typeorm_1.Column)("timestamp without time zone", {
             name: "enddatetime",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblbooking.prototype, "enddatetime", void 0);
     __decorate([
         (0, typeorm_1.Column)("character varying", {
@@ -232,21 +232,21 @@ var Tblbooking = /** @class */ (function () {
             name: "createdondate",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblbooking.prototype, "createdondate", void 0);
     __decorate([
         (0, typeorm_1.Column)("timestamp without time zone", {
             name: "updatedondate",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblbooking.prototype, "updatedondate", void 0);
     __decorate([
         (0, typeorm_1.Column)("timestamp without time zone", {
             name: "shootingstartdatetime",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblbooking.prototype, "shootingstartdatetime", void 0);
     __decorate([
         (0, typeorm_1.Column)("character varying", { name: "head", nullable: true, length: 100 }),

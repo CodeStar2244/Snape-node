@@ -131,14 +131,14 @@ var Tblclient = /** @class */ (function () {
             name: "createdondate",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblclient.prototype, "createdondate", void 0);
     __decorate([
         (0, typeorm_1.Column)("timestamp without time zone", {
             name: "updatedondate",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblclient.prototype, "updatedondate", void 0);
     __decorate([
         (0, typeorm_1.Column)("integer", { name: "gender", nullable: true }),

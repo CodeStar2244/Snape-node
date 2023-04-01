@@ -43,14 +43,14 @@ var Tblbanner = /** @class */ (function () {
             name: "createdondate",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblbanner.prototype, "createdondate", void 0);
     __decorate([
         (0, typeorm_1.Column)("timestamp without time zone", {
             name: "updatedondate",
             nullable: true,
         }),
-        __metadata("design:type", Object)
+        __metadata("design:type", Date)
     ], Tblbanner.prototype, "updatedondate", void 0);
     __decorate([
         (0, typeorm_1.Column)("character varying", { name: "link", nullable: true, length: 300 }),
