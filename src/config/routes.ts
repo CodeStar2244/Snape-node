@@ -10,7 +10,8 @@ export const COLLECTION_ROUTES = {
     DELETE_COLLECTION:"/:id",
     GET_FILES:"/files/:id",
     DELETE_FILES:"/files/:id",
-    CHANGE_COVERPHOTO:"/coverphoto/:id"
+    CHANGE_COVERPHOTO:"/coverphoto/:id",
+    COLLECTION_DESIGN:"/design/:id"
 }
 export const DASHBOARD_ROTUES = {
     GET_SUMMARY : "/summary",

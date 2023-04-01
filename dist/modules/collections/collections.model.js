@@ -24,11 +24,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UploadFilesModel = exports.UpdateCollectionModel = exports.CreateCollectionModel = void 0;
+exports.UploadFilesModel = exports.CollectionDesign = exports.UpdateCollectionModel = exports.CreateCollectionModel = void 0;
 var class_validator_1 = require("class-validator");
 var Collection_1 = require("../../entities/Collection");
 var Files_1 = require("../../entities/Files");
 var model_1 = require("../../helpers/model");
+var collectionDesign_1 = require("../../entities/collectionDesign");
 var CreateCollectionModel = /** @class */ (function (_super) {
     __extends(CreateCollectionModel, _super);
     function CreateCollectionModel(body, params) {
@@ -116,6 +117,51 @@ var UpdateCollectionModel = /** @class */ (function (_super) {
     return UpdateCollectionModel;
 }(model_1.Model));
 exports.UpdateCollectionModel = UpdateCollectionModel;
+var CollectionDesign = /** @class */ (function (_super) {
+    __extends(CollectionDesign, _super);
+    function CollectionDesign(body, params) {
+        var _this = _super.call(this) || this;
+        _this.typography = body.typography;
+        _this.theme = body.theme;
+        _this.x = body.x;
+        _this.y = body.y;
+        _this.gridStyle = body.gridStyle;
+        _this.gridSpacing = body.gridSpacing;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], CollectionDesign.prototype, "typography", void 0);
+    __decorate([
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], CollectionDesign.prototype, "theme", void 0);
+    __decorate([
+        (0, class_validator_1.IsNumber)(),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", Number)
+    ], CollectionDesign.prototype, "x", void 0);
+    __decorate([
+        (0, class_validator_1.IsNumber)(),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", Number)
+    ], CollectionDesign.prototype, "y", void 0);
+    __decorate([
+        (0, class_validator_1.IsEnum)(collectionDesign_1.GridStyleEnum),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], CollectionDesign.prototype, "gridStyle", void 0);
+    __decorate([
+        (0, class_validator_1.IsEnum)(collectionDesign_1.GridSpacingEnum),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], CollectionDesign.prototype, "gridSpacing", void 0);
+    return CollectionDesign;
+}(model_1.Model));
+exports.CollectionDesign = CollectionDesign;
 var FileClass = /** @class */ (function (_super) {
     __extends(FileClass, _super);
     function FileClass() {

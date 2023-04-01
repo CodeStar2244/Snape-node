@@ -129,13 +129,13 @@ var CollectoinController = /** @class */ (function () {
                 }
             });
         }); };
-        this.changeCoverPhoto = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.collectionDesign = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var result, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.collectionService.changeCoverPhoto(req.params, req.body, req.user)];
+                        return [4 /*yield*/, this.collectionService.collectionDesign(req.params, req.body, req.user)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -146,13 +146,13 @@ var CollectoinController = /** @class */ (function () {
                 }
             });
         }); };
-        this.deleteCollection = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.changeCoverPhoto = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var result, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.collectionService.deleteCollection(req.user, req.params.id)];
+                        return [4 /*yield*/, this.collectionService.changeCoverPhoto(req.params, req.body, req.user)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -163,14 +163,13 @@ var CollectoinController = /** @class */ (function () {
                 }
             });
         }); };
-        this.deleteFiles = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var ids, result, error_8;
+        this.deleteCollection = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        ids = req.body.ids;
-                        return [4 /*yield*/, this.collectionService.deleteFiles(req.user, req.params.id, ids)];
+                        return [4 /*yield*/, this.collectionService.deleteCollection(req.user, req.params.id)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -181,8 +180,26 @@ var CollectoinController = /** @class */ (function () {
                 }
             });
         }); };
+        this.deleteFiles = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var ids, result, error_9;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        ids = req.body.ids;
+                        return [4 /*yield*/, this.collectionService.deleteFiles(req.user, req.params.id, ids)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_9 = _a.sent();
+                        return [2 /*return*/, res.status(error_9.code).json(error_9)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.filesUpload = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var result, error_9;
+            var result, error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -192,8 +209,8 @@ var CollectoinController = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_9 = _a.sent();
-                        return [2 /*return*/, res.status(error_9.code).json(error_9)];
+                        error_10 = _a.sent();
+                        return [2 /*return*/, res.status(error_10.code).json(error_10)];
                     case 3: return [2 /*return*/];
                 }
             });

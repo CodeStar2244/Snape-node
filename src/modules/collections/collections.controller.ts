@@ -50,6 +50,15 @@ export class CollectoinController{
             return res.status(error.code).json(error);        
         }
     }
+    public collectionDesign = async (req,res)=>{
+        try {
+            const result = await this.collectionService.collectionDesign(req.params,req.body,req.user);
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
     public changeCoverPhoto = async (req,res)=>{
         try {
             const result = await this.collectionService.changeCoverPhoto(req.params,req.body,req.user);

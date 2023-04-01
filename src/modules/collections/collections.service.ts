@@ -1,6 +1,7 @@
 import { In } from "typeorm";
 import { AppDataSource } from "../../db/db.config";
 import Collections from "../../entities/Collection"
+import { CollectionDesign } from "../../entities/collectionDesign";
 import { CollectionTags } from "../../entities/CollectionTags";
 import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
@@ -219,6 +220,40 @@ export class CollectionService {
             }
 
             await collectioRepo.save({ ...collection, ...updateObject,tags:collectionTagsArr })
+            return this.getCollectionByID(userDetails,collection.id);
+        }
+        catch (error) {
+            console.log(error , "error")
+            if (+error.code === 23505) {
+                throw ResponseBuilder.errorMessage("Url already exists")
+            }
+            throw ResponseBuilder.error(error, "Internal Server Error")
+
+        }
+
+
+
+    }
+    public collectionDesign = async (params, body, userDetails) => {
+        try {
+            const collectioRepo = AppDataSource.getRepository(Collections);
+            const designRepo = AppDataSource.getRepository(CollectionDesign);
+            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
+            if (!collection) {
+                return ResponseBuilder.badRequest("Collection Not Found", 404);
+            }
+            const collectionDesign = await designRepo.findOneBy({ collections:{
+                id:collection.id
+            }});
+
+
+            const { name, url, eventDate, download, downloadPin, socialSharing,status, password,tags } = new UpdateCollectionModel(body);
+            const updateObject = {
+                name,
+                url, eventDate, download, downloadPin, status, password,socialSharing,
+            }
+
+            await designRepo.save({ ...collectionDesign, ...updateObject})
             return ResponseBuilder.data(updateObject);
         }
         catch (error) {

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { COLLECTION_ROUTES } from "../../config/routes";
 import { Validator } from "../../helpers/validator";
 import { CollectoinController } from "./collections.controller";
-import { CreateCollectionModel, UpdateCollectionModel, UploadFilesModel } from "./collections.model";
+import { CollectionDesign, CreateCollectionModel, UpdateCollectionModel, UploadFilesModel } from "./collections.model";
 
 
 const router: Router = Router(); 
@@ -18,4 +18,5 @@ router.put(COLLECTION_ROUTES.UPDATE_COLLECTION,v.validate(UpdateCollectionModel)
 router.delete(COLLECTION_ROUTES.DELETE_COLLECTION,collectoinController.deleteCollection);
 router.delete(COLLECTION_ROUTES.DELETE_FILES,collectoinController.deleteFiles);
 router.put(COLLECTION_ROUTES.CHANGE_COVERPHOTO,collectoinController.changeCoverPhoto);
+router.put(COLLECTION_ROUTES.COLLECTION_DESIGN,v.validate(CollectionDesign),collectoinController.collectionDesign);
 export  const  CollectionRoute:Router = router;
