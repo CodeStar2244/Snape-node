@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Collections  from "./Collection";
 
 export enum GridStyleEnum {
@@ -28,8 +28,8 @@ export class CollectionDesign{
     gridStyle:string
 
     @Column({type:"enum",
-    enum: GridStyleEnum,
-    default: GridStyleEnum.VERTICAL})
+    enum: GridSpacingEnum,
+    default: GridSpacingEnum.REGULAR})
     gridSpacing:string
 
     @Column({nullable:true})
@@ -39,6 +39,7 @@ export class CollectionDesign{
     focusY:number
 
     @OneToOne(()=>Collections,(collection)=>collection.id)
+    @JoinColumn({name:"collectionId"})
     collections:Collections
 
 }

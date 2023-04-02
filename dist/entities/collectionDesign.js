@@ -48,8 +48,8 @@ var CollectionDesign = /** @class */ (function () {
     ], CollectionDesign.prototype, "gridStyle", void 0);
     __decorate([
         (0, typeorm_1.Column)({ type: "enum",
-            enum: GridStyleEnum,
-            default: GridStyleEnum.VERTICAL }),
+            enum: GridSpacingEnum,
+            default: GridSpacingEnum.REGULAR }),
         __metadata("design:type", String)
     ], CollectionDesign.prototype, "gridSpacing", void 0);
     __decorate([
@@ -62,6 +62,7 @@ var CollectionDesign = /** @class */ (function () {
     ], CollectionDesign.prototype, "focusY", void 0);
     __decorate([
         (0, typeorm_1.OneToOne)(function () { return Collection_1.default; }, function (collection) { return collection.id; }),
+        (0, typeorm_1.JoinColumn)({ name: "collectionId" }),
         __metadata("design:type", Collection_1.default)
     ], CollectionDesign.prototype, "collections", void 0);
     CollectionDesign = __decorate([

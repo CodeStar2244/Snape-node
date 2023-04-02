@@ -98,6 +98,27 @@ export class CollectionService {
 
 
     }
+    public getCollectionDesign = async (userDetails, id) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const designRepo = AppDataSource.getRepository(CollectionDesign);
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })
+            if (!collection) {
+                return ResponseBuilder.badRequest("Collection Not Found", 404);
+            }
+            const collectionDesign = await designRepo.findOneBy({collections:{
+                id:id
+            }})
+            return ResponseBuilder.data(collectionDesign);
+
+        } catch (error) {
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
     public deleteCollection = async (userDetails, id) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
@@ -236,25 +257,21 @@ export class CollectionService {
     }
     public collectionDesign = async (params, body, userDetails) => {
         try {
-            console.log("run")
             const collectioRepo = AppDataSource.getRepository(Collections);
             const designRepo = AppDataSource.getRepository(CollectionDesign);
             const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
-            console.log(collection)
             const collectionDesign = await designRepo.findOneBy({ collections:{
                 id:collection.id
             }});
-
-
             const { theme , x,y,gridSpacing,gridStyle,typography } = new CollectionDesignModel(body);
             const updateObject = {
-                theme , focusX:x,focusY:y,gridSpacing,gridStyle,typography
+                theme , focusX:x,focusY:y,gridSpacing,gridStyle,typography,collection:collection.id
             }
 
-            await designRepo.save({ ...collectionDesign, ...updateObject})
+            await designRepo.save({ ...collectionDesign, ...updateObject,collections:collection})
             return ResponseBuilder.data(updateObject);
         }
         catch (error) {

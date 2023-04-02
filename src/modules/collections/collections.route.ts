@@ -19,4 +19,5 @@ router.delete(COLLECTION_ROUTES.DELETE_COLLECTION,collectoinController.deleteCol
 router.delete(COLLECTION_ROUTES.DELETE_FILES,collectoinController.deleteFiles);
 router.put(COLLECTION_ROUTES.CHANGE_COVERPHOTO,collectoinController.changeCoverPhoto);
 router.put(COLLECTION_ROUTES.COLLECTION_DESIGN,v.validate(CollectionDesignModel),collectoinController.collectionDesign);
+router.get(COLLECTION_ROUTES.COLLECTION_DESIGN,collectoinController.getCollectionDesign);
 export  const  CollectionRoute:Router = router;
