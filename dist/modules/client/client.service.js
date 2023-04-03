@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,13 +58,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientService = void 0;
 var db_config_1 = require("../../db/db.config");
-var Collection_1 = __importDefault(require("../../entities/Collection"));
+var Collection_1 = __importStar(require("../../entities/Collection"));
 var collectionDesign_1 = require("../../entities/collectionDesign");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var ClientService = /** @class */ (function () {
@@ -59,24 +79,30 @@ var ClientService = /** @class */ (function () {
                             return [4 /*yield*/, collectionRepository.createQueryBuilder("collections")
                                     .leftJoin("collection_tag_join", "tagsJoin", "tagsJoin.collectionsId=collections.id")
                                     .leftJoin("collection_tags", "tags", "tagsJoin.collectionTagsId=tags.id")
+                                    .leftJoin("collection_design", "collectionDesign", "collectionDesign.collectionId=collections.id")
+                                    .leftJoin("collection_themes", "themes", "collectionDesign.theme=themes.id")
                                     .select("collections.name", "name")
                                     .addSelect("collections.id", "id")
+                                    .addSelect("collectionDesign.gridStyle", "gridStyle")
+                                    .addSelect("collectionDesign.gridSpacing", "gridSpacing")
+                                    .addSelect("collectionDesign.typography", "typography")
                                     .addSelect("collections.socialSharing", "socialSharing")
                                     .addSelect("collections.download", "download")
                                     .addSelect("collections.downloadPin", "downloadPin")
                                     .addSelect("collections.url", "url")
                                     .addSelect("collections.status", "status")
-                                    .addSelect("ARRAY_AGG(tags.tag)", "tags")
                                     .addSelect("collections.coverPhoto", "coverPhoto")
                                     .addSelect("collections.photos", "photos")
                                     .addSelect("collections.videos", "videos")
                                     .addSelect("collections.eventDate", "eventDate")
                                     .addSelect("collections.createdAt", "createdAt")
                                     .addSelect("collections.updatedAt", "updatedAt")
-                                    .where("collections.url = :agentId", { url: url })
+                                    .where("collections.url = :url", { url: url })
+                                    .andWhere("collections.status = :status", { status: Collection_1.CollectionStatus.PUBLISH })
                                     .getRawOne()];
                         case 1:
                             collection = _b.sent();
+                            console.log(collection);
                             if (!collection) {
                                 return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                             }

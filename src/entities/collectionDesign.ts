@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Collections  from "./Collection";
+import { CollectionThemes } from "./collectionThemes";
 
 export enum GridStyleEnum {
     VERTICAL="column",
@@ -19,8 +20,8 @@ export class CollectionDesign{
     @Column({nullable:true})
     typography:string
 
-    @Column({nullable:true})
-    theme:string
+    @ManyToOne(()=>CollectionThemes,(theme)=>theme.id)
+    theme:CollectionThemes
 
     @Column({type:"enum",
     enum: GridStyleEnum,

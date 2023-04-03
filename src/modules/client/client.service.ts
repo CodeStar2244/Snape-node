@@ -1,6 +1,6 @@
 import { In } from "typeorm";
 import { AppDataSource } from "../../db/db.config";
-import Collections from "../../entities/Collection"
+import Collections, { CollectionStatus } from "../../entities/Collection"
 import { CollectionDesign } from "../../entities/collectionDesign";
 import { CollectionTags } from "../../entities/CollectionTags";
 import FilesEntity from "../../entities/Files";
@@ -14,22 +14,28 @@ export class ClientService {
             const collection = await collectionRepository.createQueryBuilder("collections")
             .leftJoin("collection_tag_join","tagsJoin","tagsJoin.collectionsId=collections.id")
             .leftJoin("collection_tags","tags","tagsJoin.collectionTagsId=tags.id")
+            .leftJoin("collection_design","collectionDesign","collectionDesign.collectionId=collections.id")
+            .leftJoin("collection_themes","themes","collectionDesign.theme=themes.id")
             .select("collections.name","name")
             .addSelect("collections.id","id")
+            .addSelect("collectionDesign.gridStyle","gridStyle")
+            .addSelect("collectionDesign.gridSpacing","gridSpacing")
+            .addSelect("collectionDesign.typography","typography")
             .addSelect("collections.socialSharing","socialSharing")
             .addSelect("collections.download","download")
             .addSelect("collections.downloadPin","downloadPin")
             .addSelect("collections.url","url")
             .addSelect("collections.status","status")
-            .addSelect("ARRAY_AGG(tags.tag)","tags")
             .addSelect("collections.coverPhoto","coverPhoto")
             .addSelect("collections.photos","photos")
             .addSelect("collections.videos","videos")
             .addSelect("collections.eventDate","eventDate")
             .addSelect("collections.createdAt","createdAt")
             .addSelect("collections.updatedAt","updatedAt")
-            .where("collections.url = :agentId",{url:url})
-            .getRawOne()
+            .where("collections.url = :url",{url:url})
+            .andWhere("collections.status = :status",{status:CollectionStatus.PUBLISH})
+            .getRawOne();
+            console.log(collection)
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
