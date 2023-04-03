@@ -67,7 +67,7 @@ export class CollectionService {
     public listThemes = async () => {
         try {
             const themeRepository = AppDataSource.getRepository(CollectionThemes);
-            const themes = themeRepository.find();
+            const themes = await themeRepository.find()
             return ResponseBuilder.data(themes);
 
         } catch (error) {
