@@ -3,6 +3,7 @@ import { AppDataSource } from "../../db/db.config";
 import Collections from "../../entities/Collection"
 import { CollectionDesign } from "../../entities/collectionDesign";
 import { CollectionTags } from "../../entities/CollectionTags";
+import { CollectionThemes } from "../../entities/collectionThemes";
 import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
@@ -266,6 +267,7 @@ export class CollectionService {
         try {
             const collectioRepo = AppDataSource.getRepository(Collections);
             const designRepo = AppDataSource.getRepository(CollectionDesign);
+            const themerepo = AppDataSource.getRepository(CollectionThemes);
             const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
@@ -277,8 +279,8 @@ export class CollectionService {
             const updateObject = {
                 theme , focusX:x,focusY:y,gridSpacing,gridStyle,typography,collection:collection.id
             }
-
-            await designRepo.save({ ...collectionDesign, ...updateObject,collections:collection})
+            const updatedTheme = await themerepo.findOneBy({id:+theme});
+            await designRepo.save({ ...collectionDesign, ...updateObject,collections:collection,theme:updatedTheme})
             return ResponseBuilder.data(updateObject);
         }
         catch (error) {

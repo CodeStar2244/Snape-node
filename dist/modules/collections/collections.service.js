@@ -56,6 +56,7 @@ var db_config_1 = require("../../db/db.config");
 var Collection_1 = __importDefault(require("../../entities/Collection"));
 var collectionDesign_1 = require("../../entities/collectionDesign");
 var CollectionTags_1 = require("../../entities/CollectionTags");
+var collectionThemes_1 = require("../../entities/collectionThemes");
 var Files_1 = __importDefault(require("../../entities/Files"));
 var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
@@ -380,13 +381,14 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.collectionDesign = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, designRepo, collection, collectionDesign, _a, theme, x, y, gridSpacing, gridStyle, typography, updateObject, error_9;
+            var collectioRepo, designRepo, themerepo, collection, collectionDesign, _a, theme, x, y, gridSpacing, gridStyle, typography, updateObject, updatedTheme, error_9;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 4, , 5]);
+                        _b.trys.push([0, 5, , 6]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         designRepo = db_config_1.AppDataSource.getRepository(collectionDesign_1.CollectionDesign);
+                        themerepo = db_config_1.AppDataSource.getRepository(collectionThemes_1.CollectionThemes);
                         return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
                     case 1:
                         collection = _b.sent();
@@ -407,18 +409,21 @@ var CollectionService = /** @class */ (function () {
                             typography: typography,
                             collection: collection.id
                         };
-                        return [4 /*yield*/, designRepo.save(__assign(__assign(__assign({}, collectionDesign), updateObject), { collections: collection }))];
+                        return [4 /*yield*/, themerepo.findOneBy({ id: +theme })];
                     case 3:
+                        updatedTheme = _b.sent();
+                        return [4 /*yield*/, designRepo.save(__assign(__assign(__assign({}, collectionDesign), updateObject), { collections: collection, theme: updatedTheme }))];
+                    case 4:
                         _b.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(updateObject)];
-                    case 4:
+                    case 5:
                         error_9 = _b.sent();
                         console.log(error_9, "error");
                         if (+error_9.code === 23505) {
                             throw responseBuilder_1.ResponseBuilder.errorMessage("Url already exists");
                         }
                         throw responseBuilder_1.ResponseBuilder.error(error_9, "Internal Server Error");
-                    case 5: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         }); };

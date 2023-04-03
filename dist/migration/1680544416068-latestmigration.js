@@ -36,75 +36,93 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.latestmigration1680362418978 = void 0;
-var latestmigration1680362418978 = /** @class */ (function () {
-    function latestmigration1680362418978() {
-        this.name = 'latestmigration1680362418978';
+exports.latestmigration1680544416068 = void 0;
+var latestmigration1680544416068 = /** @class */ (function () {
+    function latestmigration1680544416068() {
+        this.name = 'latestmigration1680544416068';
     }
-    latestmigration1680362418978.prototype.up = function (queryRunner) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD \"collectionId\" integer")];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD CONSTRAINT \"UQ_1cf699d9cac6162ef5783bf3c6a\" UNIQUE (\"collectionId\")")];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD CONSTRAINT \"FK_1cf699d9cac6162ef5783bf3c6a\" FOREIGN KEY (\"collectionId\") REFERENCES \"collections\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION")];
-                    case 3:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    latestmigration1680362418978.prototype.down = function (queryRunner) {
+    latestmigration1680544416068.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" DROP CONSTRAINT \"FK_1cf699d9cac6162ef5783bf3c6a\"")];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"transportationcharge\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" RENAME COLUMN \"theme\" TO \"themeId\"")];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"refundamount\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" DROP COLUMN \"themeId\"")];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"cancellationfee\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD \"themeId\" integer")];
                     case 4:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"agentrating\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD CONSTRAINT \"FK_bad7c21b1acf08b663b65c1688b\" FOREIGN KEY (\"themeId\") REFERENCES \"collection_themes\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION")];
                     case 5:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"clientrating\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD CONSTRAINT \"FK_1cf699d9cac6162ef5783bf3c6a\" FOREIGN KEY (\"collectionId\") REFERENCES \"collections\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION")];
                     case 6:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"totalamount\" SET DEFAULT '0'")];
-                    case 7:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"tax\" SET DEFAULT '0'")];
-                    case 8:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"discount\" SET DEFAULT '0'")];
-                    case 9:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"subtotal\" SET DEFAULT '0'")];
-                    case 10:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" DROP CONSTRAINT \"UQ_1cf699d9cac6162ef5783bf3c6a\"")];
-                    case 11:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" DROP COLUMN \"collectionId\"")];
-                    case 12:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return latestmigration1680362418978;
+    latestmigration1680544416068.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" DROP CONSTRAINT \"FK_1cf699d9cac6162ef5783bf3c6a\"")];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" DROP CONSTRAINT \"FK_bad7c21b1acf08b663b65c1688b\"")];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"transportationcharge\" SET DEFAULT '0'")];
+                    case 3:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"refundamount\" SET DEFAULT '0'")];
+                    case 4:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"cancellationfee\" SET DEFAULT '0'")];
+                    case 5:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"agentrating\" SET DEFAULT '0'")];
+                    case 6:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"clientrating\" SET DEFAULT '0'")];
+                    case 7:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"totalamount\" SET DEFAULT '0'")];
+                    case 8:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"tax\" SET DEFAULT '0'")];
+                    case 9:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"discount\" SET DEFAULT '0'")];
+                    case 10:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"subtotal\" SET DEFAULT '0'")];
+                    case 11:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" DROP COLUMN \"themeId\"")];
+                    case 12:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD \"themeId\" character varying")];
+                    case 13:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" RENAME COLUMN \"themeId\" TO \"theme\"")];
+                    case 14:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD CONSTRAINT \"FK_1cf699d9cac6162ef5783bf3c6a\" FOREIGN KEY (\"collectionId\") REFERENCES \"collections\"(\"id\") ON DELETE CASCADE ON UPDATE NO ACTION")];
+                    case 15:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return latestmigration1680544416068;
 }());
-exports.latestmigration1680362418978 = latestmigration1680362418978;
-//# sourceMappingURL=1680362418978-latestmigration.js.map
+exports.latestmigration1680544416068 = latestmigration1680544416068;
+//# sourceMappingURL=1680544416068-latestmigration.js.map

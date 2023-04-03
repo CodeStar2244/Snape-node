@@ -20,7 +20,7 @@ export class CollectionDesign{
     @Column({nullable:true})
     typography:string
 
-    @ManyToOne(()=>CollectionThemes,(theme)=>theme.id)
+    @ManyToOne(()=>CollectionThemes,(theme)=>theme.id,{nullable:true})
     theme:CollectionThemes
 
     @Column({type:"enum",

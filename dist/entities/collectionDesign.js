@@ -38,7 +38,7 @@ var CollectionDesign = /** @class */ (function () {
         __metadata("design:type", String)
     ], CollectionDesign.prototype, "typography", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return collectionThemes_1.CollectionThemes; }, function (theme) { return theme.id; }),
+        (0, typeorm_1.ManyToOne)(function () { return collectionThemes_1.CollectionThemes; }, function (theme) { return theme.id; }, { nullable: true }),
         __metadata("design:type", collectionThemes_1.CollectionThemes)
     ], CollectionDesign.prototype, "theme", void 0);
     __decorate([
