@@ -95,9 +95,9 @@ var UpdateCollectionModel = /** @class */ (function (_super) {
         __metadata("design:type", String)
     ], UpdateCollectionModel.prototype, "downloadPin", void 0);
     __decorate([
-        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.IsArray)(),
         (0, class_validator_1.IsOptional)(),
-        __metadata("design:type", String)
+        __metadata("design:type", Array)
     ], UpdateCollectionModel.prototype, "tags", void 0);
     __decorate([
         (0, class_validator_1.IsBoolean)(),

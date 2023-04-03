@@ -43,9 +43,9 @@ export class UpdateCollectionModel extends Model {
     @IsOptional()
     public downloadPin: string;
 
-    @IsString()
+    @IsArray()
     @IsOptional()
-    public tags: string;
+    public tags: string[];
 
 
     @IsBoolean()

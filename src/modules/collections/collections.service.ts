@@ -234,7 +234,7 @@ export class CollectionService {
             }
 
             const { name, url, eventDate, download, downloadPin, socialSharing,status, password,tags } = new UpdateCollectionModel(body);
-            const tagsArr = tags ? tags?.split(','):[];
+            const tagsArr = tags ? tags:[];
             const collectionTagsArr = [];
             for(const tag of tagsArr){
                 const prevTag = await tagRepo.findOneBy({tag:tag.trim()});

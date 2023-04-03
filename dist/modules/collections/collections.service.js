@@ -335,7 +335,7 @@ var CollectionService = /** @class */ (function () {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
                         _a = new collections_model_1.UpdateCollectionModel(body), name_1 = _a.name, url = _a.url, eventDate = _a.eventDate, download = _a.download, downloadPin = _a.downloadPin, socialSharing = _a.socialSharing, status_1 = _a.status, password = _a.password, tags = _a.tags;
-                        tagsArr = tags ? tags === null || tags === void 0 ? void 0 : tags.split(',') : [];
+                        tagsArr = tags ? tags : [];
                         collectionTagsArr = [];
                         _i = 0, tagsArr_1 = tagsArr;
                         _b.label = 2;
