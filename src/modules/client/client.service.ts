@@ -21,6 +21,9 @@ export class ClientService {
             .addSelect("collectionDesign.gridStyle","gridStyle")
             .addSelect("collectionDesign.gridSpacing","gridSpacing")
             .addSelect("collectionDesign.typography","typography")
+            .addSelect("themes.background","background")
+            .addSelect("themes.button","button")
+            .addSelect("themes.accent","accent")
             .addSelect("collections.socialSharing","socialSharing")
             .addSelect("collections.download","download")
             .addSelect("collections.downloadPin","downloadPin")
@@ -35,16 +38,35 @@ export class ClientService {
             .where("collections.url = :url",{url:url})
             .andWhere("collections.status = :status",{status:CollectionStatus.PUBLISH})
             .getRawOne();
-            console.log(collection)
+            const passwordCheckCollection = await collectionRepository.findOneBy({id:collection.id})
             if (!collection) {
-                return ResponseBuilder.badRequest("Collection Not Found", 404);
+                return ResponseBuilder.badRequest("Collection Not Found or collection not published", 404);
             }
-            return ResponseBuilder.data(collection);
+            if(passwordCheckCollection.password){
+                return this.collectionPasswordRequired(collection,passwordCheckCollection,password)
+            }
+            return ResponseBuilder.data({
+                passwordRequired:false,
+                ...collection
+              });
 
         } catch (error) {
             throw ResponseBuilder.error(error)
 
         }
+    }
+    private collectionPasswordRequired = async(collection,passwordCheckCollection,password)=>{
+      if(!password){
+        return ResponseBuilder.data({passwordRequired:true,name:collection.name,coverPhoto:collection.coverPhoto,
+        button:collection.button,accent:collection.accent,background:collection.background})
+      }
+      if(passwordCheckCollection.password !== password){
+        return ResponseBuilder.badRequest("Wrong Password Provided")
+      }
+      return ResponseBuilder.data({
+        passwordRequired:false,
+        ...collection
+      })
     }
     public getCollectionDesign = async (userDetails, id) => {
         try {

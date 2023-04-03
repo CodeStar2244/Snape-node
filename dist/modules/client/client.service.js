@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -70,11 +81,11 @@ var ClientService = /** @class */ (function () {
         this.getCollectionByUrl = function (_a) {
             var url = _a.url, password = _a.password;
             return __awaiter(_this, void 0, void 0, function () {
-                var collectionRepository, collection, error_1;
+                var collectionRepository, collection, passwordCheckCollection, error_1;
                 return __generator(this, function (_b) {
                     switch (_b.label) {
                         case 0:
-                            _b.trys.push([0, 2, , 3]);
+                            _b.trys.push([0, 3, , 4]);
                             collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                             return [4 /*yield*/, collectionRepository.createQueryBuilder("collections")
                                     .leftJoin("collection_tag_join", "tagsJoin", "tagsJoin.collectionsId=collections.id")
@@ -86,6 +97,9 @@ var ClientService = /** @class */ (function () {
                                     .addSelect("collectionDesign.gridStyle", "gridStyle")
                                     .addSelect("collectionDesign.gridSpacing", "gridSpacing")
                                     .addSelect("collectionDesign.typography", "typography")
+                                    .addSelect("themes.background", "background")
+                                    .addSelect("themes.button", "button")
+                                    .addSelect("themes.accent", "accent")
                                     .addSelect("collections.socialSharing", "socialSharing")
                                     .addSelect("collections.download", "download")
                                     .addSelect("collections.downloadPin", "downloadPin")
@@ -102,19 +116,36 @@ var ClientService = /** @class */ (function () {
                                     .getRawOne()];
                         case 1:
                             collection = _b.sent();
-                            console.log(collection);
-                            if (!collection) {
-                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
-                            }
-                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collection)];
+                            return [4 /*yield*/, collectionRepository.findOneBy({ id: collection.id })];
                         case 2:
+                            passwordCheckCollection = _b.sent();
+                            if (!collection) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found or collection not published", 404)];
+                            }
+                            if (passwordCheckCollection.password) {
+                                return [2 /*return*/, this.collectionPasswordRequired(collection, passwordCheckCollection, password)];
+                            }
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(__assign({ passwordRequired: false }, collection))];
+                        case 3:
                             error_1 = _b.sent();
                             throw responseBuilder_1.ResponseBuilder.error(error_1);
-                        case 3: return [2 /*return*/];
+                        case 4: return [2 /*return*/];
                     }
                 });
             });
         };
+        this.collectionPasswordRequired = function (collection, passwordCheckCollection, password) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (!password) {
+                    return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ passwordRequired: true, name: collection.name, coverPhoto: collection.coverPhoto,
+                            button: collection.button, accent: collection.accent, background: collection.background })];
+                }
+                if (passwordCheckCollection.password !== password) {
+                    return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Wrong Password Provided")];
+                }
+                return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(__assign({ passwordRequired: false }, collection))];
+            });
+        }); };
         this.getCollectionDesign = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
             var collectionRepository, designRepo, collection, collectionDesign, error_2;
             return __generator(this, function (_a) {

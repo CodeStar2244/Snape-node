@@ -279,7 +279,7 @@ export class CollectionService {
             const updateObject = {
                 theme , focusX:x,focusY:y,gridSpacing,gridStyle,typography,collection:collection.id
             }
-            const updatedTheme = await themerepo.findOneBy({id:+theme});
+            const updatedTheme = await themerepo.findOneBy({id:theme});
             await designRepo.save({ ...collectionDesign, ...updateObject,collections:collection,theme:updatedTheme})
             return ResponseBuilder.data(updateObject);
         }

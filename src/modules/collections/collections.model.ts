@@ -84,9 +84,9 @@ export class CollectionDesignModel extends Model {
     @IsOptional()
     typography: string
 
-    @IsString()
+    @IsNumber()
     @IsOptional()
-    theme: string
+    theme: number
 
     @IsNumber()
     @IsOptional()

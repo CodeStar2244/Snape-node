@@ -409,7 +409,7 @@ var CollectionService = /** @class */ (function () {
                             typography: typography,
                             collection: collection.id
                         };
-                        return [4 /*yield*/, themerepo.findOneBy({ id: +theme })];
+                        return [4 /*yield*/, themerepo.findOneBy({ id: theme })];
                     case 3:
                         updatedTheme = _b.sent();
                         return [4 /*yield*/, designRepo.save(__assign(__assign(__assign({}, collectionDesign), updateObject), { collections: collection, theme: updatedTheme }))];
