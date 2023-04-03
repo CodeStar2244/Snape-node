@@ -11,7 +11,8 @@ export const COLLECTION_ROUTES = {
     GET_FILES:"/files/:id",
     DELETE_FILES:"/files/:id",
     CHANGE_COVERPHOTO:"/coverphoto/:id",
-    COLLECTION_DESIGN:"/design/:id"
+    COLLECTION_DESIGN:"/design/:id",
+    LIST_THEMES:"/themes/list-themes"
 }
 export const CLIENT_ROUTES = {
     GET_COLLECTION_BY_ID_CLIENT : "/",

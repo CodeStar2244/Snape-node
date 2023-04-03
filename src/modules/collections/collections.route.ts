@@ -20,4 +20,5 @@ router.delete(COLLECTION_ROUTES.DELETE_FILES,collectoinController.deleteFiles);
 router.put(COLLECTION_ROUTES.CHANGE_COVERPHOTO,collectoinController.changeCoverPhoto);
 router.put(COLLECTION_ROUTES.COLLECTION_DESIGN,v.validate(CollectionDesignModel),collectoinController.collectionDesign);
 router.get(COLLECTION_ROUTES.COLLECTION_DESIGN,collectoinController.getCollectionDesign);
+router.get(COLLECTION_ROUTES.LIST_THEMES,collectoinController.listThemes);
 export  const  CollectionRoute:Router = router;

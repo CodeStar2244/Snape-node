@@ -130,6 +130,20 @@ var CollectionService = /** @class */ (function () {
                 }
             });
         }); };
+        this.listThemes = function () { return __awaiter(_this, void 0, void 0, function () {
+            var themeRepository, themes;
+            return __generator(this, function (_a) {
+                try {
+                    themeRepository = db_config_1.AppDataSource.getRepository(collectionThemes_1.CollectionThemes);
+                    themes = themeRepository.find();
+                    return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(themes)];
+                }
+                catch (error) {
+                    throw responseBuilder_1.ResponseBuilder.error(error);
+                }
+                return [2 /*return*/];
+            });
+        }); };
         this.getCollectionByID = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
             var collectionRepository, collection, error_3;
             return __generator(this, function (_a) {

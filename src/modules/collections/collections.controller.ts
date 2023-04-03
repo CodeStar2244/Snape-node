@@ -22,6 +22,15 @@ export class CollectoinController{
             return res.status(error.code).json(error);        
         }
     }
+    public listThemes = async (req:any,res)=>{
+        try {
+            const result = await this.collectionService.listThemes();
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
     public getCollectionByID = async (req,res)=>{
         try {
             const result = await this.collectionService.getCollectionByID(req.user,req.params.id);
@@ -33,6 +42,7 @@ export class CollectoinController{
     }
     public getCollectionDesign = async (req,res)=>{
         try {
+            
             const result = await this.collectionService.getCollectionDesign(req.user,req.params.id);
             return res.status(result.code).json(result);
             
