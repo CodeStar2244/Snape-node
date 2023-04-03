@@ -51,6 +51,7 @@ var Routes = /** @class */ (function () {
         router.use("/agent", agent_route_1.UserRoute);
         router.use("/collection", this.middleware.authenticateUser, collections_route_1.CollectionRoute);
         router.use("/dashboard", this.middleware.authenticateUser, dashboard_routes_1.DashboardRoute);
+        router.use("/client", dashboard_routes_1.DashboardRoute);
         router.all("/*", function (req, res) {
             return res.status(404).json({
                 message: "ERR_URL_NOT_FOUND",

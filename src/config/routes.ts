@@ -13,6 +13,9 @@ export const COLLECTION_ROUTES = {
     CHANGE_COVERPHOTO:"/coverphoto/:id",
     COLLECTION_DESIGN:"/design/:id"
 }
+export const CLIENT_ROUTES = {
+    GET_COLLECTION_BY_ID_CLIENT : "/",
+}
 export const DASHBOARD_ROTUES = {
     GET_SUMMARY : "/summary",
     RECENT_CUSTOMERS : "/recent-customers",

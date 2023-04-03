@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DASHBOARD_ROTUES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login"
 };
@@ -15,6 +15,9 @@ exports.COLLECTION_ROUTES = {
     DELETE_FILES: "/files/:id",
     CHANGE_COVERPHOTO: "/coverphoto/:id",
     COLLECTION_DESIGN: "/design/:id"
+};
+exports.CLIENT_ROUTES = {
+    GET_COLLECTION_BY_ID_CLIENT: "/",
 };
 exports.DASHBOARD_ROTUES = {
     GET_SUMMARY: "/summary",

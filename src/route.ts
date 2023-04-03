@@ -30,6 +30,7 @@ export class Routes {
     router.use("/agent", UserRoute);
     router.use("/collection",this.middleware.authenticateUser,CollectionRoute);
     router.use("/dashboard",this.middleware.authenticateUser,DashboardRoute);
+    router.use("/client",DashboardRoute);
 
     router.all("/*", (req: Request, res: Response) => {
       return res.status(404).json({

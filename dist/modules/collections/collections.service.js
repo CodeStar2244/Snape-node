@@ -65,12 +65,13 @@ var CollectionService = /** @class */ (function () {
         var _this = this;
         this.s3 = new awss3_1.AWSS3();
         this.createCollection = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, collection, error_1;
+            var collectionRepository, designRepo, collection, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 3, , 4]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
+                        designRepo = db_config_1.AppDataSource.getRepository(collectionDesign_1.CollectionDesign);
                         return [4 /*yield*/, collectionRepository.save({
                                 name: body.name,
                                 eventDate: body.eventDate,
@@ -78,12 +79,18 @@ var CollectionService = /** @class */ (function () {
                             })];
                     case 1:
                         collection = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collection, "Collection created SuccessFully")];
+                        return [4 /*yield*/, designRepo.save({
+                                typography: "sans",
+                                collections: collection
+                            })];
                     case 2:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collection, "Collection created SuccessFully")];
+                    case 3:
                         error_1 = _a.sent();
                         console.log(error_1);
                         throw responseBuilder_1.ResponseBuilder.error(error_1);
-                    case 3: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
@@ -184,9 +191,11 @@ var CollectionService = /** @class */ (function () {
                                 } })];
                     case 2:
                         collectionDesign = _a.sent();
+                        console.log(collectionDesign, "des");
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collectionDesign)];
                     case 3:
                         error_4 = _a.sent();
+                        console.log(error_4, "er");
                         throw responseBuilder_1.ResponseBuilder.error(error_4);
                     case 4: return [2 /*return*/];
                 }

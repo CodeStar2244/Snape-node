@@ -13,11 +13,16 @@ export class CollectionService {
     public createCollection = async (body, userDetails) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
+            const designRepo = AppDataSource.getRepository(CollectionDesign);
             const collection = await collectionRepository.save({
                 name: body.name,
                 eventDate: body.eventDate,
                 createdBy: userDetails.id
             });
+             await  designRepo.save({
+                typography:"sans",
+                collections:collection
+             })
             return ResponseBuilder.data(collection, "Collection created SuccessFully");
 
         } catch (error) {
@@ -109,9 +114,11 @@ export class CollectionService {
             const collectionDesign = await designRepo.findOneBy({collections:{
                 id:id
             }})
+            console.log(collectionDesign ,"des")
             return ResponseBuilder.data(collectionDesign);
 
         } catch (error) {
+            console.log(error , "er")
             throw ResponseBuilder.error(error)
 
         }
