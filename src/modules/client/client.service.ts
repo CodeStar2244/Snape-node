@@ -11,6 +11,7 @@ export class ClientService {
     public getCollectionByUrl = async ({url,password}) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
+            const filesRepository = AppDataSource.getRepository(FilesEntity);
             const collection = await collectionRepository.createQueryBuilder("collections")
             .leftJoin("collection_tag_join","tagsJoin","tagsJoin.collectionsId=collections.id")
             .leftJoin("collection_tags","tags","tagsJoin.collectionTagsId=tags.id")
@@ -25,8 +26,6 @@ export class ClientService {
             .addSelect("themes.button","button")
             .addSelect("themes.accent","accent")
             .addSelect("collections.socialSharing","socialSharing")
-            .addSelect("collections.download","download")
-            .addSelect("collections.downloadPin","downloadPin")
             .addSelect("collections.url","url")
             .addSelect("collections.status","status")
             .addSelect("collections.coverPhoto","coverPhoto")
@@ -38,24 +37,34 @@ export class ClientService {
             .where("collections.url = :url",{url:url})
             .andWhere("collections.status = :status",{status:CollectionStatus.PUBLISH})
             .getRawOne();
-            const passwordCheckCollection = await collectionRepository.findOneBy({id:collection.id})
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found or collection not published", 404);
             }
+            const filesCollection = await filesRepository.find({
+                where:{
+                    collection:{
+                        id:collection.id
+                    }
+                }
+            });
+            const passwordCheckCollection = await collectionRepository.findOneBy({id:collection.id})
+            
             if(passwordCheckCollection.password){
-                return this.collectionPasswordRequired(collection,passwordCheckCollection,password)
+                return this.collectionPasswordRequired(collection,passwordCheckCollection,password,filesCollection)
             }
             return ResponseBuilder.data({
                 passwordRequired:false,
-                ...collection
+                ...collection,
+                files:filesCollection
               });
 
         } catch (error) {
+            console.log(error)
             throw ResponseBuilder.error(error)
 
         }
     }
-    private collectionPasswordRequired = async(collection,passwordCheckCollection,password)=>{
+    private collectionPasswordRequired = async(collection,passwordCheckCollection,password,filesCollection)=>{
       if(!password){
         return ResponseBuilder.data({passwordRequired:true,name:collection.name,coverPhoto:collection.coverPhoto,
         button:collection.button,accent:collection.accent,background:collection.background})
@@ -65,7 +74,8 @@ export class ClientService {
       }
       return ResponseBuilder.data({
         passwordRequired:false,
-        ...collection
+        ...collection,
+        files:filesCollection
       })
     }
     public getCollectionDesign = async (userDetails, id) => {

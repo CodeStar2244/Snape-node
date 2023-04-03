@@ -69,11 +69,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientService = void 0;
 var db_config_1 = require("../../db/db.config");
 var Collection_1 = __importStar(require("../../entities/Collection"));
 var collectionDesign_1 = require("../../entities/collectionDesign");
+var Files_1 = __importDefault(require("../../entities/Files"));
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var ClientService = /** @class */ (function () {
     function ClientService() {
@@ -81,12 +85,13 @@ var ClientService = /** @class */ (function () {
         this.getCollectionByUrl = function (_a) {
             var url = _a.url, password = _a.password;
             return __awaiter(_this, void 0, void 0, function () {
-                var collectionRepository, collection, passwordCheckCollection, error_1;
+                var collectionRepository, filesRepository, collection, filesCollection, passwordCheckCollection, error_1;
                 return __generator(this, function (_b) {
                     switch (_b.label) {
                         case 0:
-                            _b.trys.push([0, 3, , 4]);
+                            _b.trys.push([0, 4, , 5]);
                             collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
+                            filesRepository = db_config_1.AppDataSource.getRepository(Files_1.default);
                             return [4 /*yield*/, collectionRepository.createQueryBuilder("collections")
                                     .leftJoin("collection_tag_join", "tagsJoin", "tagsJoin.collectionsId=collections.id")
                                     .leftJoin("collection_tags", "tags", "tagsJoin.collectionTagsId=tags.id")
@@ -101,8 +106,6 @@ var ClientService = /** @class */ (function () {
                                     .addSelect("themes.button", "button")
                                     .addSelect("themes.accent", "accent")
                                     .addSelect("collections.socialSharing", "socialSharing")
-                                    .addSelect("collections.download", "download")
-                                    .addSelect("collections.downloadPin", "downloadPin")
                                     .addSelect("collections.url", "url")
                                     .addSelect("collections.status", "status")
                                     .addSelect("collections.coverPhoto", "coverPhoto")
@@ -116,25 +119,35 @@ var ClientService = /** @class */ (function () {
                                     .getRawOne()];
                         case 1:
                             collection = _b.sent();
-                            return [4 /*yield*/, collectionRepository.findOneBy({ id: collection.id })];
-                        case 2:
-                            passwordCheckCollection = _b.sent();
                             if (!collection) {
                                 return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found or collection not published", 404)];
                             }
-                            if (passwordCheckCollection.password) {
-                                return [2 /*return*/, this.collectionPasswordRequired(collection, passwordCheckCollection, password)];
-                            }
-                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(__assign({ passwordRequired: false }, collection))];
+                            return [4 /*yield*/, filesRepository.find({
+                                    where: {
+                                        collection: {
+                                            id: collection.id
+                                        }
+                                    }
+                                })];
+                        case 2:
+                            filesCollection = _b.sent();
+                            return [4 /*yield*/, collectionRepository.findOneBy({ id: collection.id })];
                         case 3:
+                            passwordCheckCollection = _b.sent();
+                            if (passwordCheckCollection.password) {
+                                return [2 /*return*/, this.collectionPasswordRequired(collection, passwordCheckCollection, password, filesCollection)];
+                            }
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(__assign(__assign({ passwordRequired: false }, collection), { files: filesCollection }))];
+                        case 4:
                             error_1 = _b.sent();
+                            console.log(error_1);
                             throw responseBuilder_1.ResponseBuilder.error(error_1);
-                        case 4: return [2 /*return*/];
+                        case 5: return [2 /*return*/];
                     }
                 });
             });
         };
-        this.collectionPasswordRequired = function (collection, passwordCheckCollection, password) { return __awaiter(_this, void 0, void 0, function () {
+        this.collectionPasswordRequired = function (collection, passwordCheckCollection, password, filesCollection) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (!password) {
                     return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ passwordRequired: true, name: collection.name, coverPhoto: collection.coverPhoto,
@@ -143,7 +156,7 @@ var ClientService = /** @class */ (function () {
                 if (passwordCheckCollection.password !== password) {
                     return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Wrong Password Provided")];
                 }
-                return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(__assign({ passwordRequired: false }, collection))];
+                return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(__assign(__assign({ passwordRequired: false }, collection), { files: filesCollection }))];
             });
         }); };
         this.getCollectionDesign = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
