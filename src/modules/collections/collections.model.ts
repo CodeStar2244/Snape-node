@@ -136,6 +136,12 @@ class FileClass extends Model {
     @IsNotEmpty()
     type: FileType
 
+    @IsNumber()
+    height:number
+
+    @IsNumber()
+    width:number
+
 
 
     constructor() {
@@ -167,6 +173,8 @@ export class UploadFilesModel extends Model {
             fileObj.size = file.size;
             fileObj.type = file.type;
             fileObj.url = file.url
+            fileObj.height=file.height
+            fileObj.width=file.width
             fileObj.key = file.key
             fileArr.push(fileObj);
         }

@@ -44,6 +44,14 @@ var FilesEntity = /** @class */ (function () {
         __metadata("design:type", Number)
     ], FilesEntity.prototype, "size", void 0);
     __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", Number)
+    ], FilesEntity.prototype, "height", void 0);
+    __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", Number)
+    ], FilesEntity.prototype, "width", void 0);
+    __decorate([
         (0, typeorm_1.Column)({
             type: "enum",
             enum: FileType,

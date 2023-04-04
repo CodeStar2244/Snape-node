@@ -192,6 +192,14 @@ var FileClass = /** @class */ (function (_super) {
         (0, class_validator_1.IsNotEmpty)(),
         __metadata("design:type", String)
     ], FileClass.prototype, "type", void 0);
+    __decorate([
+        (0, class_validator_1.IsNumber)(),
+        __metadata("design:type", Number)
+    ], FileClass.prototype, "height", void 0);
+    __decorate([
+        (0, class_validator_1.IsNumber)(),
+        __metadata("design:type", Number)
+    ], FileClass.prototype, "width", void 0);
     return FileClass;
 }(model_1.Model));
 var UploadFilesModel = /** @class */ (function (_super) {
@@ -206,6 +214,8 @@ var UploadFilesModel = /** @class */ (function (_super) {
             fileObj.size = file.size;
             fileObj.type = file.type;
             fileObj.url = file.url;
+            fileObj.height = file.height;
+            fileObj.width = file.width;
             fileObj.key = file.key;
             fileArr.push(fileObj);
         }

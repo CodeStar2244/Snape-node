@@ -25,6 +25,12 @@ export default class FilesEntity{
     @Column()
     size:number;
 
+    @Column()
+    height:number;
+    
+    @Column()
+    width:number;
+
     @Column({
         type: "enum",
         enum: FileType,

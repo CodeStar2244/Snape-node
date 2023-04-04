@@ -360,6 +360,8 @@ export class CollectionService {
                     size: file.size,
                     type: file.type,
                     key: file.key,
+                    height:file.height,
+                    width:file.width,
                     collection: params.id
                 }));
             }
