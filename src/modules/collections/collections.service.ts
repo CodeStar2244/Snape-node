@@ -7,7 +7,7 @@ import { CollectionThemes } from "../../entities/collectionThemes";
 import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
-import { UpdateCollectionModel , CollectionDesignModel } from "./collections.model";
+import { UpdateCollectionModel, CollectionDesignModel } from "./collections.model";
 
 export class CollectionService {
     private s3 = new AWSS3();
@@ -15,15 +15,18 @@ export class CollectionService {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const designRepo = AppDataSource.getRepository(CollectionDesign);
+            const themerepo = AppDataSource.getRepository(CollectionThemes);
             const collection = await collectionRepository.save({
                 name: body.name,
                 eventDate: body.eventDate,
                 createdBy: userDetails.id
             });
-             await  designRepo.save({
-                typography:"sans",
-                collections:collection
-             })
+            const theme = await themerepo.findOneBy({id:1});
+            await designRepo.save({
+                typography: "sans",
+                collections: collection,
+                theme:theme
+            })
             return ResponseBuilder.data(collection, "Collection created SuccessFully");
 
         } catch (error) {
@@ -35,23 +38,23 @@ export class CollectionService {
 
 
     }
-    public getCollections = async (userDetails,search,order,sort) => {
+    public getCollections = async (userDetails, search, order, sort) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const query = await collectionRepository.createQueryBuilder("collections")
-            .select("collections.name","name")
-            .addSelect("collections.id","id")
-            .addSelect("collections.coverPhoto","coverPhoto")
-            .addSelect("collections.photos","photos")
-            .addSelect("collections.videos","videos")
-            .addSelect("collections.eventDate","eventDate")
-            .where("collections.createdBy = :agentId",{agentId:userDetails.id})
-            .loadRelationIdAndMap("agentId","collections.createdBy")
-            if(search){
-                query.andWhere('collections.name ILIKE :name',{name:`%${search}%`})
+                .select("collections.name", "name")
+                .addSelect("collections.id", "id")
+                .addSelect("collections.coverPhoto", "coverPhoto")
+                .addSelect("collections.photos", "photos")
+                .addSelect("collections.videos", "videos")
+                .addSelect("collections.eventDate", "eventDate")
+                .where("collections.createdBy = :agentId", { agentId: userDetails.id })
+                .loadRelationIdAndMap("agentId", "collections.createdBy")
+            if (search) {
+                query.andWhere('collections.name ILIKE :name', { name: `%${search}%` })
             }
-            if(sort && order){
-                query.addOrderBy(`collections.${sort}`,order.toUpperCase())
+            if (sort && order) {
+                query.addOrderBy(`collections.${sort}`, order.toUpperCase())
             }
             const collections = await query.getRawMany();
             return ResponseBuilder.data(collections);
@@ -83,28 +86,28 @@ export class CollectionService {
             const collectionRepository = AppDataSource.getRepository(Collections);
             // const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
             const collection = await collectionRepository.createQueryBuilder("collections")
-            .leftJoin("collection_tag_join","tagsJoin","tagsJoin.collectionsId=collections.id")
-            .leftJoin("collection_tags","tags","tagsJoin.collectionTagsId=tags.id")
-            .select("collections.name","name")
-            .addSelect("collections.id","id")
-            .addSelect("collections.socialSharing","socialSharing")
-            .addSelect("collections.download","download")
-            .addSelect("collections.password","password")
-            .addSelect("collections.downloadPin","downloadPin")
-            .addSelect("collections.url","url")
-            .addSelect("collections.status","status")
-            .addSelect("ARRAY_AGG(tags.tag)","tags")
-            .addSelect("collections.coverPhoto","coverPhoto")
-            .addSelect("collections.photos","photos")
-            .addSelect("collections.videos","videos")
-            .addSelect("collections.eventDate","eventDate")
-            .addSelect("collections.createdAt","createdAt")
-            .addSelect("collections.updatedAt","updatedAt")
-            .where("collections.createdBy = :agentId",{agentId:userDetails.id})
-            .andWhere("collections.id =:id",{id:Number(id)})
-            .loadRelationIdAndMap("agentId","collections.createdBy")
-            .addGroupBy("collections.id")
-            .getRawOne()
+                .leftJoin("collection_tag_join", "tagsJoin", "tagsJoin.collectionsId=collections.id")
+                .leftJoin("collection_tags", "tags", "tagsJoin.collectionTagsId=tags.id")
+                .select("collections.name", "name")
+                .addSelect("collections.id", "id")
+                .addSelect("collections.socialSharing", "socialSharing")
+                .addSelect("collections.download", "download")
+                .addSelect("collections.password", "password")
+                .addSelect("collections.downloadPin", "downloadPin")
+                .addSelect("collections.url", "url")
+                .addSelect("collections.status", "status")
+                .addSelect("array_remove(array_agg(tags.tag), NULL)", "tags")
+                .addSelect("collections.coverPhoto", "coverPhoto")
+                .addSelect("collections.photos", "photos")
+                .addSelect("collections.videos", "videos")
+                .addSelect("collections.eventDate", "eventDate")
+                .addSelect("collections.createdAt", "createdAt")
+                .addSelect("collections.updatedAt", "updatedAt")
+                .where("collections.createdBy = :agentId", { agentId: userDetails.id })
+                .andWhere("collections.id =:id", { id: Number(id) })
+                .loadRelationIdAndMap("agentId", "collections.createdBy")
+                .addGroupBy("collections.id")
+                .getRawOne()
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
@@ -126,14 +129,20 @@ export class CollectionService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
-            const collectionDesign = await designRepo.findOneBy({collections:{
-                id:id
-            }})
-            console.log(collectionDesign ,"des")
+            const collectionDesign = await designRepo.findOne(
+                {
+                    where: {
+                        collections: {
+                            id
+                        }
+                    },
+                    relations:["theme"]
+                }
+            )
             return ResponseBuilder.data(collectionDesign);
 
         } catch (error) {
-            console.log(error , "er")
+            console.log(error, "er")
             throw ResponseBuilder.error(error)
 
         }
@@ -150,13 +159,13 @@ export class CollectionService {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
             const files = await fileRepo.createQueryBuilder("files")
-            .where({collection:id}).loadAllRelationIds().orderBy({"files.createdAt":"ASC"}).getMany();
-            for(const file of files){
+                .where({ collection: id }).loadAllRelationIds().orderBy({ "files.createdAt": "ASC" }).getMany();
+            for (const file of files) {
                 this.s3.deleteS3File(file.key);
 
             }
-            await collectionRepository.delete({id:id});
-            
+            await collectionRepository.delete({ id: id });
+
             return ResponseBuilder.data(collection);
 
         } catch (error) {
@@ -167,7 +176,7 @@ export class CollectionService {
 
 
     }
-    public deleteFiles = async (userDetails, id,ids) => {
+    public deleteFiles = async (userDetails, id, ids) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const fileRepo = AppDataSource.getRepository(FilesEntity);
@@ -175,22 +184,22 @@ export class CollectionService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
-            const idsArr:Number[] = ids;
+            const idsArr: Number[] = ids;
             const queryOptions = {
-                where:{
-                    collection:{
+                where: {
+                    collection: {
                         id
                     },
-                    id:In(idsArr)
+                    id: In(idsArr)
                 }
             }
             const files = await fileRepo.find(queryOptions);
-            for(const file of files){
+            for (const file of files) {
                 this.s3.deleteS3File(file.key);
 
             }
             const filesToBeDeleted = await fileRepo.delete(ids);
-            
+
             return ResponseBuilder.data(filesToBeDeleted);
 
         } catch (error) {
@@ -201,7 +210,7 @@ export class CollectionService {
 
 
     }
-    public getCollectionFiles = async (userDetails, id,search,sort,order) => {
+    public getCollectionFiles = async (userDetails, id, search, sort, order) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const fileRepo = AppDataSource.getRepository(FilesEntity);
@@ -210,26 +219,26 @@ export class CollectionService {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
             const query = await fileRepo.createQueryBuilder("files")
-            .select("files.id","id")
-            .addSelect("files.name","name")
-            .addSelect("files.key","key")
-            .addSelect("files.size","size")
-            .addSelect("files.url","url")
-            .addSelect("files.type","type")
-            .addSelect("files.createdAt","createdAt")
-            .addSelect("files.updatedAt","updatedAt")
-            .addSelect("files.collectionId","collectionId")
-            .where({collection:id}).loadAllRelationIds();
-          
-            if(search){
-                query.andWhere('files.name like :name',{name:`%${search}%`})
+                .select("files.id", "id")
+                .addSelect("files.name", "name")
+                .addSelect("files.key", "key")
+                .addSelect("files.size", "size")
+                .addSelect("files.url", "url")
+                .addSelect("files.type", "type")
+                .addSelect("files.createdAt", "createdAt")
+                .addSelect("files.updatedAt", "updatedAt")
+                .addSelect("files.collectionId", "collectionId")
+                .where({ collection: id }).loadAllRelationIds();
+
+            if (search) {
+                query.andWhere('files.name like :name', { name: `%${search}%` })
             }
-            if(sort && order){
-                query.addOrderBy(`files.${sort}`,order.toUpperCase())
+            if (sort && order) {
+                query.addOrderBy(`files.${sort}`, order.toUpperCase())
             }
-            const files = await  query.getRawMany()
+            const files = await query.getRawMany()
             return ResponseBuilder.data(files);
-    
+
         } catch (error) {
             console.log(error)
             throw ResponseBuilder.error(error)
@@ -248,25 +257,25 @@ export class CollectionService {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
 
-            const { name, url, eventDate, download, downloadPin, socialSharing,status, password,tags } = new UpdateCollectionModel(body);
-            const tagsArr = tags ? tags:[];
+            const { name, url, eventDate, download, downloadPin, socialSharing, status, password, tags } = new UpdateCollectionModel(body);
+            const tagsArr = tags ? tags : [];
             const collectionTagsArr = [];
-            for(const tag of tagsArr){
-                const prevTag = await tagRepo.findOneBy({tag:tag.trim()});
-                const newTag = await tagRepo.save({...prevTag , tag:tag.trim()});
-                collectionTagsArr.push(newTag);            
+            for (const tag of tagsArr) {
+                const prevTag = await tagRepo.findOneBy({ tag: tag.trim() });
+                const newTag = await tagRepo.save({ ...prevTag, tag: tag.trim() });
+                collectionTagsArr.push(newTag);
 
             }
             const updateObject = {
                 name,
-                url, eventDate, download, downloadPin, status, password,socialSharing,
+                url, eventDate, download, downloadPin, status, password, socialSharing,
             }
 
-            await collectioRepo.save({ ...collection, ...updateObject,tags:collectionTagsArr })
-            return this.getCollectionByID(userDetails,collection.id);
+            await collectioRepo.save({ ...collection, ...updateObject, tags: collectionTagsArr })
+            return this.getCollectionByID(userDetails, collection.id);
         }
         catch (error) {
-            console.log(error , "error")
+            console.log(error, "error")
             if (+error.code === 23505) {
                 throw ResponseBuilder.errorMessage("Url already exists")
             }
@@ -286,19 +295,21 @@ export class CollectionService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
-            const collectionDesign = await designRepo.findOneBy({ collections:{
-                id:collection.id
-            }});
-            const { theme , x,y,gridSpacing,gridStyle,typography } = new CollectionDesignModel(body);
+            const collectionDesign = await designRepo.findOneBy({
+                collections: {
+                    id: collection.id
+                }
+            });
+            const { theme, x, y, gridSpacing, gridStyle, typography } = new CollectionDesignModel(body);
             const updateObject = {
-                theme , focusX:x,focusY:y,gridSpacing,gridStyle,typography,collection:collection.id
+                theme, focusX: x, focusY: y, gridSpacing, gridStyle, typography, collection: collection.id
             }
-            const updatedTheme = await themerepo.findOneBy({id:theme});
-            await designRepo.save({ ...collectionDesign, ...updateObject,collections:collection,theme:updatedTheme})
+            const updatedTheme = await themerepo.findOneBy({ id: theme });
+            await designRepo.save({ ...collectionDesign, ...updateObject, collections: collection, theme: updatedTheme })
             return ResponseBuilder.data(updateObject);
         }
         catch (error) {
-            console.log(error , "error")
+            console.log(error, "error")
             if (+error.code === 23505) {
                 throw ResponseBuilder.errorMessage("Url already exists")
             }
@@ -318,7 +329,7 @@ export class CollectionService {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
 
-            const updateCollection = await collectioRepo.update(params.id,{coverPhoto:body.url});
+            const updateCollection = await collectioRepo.update(params.id, { coverPhoto: body.url });
             return ResponseBuilder.data(updateCollection);
         }
         catch (error) {
@@ -339,31 +350,31 @@ export class CollectionService {
             }
             const files = body.files;
             const filesUploadArr = [];
-            if(collection.photos === 0){
-                collectioRepo.save({...collection,coverPhoto:files[0]?.url})
+            if (collection.photos === 0) {
+                collectioRepo.save({ ...collection, coverPhoto: files[0]?.url })
             }
-            for(const file of files){
+            for (const file of files) {
                 filesUploadArr.push(fileRepo.save({
-                    name:file.name,
-                    url:file.url,
-                    size:file.size,
-                    type:file.type,
-                    key:file.key,
-                    collection:params.id
+                    name: file.name,
+                    url: file.url,
+                    size: file.size,
+                    type: file.type,
+                    key: file.key,
+                    collection: params.id
                 }));
-             }
+            }
 
-             const reponse = await Promise.all(filesUploadArr);
-            
-
-            return ResponseBuilder.data(reponse,"Files Uploaded");
+            const reponse = await Promise.all(filesUploadArr);
 
 
-            
-           
+            return ResponseBuilder.data(reponse, "Files Uploaded");
+
+
+
+
         }
         catch (error) {
-            console.log(error , "error")
+            console.log(error, "error")
             if (+error.code === 23505) {
                 throw ResponseBuilder.errorMessage("Url already exists")
             }

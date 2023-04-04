@@ -66,13 +66,14 @@ var CollectionService = /** @class */ (function () {
         var _this = this;
         this.s3 = new awss3_1.AWSS3();
         this.createCollection = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, designRepo, collection, error_1;
+            var collectionRepository, designRepo, themerepo, collection, theme, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 4, , 5]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         designRepo = db_config_1.AppDataSource.getRepository(collectionDesign_1.CollectionDesign);
+                        themerepo = db_config_1.AppDataSource.getRepository(collectionThemes_1.CollectionThemes);
                         return [4 /*yield*/, collectionRepository.save({
                                 name: body.name,
                                 eventDate: body.eventDate,
@@ -80,18 +81,22 @@ var CollectionService = /** @class */ (function () {
                             })];
                     case 1:
                         collection = _a.sent();
+                        return [4 /*yield*/, themerepo.findOneBy({ id: 1 })];
+                    case 2:
+                        theme = _a.sent();
                         return [4 /*yield*/, designRepo.save({
                                 typography: "sans",
-                                collections: collection
+                                collections: collection,
+                                theme: theme
                             })];
-                    case 2:
+                    case 3:
                         _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collection, "Collection created SuccessFully")];
-                    case 3:
+                    case 4:
                         error_1 = _a.sent();
                         console.log(error_1);
                         throw responseBuilder_1.ResponseBuilder.error(error_1);
-                    case 4: return [2 /*return*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         }); };
@@ -166,7 +171,7 @@ var CollectionService = /** @class */ (function () {
                                 .addSelect("collections.downloadPin", "downloadPin")
                                 .addSelect("collections.url", "url")
                                 .addSelect("collections.status", "status")
-                                .addSelect("ARRAY_AGG(tags.tag)", "tags")
+                                .addSelect("array_remove(array_agg(tags.tag), NULL)", "tags")
                                 .addSelect("collections.coverPhoto", "coverPhoto")
                                 .addSelect("collections.photos", "photos")
                                 .addSelect("collections.videos", "videos")
@@ -205,12 +210,16 @@ var CollectionService = /** @class */ (function () {
                         if (!collection) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
-                        return [4 /*yield*/, designRepo.findOneBy({ collections: {
-                                    id: id
-                                } })];
+                        return [4 /*yield*/, designRepo.findOne({
+                                where: {
+                                    collections: {
+                                        id: id
+                                    }
+                                },
+                                relations: ["theme"]
+                            })];
                     case 2:
                         collectionDesign = _a.sent();
-                        console.log(collectionDesign, "des");
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collectionDesign)];
                     case 3:
                         error_5 = _a.sent();
@@ -413,9 +422,11 @@ var CollectionService = /** @class */ (function () {
                         if (!collection) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
-                        return [4 /*yield*/, designRepo.findOneBy({ collections: {
+                        return [4 /*yield*/, designRepo.findOneBy({
+                                collections: {
                                     id: collection.id
-                                } })];
+                                }
+                            })];
                     case 2:
                         collectionDesign = _b.sent();
                         _a = new collections_model_1.CollectionDesignModel(body), theme = _a.theme, x = _a.x, y = _a.y, gridSpacing = _a.gridSpacing, gridStyle = _a.gridStyle, typography = _a.typography;
