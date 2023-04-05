@@ -66,6 +66,7 @@ var UpdateCollectionModel = /** @class */ (function (_super) {
         _this.password = body.password;
         _this.tags = body.tags;
         _this.socialSharing = body.socialSharing;
+        _this.coverPhoto = body.coverPhoto;
         return _this;
     }
     __decorate([
@@ -79,6 +80,11 @@ var UpdateCollectionModel = /** @class */ (function (_super) {
         (0, class_validator_1.IsOptional)(),
         __metadata("design:type", String)
     ], UpdateCollectionModel.prototype, "url", void 0);
+    __decorate([
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], UpdateCollectionModel.prototype, "coverPhoto", void 0);
     __decorate([
         (0, class_validator_1.IsString)(),
         (0, class_validator_1.IsOptional)(),

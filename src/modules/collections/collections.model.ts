@@ -33,6 +33,10 @@ export class UpdateCollectionModel extends Model {
 
     @IsString()
     @IsOptional()
+    public coverPhoto: string;
+
+    @IsString()
+    @IsOptional()
     public eventDate: Date;
 
     @IsString()
@@ -75,6 +79,7 @@ export class UpdateCollectionModel extends Model {
         this.password = body.password
         this.tags = body.tags
         this.socialSharing = body.socialSharing
+        this.coverPhoto = body.coverPhoto
     }
 }
 
