@@ -257,7 +257,7 @@ export class CollectionService {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
            console.log(body)
-            const { name, url, eventDate, download, downloadPin, socialSharing, status, password, tags ,coverPhoto } = new UpdateCollectionModel(body);
+            const { name, url, eventDate, download, downloadPin, socialSharing, status, password, tags ,coverPhoto ,slug } = new UpdateCollectionModel(body);
             const tagsArr = tags ? tags : [];
             const collectionTagsArr = [];
             for (const tag of tagsArr) {
@@ -268,7 +268,7 @@ export class CollectionService {
             }
             const updateObject = {
                 name,
-                url, eventDate, download, downloadPin, status, password, socialSharing,coverPhoto
+                url, eventDate, download, downloadPin, status, password, socialSharing,coverPhoto ,slug
             }
             await collectioRepo.save({ ...collection, ...updateObject, tags: collectionTagsArr })
             return this.getCollectionByID(userDetails, collection.id);

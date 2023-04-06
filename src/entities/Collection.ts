@@ -21,6 +21,9 @@ export default class Collections{
 
     @Column({unique:true,nullable:true})
     url!:string
+   
+    @Column({unique:true,nullable:true})
+    slug!:string
 
     @Column({
         type: "enum",

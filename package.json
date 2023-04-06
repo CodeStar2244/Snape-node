@@ -8,7 +8,7 @@
     "start": "tsc --watch & nodemon --inspect dist",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration:run": "ts-node ./node_modules/typeorm/cli.js  -d dist/db/db.config.js migration:run",
+    "migration:run": " npm run build && ts-node ./node_modules/typeorm/cli.js  -d dist/db/db.config.js migration:run",
     "migration:revert": "ts-node ./node_modules/typeorm/cli.js  -d dist/db/db.config.js migration:revert",
     "schema:sync": "npm run build && npm run typeorm schema:sync -- -d dist/db/db.config.js",
     "migration:show": "npm run typeorm migration:show -- -d dist/db/db.config.js",

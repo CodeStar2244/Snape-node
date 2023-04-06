@@ -67,6 +67,7 @@ var UpdateCollectionModel = /** @class */ (function (_super) {
         _this.tags = body.tags;
         _this.socialSharing = body.socialSharing;
         _this.coverPhoto = body.coverPhoto;
+        _this.slug = body.slug;
         return _this;
     }
     __decorate([
@@ -80,6 +81,11 @@ var UpdateCollectionModel = /** @class */ (function (_super) {
         (0, class_validator_1.IsOptional)(),
         __metadata("design:type", String)
     ], UpdateCollectionModel.prototype, "url", void 0);
+    __decorate([
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], UpdateCollectionModel.prototype, "slug", void 0);
     __decorate([
         (0, class_validator_1.IsString)(),
         (0, class_validator_1.IsOptional)(),

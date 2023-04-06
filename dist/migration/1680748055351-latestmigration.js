@@ -36,19 +36,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.latestmigration1680630907239 = void 0;
-var latestmigration1680630907239 = /** @class */ (function () {
-    function latestmigration1680630907239() {
-        this.name = 'latestmigration1680630907239';
+exports.latestmigration1680748055351 = void 0;
+var latestmigration1680748055351 = /** @class */ (function () {
+    function latestmigration1680748055351() {
+        this.name = 'latestmigration1680748055351';
     }
-    latestmigration1680630907239.prototype.up = function (queryRunner) {
+    latestmigration1680748055351.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"files\" ADD \"height\" integer NOT NULL")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collections\" ADD \"slug\" character varying")];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"files\" ADD \"width\" integer NOT NULL")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collections\" ADD CONSTRAINT \"UQ_99d0d14f9f23b45d2c6648c4b57\" UNIQUE (\"slug\")")];
                     case 2:
                         _a.sent();
                         return [2 /*return*/];
@@ -56,7 +56,7 @@ var latestmigration1680630907239 = /** @class */ (function () {
             });
         });
     };
-    latestmigration1680630907239.prototype.down = function (queryRunner) {
+    latestmigration1680748055351.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -87,10 +87,10 @@ var latestmigration1680630907239 = /** @class */ (function () {
                         return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"subtotal\" SET DEFAULT '0'")];
                     case 9:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"files\" DROP COLUMN \"width\"")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collections\" DROP CONSTRAINT \"UQ_99d0d14f9f23b45d2c6648c4b57\"")];
                     case 10:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"files\" DROP COLUMN \"height\"")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collections\" DROP COLUMN \"slug\"")];
                     case 11:
                         _a.sent();
                         return [2 /*return*/];
@@ -98,7 +98,7 @@ var latestmigration1680630907239 = /** @class */ (function () {
             });
         });
     };
-    return latestmigration1680630907239;
+    return latestmigration1680748055351;
 }());
-exports.latestmigration1680630907239 = latestmigration1680630907239;
-//# sourceMappingURL=1680630907239-latestmigration.js.map
+exports.latestmigration1680748055351 = latestmigration1680748055351;
+//# sourceMappingURL=1680748055351-latestmigration.js.map

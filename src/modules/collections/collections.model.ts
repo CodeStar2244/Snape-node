@@ -29,7 +29,11 @@ export class UpdateCollectionModel extends Model {
 
     @IsString()
     @IsOptional()
+    
     public url: string;
+    @IsString()
+    @IsOptional()
+    public slug: string;
 
     @IsString()
     @IsOptional()
@@ -80,6 +84,7 @@ export class UpdateCollectionModel extends Model {
         this.tags = body.tags
         this.socialSharing = body.socialSharing
         this.coverPhoto = body.coverPhoto
+        this.slug =  body.slug
     }
 }
 

@@ -349,7 +349,7 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.updateCollection = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, tagRepo, collection, _a, name_1, url, eventDate, download, downloadPin, socialSharing, status_1, password, tags, coverPhoto, tagsArr, collectionTagsArr, _i, tagsArr_1, tag, prevTag, newTag, updateObject, error_9;
+            var collectioRepo, tagRepo, collection, _a, name_1, url, eventDate, download, downloadPin, socialSharing, status_1, password, tags, coverPhoto, slug, tagsArr, collectionTagsArr, _i, tagsArr_1, tag, prevTag, newTag, updateObject, error_9;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -363,7 +363,7 @@ var CollectionService = /** @class */ (function () {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
                         console.log(body);
-                        _a = new collections_model_1.UpdateCollectionModel(body), name_1 = _a.name, url = _a.url, eventDate = _a.eventDate, download = _a.download, downloadPin = _a.downloadPin, socialSharing = _a.socialSharing, status_1 = _a.status, password = _a.password, tags = _a.tags, coverPhoto = _a.coverPhoto;
+                        _a = new collections_model_1.UpdateCollectionModel(body), name_1 = _a.name, url = _a.url, eventDate = _a.eventDate, download = _a.download, downloadPin = _a.downloadPin, socialSharing = _a.socialSharing, status_1 = _a.status, password = _a.password, tags = _a.tags, coverPhoto = _a.coverPhoto, slug = _a.slug;
                         tagsArr = tags ? tags : [];
                         collectionTagsArr = [];
                         _i = 0, tagsArr_1 = tagsArr;
@@ -392,7 +392,8 @@ var CollectionService = /** @class */ (function () {
                             status: status_1,
                             password: password,
                             socialSharing: socialSharing,
-                            coverPhoto: coverPhoto
+                            coverPhoto: coverPhoto,
+                            slug: slug
                         };
                         return [4 /*yield*/, collectioRepo.save(__assign(__assign(__assign({}, collection), updateObject), { tags: collectionTagsArr }))];
                     case 7:

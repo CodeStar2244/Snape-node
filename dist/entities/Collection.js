@@ -38,6 +38,10 @@ var Collections = /** @class */ (function () {
         __metadata("design:type", String)
     ], Collections.prototype, "url", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ unique: true, nullable: true }),
+        __metadata("design:type", String)
+    ], Collections.prototype, "slug", void 0);
+    __decorate([
         (0, typeorm_1.Column)({
             type: "enum",
             enum: CollectionStatus,
