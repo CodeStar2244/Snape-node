@@ -94,7 +94,7 @@ export class CollectionService {
                 .addSelect("collections.download", "download")
                 .addSelect("collections.password", "password")
                 .addSelect("collections.downloadPin", "downloadPin")
-                .addSelect("collections.url", "url")
+                .addSelect("collections.slug", "url")
                 .addSelect("collections.status", "status")
                 .addSelect("array_remove(array_agg(tags.tag), NULL)", "tags")
                 .addSelect("collections.coverPhoto", "coverPhoto")
