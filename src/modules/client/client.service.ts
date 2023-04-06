@@ -34,7 +34,7 @@ export class ClientService {
             .addSelect("collections.eventDate","eventDate")
             .addSelect("collections.createdAt","createdAt")
             .addSelect("collections.updatedAt","updatedAt")
-            .where("collections.url = :url",{url:url})
+            .where("collections.slug = :slug",{slug:url})
             .andWhere("collections.status = :status",{status:CollectionStatus.PUBLISH})
             .getRawOne();
             if (!collection) {
