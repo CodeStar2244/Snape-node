@@ -34,6 +34,7 @@ export const COLLECTION_STATUS={
 export const PAYMENT_STATUS={
   SUCESS:"success"
 }
+export const FILE_ALREADY_EXISTS ="File Already Exists";
 
 
 

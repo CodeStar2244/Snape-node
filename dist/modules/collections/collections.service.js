@@ -61,6 +61,7 @@ var Files_1 = __importDefault(require("../../entities/Files"));
 var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var collections_model_1 = require("./collections.model");
+var constants_1 = require("../../config/constants");
 var CollectionService = /** @class */ (function () {
     function CollectionService() {
         var _this = this;
@@ -348,8 +349,44 @@ var CollectionService = /** @class */ (function () {
                 }
             });
         }); };
+        this.getCollectionFilesName = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
+            var collectionRepository, fileRepo, collection, query, files, fileNamesArr, _i, files_3, filename, error_9;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
+                        fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
+                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
+                    case 1:
+                        collection = _a.sent();
+                        if (!collection) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
+                        }
+                        return [4 /*yield*/, fileRepo.createQueryBuilder("files")
+                                .select("files.name", "name")
+                                .where({ collection: id }).loadAllRelationIds()];
+                    case 2:
+                        query = _a.sent();
+                        return [4 /*yield*/, query.getRawMany()];
+                    case 3:
+                        files = _a.sent();
+                        fileNamesArr = [];
+                        for (_i = 0, files_3 = files; _i < files_3.length; _i++) {
+                            filename = files_3[_i];
+                            fileNamesArr.push(filename === null || filename === void 0 ? void 0 : filename.name);
+                        }
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(fileNamesArr)];
+                    case 4:
+                        error_9 = _a.sent();
+                        console.log(error_9);
+                        throw responseBuilder_1.ResponseBuilder.error(error_9);
+                    case 5: return [2 /*return*/];
+                }
+            });
+        }); };
         this.updateCollection = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, tagRepo, collection, _a, name_1, url, eventDate, download, downloadPin, socialSharing, status_1, password, tags, coverPhoto, slug, tagsArr, collectionTagsArr, _i, tagsArr_1, tag, prevTag, newTag, updateObject, error_9;
+            var collectioRepo, tagRepo, collection, _a, name_1, url, eventDate, download, downloadPin, socialSharing, status_1, password, tags, coverPhoto, slug, tagsArr, collectionTagsArr, _i, tagsArr_1, tag, prevTag, newTag, updateObject, error_10;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -400,18 +437,18 @@ var CollectionService = /** @class */ (function () {
                         _b.sent();
                         return [2 /*return*/, this.getCollectionByID(userDetails, collection.id)];
                     case 8:
-                        error_9 = _b.sent();
-                        console.log(error_9, "error");
-                        if (+error_9.code === 23505) {
+                        error_10 = _b.sent();
+                        console.log(error_10, "error");
+                        if (+error_10.code === 23505) {
                             throw responseBuilder_1.ResponseBuilder.errorMessage("Url already exists");
                         }
-                        throw responseBuilder_1.ResponseBuilder.error(error_9, "Internal Server Error");
+                        throw responseBuilder_1.ResponseBuilder.error(error_10, "Internal Server Error");
                     case 9: return [2 /*return*/];
                 }
             });
         }); };
         this.collectionDesign = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, designRepo, themerepo, collection, collectionDesign, _a, theme, x, y, gridSpacing, gridStyle, typography, updateObject, updatedTheme, error_10;
+            var collectioRepo, designRepo, themerepo, collection, collectionDesign, _a, theme, x, y, gridSpacing, gridStyle, typography, updateObject, updatedTheme, error_11;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -449,18 +486,18 @@ var CollectionService = /** @class */ (function () {
                         _b.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(updateObject)];
                     case 5:
-                        error_10 = _b.sent();
-                        console.log(error_10, "error");
-                        if (+error_10.code === 23505) {
+                        error_11 = _b.sent();
+                        console.log(error_11, "error");
+                        if (+error_11.code === 23505) {
                             throw responseBuilder_1.ResponseBuilder.errorMessage("Url already exists");
                         }
-                        throw responseBuilder_1.ResponseBuilder.error(error_10, "Internal Server Error");
+                        throw responseBuilder_1.ResponseBuilder.error(error_11, "Internal Server Error");
                     case 6: return [2 /*return*/];
                 }
             });
         }); };
         this.changeCoverPhoto = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, tagRepo, collection, updateCollection, error_11;
+            var collectioRepo, tagRepo, collection, updateCollection, error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -478,19 +515,19 @@ var CollectionService = /** @class */ (function () {
                         updateCollection = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(updateCollection)];
                     case 3:
-                        error_11 = _a.sent();
-                        throw responseBuilder_1.ResponseBuilder.error(error_11, "Internal Server Error");
+                        error_12 = _a.sent();
+                        throw responseBuilder_1.ResponseBuilder.error(error_12, "Internal Server Error");
                     case 4: return [2 /*return*/];
                 }
             });
         }); };
         this.uploadFiles = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, fileRepo, collection, files, filesUploadArr, _i, files_3, file, reponse, error_12;
+            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, _i, files_4, file, reponse, error_13;
             var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 3, , 4]);
+                        _b.trys.push([0, 4, , 5]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
                         return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
@@ -499,13 +536,20 @@ var CollectionService = /** @class */ (function () {
                         if (!collection) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
+                        return [4 /*yield*/, this.getCollectionFilesName(userDetails, collection.id)];
+                    case 2:
+                        collectionFiles = _b.sent();
+                        fileNamesArr = collectionFiles.result;
                         files = body.files;
                         filesUploadArr = [];
                         if (collection.photos === 0) {
                             collectioRepo.save(__assign(__assign({}, collection), { coverPhoto: (_a = files[0]) === null || _a === void 0 ? void 0 : _a.url }));
                         }
-                        for (_i = 0, files_3 = files; _i < files_3.length; _i++) {
-                            file = files_3[_i];
+                        for (_i = 0, files_4 = files; _i < files_4.length; _i++) {
+                            file = files_4[_i];
+                            if (fileNamesArr.includes(file.name)) {
+                                throw new Error(constants_1.FILE_ALREADY_EXISTS);
+                            }
                             filesUploadArr.push(fileRepo.save({
                                 name: file.name,
                                 url: file.url,
@@ -518,17 +562,16 @@ var CollectionService = /** @class */ (function () {
                             }));
                         }
                         return [4 /*yield*/, Promise.all(filesUploadArr)];
-                    case 2:
+                    case 3:
                         reponse = _b.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(reponse, "Files Uploaded")];
-                    case 3:
-                        error_12 = _b.sent();
-                        console.log(error_12, "error");
-                        if (+error_12.code === 23505) {
-                            throw responseBuilder_1.ResponseBuilder.errorMessage("Url already exists");
+                    case 4:
+                        error_13 = _b.sent();
+                        if (error_13.message === constants_1.FILE_ALREADY_EXISTS) {
+                            throw responseBuilder_1.ResponseBuilder.fileExists(error_13, constants_1.FILE_ALREADY_EXISTS);
                         }
-                        throw responseBuilder_1.ResponseBuilder.error(error_12, "Internal Server Error");
-                    case 4: return [2 /*return*/];
+                        throw responseBuilder_1.ResponseBuilder.error(error_13, "Internal Server Error");
+                    case 5: return [2 /*return*/];
                 }
             });
         }); };

@@ -91,6 +91,19 @@ var ResponseBuilder = /** @class */ (function () {
         rb.result = err ? l10n.t("ERR_THROW_BY_CODE") : l10n.t("ERR_INTERNAL_SERVER");
         return rb;
     };
+    ResponseBuilder.fileExists = function (err, msg) {
+        var rb = new ResponseBuilder();
+        if (err instanceof ResponseBuilder) {
+            return err;
+        }
+        rb.code = 409;
+        rb.error = err || l10n.t("ERR_INTERNAL_SERVER");
+        rb.status = constants_1.RES_STATUS.FAIL;
+        rb.msg = msg || null;
+        rb.description = err.description;
+        rb.result = err ? l10n.t("ERR_THROW_BY_CODE") : l10n.t("ERR_INTERNAL_SERVER");
+        return rb;
+    };
     return ResponseBuilder;
 }());
 exports.ResponseBuilder = ResponseBuilder;

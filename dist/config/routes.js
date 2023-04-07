@@ -12,6 +12,7 @@ exports.COLLECTION_ROUTES = {
     UPLOAD_FILES: "/:id",
     DELETE_COLLECTION: "/:id",
     GET_FILES: "/files/:id",
+    GET_FILES_NAME: "/files-name/:id",
     DELETE_FILES: "/files/:id",
     CHANGE_COVERPHOTO: "/coverphoto/:id",
     COLLECTION_DESIGN: "/design/:id",

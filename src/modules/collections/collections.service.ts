@@ -8,6 +8,7 @@ import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { UpdateCollectionModel, CollectionDesignModel } from "./collections.model";
+import { FILE_ALREADY_EXISTS } from "../../config/constants";
 
 export class CollectionService {
     private s3 = new AWSS3();
@@ -248,6 +249,33 @@ export class CollectionService {
 
 
     }
+    public getCollectionFilesName = async (userDetails, id) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const fileRepo = AppDataSource.getRepository(FilesEntity);
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            if (!collection) {
+                return ResponseBuilder.badRequest("Collection Not Found", 404);
+            }
+            const query = await fileRepo.createQueryBuilder("files")
+                .select("files.name", "name")
+                .where({ collection: id }).loadAllRelationIds();
+            const files = await query.getRawMany();
+            const fileNamesArr = [];
+            for(const filename of files){
+               fileNamesArr.push(filename?.name)
+            }
+            return ResponseBuilder.data(fileNamesArr);
+
+        } catch (error) {
+            console.log(error)
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
     public updateCollection = async (params, body, userDetails) => {
         try {
             const collectioRepo = AppDataSource.getRepository(Collections);
@@ -347,12 +375,18 @@ export class CollectionService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
+            const collectionFiles = await this.getCollectionFilesName(userDetails,collection.id);
+            const fileNamesArr:string[] =collectionFiles.result;
             const files = body.files;
             const filesUploadArr = [];
             if (collection.photos === 0) {
                 collectioRepo.save({ ...collection, coverPhoto: files[0]?.url })
             }
             for (const file of files) {
+                if(fileNamesArr.includes(file.name)){
+                  throw new Error(FILE_ALREADY_EXISTS);
+                    
+                }
                 filesUploadArr.push(fileRepo.save({
                     name: file.name,
                     url: file.url,
@@ -375,9 +409,8 @@ export class CollectionService {
 
         }
         catch (error) {
-            console.log(error, "error")
-            if (+error.code === 23505) {
-                throw ResponseBuilder.errorMessage("Url already exists")
+            if(error.message === FILE_ALREADY_EXISTS){
+                throw ResponseBuilder.fileExists(error,FILE_ALREADY_EXISTS)
             }
             throw ResponseBuilder.error(error, "Internal Server Error")
 

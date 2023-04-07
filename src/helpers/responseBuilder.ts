@@ -61,6 +61,19 @@ export class ResponseBuilder {
     rb.result = err ? l10n.t("ERR_THROW_BY_CODE") : l10n.t("ERR_INTERNAL_SERVER") ;
     return rb;
   }
+  public static fileExists(err: Failure, msg?: string): ResponseBuilder {
+    const rb: ResponseBuilder = new ResponseBuilder();
+    if (err instanceof ResponseBuilder) {
+      return err;
+    }
+    rb.code = 409;
+    rb.error = err || l10n.t("ERR_INTERNAL_SERVER");
+    rb.status = RES_STATUS.FAIL;
+    rb.msg = msg || null;
+    rb.description = err.description;
+    rb.result = err ? l10n.t("ERR_THROW_BY_CODE") : l10n.t("ERR_INTERNAL_SERVER") ;
+    return rb;
+  }
   public code: number;
   public msg: string;
   public error: any;

@@ -60,6 +60,15 @@ export class CollectoinController{
             return res.status(error.code).json(error);        
         }
     }
+    public getCollectionFilesName = async (req,res)=>{
+        try {
+            const result = await this.collectionService.getCollectionFilesName(req.user,req.params.id);
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
     public updateCollection = async (req,res)=>{
         try {
             const result = await this.collectionService.updateCollection(req.params,req.body,req.user);

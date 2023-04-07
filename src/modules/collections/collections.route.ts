@@ -14,6 +14,7 @@ router.post(COLLECTION_ROUTES.UPLOAD_FILES,v.validate(UploadFilesModel),collecto
 router.get(COLLECTION_ROUTES.GET_COLLECTIONS,collectoinController.getCollections);
 router.get(COLLECTION_ROUTES.GET_COLLECTION_BY_ID,collectoinController.getCollectionByID);
 router.get(COLLECTION_ROUTES.GET_FILES,collectoinController.getCollectionFiles);
+router.get(COLLECTION_ROUTES.GET_FILES_NAME,collectoinController.getCollectionFilesName);
 router.put(COLLECTION_ROUTES.UPDATE_COLLECTION,v.validate(UpdateCollectionModel),collectoinController.updateCollection);
 router.delete(COLLECTION_ROUTES.DELETE_COLLECTION,collectoinController.deleteCollection);
 router.delete(COLLECTION_ROUTES.DELETE_FILES,collectoinController.deleteFiles);
