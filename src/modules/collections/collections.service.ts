@@ -24,7 +24,7 @@ export class CollectionService {
             });
             const theme = await themerepo.findOneBy({id:1});
             await designRepo.save({
-                typography: "sans",
+                typography: "Sans",
                 collections: collection,
                 theme:theme
             })

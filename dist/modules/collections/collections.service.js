@@ -86,7 +86,7 @@ var CollectionService = /** @class */ (function () {
                     case 2:
                         theme = _a.sent();
                         return [4 /*yield*/, designRepo.save({
-                                typography: "sans",
+                                typography: "Sans",
                                 collections: collection,
                                 theme: theme
                             })];
