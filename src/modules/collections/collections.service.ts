@@ -151,6 +151,7 @@ export class CollectionService {
 
 
     }
+   
     public deleteCollection = async (userDetails, id) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);

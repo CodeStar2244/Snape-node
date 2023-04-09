@@ -13,10 +13,13 @@ export const COLLECTION_ROUTES = {
     DELETE_FILES:"/files/:id",
     CHANGE_COVERPHOTO:"/coverphoto/:id",
     COLLECTION_DESIGN:"/design/:id",
-    LIST_THEMES:"/themes/list-themes"
+    LIST_THEMES:"/themes/list-themes",
+    
 }
 export const CLIENT_ROUTES = {
     GET_COLLECTION_BY_ID_CLIENT : "/",
+    DOWNLOAD_FILE:"/download-file/:id",
+    DOWNLOAD_COLLECTION:"/download-collection/:id"
 }
 export const DASHBOARD_ROTUES = {
     GET_SUMMARY : "/summary",

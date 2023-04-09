@@ -99,5 +99,26 @@ export class ClientService {
 
 
     }
+    public downloadFile = async (userDetails, id) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const fileRepo = AppDataSource.getRepository(FilesEntity)
+            const file = await fileRepo.findOneBy({id:id})
+            const collection = await collectionRepository.findOneBy({ id: file.collection.id })
+            if (!collection) {
+                return ResponseBuilder.badRequest("File Not Found", 404);
+            }
+           
+            return ResponseBuilder.data({});
+
+        } catch (error) {
+            console.log(error, "er")
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
 
 }

@@ -16,10 +16,12 @@ exports.COLLECTION_ROUTES = {
     DELETE_FILES: "/files/:id",
     CHANGE_COVERPHOTO: "/coverphoto/:id",
     COLLECTION_DESIGN: "/design/:id",
-    LIST_THEMES: "/themes/list-themes"
+    LIST_THEMES: "/themes/list-themes",
 };
 exports.CLIENT_ROUTES = {
     GET_COLLECTION_BY_ID_CLIENT: "/",
+    DOWNLOAD_FILE: "/download-file/:id",
+    DOWNLOAD_COLLECTION: "/download-collection/:id"
 };
 exports.DASHBOARD_ROTUES = {
     GET_SUMMARY: "/summary",

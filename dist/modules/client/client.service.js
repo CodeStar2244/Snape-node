@@ -186,6 +186,32 @@ var ClientService = /** @class */ (function () {
                 }
             });
         }); };
+        this.downloadFile = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
+            var collectionRepository, fileRepo, file, collection, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
+                        fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
+                        return [4 /*yield*/, fileRepo.findOneBy({ id: id })];
+                    case 1:
+                        file = _a.sent();
+                        return [4 /*yield*/, collectionRepository.findOneBy({ id: file.collection.id })];
+                    case 2:
+                        collection = _a.sent();
+                        if (!collection) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("File Not Found", 404)];
+                        }
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({})];
+                    case 3:
+                        error_3 = _a.sent();
+                        console.log(error_3, "er");
+                        throw responseBuilder_1.ResponseBuilder.error(error_3);
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return ClientService;
 }());

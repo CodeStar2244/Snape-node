@@ -10,5 +10,6 @@ const clientController = new ClientController();
 const v :Validator = new Validator();
 
 router.post(CLIENT_ROUTES.GET_COLLECTION_BY_ID_CLIENT,v.validate(CollectionDesignModel),clientController.getCollectionByUrl);
+router.post(CLIENT_ROUTES.GET_COLLECTION_BY_ID_CLIENT,v.validate(CollectionDesignModel),clientController.getCollectionByUrl);
 
 export  const  ClientRoute:Router = router;
