@@ -40,4 +40,4 @@ var CollectionThemes = /** @class */ (function () {
     return CollectionThemes;
 }());
 exports.CollectionThemes = CollectionThemes;
-//# sourceMappingURL=collectionThemes.js.map
+//# sourceMappingURL=CollectionThemes.js.map

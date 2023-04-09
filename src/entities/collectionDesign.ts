@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Collections  from "./Collection";
-import { CollectionThemes } from "./collectionThemes";
+import { CollectionThemes } from "./CollectionThemes";
 
 export enum GridStyleEnum {
     VERTICAL="column",
@@ -39,7 +39,7 @@ export class CollectionDesign{
     @Column({nullable:true})
     focusY:number
 
-    @OneToOne(()=>Collections,(collection)=>collection.id)
+    @OneToOne(()=>Collections,(collection)=>collection.id,{onDelete:"CASCADE"})
     @JoinColumn({name:"collectionId"})
     collections:Collections
 

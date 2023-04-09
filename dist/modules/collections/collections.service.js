@@ -56,7 +56,7 @@ var db_config_1 = require("../../db/db.config");
 var Collection_1 = __importDefault(require("../../entities/Collection"));
 var collectionDesign_1 = require("../../entities/collectionDesign");
 var CollectionTags_1 = require("../../entities/CollectionTags");
-var collectionThemes_1 = require("../../entities/collectionThemes");
+var CollectionThemes_1 = require("../../entities/CollectionThemes");
 var Files_1 = __importDefault(require("../../entities/Files"));
 var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
@@ -74,7 +74,7 @@ var CollectionService = /** @class */ (function () {
                         _a.trys.push([0, 4, , 5]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         designRepo = db_config_1.AppDataSource.getRepository(collectionDesign_1.CollectionDesign);
-                        themerepo = db_config_1.AppDataSource.getRepository(collectionThemes_1.CollectionThemes);
+                        themerepo = db_config_1.AppDataSource.getRepository(CollectionThemes_1.CollectionThemes);
                         return [4 /*yield*/, collectionRepository.save({
                                 name: body.name,
                                 eventDate: body.eventDate,
@@ -142,7 +142,7 @@ var CollectionService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        themeRepository = db_config_1.AppDataSource.getRepository(collectionThemes_1.CollectionThemes);
+                        themeRepository = db_config_1.AppDataSource.getRepository(CollectionThemes_1.CollectionThemes);
                         return [4 /*yield*/, themeRepository.find()];
                     case 1:
                         themes = _a.sent();
@@ -258,6 +258,7 @@ var CollectionService = /** @class */ (function () {
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collection)];
                     case 4:
                         error_6 = _a.sent();
+                        console.log(error_6, "er");
                         throw responseBuilder_1.ResponseBuilder.error(error_6);
                     case 5: return [2 /*return*/];
                 }
@@ -455,7 +456,7 @@ var CollectionService = /** @class */ (function () {
                         _b.trys.push([0, 5, , 6]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         designRepo = db_config_1.AppDataSource.getRepository(collectionDesign_1.CollectionDesign);
-                        themerepo = db_config_1.AppDataSource.getRepository(collectionThemes_1.CollectionThemes);
+                        themerepo = db_config_1.AppDataSource.getRepository(CollectionThemes_1.CollectionThemes);
                         return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
                     case 1:
                         collection = _b.sent();
