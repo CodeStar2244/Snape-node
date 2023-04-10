@@ -26,4 +26,20 @@ export class AWSS3 {
 
         }
     }
+    public getS3File = async (key) => {
+        try {
+            const params = {
+                Bucket: process.env.S3_BUCKET_NAME,
+                Key: key
+
+            }
+             const data = (await (this.s3.getObject(params))).createReadStream();
+             return data;
+        }
+        catch (error) {
+        
+
+        }
+    }
+
 }

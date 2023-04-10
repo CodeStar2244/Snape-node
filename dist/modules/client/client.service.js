@@ -78,10 +78,14 @@ var db_config_1 = require("../../db/db.config");
 var Collection_1 = __importStar(require("../../entities/Collection"));
 var collectionDesign_1 = require("../../entities/collectionDesign");
 var Files_1 = __importDefault(require("../../entities/Files"));
+var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
+var jszip_1 = __importDefault(require("jszip"));
+var mime_1 = __importDefault(require("mime"));
 var ClientService = /** @class */ (function () {
     function ClientService() {
         var _this = this;
+        this.s3 = new awss3_1.AWSS3();
         this.getCollectionByUrl = function (_a) {
             var url = _a.url, password = _a.password;
             return __awaiter(_this, void 0, void 0, function () {
@@ -186,33 +190,186 @@ var ClientService = /** @class */ (function () {
                 }
             });
         }); };
-        this.downloadFile = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, fileRepo, file, collection, error_3;
+        this.downloadFile = function (userDetails, id, _a, res) {
+            var pin = _a.pin;
+            return __awaiter(_this, void 0, void 0, function () {
+                var collectionRepository, fileRepo, file, collection, fileStream, fileMime, error_3;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            _b.trys.push([0, 6, , 7]);
+                            collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
+                            fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
+                            return [4 /*yield*/, fileRepo.findOne({
+                                    where: {
+                                        id: id
+                                    },
+                                    relations: ["collection"]
+                                })];
+                        case 1:
+                            file = _b.sent();
+                            return [4 /*yield*/, collectionRepository.findOneBy({ id: file.collection.id })];
+                        case 2:
+                            collection = _b.sent();
+                            if (!collection) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("File Not Found", 404)];
+                            }
+                            if (!collection.download) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Downlaod Not allowed for these collection")];
+                            }
+                            if (!collection.downloadPin) return [3 /*break*/, 3];
+                            return [2 /*return*/, this.collectionFileDownloadPinRequired(collection, pin, file, res)];
+                        case 3: return [4 /*yield*/, this.getFileFromS3Bucket(file.key)];
+                        case 4:
+                            fileStream = _b.sent();
+                            fileMime = mime_1.default.getType(file.url);
+                            return [2 /*return*/, {
+                                    result: fileStream,
+                                    name: file.name,
+                                    mime: fileMime
+                                }];
+                        case 5: return [3 /*break*/, 7];
+                        case 6:
+                            error_3 = _b.sent();
+                            console.log(error_3, "er");
+                            throw responseBuilder_1.ResponseBuilder.error(error_3);
+                        case 7: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        this.downloadCollection = function (userDetails, id, _a, res) {
+            var pin = _a.pin;
+            return __awaiter(_this, void 0, void 0, function () {
+                var collectionRepository, fileRepo, files, collection, error_4;
+                var _b;
+                return __generator(this, function (_c) {
+                    switch (_c.label) {
+                        case 0:
+                            _c.trys.push([0, 6, , 7]);
+                            collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
+                            fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
+                            return [4 /*yield*/, fileRepo.find({
+                                    where: {
+                                        collection: {
+                                            id: id
+                                        }
+                                    },
+                                    relations: ["collection"]
+                                })];
+                        case 1:
+                            files = _c.sent();
+                            return [4 /*yield*/, collectionRepository.findOneBy({ id: id })];
+                        case 2:
+                            collection = _c.sent();
+                            if (!collection) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("File Not Found", 404)];
+                            }
+                            if (!collection.download) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Downlaod Not allowed for these collection")];
+                            }
+                            if (!collection.downloadPin) return [3 /*break*/, 3];
+                            return [2 /*return*/, this.collectionDownloadPinRequired(collection, pin, files, res)];
+                        case 3:
+                            _b = {};
+                            return [4 /*yield*/, this.createZipfile(files)];
+                        case 4: return [2 /*return*/, (_b.zipFile = _c.sent(),
+                                _b.name = collection.name,
+                                _b)];
+                        case 5: return [3 /*break*/, 7];
+                        case 6:
+                            error_4 = _c.sent();
+                            console.log(error_4, "er");
+                            throw responseBuilder_1.ResponseBuilder.error(error_4);
+                        case 7: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        this.collectionDownloadPinRequired = function (collection, pin, files, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!pin) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Please Provide DownloadPin")];
+                        }
+                        if (collection.downloadPin !== pin) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Wrong Pin Provided")];
+                        }
+                        _a = {};
+                        return [4 /*yield*/, this.createZipfile(files)];
+                    case 1: return [2 /*return*/, (_a.zipFile = _b.sent(),
+                            _a.name = collection.name,
+                            _a)];
+                }
+            });
+        }); };
+        this.collectionFileDownloadPinRequired = function (collection, pin, file, res) { return __awaiter(_this, void 0, void 0, function () {
+            var fileFromS3, fileMime;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
-                        fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, fileRepo.findOneBy({ id: id })];
-                    case 1:
-                        file = _a.sent();
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: file.collection.id })];
-                    case 2:
-                        collection = _a.sent();
-                        if (!collection) {
-                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("File Not Found", 404)];
+                        if (!pin) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Please Provide DownloadPin")];
                         }
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({})];
-                    case 3:
-                        error_3 = _a.sent();
-                        console.log(error_3, "er");
-                        throw responseBuilder_1.ResponseBuilder.error(error_3);
-                    case 4: return [2 /*return*/];
+                        if (collection.downloadPin !== pin) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Wrong Pin Provided")];
+                        }
+                        return [4 /*yield*/, this.getFileFromS3Bucket(file.key)];
+                    case 1:
+                        fileFromS3 = _a.sent();
+                        fileMime = mime_1.default.getType(file.url);
+                        return [2 /*return*/, {
+                                result: fileFromS3,
+                                name: file.name,
+                                mime: fileMime
+                            }];
                 }
             });
         }); };
     }
+    ClientService.prototype.createZipfile = function (files) {
+        return __awaiter(this, void 0, void 0, function () {
+            var zip, _i, files_1, file, fileFromS3, zipFile;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        zip = new jszip_1.default();
+                        _i = 0, files_1 = files;
+                        _a.label = 1;
+                    case 1:
+                        if (!(_i < files_1.length)) return [3 /*break*/, 4];
+                        file = files_1[_i];
+                        return [4 /*yield*/, this.getFileFromS3Bucket(file.key)];
+                    case 2:
+                        fileFromS3 = _a.sent();
+                        zip.file(file.name, fileFromS3);
+                        _a.label = 3;
+                    case 3:
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [4 /*yield*/, zip.generateNodeStream()];
+                    case 5:
+                        zipFile = _a.sent();
+                        return [2 /*return*/, zipFile];
+                }
+            });
+        });
+    };
+    ClientService.prototype.getFileFromS3Bucket = function (key) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                try {
+                    return [2 /*return*/, this.s3.getS3File(key)];
+                }
+                catch (error) {
+                    throw error;
+                }
+                return [2 /*return*/];
+            });
+        });
+    };
     return ClientService;
 }());
 exports.ClientService = ClientService;

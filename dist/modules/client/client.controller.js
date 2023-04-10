@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientController = void 0;
 var client_service_1 = require("./client.service");
+var responseBuilder_1 = require("../../helpers/responseBuilder");
 var ClientController = /** @class */ (function () {
     function ClientController() {
         var _this = this;
@@ -65,13 +66,48 @@ var ClientController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.clientService.downloadFile(req.user, req.params.id)];
+                        return [4 /*yield*/, this.clientService.downloadFile(req.user, req.params.id, req.body, res)];
                     case 1:
                         result = _a.sent();
-                        return [2 /*return*/, res.status(result.code).json(result)];
+                        if (result instanceof responseBuilder_1.ResponseBuilder) {
+                            return [2 /*return*/, res.status(result.code).json(result)];
+                        }
+                        else {
+                            res.header("Access-Control-Expose-Headers", "fileName , fileExt");
+                            res.setHeader('Content-Disposition', "attachment; filename=".concat(result.name));
+                            res.setHeader('fileName', "".concat(result.name));
+                            res.setHeader('fileExt', "".concat(result.mime));
+                            result.result.pipe(res);
+                        }
+                        return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
                         return [2 /*return*/, res.status(error_2.code).json(error_2)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.downloadCollection = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clientService.downloadCollection(req.user, req.params.id, req.body, res)];
+                    case 1:
+                        result = _a.sent();
+                        if (result instanceof responseBuilder_1.ResponseBuilder) {
+                            return [2 /*return*/, res.status(result.code).json(result)];
+                        }
+                        else {
+                            res.header("Access-Control-Expose-Headers", "fileName , fileExt");
+                            res.setHeader('fileName', "".concat(result.name, ".zip"));
+                            result.zipFile.pipe(res);
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_3 = _a.sent();
+                        return [2 /*return*/, res.status(error_3.code).json(error_3)];
                     case 3: return [2 /*return*/];
                 }
             });

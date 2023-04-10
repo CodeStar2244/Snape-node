@@ -6,8 +6,10 @@ import { CollectionTags } from "../../entities/CollectionTags";
 import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
-
+import JSZip from "jszip";
+import mime from 'mime';
 export class ClientService {
+    private s3 = new AWSS3();
     public getCollectionByUrl = async ({url,password}) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
@@ -99,18 +101,34 @@ export class ClientService {
 
 
     }
-    public downloadFile = async (userDetails, id) => {
+    public downloadFile = async (userDetails, id,{pin},res) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const fileRepo = AppDataSource.getRepository(FilesEntity)
-            const file = await fileRepo.findOneBy({id:id})
+            const file = await fileRepo.findOne({
+                where:{
+                    id
+                },
+                relations:["collection"]
+            });
             const collection = await collectionRepository.findOneBy({ id: file.collection.id })
             if (!collection) {
                 return ResponseBuilder.badRequest("File Not Found", 404);
             }
-           
-            return ResponseBuilder.data({});
-
+            if(!collection.download){
+                return ResponseBuilder.badRequest("Downlaod Not allowed for these collection");
+            }
+            if(collection.downloadPin){
+                return this.collectionFileDownloadPinRequired(collection,pin,file,res)
+            }else{
+                const fileStream = await this.getFileFromS3Bucket(file.key);
+                const fileMime = mime.getType(file.url);
+                return {
+                    result:fileStream,
+                    name:file.name,
+                    mime:fileMime
+                };
+            }
         } catch (error) {
             console.log(error, "er")
             throw ResponseBuilder.error(error)
@@ -119,6 +137,90 @@ export class ClientService {
 
 
 
+    }
+    public downloadCollection = async (userDetails, id,{pin},res) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const fileRepo = AppDataSource.getRepository(FilesEntity)
+            const files = await fileRepo.find({
+                where:{
+                    collection:{
+                        id
+                    }
+                },
+                relations:["collection"]
+            });
+            const collection = await collectionRepository.findOneBy({ id})
+            if (!collection) {
+                return ResponseBuilder.badRequest("File Not Found", 404);
+            }
+            if(!collection.download){
+                return ResponseBuilder.badRequest("Downlaod Not allowed for these collection");
+            }
+            if(collection.downloadPin){
+                return this.collectionDownloadPinRequired(collection,pin,files,res)
+            }else{
+                return {
+                    zipFile:await this.createZipfile(files),
+                    name:collection.name
+                }
+            }
+        } catch (error) {
+            console.log(error, "er")
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
+
+
+    private collectionDownloadPinRequired = async(collection,pin,files,res)=>{
+        if(!pin){
+          return ResponseBuilder.badRequest("Please Provide DownloadPin")
+        }
+        if(collection.downloadPin !== pin){
+          return ResponseBuilder.badRequest("Wrong Pin Provided")
+        }
+        return {
+            zipFile:await this.createZipfile(files),
+            name:collection.name
+        } 
+    }
+    private async createZipfile(files){
+     const zip = new JSZip();
+     for(const file of files){
+    
+       const fileFromS3 = await this.getFileFromS3Bucket(file.key);
+       zip.file(file.name,fileFromS3)
+     }
+
+     const zipFile = await zip.generateNodeStream();
+     return zipFile;
+    }
+    private collectionFileDownloadPinRequired = async(collection,pin,file,res)=>{
+        if(!pin){
+          return ResponseBuilder.badRequest("Please Provide DownloadPin")
+        }
+        if(collection.downloadPin !== pin){
+          return ResponseBuilder.badRequest("Wrong Pin Provided")
+        }
+        const fileFromS3 = await this.getFileFromS3Bucket(file.key);
+        const fileMime = mime.getType(file.url);
+        return {
+            result:fileFromS3,
+            name:file.name,
+            mime:fileMime
+        };
+    }
+
+    private async getFileFromS3Bucket(key){
+       try {
+        return  this.s3.getS3File(key);
+       } catch (error) {
+        throw error;
+       }
     }
 
 }

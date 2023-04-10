@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ClientService } from "./client.service";
+import { ResponseBuilder } from "../../helpers/responseBuilder";
 
 export class ClientController{
     private clientService = new ClientService()
@@ -14,9 +15,31 @@ export class ClientController{
     }
     public downloadFile = async (req,res:Response)=>{
         try {
-            const result = await this.clientService.downloadFile(req.user,req.params.id);
-            return res.status(result.code).json(result);
+            const result = await this.clientService.downloadFile(req.user,req.params.id,req.body,res);
+            if(result instanceof ResponseBuilder){
+                return res.status(result.code).json(result);
+            }else{
+                res.header("Access-Control-Expose-Headers", "fileName , fileExt");
+                res.setHeader('Content-Disposition',`attachment; filename=${result.name}`)
+                res.setHeader('fileName',`${result.name}`)
+                res.setHeader('fileExt',`${result.mime}`)
+                result.result.pipe(res);
             
+            }
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
+    public downloadCollection = async (req,res:Response)=>{
+        try {
+            const result = await this.clientService.downloadCollection(req.user,req.params.id,req.body,res);
+            if(result instanceof ResponseBuilder){
+                return res.status(result.code).json(result);
+            }else{
+                res.header("Access-Control-Expose-Headers", "fileName , fileExt");
+                res.setHeader('fileName',`${result.name}.zip`)
+                result.zipFile.pipe(res);
+            }
         } catch (error) {
             return res.status(error.code).json(error);        
         }

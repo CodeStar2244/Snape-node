@@ -82,6 +82,7 @@ var App = /** @class */ (function () {
         this.app.all("/*", function (req, res, next) {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Request-Headers", "*");
+            res.header("Access-Control-Response-Headers", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Headers, Accept-Language, Authorization");
             res.header("Access-Control-Allow-Methods", "GET, POST ,PUT ,DELETE ,PATCH");
             if (req.method === "OPTIONS") {
