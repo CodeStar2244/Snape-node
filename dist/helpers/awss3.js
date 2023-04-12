@@ -51,7 +51,9 @@ aws_sdk_1.default.config.update(awsObj);
 var AWSS3 = /** @class */ (function () {
     function AWSS3() {
         var _this = this;
-        this.s3 = new aws_sdk_1.default.S3();
+        this.s3 = new aws_sdk_1.default.S3({
+            endpoint: "https://s3.wasabisys.com",
+        });
         this.deleteS3File = function (key) {
             try {
                 var params = {

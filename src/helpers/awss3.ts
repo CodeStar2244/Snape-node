@@ -7,7 +7,9 @@ const awsObj = {
 }
 AWS.config.update(awsObj);
 export class AWSS3 {
-     private s3: AWS.S3 = new AWS.S3();
+     private s3: AWS.S3 = new AWS.S3({
+        endpoint:"https://s3.wasabisys.com",
+     });
     public deleteS3File = (key) => {
         try {
             const params = {
