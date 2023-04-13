@@ -8,13 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AssetStatus = void 0;
 var typeorm_1 = require("typeorm");
-var assetCategory_1 = __importDefault(require("./assetCategory"));
+var assetRegistry_model_1 = require("../modules/assetRegistry/assetRegistry.model");
 var AssetStatus;
 (function (AssetStatus) {
     AssetStatus["ACTIVE"] = "Active";
@@ -32,26 +29,31 @@ var Assets = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
-    ], Assets.prototype, "name", void 0);
+    ], Assets.prototype, "nickName", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
-    ], Assets.prototype, "imeiNumber", void 0);
+    ], Assets.prototype, "deviceID", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", Number)
-    ], Assets.prototype, "price", void 0);
+    ], Assets.prototype, "deviceAmount", void 0);
     __decorate([
         (0, typeorm_1.Column)({
             type: "enum",
-            enum: AssetStatus
+            enum: assetRegistry_model_1.AssetType,
+            default: assetRegistry_model_1.AssetType.CAMERA
+        }),
+        __metadata("design:type", String)
+    ], Assets.prototype, "type", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({
+            type: "enum",
+            enum: AssetStatus,
+            default: AssetStatus.ACTIVE
         }),
         __metadata("design:type", String)
     ], Assets.prototype, "status", void 0);
-    __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return assetCategory_1.default; }, function (category) { return category.id; }),
-        __metadata("design:type", assetCategory_1.default)
-    ], Assets.prototype, "category", void 0);
     __decorate([
         (0, typeorm_1.CreateDateColumn)({ type: 'timestamptz' }),
         __metadata("design:type", Date)

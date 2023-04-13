@@ -30,6 +30,7 @@ var middleware_1 = require("./middleware");
 var collections_route_1 = require("./modules/collections/collections.route");
 var dashboard_routes_1 = require("./modules/dashboard/dashboard.routes");
 var client_route_1 = require("./modules/client/client.route");
+var assetRegistry_route_1 = require("./modules/assetRegistry/assetRegistry.route");
 var Routes = /** @class */ (function () {
     function Routes(NODE_ENV) {
         this.middleware = new middleware_1.Middleware();
@@ -52,6 +53,7 @@ var Routes = /** @class */ (function () {
         router.use("/agent", agent_route_1.UserRoute);
         router.use("/collection", this.middleware.authenticateUser, collections_route_1.CollectionRoute);
         router.use("/dashboard", this.middleware.authenticateUser, dashboard_routes_1.DashboardRoute);
+        router.use("/asset", this.middleware.authenticateUser, assetRegistry_route_1.AssetRegistryRouter);
         router.use("/client", client_route_1.ClientRoute);
         router.all("/*", function (req, res) {
             return res.status(404).json({

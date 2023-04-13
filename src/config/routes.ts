@@ -26,3 +26,7 @@ export const DASHBOARD_ROTUES = {
     RECENT_CUSTOMERS : "/recent-customers",
     UPCOMING_BOOKINGS : "/upcoming-bookings",
 }
+export const ASSET_REGISTRY_ROUTES = {
+    CREATE_ASSET : "/",
+    
+}

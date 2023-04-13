@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login"
 };
@@ -27,5 +27,8 @@ exports.DASHBOARD_ROTUES = {
     GET_SUMMARY: "/summary",
     RECENT_CUSTOMERS: "/recent-customers",
     UPCOMING_BOOKINGS: "/upcoming-bookings",
+};
+exports.ASSET_REGISTRY_ROUTES = {
+    CREATE_ASSET: "/",
 };
 //# sourceMappingURL=routes.js.map

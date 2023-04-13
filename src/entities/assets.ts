@@ -1,6 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import AssetCategory from "./assetCategory";
-
+import { AssetType } from "../modules/assetRegistry/assetRegistry.model";
 
 export enum AssetStatus {
     ACTIVE="Active",
@@ -16,29 +15,31 @@ export default class Assets{
     id:number;
 
     @Column()
-    name:string;
+    nickName:string;
     
     @Column()
-    imeiNumber:string;
+    deviceID:string;
 
     @Column()
-    price:number;
+    deviceAmount:number;
 
     @Column({
         type:"enum",
-        enum:AssetStatus
+        enum:AssetType,
+        default:AssetType.CAMERA
+    })
+    type:AssetType
+
+    @Column({
+        type:"enum",
+        enum:AssetStatus,
+        default:AssetStatus.ACTIVE
     })
     status:AssetStatus
 
-    @ManyToOne(()=>AssetCategory,(category)=>category.id)
-    category:AssetCategory
-
-
-  
     @CreateDateColumn({type:'timestamptz'})
     createdAt: Date;
  
     @UpdateDateColumn({type:"timestamptz"})
     updatedAt: Date;
-
 }
