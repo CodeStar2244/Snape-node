@@ -36,63 +36,69 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.latestmigration1681408539863 = void 0;
-var latestmigration1681408539863 = /** @class */ (function () {
-    function latestmigration1681408539863() {
-        this.name = 'latestmigration1681408539863';
+exports.latestmigration1681409435629 = void 0;
+var latestmigration1681409435629 = /** @class */ (function () {
+    function latestmigration1681409435629() {
+        this.name = 'latestmigration1681409435629';
     }
-    latestmigration1681408539863.prototype.up = function (queryRunner) {
+    latestmigration1681409435629.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" ADD \"totalDeviceAmount\" integer DEFAULT '0'")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" ADD \"agentId\" integer")];
                     case 1:
                         _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    latestmigration1681408539863.prototype.down = function (queryRunner) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"transportationcharge\" SET DEFAULT '0'")];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"refundamount\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" ADD CONSTRAINT \"FK_ee12f39a59baddb2aed56985ff5\" FOREIGN KEY (\"agentId\") REFERENCES \"tblagent\"(\"id\") ON DELETE CASCADE ON UPDATE NO ACTION")];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"cancellationfee\" SET DEFAULT '0'")];
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    latestmigration1681409435629.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" DROP CONSTRAINT \"FK_ee12f39a59baddb2aed56985ff5\"")];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"transportationcharge\" SET DEFAULT '0'")];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"refundamount\" SET DEFAULT '0'")];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"agentrating\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"cancellationfee\" SET DEFAULT '0'")];
                     case 4:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"clientrating\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"agentrating\" SET DEFAULT '0'")];
                     case 5:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"totalamount\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"clientrating\" SET DEFAULT '0'")];
                     case 6:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"tax\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"totalamount\" SET DEFAULT '0'")];
                     case 7:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"discount\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"tax\" SET DEFAULT '0'")];
                     case 8:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"subtotal\" SET DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"discount\" SET DEFAULT '0'")];
                     case 9:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" DROP COLUMN \"totalDeviceAmount\"")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"subtotal\" SET DEFAULT '0'")];
                     case 10:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" DROP COLUMN \"agentId\"")];
+                    case 11:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return latestmigration1681408539863;
+    return latestmigration1681409435629;
 }());
-exports.latestmigration1681408539863 = latestmigration1681408539863;
-//# sourceMappingURL=1681408539863-latestmigration.js.map
+exports.latestmigration1681409435629 = latestmigration1681409435629;
+//# sourceMappingURL=1681409435629-latestmigration.js.map

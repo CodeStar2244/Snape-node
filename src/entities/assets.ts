@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { AssetType } from "../modules/assetRegistry/assetRegistry.model";
+import { Tblagent } from "./Tblagent";
 
 export enum AssetStatus {
     ACTIVE="Active",
@@ -36,6 +37,10 @@ export default class Assets{
         default:AssetStatus.ACTIVE
     })
     status:AssetStatus
+    
+    @ManyToOne(()=>Tblagent,(agent)=>agent.id,{onDelete:"CASCADE"})
+    @JoinColumn({name:"agentId"})    
+    agentId:Tblagent
 
     @CreateDateColumn({type:'timestamptz'})
     createdAt: Date;

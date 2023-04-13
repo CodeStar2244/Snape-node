@@ -10,7 +10,8 @@ export class AssetRegistryService {
             nickName:body.nickName,
             deviceAmount:body.deviceAmount,
             deviceID:body.deviceID,
-            type:body.type
+            type:body.type,
+            agentId:userDetails.id
            })
            assetRepo.save(asset);
            return ResponseBuilder.data(asset)

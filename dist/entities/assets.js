@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AssetStatus = void 0;
 var typeorm_1 = require("typeorm");
 var assetRegistry_model_1 = require("../modules/assetRegistry/assetRegistry.model");
+var Tblagent_1 = require("./Tblagent");
 var AssetStatus;
 (function (AssetStatus) {
     AssetStatus["ACTIVE"] = "Active";
@@ -54,6 +55,11 @@ var Assets = /** @class */ (function () {
         }),
         __metadata("design:type", String)
     ], Assets.prototype, "status", void 0);
+    __decorate([
+        (0, typeorm_1.ManyToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
+        (0, typeorm_1.JoinColumn)({ name: "agentId" }),
+        __metadata("design:type", Tblagent_1.Tblagent)
+    ], Assets.prototype, "agentId", void 0);
     __decorate([
         (0, typeorm_1.CreateDateColumn)({ type: 'timestamptz' }),
         __metadata("design:type", Date)
