@@ -35,16 +35,30 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AssetRegistryService = void 0;
+var db_config_1 = require("../../db/db.config");
+var assets_1 = __importDefault(require("../../entities/assets"));
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var AssetRegistryService = /** @class */ (function () {
     function AssetRegistryService() {
         var _this = this;
         this.createAsset = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
+            var assetRepo, asset;
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({})];
+                    assetRepo = db_config_1.AppDataSource.getRepository(assets_1.default);
+                    asset = assetRepo.create({
+                        nickName: body.nickName,
+                        deviceAmount: body.deviceAmount,
+                        deviceID: body.deviceID,
+                        type: body.type
+                    });
+                    assetRepo.save(asset);
+                    return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(asset)];
                 }
                 catch (error) {
                     console.log(error);
