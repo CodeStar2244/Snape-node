@@ -234,8 +234,6 @@ export class Tblagent {
   })
   branchcode: string | null;
 
-  @Column({nullable:true,default:0})
-  totalDeviceAmount: number;
   @ManyToOne(() => Tblrole, (tblrole) => tblrole.tblagents)
   @JoinColumn([{ name: "roleid", referencedColumnName: "id" }])
   role: Tblrole;

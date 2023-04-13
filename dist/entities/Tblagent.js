@@ -276,10 +276,6 @@ var Tblagent = /** @class */ (function () {
         __metadata("design:type", String)
     ], Tblagent.prototype, "branchcode", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ nullable: true, default: 0 }),
-        __metadata("design:type", Number)
-    ], Tblagent.prototype, "totalDeviceAmount", void 0);
-    __decorate([
         (0, typeorm_1.ManyToOne)(function () { return Tblrole_1.Tblrole; }, function (tblrole) { return tblrole.tblagents; }),
         (0, typeorm_1.JoinColumn)([{ name: "roleid", referencedColumnName: "id" }]),
         __metadata("design:type", Tblrole_1.Tblrole)
