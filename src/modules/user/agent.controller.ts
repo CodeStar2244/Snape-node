@@ -18,4 +18,14 @@ export class UserController {
         }
        
     }
+    public getRemaningBalance = async (req,res)=>{
+        try {
+            const data = await this.agentService.getRemaningBalance(req.user)
+            return res.status(data.code).json(data);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);          
+        }
+       
+    }
 }

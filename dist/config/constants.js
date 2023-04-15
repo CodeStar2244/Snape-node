@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FILE_ALREADY_EXISTS = exports.PAYMENT_STATUS = exports.COLLECTION_STATUS = exports.RES_STATUS = exports.RES_CODE = exports.DATE_FORMAT_REPORT_DATE = exports.DATE_FORMAT_REPORT = exports.DATE_FORMAT = exports.IMAGE_EXT = exports.RECORDS_PER_PAGE = exports.TIME_FORMAT = exports.TIME_STAMP_FORMAT = exports.BAD_DATA = exports.CODE = exports.MESSAGE = void 0;
+exports.FREE_ACCOUNT_STORAGE = exports.FILE_ALREADY_EXISTS = exports.PAYMENT_STATUS = exports.COLLECTION_STATUS = exports.RES_STATUS = exports.RES_CODE = exports.DATE_FORMAT_REPORT_DATE = exports.DATE_FORMAT_REPORT = exports.DATE_FORMAT = exports.IMAGE_EXT = exports.RECORDS_PER_PAGE = exports.TIME_FORMAT = exports.TIME_STAMP_FORMAT = exports.BAD_DATA = exports.CODE = exports.MESSAGE = void 0;
 exports.MESSAGE = {
     TIMEZONE: "Asia/Kolkata",
     PASSWORD_SALT: 8,
@@ -36,4 +36,5 @@ exports.PAYMENT_STATUS = {
     SUCESS: "success"
 };
 exports.FILE_ALREADY_EXISTS = "File Already Exists";
+exports.FREE_ACCOUNT_STORAGE = 3072;
 //# sourceMappingURL=constants.js.map

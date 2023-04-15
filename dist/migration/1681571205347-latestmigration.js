@@ -36,19 +36,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.latestmigration1681022632500 = void 0;
-var latestmigration1681022632500 = /** @class */ (function () {
-    function latestmigration1681022632500() {
-        this.name = 'latestmigration1681022632500';
+exports.latestmigration1681571205347 = void 0;
+var latestmigration1681571205347 = /** @class */ (function () {
+    function latestmigration1681571205347() {
+        this.name = 'latestmigration1681571205347';
     }
-    latestmigration1681022632500.prototype.up = function (queryRunner) {
+    latestmigration1681571205347.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" DROP CONSTRAINT \"FK_1cf699d9cac6162ef5783bf3c6a\"")];
+                    case 0: return [4 /*yield*/, queryRunner.query("CREATE TABLE \"agentsettings\" (\"id\" SERIAL NOT NULL, \"storage\" double precision NOT NULL DEFAULT '0', \"assets\" double precision NOT NULL DEFAULT '0', \"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), \"agentId\" integer, CONSTRAINT \"REL_62c50b6d3451431111ec66fdea\" UNIQUE (\"agentId\"), CONSTRAINT \"PK_93e2b25856f497880ba58d083ff\" PRIMARY KEY (\"id\"))")];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD CONSTRAINT \"FK_1cf699d9cac6162ef5783bf3c6a\" FOREIGN KEY (\"collectionId\") REFERENCES \"collections\"(\"id\") ON DELETE CASCADE ON UPDATE NO ACTION")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" ADD CONSTRAINT \"FK_62c50b6d3451431111ec66fdeab\" FOREIGN KEY (\"agentId\") REFERENCES \"tblagent\"(\"id\") ON DELETE CASCADE ON UPDATE NO ACTION")];
                     case 2:
                         _a.sent();
                         return [2 /*return*/];
@@ -56,11 +56,11 @@ var latestmigration1681022632500 = /** @class */ (function () {
             });
         });
     };
-    latestmigration1681022632500.prototype.down = function (queryRunner) {
+    latestmigration1681571205347.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" DROP CONSTRAINT \"FK_1cf699d9cac6162ef5783bf3c6a\"")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" DROP CONSTRAINT \"FK_62c50b6d3451431111ec66fdeab\"")];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"transportationcharge\" SET DEFAULT '0'")];
@@ -90,7 +90,7 @@ var latestmigration1681022632500 = /** @class */ (function () {
                         return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"subtotal\" SET DEFAULT '0'")];
                     case 10:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collection_design\" ADD CONSTRAINT \"FK_1cf699d9cac6162ef5783bf3c6a\" FOREIGN KEY (\"collectionId\") REFERENCES \"collections\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION")];
+                        return [4 /*yield*/, queryRunner.query("DROP TABLE \"agentsettings\"")];
                     case 11:
                         _a.sent();
                         return [2 /*return*/];
@@ -98,7 +98,7 @@ var latestmigration1681022632500 = /** @class */ (function () {
             });
         });
     };
-    return latestmigration1681022632500;
+    return latestmigration1681571205347;
 }());
-exports.latestmigration1681022632500 = latestmigration1681022632500;
-//# sourceMappingURL=1681022632500-latestmigration.js.map
+exports.latestmigration1681571205347 = latestmigration1681571205347;
+//# sourceMappingURL=1681571205347-latestmigration.js.map

@@ -4,6 +4,8 @@ import { Tblagent } from "../../entities/Tblagent";
 import { Jwt } from "../../helpers/jwt";
 import { PasswordDecryptor } from "../../helpers/passwordDecryptor";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
+import AgentSettings from "../../entities/agentSettings";
+import { FREE_ACCOUNT_STORAGE } from "../../config/constants";
 
 export class AgentService {
     private passWordDecrypt : PasswordDecryptor;
@@ -37,6 +39,8 @@ export class AgentService {
             throw ResponseBuilder.badRequest("Invalid credentials")
 
         }else{
+            this.generateAgentSettings(agent.id);
+            
             return ResponseBuilder.data({
                 token: Jwt.getAuthToken({email:agent.email , agentId:agent.id}),
                 user:userObj
@@ -48,5 +52,55 @@ export class AgentService {
     }
 
         
+    }
+    public async getRemaningBalance(userDetails){
+        try {
+        const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
+        const agentSettings = await agentSettingsRepo.findOne({
+            where:{
+                agentId:{
+                    id:userDetails.id
+                }
+            }
+        });     
+        return ResponseBuilder.data({remainingSpace:(+FREE_ACCOUNT_STORAGE - +agentSettings.storage)})
+            
+        
+    } catch (error) {
+        throw error;            
+    }
+
+        
+    }
+
+    private async generateAgentSettings(id:number){
+        try {
+            const agentSettingRepo = AppDataSource.getRepository(AgentSettings);
+            const agentRepo = AppDataSource.getRepository(Tblagent);
+            const agentSetting = await agentSettingRepo.findOne({
+                where:{
+                    agentId:{
+                        id
+                    }
+                }
+            });
+            if(!agentSetting){
+                const agent = await agentRepo.findOne({
+                    where:{
+                        id
+                    }
+                })
+                const agentSettingCreate = agentSettingRepo.create({
+                    storage:0,
+                    assets:0,
+                    agentId:agent
+
+                })
+                agentSettingRepo.save(agentSettingCreate);
+            }
+            
+        } catch (error) {
+            
+        }
     }
 }

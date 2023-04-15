@@ -36,6 +36,8 @@ export const PAYMENT_STATUS={
 }
 export const FILE_ALREADY_EXISTS ="File Already Exists";
 
+export const FREE_ACCOUNT_STORAGE = 3072;
+
 
 
 

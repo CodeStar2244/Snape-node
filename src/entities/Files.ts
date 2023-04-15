@@ -19,10 +19,13 @@ export default class FilesEntity{
     @Column()
     url:string;
     
-    @Column({default:"test"})
+    @Column()
     key:string;
     
-    @Column()
+    @Column({
+        type:"float",
+        default:0
+    })
     size:number;
 
     @Column()

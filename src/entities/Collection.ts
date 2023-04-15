@@ -57,6 +57,12 @@ export default class Collections{
     @Column({nullable:true,default:"https://s3.amazonaws.com/dev-media.snape.com/collectionphoto.jpg"})
     coverPhoto:string
 
+    @Column({
+        type:"float",
+        default:0
+    })
+    size:number;
+
     @ManyToOne(()=>Tblagent,(agent)=>agent.id,{onDelete:"CASCADE"})
     @JoinColumn({name:"agentId"})
     createdBy

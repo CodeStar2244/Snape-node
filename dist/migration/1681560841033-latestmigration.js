@@ -36,31 +36,37 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.latestmigration1681409435629 = void 0;
-var latestmigration1681409435629 = /** @class */ (function () {
-    function latestmigration1681409435629() {
-        this.name = 'latestmigration1681409435629';
+exports.latestmigration1681560841033 = void 0;
+var latestmigration1681560841033 = /** @class */ (function () {
+    function latestmigration1681560841033() {
+        this.name = 'latestmigration1681560841033';
     }
-    latestmigration1681409435629.prototype.up = function (queryRunner) {
+    latestmigration1681560841033.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" ADD \"agentId\" integer")];
+                    case 0: return [4 /*yield*/, queryRunner.query("CREATE TABLE \"agentSettings\" (\"id\" SERIAL NOT NULL, \"storage\" double precision NOT NULL DEFAULT '0', \"assets\" double precision NOT NULL DEFAULT '0', \"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), \"agentId\" integer, CONSTRAINT \"REL_85236aec09b6abdb8f9cf93728\" UNIQUE (\"agentId\"), CONSTRAINT \"PK_dcd276aad49e7ab185c98ce0c4b\" PRIMARY KEY (\"id\"))")];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" ADD CONSTRAINT \"FK_ee12f39a59baddb2aed56985ff5\" FOREIGN KEY (\"agentId\") REFERENCES \"tblagent\"(\"id\") ON DELETE CASCADE ON UPDATE NO ACTION")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" DROP COLUMN \"deviceAmount\"")];
                     case 2:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" ADD \"deviceAmount\" double precision NOT NULL DEFAULT '0'")];
+                    case 3:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentSettings\" ADD CONSTRAINT \"FK_85236aec09b6abdb8f9cf93728f\" FOREIGN KEY (\"agentId\") REFERENCES \"tblagent\"(\"id\") ON DELETE CASCADE ON UPDATE NO ACTION")];
+                    case 4:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    latestmigration1681409435629.prototype.down = function (queryRunner) {
+    latestmigration1681560841033.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" DROP CONSTRAINT \"FK_ee12f39a59baddb2aed56985ff5\"")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentSettings\" DROP CONSTRAINT \"FK_85236aec09b6abdb8f9cf93728f\"")];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"transportationcharge\" SET DEFAULT '0'")];
@@ -90,15 +96,21 @@ var latestmigration1681409435629 = /** @class */ (function () {
                         return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"subtotal\" SET DEFAULT '0'")];
                     case 10:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" DROP COLUMN \"agentId\"")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" DROP COLUMN \"deviceAmount\"")];
                     case 11:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"assets\" ADD \"deviceAmount\" integer NOT NULL")];
+                    case 12:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("DROP TABLE \"agentSettings\"")];
+                    case 13:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return latestmigration1681409435629;
+    return latestmigration1681560841033;
 }());
-exports.latestmigration1681409435629 = latestmigration1681409435629;
-//# sourceMappingURL=1681409435629-latestmigration.js.map
+exports.latestmigration1681560841033 = latestmigration1681560841033;
+//# sourceMappingURL=1681560841033-latestmigration.js.map

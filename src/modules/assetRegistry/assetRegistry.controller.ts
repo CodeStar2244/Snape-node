@@ -13,4 +13,14 @@ export class AssetRegistryController{
             return res.status(error.code).json(error);        
         }
     }
+    public getAssets = async (req:any,res:Response)=>{
+        try {
+            const userDetails = req.user;
+            const result = await this.assetRegistryService.getAssets(userDetails,req.query)
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
 }

@@ -8,7 +8,7 @@ var Validator = /** @class */ (function () {
     Validator.prototype.validate = function (arg) {
         var classThis = this;
         return function (req, res, next) {
-            model_1.Model.getModel(arg, req.body, req.params).then(function (m2) {
+            model_1.Model.getModel(arg, req.body, req.query).then(function (m2) {
                 req.model = m2;
                 next();
             }).catch(function (err) {

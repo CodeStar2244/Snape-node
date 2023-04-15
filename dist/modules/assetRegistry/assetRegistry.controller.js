@@ -60,6 +60,24 @@ var AssetRegistryController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getAssets = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.assetRegistryService.getAssets(userDetails, req.query)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_2 = _a.sent();
+                        return [2 /*return*/, res.status(error_2.code).json(error_2)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return AssetRegistryController;
 }());

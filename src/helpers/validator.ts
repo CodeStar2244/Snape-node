@@ -4,7 +4,7 @@ export class Validator {
   public validate(arg: Model) {
     const classThis = this;
     return (req, res, next) => {
-      Model.getModel(arg, req.body, req.params).then((m2) => {
+      Model.getModel(arg, req.body, req.query).then((m2) => {
         req.model = m2;
         next();
       }).catch((err) => {

@@ -36,7 +36,10 @@ var Assets = /** @class */ (function () {
         __metadata("design:type", String)
     ], Assets.prototype, "deviceID", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({
+            type: "float",
+            default: 0
+        }),
         __metadata("design:type", Number)
     ], Assets.prototype, "deviceAmount", void 0);
     __decorate([

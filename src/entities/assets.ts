@@ -21,7 +21,10 @@ export default class Assets{
     @Column()
     deviceID:string;
 
-    @Column()
+    @Column({
+        type:"float",
+        default:0
+    })
     deviceAmount:number;
 
     @Column({

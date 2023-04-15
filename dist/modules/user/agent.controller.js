@@ -59,6 +59,23 @@ var UserController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getRemaningBalance = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var data, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.agentService.getRemaningBalance(req.user)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, res.status(data.code).json(data)];
+                    case 2:
+                        error_2 = _a.sent();
+                        return [2 /*return*/, res.status(error_2.code).json(error_2)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.agentService = new agent_service_1.AgentService();
     }
     return UserController;

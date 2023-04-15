@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
-    LOGIN: "/login"
+    LOGIN: "/login",
+    GET_REMANING_SPACE: "/get-remaining-space",
 };
 exports.COLLECTION_ROUTES = {
     CREATE_COLLECTION: "/",
@@ -30,5 +31,6 @@ exports.DASHBOARD_ROTUES = {
 };
 exports.ASSET_REGISTRY_ROUTES = {
     CREATE_ASSET: "/",
+    GET_ASSET: "/",
 };
 //# sourceMappingURL=routes.js.map

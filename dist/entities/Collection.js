@@ -83,6 +83,13 @@ var Collections = /** @class */ (function () {
         __metadata("design:type", String)
     ], Collections.prototype, "coverPhoto", void 0);
     __decorate([
+        (0, typeorm_1.Column)({
+            type: "float",
+            default: 0
+        }),
+        __metadata("design:type", Number)
+    ], Collections.prototype, "size", void 0);
+    __decorate([
         (0, typeorm_1.ManyToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
         (0, typeorm_1.JoinColumn)({ name: "agentId" }),
         __metadata("design:type", Object)

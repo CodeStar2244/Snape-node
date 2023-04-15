@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
 import { Model } from "../../helpers/model";
 
 export enum AssetType {
@@ -6,7 +6,14 @@ export enum AssetType {
     CAMERA="CAMERA",
     SCREEN="SCREEN",
     PRINTER="PRINTER"
-  }
+}
+
+export enum AssetStatus {
+    ACTIVE="Active",
+    FORSALE="For Sale",
+    LOST="Lost",
+    FORRENT="For Rent"
+}
 export class AssetCreateModel extends Model {
     @IsEnum(AssetType)
     type: AssetType
@@ -29,5 +36,16 @@ export class AssetCreateModel extends Model {
         this.nickName = body.nickName
         this.deviceID = body.deviceID
         this.deviceAmount = body.deviceAmount
+    }
+}
+export class AssetGetModel extends Model {
+    @IsEnum(AssetStatus)
+    @IsOptional()
+    status: AssetStatus
+
+
+    constructor(body: any, params?: any) {
+        super();
+        this.status = params.status
     }
 }

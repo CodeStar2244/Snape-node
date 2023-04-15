@@ -21,6 +21,22 @@ export class AssetRegistryService {
 
         }
     }
+    public getAssets = async (userDetails,params) => {
+        try {
+           const assetRepo = AppDataSource.getRepository(Assets);
+           const assetsquery =  assetRepo.createQueryBuilder("assets")
+           .where(`"assets"."agentId" = :agentId`,{agentId:userDetails.id})
+           if(params.status){
+            assetsquery.andWhere("assets.status =:status",{status:params.status})
+           }
+           const assets = await assetsquery.getMany();
+           return ResponseBuilder.data(assets)
+        }  catch (error) {
+            console.log(error)
+            throw ResponseBuilder.error(error)
+
+        }
+    }
     
    
 

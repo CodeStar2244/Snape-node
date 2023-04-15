@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { USER_ROUTES } from "../../config/routes";
 import { UserController } from "./agent.controller";
+import { Middleware } from "../../middleware";
+
 
 
 // Assign router to the express.Router() instance
@@ -10,4 +12,5 @@ const userController:UserController = new UserController()
 
 //Signup
 router.post(USER_ROUTES.LOGIN , userController.login );
+router.get(USER_ROUTES.GET_REMANING_SPACE, new Middleware().authenticateUser , userController.getRemaningBalance );
  export const UserRoute: Router = router;

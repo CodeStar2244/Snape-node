@@ -10,5 +10,6 @@ var router = (0, express_1.Router)();
 var assetRegistryController = new assetRegistry_controller_1.AssetRegistryController();
 var v = new validator_1.Validator();
 router.post(routes_1.ASSET_REGISTRY_ROUTES.CREATE_ASSET, v.validate(assetRegistry_model_1.AssetCreateModel), assetRegistryController.createAsset);
+router.get(routes_1.ASSET_REGISTRY_ROUTES.GET_ASSET, v.validate(assetRegistry_model_1.AssetGetModel), assetRegistryController.getAssets);
 exports.AssetRegistryRouter = router;
 //# sourceMappingURL=assetRegistry.route.js.map

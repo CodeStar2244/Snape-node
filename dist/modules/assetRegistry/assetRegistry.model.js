@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AssetCreateModel = exports.AssetType = void 0;
+exports.AssetGetModel = exports.AssetCreateModel = exports.AssetStatus = exports.AssetType = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var AssetType;
@@ -34,6 +34,13 @@ var AssetType;
     AssetType["SCREEN"] = "SCREEN";
     AssetType["PRINTER"] = "PRINTER";
 })(AssetType = exports.AssetType || (exports.AssetType = {}));
+var AssetStatus;
+(function (AssetStatus) {
+    AssetStatus["ACTIVE"] = "Active";
+    AssetStatus["FORSALE"] = "For Sale";
+    AssetStatus["LOST"] = "Lost";
+    AssetStatus["FORRENT"] = "For Rent";
+})(AssetStatus = exports.AssetStatus || (exports.AssetStatus = {}));
 var AssetCreateModel = /** @class */ (function (_super) {
     __extends(AssetCreateModel, _super);
     function AssetCreateModel(body, params) {
@@ -66,4 +73,19 @@ var AssetCreateModel = /** @class */ (function (_super) {
     return AssetCreateModel;
 }(model_1.Model));
 exports.AssetCreateModel = AssetCreateModel;
+var AssetGetModel = /** @class */ (function (_super) {
+    __extends(AssetGetModel, _super);
+    function AssetGetModel(body, params) {
+        var _this = _super.call(this) || this;
+        _this.status = params.status;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsEnum)(AssetStatus),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], AssetGetModel.prototype, "status", void 0);
+    return AssetGetModel;
+}(model_1.Model));
+exports.AssetGetModel = AssetGetModel;
 //# sourceMappingURL=assetRegistry.model.js.map

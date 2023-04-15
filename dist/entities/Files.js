@@ -36,11 +36,14 @@ var FilesEntity = /** @class */ (function () {
         __metadata("design:type", String)
     ], FilesEntity.prototype, "url", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ default: "test" }),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], FilesEntity.prototype, "key", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({
+            type: "float",
+            default: 0
+        }),
         __metadata("design:type", Number)
     ], FilesEntity.prototype, "size", void 0);
     __decorate([
