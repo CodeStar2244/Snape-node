@@ -63,7 +63,7 @@ export class AgentService {
                 }
             }
         });     
-        return ResponseBuilder.data({remainingSpace:(+FREE_ACCOUNT_STORAGE - +agentSettings.storage)})
+        return ResponseBuilder.data({remainingSpace:(+FREE_ACCOUNT_STORAGE - +agentSettings.storage),usedSpace:+agentSettings.storage,totalAllowedSpace:FREE_ACCOUNT_STORAGE})
             
         
     } catch (error) {

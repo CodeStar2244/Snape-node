@@ -114,7 +114,7 @@ var AgentService = /** @class */ (function () {
                             })];
                     case 1:
                         agentSettings = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ remainingSpace: (+constants_1.FREE_ACCOUNT_STORAGE - +agentSettings.storage) })];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ remainingSpace: (+constants_1.FREE_ACCOUNT_STORAGE - +agentSettings.storage), usedSpace: +agentSettings.storage, totalAllowedSpace: constants_1.FREE_ACCOUNT_STORAGE })];
                     case 2:
                         error_2 = _a.sent();
                         throw error_2;
