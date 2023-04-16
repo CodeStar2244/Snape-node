@@ -126,6 +126,7 @@ var ClientService = /** @class */ (function () {
                             if (!collection) {
                                 return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found or collection not published", 404)];
                             }
+                            console.log(collection, "fa");
                             return [4 /*yield*/, filesRepository.createQueryBuilder("files")
                                     .select("files.cdnUrl", "url")
                                     .addSelect("files.name", "name")
@@ -135,7 +136,8 @@ var ClientService = /** @class */ (function () {
                                     .addSelect("files.url", "prevUrl")
                                     .addSelect("files.height", "height")
                                     .addSelect("files.width", "width")
-                                    .where("collectionId = :collectionId", { collectionId: collection.id }).getMany()];
+                                    .addSelect("files.collectionId", "collectionId")
+                                    .where("files.collectionId = :collectionId", { collectionId: collection.id }).getRawMany()];
                         case 2:
                             filesCollection = _b.sent();
                             return [4 /*yield*/, collectionRepository.findOneBy({ id: collection.id })];

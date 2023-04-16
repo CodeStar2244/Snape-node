@@ -382,7 +382,7 @@ export class CollectionService {
             const files = body.files;
             const filesUploadArr = [];
             if (collection.photos === 0) {
-                collectioRepo.save({ ...collection, coverPhoto: files[0]?.url })
+                collectioRepo.save({ ...collection, coverPhoto: CDN_URL+files[0].key })
             }
             for (const file of files) {
                 if(fileNamesArr.includes(file.name)){

@@ -42,7 +42,7 @@ export class ClientService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found or collection not published", 404);
             }
-
+            console.log(collection , "fa")
             const filesCollection = await filesRepository.createQueryBuilder("files")
             .select("files.cdnUrl","url")
             .addSelect("files.name","name")
@@ -52,7 +52,8 @@ export class ClientService {
             .addSelect("files.url","prevUrl")
             .addSelect("files.height","height")
             .addSelect("files.width","width")
-            .where("collectionId = :collectionId",{collectionId:collection.id}).getMany()
+            .addSelect("files.collectionId","collectionId")
+            .where("files.collectionId = :collectionId",{collectionId:collection.id}).getRawMany();
             const passwordCheckCollection = await collectionRepository.findOneBy({id:collection.id})
             
             if(passwordCheckCollection.password){

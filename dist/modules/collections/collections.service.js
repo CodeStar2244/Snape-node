@@ -524,27 +524,26 @@ var CollectionService = /** @class */ (function () {
         }); };
         this.uploadFiles = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
             var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, _i, files_4, file, reponse, error_13;
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 4, , 5]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
                         return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
                     case 1:
-                        collection = _b.sent();
+                        collection = _a.sent();
                         if (!collection) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
                         return [4 /*yield*/, this.getCollectionFilesName(userDetails, collection.id)];
                     case 2:
-                        collectionFiles = _b.sent();
+                        collectionFiles = _a.sent();
                         fileNamesArr = collectionFiles.result;
                         files = body.files;
                         filesUploadArr = [];
                         if (collection.photos === 0) {
-                            collectioRepo.save(__assign(__assign({}, collection), { coverPhoto: (_a = files[0]) === null || _a === void 0 ? void 0 : _a.url }));
+                            collectioRepo.save(__assign(__assign({}, collection), { coverPhoto: constants_1.CDN_URL + files[0].key }));
                         }
                         for (_i = 0, files_4 = files; _i < files_4.length; _i++) {
                             file = files_4[_i];
@@ -565,10 +564,10 @@ var CollectionService = /** @class */ (function () {
                         }
                         return [4 /*yield*/, Promise.all(filesUploadArr)];
                     case 3:
-                        reponse = _b.sent();
+                        reponse = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(reponse, "Files Uploaded")];
                     case 4:
-                        error_13 = _b.sent();
+                        error_13 = _a.sent();
                         if (error_13.message === constants_1.FILE_ALREADY_EXISTS) {
                             throw responseBuilder_1.ResponseBuilder.fileExists(error_13, constants_1.FILE_ALREADY_EXISTS);
                         }
