@@ -46,7 +46,6 @@ var jwt_1 = require("../../helpers/jwt");
 var passwordDecryptor_1 = require("../../helpers/passwordDecryptor");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var agentSettings_1 = __importDefault(require("../../entities/agentSettings"));
-var constants_1 = require("../../config/constants");
 var AgentService = /** @class */ (function () {
     function AgentService() {
         this.passWordDecrypt = new passwordDecryptor_1.PasswordDecryptor();
@@ -99,22 +98,22 @@ var AgentService = /** @class */ (function () {
     };
     AgentService.prototype.getRemaningBalance = function (userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentSettingsRepo, agentSettings, error_2;
+            var agentSettingsRepo, agentSettings, dataToSend, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
-                        return [4 /*yield*/, agentSettingsRepo.findOne({
-                                where: {
-                                    agentId: {
-                                        id: userDetails.id
-                                    }
-                                }
-                            })];
+                        return [4 /*yield*/, agentSettingsRepo.createQueryBuilder("agentSettings")
+                                .andWhere("agentSettings.agentId = :agentId", { agentId: userDetails.id }).getOne()];
                     case 1:
                         agentSettings = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ remainingSpace: (+constants_1.FREE_ACCOUNT_STORAGE - +agentSettings.storage), usedSpace: +agentSettings.storage, totalAllowedSpace: constants_1.FREE_ACCOUNT_STORAGE })];
+                        dataToSend = {
+                            remainingSpace: (agentSettings.totalStorage - +agentSettings.storage).toFixed(2),
+                            usedSpace: +agentSettings.storage.toFixed(2),
+                            totalAllowedSpace: agentSettings.totalStorage.toFixed(2)
+                        };
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
                     case 2:
                         error_2 = _a.sent();
                         throw error_2;

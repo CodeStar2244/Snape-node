@@ -32,5 +32,6 @@ exports.DASHBOARD_ROTUES = {
 exports.ASSET_REGISTRY_ROUTES = {
     CREATE_ASSET: "/",
     GET_ASSET: "/",
+    UPDATE_ASSET: "/:id",
 };
 //# sourceMappingURL=routes.js.map

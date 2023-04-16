@@ -21,17 +21,29 @@ var AgentSettings = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)({
             type: "float",
-            default: 0
+            default: 0,
+            precision: 2,
+            nullable: true
         }),
         __metadata("design:type", Number)
     ], AgentSettings.prototype, "storage", void 0);
     __decorate([
         (0, typeorm_1.Column)({
             type: "float",
-            default: 0
+            default: 0,
+            precision: 2,
+            nullable: true
         }),
         __metadata("design:type", Number)
     ], AgentSettings.prototype, "assets", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({
+            type: "float",
+            default: 3072,
+            precision: 2
+        }),
+        __metadata("design:type", Number)
+    ], AgentSettings.prototype, "totalStorage", void 0);
     __decorate([
         (0, typeorm_1.OneToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
         (0, typeorm_1.JoinColumn)({ name: "agentId" }),

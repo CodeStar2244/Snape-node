@@ -23,4 +23,14 @@ export class AssetRegistryController{
             return res.status(error.code).json(error);        
         }
     }
+    public updateAsset = async (req:any,res:Response)=>{
+        try {
+            const userDetails = req.user;
+            const result = await this.assetRegistryService.updateAsset(userDetails,req.params,req.body)
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
 }

@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AssetGetModel = exports.AssetCreateModel = exports.AssetStatus = exports.AssetType = void 0;
+exports.AssetUpdateModel = exports.AssetGetModel = exports.AssetCreateModel = exports.AssetStatus = exports.AssetType = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var AssetType;
@@ -88,4 +88,46 @@ var AssetGetModel = /** @class */ (function (_super) {
     return AssetGetModel;
 }(model_1.Model));
 exports.AssetGetModel = AssetGetModel;
+var AssetUpdateModel = /** @class */ (function (_super) {
+    __extends(AssetUpdateModel, _super);
+    function AssetUpdateModel(body, params) {
+        var _this = _super.call(this) || this;
+        _this.type = body.type;
+        _this.nickName = body.nickName;
+        _this.deviceID = body.deviceID;
+        _this.deviceAmount = body.deviceAmount;
+        _this.status = body.status;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsEnum)(AssetType),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], AssetUpdateModel.prototype, "type", void 0);
+    __decorate([
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], AssetUpdateModel.prototype, "nickName", void 0);
+    __decorate([
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], AssetUpdateModel.prototype, "deviceID", void 0);
+    __decorate([
+        (0, class_validator_1.IsNumber)(),
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", Number)
+    ], AssetUpdateModel.prototype, "deviceAmount", void 0);
+    __decorate([
+        (0, class_validator_1.IsEnum)(AssetStatus),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], AssetUpdateModel.prototype, "status", void 0);
+    return AssetUpdateModel;
+}(model_1.Model));
+exports.AssetUpdateModel = AssetUpdateModel;
 //# sourceMappingURL=assetRegistry.model.js.map

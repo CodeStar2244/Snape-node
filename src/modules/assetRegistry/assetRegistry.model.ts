@@ -49,3 +49,37 @@ export class AssetGetModel extends Model {
         this.status = params.status
     }
 }
+
+export class AssetUpdateModel extends Model {
+    @IsEnum(AssetType)
+    @IsOptional()
+    type: AssetType
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    nickName: string
+
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    deviceID: string
+    
+    @IsNumber()
+    @IsNotEmpty()
+    @IsOptional()
+    deviceAmount: number
+
+    @IsEnum(AssetStatus)
+    @IsOptional()
+    status: AssetStatus
+
+    constructor(body: any, params?: any) {
+        super();
+        this.type = body.type
+        this.nickName = body.nickName
+        this.deviceID = body.deviceID
+        this.deviceAmount = body.deviceAmount
+        this.status = body.status
+    }
+}
