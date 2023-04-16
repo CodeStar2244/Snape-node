@@ -8,7 +8,7 @@ import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { UpdateCollectionModel, CollectionDesignModel } from "./collections.model";
-import { FILE_ALREADY_EXISTS } from "../../config/constants";
+import { CDN_URL, FILE_ALREADY_EXISTS } from "../../config/constants";
 
 export class CollectionService {
     private s3 = new AWSS3();
@@ -395,6 +395,7 @@ export class CollectionService {
                     size: file.size,
                     type: file.type,
                     key: file.key,
+                    cdnUrl:CDN_URL+file.key,
                     height:file.height,
                     width:file.width,
                     collection: params.id

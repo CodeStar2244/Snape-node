@@ -79,13 +79,14 @@ var Collections = /** @class */ (function () {
         __metadata("design:type", Number)
     ], Collections.prototype, "videos", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ nullable: true, default: "https://s3.amazonaws.com/dev-media.snape.com/collectionphoto.jpg" }),
+        (0, typeorm_1.Column)({ nullable: true, default: "https://snape-buckets.b-cdn.net/collectionphoto.jpg" }),
         __metadata("design:type", String)
     ], Collections.prototype, "coverPhoto", void 0);
     __decorate([
         (0, typeorm_1.Column)({
             type: "float",
-            default: 0
+            default: 0,
+            nullable: true
         }),
         __metadata("design:type", Number)
     ], Collections.prototype, "size", void 0);

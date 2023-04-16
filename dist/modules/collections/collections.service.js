@@ -557,6 +557,7 @@ var CollectionService = /** @class */ (function () {
                                 size: file.size,
                                 type: file.type,
                                 key: file.key,
+                                cdnUrl: constants_1.CDN_URL + file.key,
                                 height: file.height,
                                 width: file.width,
                                 collection: params.id

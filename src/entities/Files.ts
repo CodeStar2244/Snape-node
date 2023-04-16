@@ -20,6 +20,9 @@ export default class FilesEntity{
     url:string;
     
     @Column()
+    cdnUrl:string;
+    
+    @Column()
     key:string;
     
     @Column({

@@ -54,12 +54,13 @@ export default class Collections{
     videos:number
 
 
-    @Column({nullable:true,default:"https://s3.amazonaws.com/dev-media.snape.com/collectionphoto.jpg"})
+    @Column({nullable:true,default:"https://snape-buckets.b-cdn.net/collectionphoto.jpg"})
     coverPhoto:string
 
     @Column({
         type:"float",
-        default:0
+        default:0,
+        nullable:true
     })
     size:number;
 

@@ -38,6 +38,10 @@ var FilesEntity = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
+    ], FilesEntity.prototype, "cdnUrl", void 0);
+    __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", String)
     ], FilesEntity.prototype, "key", void 0);
     __decorate([
         (0, typeorm_1.Column)({
