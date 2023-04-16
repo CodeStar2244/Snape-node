@@ -31,5 +31,6 @@ export const ASSET_REGISTRY_ROUTES = {
     CREATE_ASSET : "/",
     GET_ASSET : "/",
     UPDATE_ASSET : "/:id",
+    DASHBOARD : "/dashboard",
     
 }

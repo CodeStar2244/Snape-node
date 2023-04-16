@@ -33,4 +33,14 @@ export class AssetRegistryController{
             return res.status(error.code).json(error);        
         }
     }
+    public assetDashboard = async (req:any,res:Response)=>{
+        try {
+            const userDetails = req.user;
+            const result = await this.assetRegistryService.assetDashboard(userDetails)
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
 }

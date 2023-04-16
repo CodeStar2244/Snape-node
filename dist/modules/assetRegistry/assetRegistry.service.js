@@ -52,6 +52,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AssetRegistryService = void 0;
 var db_config_1 = require("../../db/db.config");
+var agentSettings_1 = __importDefault(require("../../entities/agentSettings"));
 var assets_1 = __importDefault(require("../../entities/assets"));
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var assetRegistry_model_1 = require("./assetRegistry.model");
@@ -104,8 +105,49 @@ var AssetRegistryService = /** @class */ (function () {
                 }
             });
         }); };
+        this.assetDashboard = function (userDetails) { return __awaiter(_this, void 0, void 0, function () {
+            var assetRepo, agentSettingRepo, assetGroupByStatusQuery, assetGroupByTypeQuery, getAssetAmountsPromise, _a, assetGroupByStatus, assetGroupByType, getAssetAmounts, error_2;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        assetRepo = db_config_1.AppDataSource.getRepository(assets_1.default);
+                        agentSettingRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
+                        assetGroupByStatusQuery = assetRepo.createQueryBuilder("assets")
+                            .select("count(\"assets\".\"id\")", "devices")
+                            .addSelect("assets.status", "status")
+                            .where("\"assets\".\"agentId\" = :agentId", { agentId: userDetails.id })
+                            .addGroupBy("assets.status");
+                        assetGroupByTypeQuery = assetRepo.createQueryBuilder("assets")
+                            .select("count(\"assets\".\"id\")", "devices")
+                            .addSelect("assets.type", "type")
+                            .where("\"assets\".\"agentId\" = :agentId", { agentId: userDetails.id })
+                            .addGroupBy("assets.type");
+                        getAssetAmountsPromise = agentSettingRepo.findOne({
+                            where: {
+                                agentId: {
+                                    id: userDetails.id
+                                }
+                            }
+                        });
+                        return [4 /*yield*/, Promise.all([assetGroupByStatusQuery.getRawMany(), assetGroupByTypeQuery.getRawMany(), getAssetAmountsPromise])];
+                    case 1:
+                        _a = _b.sent(), assetGroupByStatus = _a[0], assetGroupByType = _a[1], getAssetAmounts = _a[2];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                summary: assetGroupByStatus,
+                                categoryData: assetGroupByType,
+                                totalAssetAmount: getAssetAmounts.assets
+                            })];
+                    case 2:
+                        error_2 = _b.sent();
+                        console.log(error_2);
+                        throw responseBuilder_1.ResponseBuilder.error(error_2);
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.updateAsset = function (userDetails, params, body) { return __awaiter(_this, void 0, void 0, function () {
-            var assetRepo, assetsquery, asset, _a, nickName, deviceAmount, deviceID, status_1, type, updateObject, updatedAsset, error_2;
+            var assetRepo, assetsquery, asset, _a, nickName, deviceAmount, deviceID, status_1, type, updateObject, updatedAsset, error_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -136,9 +178,9 @@ var AssetRegistryService = /** @class */ (function () {
                         updatedAsset = _b.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(updatedAsset)];
                     case 4:
-                        error_2 = _b.sent();
-                        console.log(error_2);
-                        throw responseBuilder_1.ResponseBuilder.error(error_2);
+                        error_3 = _b.sent();
+                        console.log(error_3);
+                        throw responseBuilder_1.ResponseBuilder.error(error_3);
                     case 5: return [2 /*return*/];
                 }
             });
