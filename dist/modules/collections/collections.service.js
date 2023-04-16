@@ -523,11 +523,11 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.uploadFiles = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, _i, files_4, file, reponse, error_13;
+            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, _i, files_4, file, existFile, reponse, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 10, , 11]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
                         return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
@@ -545,34 +545,49 @@ var CollectionService = /** @class */ (function () {
                         if (collection.photos === 0) {
                             collectioRepo.save(__assign(__assign({}, collection), { coverPhoto: constants_1.CDN_URL + files[0].key }));
                         }
-                        for (_i = 0, files_4 = files; _i < files_4.length; _i++) {
-                            file = files_4[_i];
-                            if (fileNamesArr.includes(file.name)) {
-                                throw new Error(constants_1.FILE_ALREADY_EXISTS);
-                            }
-                            filesUploadArr.push(fileRepo.save({
-                                name: file.name,
-                                url: file.url,
-                                size: file.size,
-                                type: file.type,
-                                key: file.key,
-                                cdnUrl: constants_1.CDN_URL + file.key,
-                                height: file.height,
-                                width: file.width,
-                                collection: params.id
-                            }));
-                        }
-                        return [4 /*yield*/, Promise.all(filesUploadArr)];
+                        _i = 0, files_4 = files;
+                        _a.label = 3;
                     case 3:
+                        if (!(_i < files_4.length)) return [3 /*break*/, 8];
+                        file = files_4[_i];
+                        return [4 /*yield*/, fileRepo.findOne({ where: { key: file.key } })];
+                    case 4:
+                        existFile = _a.sent();
+                        if (!existFile) return [3 /*break*/, 6];
+                        return [4 /*yield*/, fileRepo.delete(existFile === null || existFile === void 0 ? void 0 : existFile.id)];
+                    case 5:
+                        _a.sent();
+                        _a.label = 6;
+                    case 6:
+                        if (fileNamesArr.includes(file.name)) {
+                            throw new Error(constants_1.FILE_ALREADY_EXISTS);
+                        }
+                        filesUploadArr.push(fileRepo.save({
+                            name: file.name,
+                            url: file.url,
+                            size: file.size,
+                            type: file.type,
+                            key: file.key,
+                            cdnUrl: constants_1.CDN_URL + file.key,
+                            height: file.height,
+                            width: file.width,
+                            collection: params.id
+                        }));
+                        _a.label = 7;
+                    case 7:
+                        _i++;
+                        return [3 /*break*/, 3];
+                    case 8: return [4 /*yield*/, Promise.all(filesUploadArr)];
+                    case 9:
                         reponse = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(reponse, "Files Uploaded")];
-                    case 4:
+                    case 10:
                         error_13 = _a.sent();
                         if (error_13.message === constants_1.FILE_ALREADY_EXISTS) {
                             throw responseBuilder_1.ResponseBuilder.fileExists(error_13, constants_1.FILE_ALREADY_EXISTS);
                         }
                         throw responseBuilder_1.ResponseBuilder.error(error_13, "Internal Server Error");
-                    case 5: return [2 /*return*/];
+                    case 11: return [2 /*return*/];
                 }
             });
         }); };

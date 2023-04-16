@@ -22,11 +22,11 @@ export class CollectionService {
                 eventDate: body.eventDate,
                 createdBy: userDetails.id
             });
-            const theme = await themerepo.findOneBy({id:1});
+            const theme = await themerepo.findOneBy({ id: 1 });
             await designRepo.save({
                 typography: "Sans",
                 collections: collection,
-                theme:theme
+                theme: theme
             })
             return ResponseBuilder.data(collection, "Collection created SuccessFully");
 
@@ -137,7 +137,7 @@ export class CollectionService {
                             id
                         }
                     },
-                    relations:["theme"]
+                    relations: ["theme"]
                 }
             )
             return ResponseBuilder.data(collectionDesign);
@@ -151,7 +151,7 @@ export class CollectionService {
 
 
     }
-   
+
     public deleteCollection = async (userDetails, id) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
@@ -171,7 +171,7 @@ export class CollectionService {
             return ResponseBuilder.data(collection);
 
         } catch (error) {
-            console.log(error , "er")
+            console.log(error, "er")
             throw ResponseBuilder.error(error)
 
         }
@@ -264,8 +264,8 @@ export class CollectionService {
                 .where({ collection: id }).loadAllRelationIds();
             const files = await query.getRawMany();
             const fileNamesArr = [];
-            for(const filename of files){
-               fileNamesArr.push(filename?.name)
+            for (const filename of files) {
+                fileNamesArr.push(filename?.name)
             }
             return ResponseBuilder.data(fileNamesArr);
 
@@ -286,8 +286,8 @@ export class CollectionService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
-           console.log(body)
-            const { name, url, eventDate, download, downloadPin, socialSharing, status, password, tags ,coverPhoto ,slug } = new UpdateCollectionModel(body);
+            console.log(body)
+            const { name, url, eventDate, download, downloadPin, socialSharing, status, password, tags, coverPhoto, slug } = new UpdateCollectionModel(body);
             const tagsArr = tags ? tags : [];
             const collectionTagsArr = [];
             for (const tag of tagsArr) {
@@ -298,7 +298,7 @@ export class CollectionService {
             }
             const updateObject = {
                 name,
-                url, eventDate, download, downloadPin, status, password, socialSharing,coverPhoto ,slug
+                url, eventDate, download, downloadPin, status, password, socialSharing, coverPhoto, slug
             }
             await collectioRepo.save({ ...collection, ...updateObject, tags: collectionTagsArr })
             return this.getCollectionByID(userDetails, collection.id);
@@ -377,17 +377,22 @@ export class CollectionService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
-            const collectionFiles = await this.getCollectionFilesName(userDetails,collection.id);
-            const fileNamesArr:string[] =collectionFiles.result;
+            const collectionFiles = await this.getCollectionFilesName(userDetails, collection.id);
+            const fileNamesArr: string[] = collectionFiles.result;
             const files = body.files;
             const filesUploadArr = [];
             if (collection.photos === 0) {
-                collectioRepo.save({ ...collection, coverPhoto: CDN_URL+files[0].key })
+                collectioRepo.save({ ...collection, coverPhoto: CDN_URL + files[0].key })
             }
             for (const file of files) {
-                if(fileNamesArr.includes(file.name)){
-                  throw new Error(FILE_ALREADY_EXISTS);
-                    
+
+                const existFile = await fileRepo.findOne({ where: { key: file.key } })
+                if (existFile) {
+                    await fileRepo.delete(existFile?.id)
+                }
+                if (fileNamesArr.includes(file.name)) {
+                    throw new Error(FILE_ALREADY_EXISTS);
+
                 }
                 filesUploadArr.push(fileRepo.save({
                     name: file.name,
@@ -395,9 +400,9 @@ export class CollectionService {
                     size: file.size,
                     type: file.type,
                     key: file.key,
-                    cdnUrl:CDN_URL+file.key,
-                    height:file.height,
-                    width:file.width,
+                    cdnUrl: CDN_URL + file.key,
+                    height: file.height,
+                    width: file.width,
                     collection: params.id
                 }));
             }
@@ -412,8 +417,8 @@ export class CollectionService {
 
         }
         catch (error) {
-            if(error.message === FILE_ALREADY_EXISTS){
-                throw ResponseBuilder.fileExists(error,FILE_ALREADY_EXISTS)
+            if (error.message === FILE_ALREADY_EXISTS) {
+                throw ResponseBuilder.fileExists(error, FILE_ALREADY_EXISTS)
             }
             throw ResponseBuilder.error(error, "Internal Server Error")
 
