@@ -6,7 +6,7 @@ import { CollectionTags } from "../../entities/CollectionTags";
 import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
-import JSZip from "jszip";
+import JSZip, { file } from "jszip";
 import mime from 'mime';
 export class ClientService {
     private s3 = new AWSS3();
@@ -42,13 +42,17 @@ export class ClientService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found or collection not published", 404);
             }
-            const filesCollection = await filesRepository.find({
-                where:{
-                    collection:{
-                        id:collection.id
-                    }
-                }
-            });
+
+            const filesCollection = await filesRepository.createQueryBuilder("files")
+            .select("files.cdnUrl","url")
+            .addSelect("files.name","name")
+            .addSelect("files.size","size")
+            .addSelect("files.id","id")
+            .addSelect("files.key","key")
+            .addSelect("files.url","prevUrl")
+            .addSelect("files.height","height")
+            .addSelect("files.width","width")
+            .where("collectionId = :collectionId",{collectionId:collection.id}).getMany()
             const passwordCheckCollection = await collectionRepository.findOneBy({id:collection.id})
             
             if(passwordCheckCollection.password){

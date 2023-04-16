@@ -226,7 +226,7 @@ export class CollectionService {
                 .addSelect("files.name", "name")
                 .addSelect("files.key", "key")
                 .addSelect("files.size", "size")
-                .addSelect("files.url", "url")
+                .addSelect("files.cdnUrl", "url")
                 .addSelect("files.type", "type")
                 .addSelect("files.createdAt", "createdAt")
                 .addSelect("files.updatedAt", "updatedAt")

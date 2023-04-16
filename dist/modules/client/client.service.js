@@ -126,13 +126,16 @@ var ClientService = /** @class */ (function () {
                             if (!collection) {
                                 return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found or collection not published", 404)];
                             }
-                            return [4 /*yield*/, filesRepository.find({
-                                    where: {
-                                        collection: {
-                                            id: collection.id
-                                        }
-                                    }
-                                })];
+                            return [4 /*yield*/, filesRepository.createQueryBuilder("files")
+                                    .select("files.cdnUrl", "url")
+                                    .addSelect("files.name", "name")
+                                    .addSelect("files.size", "size")
+                                    .addSelect("files.id", "id")
+                                    .addSelect("files.key", "key")
+                                    .addSelect("files.url", "prevUrl")
+                                    .addSelect("files.height", "height")
+                                    .addSelect("files.width", "width")
+                                    .where("collectionId = :collectionId", { collectionId: collection.id }).getMany()];
                         case 2:
                             filesCollection = _b.sent();
                             return [4 /*yield*/, collectionRepository.findOneBy({ id: collection.id })];
@@ -193,7 +196,7 @@ var ClientService = /** @class */ (function () {
         this.downloadFile = function (userDetails, id, _a, res) {
             var pin = _a.pin;
             return __awaiter(_this, void 0, void 0, function () {
-                var collectionRepository, fileRepo, file, collection, fileStream, fileMime, error_3;
+                var collectionRepository, fileRepo, file_1, collection, fileStream, fileMime, error_3;
                 return __generator(this, function (_b) {
                     switch (_b.label) {
                         case 0:
@@ -207,8 +210,8 @@ var ClientService = /** @class */ (function () {
                                     relations: ["collection"]
                                 })];
                         case 1:
-                            file = _b.sent();
-                            return [4 /*yield*/, collectionRepository.findOneBy({ id: file.collection.id })];
+                            file_1 = _b.sent();
+                            return [4 /*yield*/, collectionRepository.findOneBy({ id: file_1.collection.id })];
                         case 2:
                             collection = _b.sent();
                             if (!collection) {
@@ -218,14 +221,14 @@ var ClientService = /** @class */ (function () {
                                 return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Downlaod Not allowed for these collection")];
                             }
                             if (!collection.downloadPin) return [3 /*break*/, 3];
-                            return [2 /*return*/, this.collectionFileDownloadPinRequired(collection, pin, file, res)];
-                        case 3: return [4 /*yield*/, this.getFileFromS3Bucket(file.key)];
+                            return [2 /*return*/, this.collectionFileDownloadPinRequired(collection, pin, file_1, res)];
+                        case 3: return [4 /*yield*/, this.getFileFromS3Bucket(file_1.key)];
                         case 4:
                             fileStream = _b.sent();
-                            fileMime = mime_1.default.getType(file.url);
+                            fileMime = mime_1.default.getType(file_1.url);
                             return [2 /*return*/, {
                                     result: fileStream,
-                                    name: file.name,
+                                    name: file_1.name,
                                     mime: fileMime
                                 }];
                         case 5: return [3 /*break*/, 7];
@@ -331,7 +334,7 @@ var ClientService = /** @class */ (function () {
     }
     ClientService.prototype.createZipfile = function (files) {
         return __awaiter(this, void 0, void 0, function () {
-            var zip, _i, files_1, file, fileFromS3, zipFile;
+            var zip, _i, files_1, file_2, fileFromS3, zipFile;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -340,11 +343,11 @@ var ClientService = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         if (!(_i < files_1.length)) return [3 /*break*/, 4];
-                        file = files_1[_i];
-                        return [4 /*yield*/, this.getFileFromS3Bucket(file.key)];
+                        file_2 = files_1[_i];
+                        return [4 /*yield*/, this.getFileFromS3Bucket(file_2.key)];
                     case 2:
                         fileFromS3 = _a.sent();
-                        zip.file(file.name, fileFromS3);
+                        zip.file(file_2.name, fileFromS3);
                         _a.label = 3;
                     case 3:
                         _i++;
