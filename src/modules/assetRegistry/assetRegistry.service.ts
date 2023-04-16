@@ -42,13 +42,17 @@ export class AssetRegistryService {
         try {
            const assetRepo = AppDataSource.getRepository(Assets);
            const agentSettingRepo = AppDataSource.getRepository(AgentSettings);
+           const assetsCount =  await assetRepo.createQueryBuilder("assets")
+           .select(`count("assets"."id")`,"devices")
+           .where(`"assets"."agentId" = :agentId`,{agentId:userDetails.id}).getRawOne();
+           const totalDevices = +assetsCount.devices;
            const assetGroupByStatusQuery =  assetRepo.createQueryBuilder("assets")
            .select(`count("assets"."id")`,"devices")
            .addSelect(`assets.status`,"status")
            .where(`"assets"."agentId" = :agentId`,{agentId:userDetails.id})
            .addGroupBy("assets.status");
            const assetGroupByTypeQuery =  assetRepo.createQueryBuilder("assets")
-           .select(`count("assets"."id")`,"devices")
+           .select(`round(count("assets"."id")::decimal * 100 / ${totalDevices},2)`,"devices")
            .addSelect(`assets.type`,"type")
            .where(`"assets"."agentId" = :agentId`,{agentId:userDetails.id})
            .addGroupBy("assets.type");
@@ -60,9 +64,39 @@ export class AssetRegistryService {
             }
            })
            const [ assetGroupByStatus,assetGroupByType,getAssetAmounts] = await Promise.all([assetGroupByStatusQuery.getRawMany(),assetGroupByTypeQuery.getRawMany(),getAssetAmountsPromise]);
+        const summaryInfo = {
+            active:0,
+            sale:0,
+            lost:0,
+            rent:0
+        }
+        const categoryInfo = {
+            camera:0,
+            screen:0,
+            cell_phone:0,
+            printer:0
+        }
+        const activeObj = assetGroupByStatus.find((obj: any) => obj.status === 'Active')
+        summaryInfo.active = activeObj?.devices ? activeObj?.devices : '0'
+        const saleObj = assetGroupByStatus.find((obj: any) => obj.status === 'For Sale')
+        summaryInfo.sale = saleObj?.devices ? saleObj?.devices : '0'
+        const lostObj = assetGroupByStatus.find((obj: any) => obj.status === 'Lost')
+        summaryInfo.lost = lostObj?.devices ? lostObj?.devices : '0'
+        const rentObj = assetGroupByStatus.find((obj: any) => obj.status === 'For Rent')
+        summaryInfo.rent = rentObj?.devices ? rentObj?.devices : '0'
+
+        const cameraObj = assetGroupByType.find((obj: any) => obj.type === 'CAMERA')
+        categoryInfo.camera = cameraObj?.devices ? cameraObj?.devices : '0'
+        const screenObj = assetGroupByType.find((obj: any) => obj.type === 'SCREEN')
+        categoryInfo.screen = screenObj?.devices ? screenObj?.devices : '0'
+        const cellPhoneObj = assetGroupByType.find((obj: any) => obj.type === 'CELL_PHONE')
+        categoryInfo.cell_phone = cellPhoneObj?.devices ? cellPhoneObj?.devices : '0'
+        const printerObj = assetGroupByType.find((obj: any) => obj.type === 'PRINTER')
+        categoryInfo.printer = printerObj?.devices ? printerObj?.devices : '0'
+           
            return ResponseBuilder.data({
-            summary:assetGroupByStatus,
-            categoryData:assetGroupByType,
+            summary:summaryInfo,
+            categoryData:categoryInfo,
             totalAssetAmount:getAssetAmounts.assets
            })
         }  catch (error) {

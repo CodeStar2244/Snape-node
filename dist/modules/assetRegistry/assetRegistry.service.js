@@ -106,20 +106,26 @@ var AssetRegistryService = /** @class */ (function () {
             });
         }); };
         this.assetDashboard = function (userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var assetRepo, agentSettingRepo, assetGroupByStatusQuery, assetGroupByTypeQuery, getAssetAmountsPromise, _a, assetGroupByStatus, assetGroupByType, getAssetAmounts, error_2;
+            var assetRepo, agentSettingRepo, assetsCount, totalDevices, assetGroupByStatusQuery, assetGroupByTypeQuery, getAssetAmountsPromise, _a, assetGroupByStatus, assetGroupByType, getAssetAmounts, summaryInfo, categoryInfo, activeObj, saleObj, lostObj, rentObj, cameraObj, screenObj, cellPhoneObj, printerObj, error_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
+                        _b.trys.push([0, 3, , 4]);
                         assetRepo = db_config_1.AppDataSource.getRepository(assets_1.default);
                         agentSettingRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
+                        return [4 /*yield*/, assetRepo.createQueryBuilder("assets")
+                                .select("count(\"assets\".\"id\")", "devices")
+                                .where("\"assets\".\"agentId\" = :agentId", { agentId: userDetails.id }).getRawOne()];
+                    case 1:
+                        assetsCount = _b.sent();
+                        totalDevices = +assetsCount.devices;
                         assetGroupByStatusQuery = assetRepo.createQueryBuilder("assets")
                             .select("count(\"assets\".\"id\")", "devices")
                             .addSelect("assets.status", "status")
                             .where("\"assets\".\"agentId\" = :agentId", { agentId: userDetails.id })
                             .addGroupBy("assets.status");
                         assetGroupByTypeQuery = assetRepo.createQueryBuilder("assets")
-                            .select("count(\"assets\".\"id\")", "devices")
+                            .select("round(count(\"assets\".\"id\")::decimal * 100 / ".concat(totalDevices, ",2)"), "devices")
                             .addSelect("assets.type", "type")
                             .where("\"assets\".\"agentId\" = :agentId", { agentId: userDetails.id })
                             .addGroupBy("assets.type");
@@ -131,18 +137,46 @@ var AssetRegistryService = /** @class */ (function () {
                             }
                         });
                         return [4 /*yield*/, Promise.all([assetGroupByStatusQuery.getRawMany(), assetGroupByTypeQuery.getRawMany(), getAssetAmountsPromise])];
-                    case 1:
+                    case 2:
                         _a = _b.sent(), assetGroupByStatus = _a[0], assetGroupByType = _a[1], getAssetAmounts = _a[2];
+                        summaryInfo = {
+                            active: 0,
+                            sale: 0,
+                            lost: 0,
+                            rent: 0
+                        };
+                        categoryInfo = {
+                            camera: 0,
+                            screen: 0,
+                            cell_phone: 0,
+                            printer: 0
+                        };
+                        activeObj = assetGroupByStatus.find(function (obj) { return obj.status === 'Active'; });
+                        summaryInfo.active = (activeObj === null || activeObj === void 0 ? void 0 : activeObj.devices) ? activeObj === null || activeObj === void 0 ? void 0 : activeObj.devices : '0';
+                        saleObj = assetGroupByStatus.find(function (obj) { return obj.status === 'For Sale'; });
+                        summaryInfo.sale = (saleObj === null || saleObj === void 0 ? void 0 : saleObj.devices) ? saleObj === null || saleObj === void 0 ? void 0 : saleObj.devices : '0';
+                        lostObj = assetGroupByStatus.find(function (obj) { return obj.status === 'Lost'; });
+                        summaryInfo.lost = (lostObj === null || lostObj === void 0 ? void 0 : lostObj.devices) ? lostObj === null || lostObj === void 0 ? void 0 : lostObj.devices : '0';
+                        rentObj = assetGroupByStatus.find(function (obj) { return obj.status === 'For Rent'; });
+                        summaryInfo.rent = (rentObj === null || rentObj === void 0 ? void 0 : rentObj.devices) ? rentObj === null || rentObj === void 0 ? void 0 : rentObj.devices : '0';
+                        cameraObj = assetGroupByType.find(function (obj) { return obj.type === 'CAMERA'; });
+                        categoryInfo.camera = (cameraObj === null || cameraObj === void 0 ? void 0 : cameraObj.devices) ? cameraObj === null || cameraObj === void 0 ? void 0 : cameraObj.devices : '0';
+                        screenObj = assetGroupByType.find(function (obj) { return obj.type === 'SCREEN'; });
+                        categoryInfo.screen = (screenObj === null || screenObj === void 0 ? void 0 : screenObj.devices) ? screenObj === null || screenObj === void 0 ? void 0 : screenObj.devices : '0';
+                        cellPhoneObj = assetGroupByType.find(function (obj) { return obj.type === 'CELL_PHONE'; });
+                        categoryInfo.cell_phone = (cellPhoneObj === null || cellPhoneObj === void 0 ? void 0 : cellPhoneObj.devices) ? cellPhoneObj === null || cellPhoneObj === void 0 ? void 0 : cellPhoneObj.devices : '0';
+                        printerObj = assetGroupByType.find(function (obj) { return obj.type === 'PRINTER'; });
+                        categoryInfo.printer = (printerObj === null || printerObj === void 0 ? void 0 : printerObj.devices) ? printerObj === null || printerObj === void 0 ? void 0 : printerObj.devices : '0';
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
-                                summary: assetGroupByStatus,
-                                categoryData: assetGroupByType,
+                                summary: summaryInfo,
+                                categoryData: categoryInfo,
                                 totalAssetAmount: getAssetAmounts.assets
                             })];
-                    case 2:
+                    case 3:
                         error_2 = _b.sent();
                         console.log(error_2);
                         throw responseBuilder_1.ResponseBuilder.error(error_2);
-                    case 3: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
