@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AWSS3 = void 0;
 var aws_sdk_1 = __importDefault(require("aws-sdk"));
 var dotenv_1 = __importDefault(require("dotenv"));
+var s3_zip_1 = __importDefault(require("s3-zip"));
 dotenv_1.default.config();
 var awsObj = {
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -53,6 +54,10 @@ var AWSS3 = /** @class */ (function () {
         var _this = this;
         this.s3 = new aws_sdk_1.default.S3({
             endpoint: "https://s3.wasabisys.com",
+            httpOptions: {
+                connectTimeout: 500000,
+                timeout: 1200000
+            },
         });
         this.deleteS3File = function (key) {
             try {
@@ -86,11 +91,21 @@ var AWSS3 = /** @class */ (function () {
                         return [2 /*return*/, data];
                     case 2:
                         error_1 = _a.sent();
+                        console.log(error_1, "error in readstreammm");
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
+        this.getZipStream = function (collection, files) {
+            try {
+                return s3_zip_1.default
+                    .archive({ s3: _this.s3, bucket: process.env.S3_BUCKET_NAME }, collection, files);
+            }
+            catch (error) {
+                console.log(error, "Err");
+            }
+        };
     }
     return AWSS3;
 }());

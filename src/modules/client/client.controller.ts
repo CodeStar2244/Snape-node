@@ -38,7 +38,10 @@ export class ClientController{
             }else{
                 res.header("Access-Control-Expose-Headers", "fileName , fileExt");
                 res.setHeader('fileName',`${result.name}.zip`)
-                result.zipFile.pipe(res);
+                result.zipFile.pipe(res).on("error",(e)=>{
+                    console.log(e , "err")
+                }).on("finish",()=>{                    
+                });
             }
         } catch (error) {
             return res.status(error.code).json(error);        

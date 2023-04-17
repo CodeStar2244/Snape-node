@@ -1,5 +1,7 @@
 import AWS from 'aws-sdk';
 import dotenv from 'dotenv'
+import s3Zip  from 's3-zip';
+
 dotenv.config();
 const awsObj = {
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -9,6 +11,10 @@ AWS.config.update(awsObj);
 export class AWSS3 {
      private s3: AWS.S3 = new AWS.S3({
         endpoint:"https://s3.wasabisys.com",
+        httpOptions: {
+            connectTimeout: 500000,
+            timeout: 1200000
+        },
      });
     public deleteS3File = (key) => {
         try {
@@ -39,9 +45,18 @@ export class AWSS3 {
              return data;
         }
         catch (error) {
-        
+          console.log(error , "error in readstreammm")
 
         }
+    }
+    public getZipStream = (collection,files)=>{
+        try {
+            return s3Zip
+            .archive({ s3: this.s3, bucket: process.env.S3_BUCKET_NAME }, collection, files);
+        } catch (error) {
+            console.log(error , "Err")
+        }
+
     }
 
 }

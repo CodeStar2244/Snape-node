@@ -6,7 +6,6 @@ import { CollectionTags } from "../../entities/CollectionTags";
 import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
-import JSZip, { file } from "jszip";
 import mime from 'mime';
 export class ClientService {
     private s3 = new AWSS3();
@@ -166,7 +165,7 @@ export class ClientService {
                 return this.collectionDownloadPinRequired(collection,pin,files,res)
             }else{
                 return {
-                    zipFile:await this.createZipfile(files),
+                    zipFile:await this.createZipfile(collection.id,files),
                     name:collection.name
                 }
             }
@@ -189,20 +188,13 @@ export class ClientService {
           return ResponseBuilder.badRequest("Wrong Pin Provided")
         }
         return {
-            zipFile:await this.createZipfile(files),
+            zipFile:await this.createZipfile(collection.id,files),
             name:collection.name
         } 
     }
-    private async createZipfile(files){
-     const zip = new JSZip();
-     for(const file of files){
-    
-       const fileFromS3 = await this.getFileFromS3Bucket(file.key);
-       zip.file(file.name,fileFromS3)
-     }
-
-     const zipFile = await zip.generateNodeStream();
-     return zipFile;
+    private async createZipfile(collection,files){
+    const filesName = files.map((file)=>file.name);
+     return this.s3.getZipStream(collection.toString(),filesName)
     }
     private collectionFileDownloadPinRequired = async(collection,pin,file,res)=>{
         if(!pin){

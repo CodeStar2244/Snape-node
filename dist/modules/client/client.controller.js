@@ -102,7 +102,12 @@ var ClientController = /** @class */ (function () {
                         else {
                             res.header("Access-Control-Expose-Headers", "fileName , fileExt");
                             res.setHeader('fileName', "".concat(result.name, ".zip"));
-                            result.zipFile.pipe(res);
+                            console.log("file ready", result);
+                            result.zipFile.pipe(res).on("error", function (e) {
+                                console.log(e, "err");
+                            }).on("finish", function () {
+                                console.log("done");
+                            });
                         }
                         return [3 /*break*/, 3];
                     case 2:

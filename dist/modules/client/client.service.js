@@ -80,7 +80,6 @@ var collectionDesign_1 = require("../../entities/collectionDesign");
 var Files_1 = __importDefault(require("../../entities/Files"));
 var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
-var jszip_1 = __importDefault(require("jszip"));
 var mime_1 = __importDefault(require("mime"));
 var ClientService = /** @class */ (function () {
     function ClientService() {
@@ -336,29 +335,15 @@ var ClientService = /** @class */ (function () {
     }
     ClientService.prototype.createZipfile = function (files) {
         return __awaiter(this, void 0, void 0, function () {
-            var zip, _i, files_1, file_2, fileFromS3, zipFile;
+            var filesName;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        zip = new jszip_1.default();
-                        _i = 0, files_1 = files;
-                        _a.label = 1;
-                    case 1:
-                        if (!(_i < files_1.length)) return [3 /*break*/, 4];
-                        file_2 = files_1[_i];
-                        return [4 /*yield*/, this.getFileFromS3Bucket(file_2.key)];
-                    case 2:
-                        fileFromS3 = _a.sent();
-                        zip.file(file_2.name, fileFromS3);
-                        _a.label = 3;
-                    case 3:
-                        _i++;
-                        return [3 /*break*/, 1];
-                    case 4: return [4 /*yield*/, zip.generateNodeStream()];
-                    case 5:
-                        zipFile = _a.sent();
-                        return [2 /*return*/, zipFile];
-                }
+                filesName = ['Screenshot_2023-04-13-23-17-14-676_com.whatsapp.jpg',
+                    'Screenshot_2023-03-28-12-40-32-515_com.flipkart.android.jpg',
+                    'Screenshot_2023-03-28-12-40-28-528_com.flipkart.android.jpg',
+                    'Screenshot_2023-02-28-00-05-02-089_com.android.chrome.jpg',
+                    'IMG_20230311_211159.jpg'];
+                console.log(filesName);
+                return [2 /*return*/, this.s3.getZipStream("53", filesName)];
             });
         });
     };
