@@ -197,7 +197,7 @@ var ClientService = /** @class */ (function () {
         this.downloadFile = function (userDetails, id, _a, res) {
             var pin = _a.pin;
             return __awaiter(_this, void 0, void 0, function () {
-                var collectionRepository, fileRepo, file_1, collection, fileStream, fileMime, error_3;
+                var collectionRepository, fileRepo, file, collection, fileStream, fileMime, error_3;
                 return __generator(this, function (_b) {
                     switch (_b.label) {
                         case 0:
@@ -211,8 +211,8 @@ var ClientService = /** @class */ (function () {
                                     relations: ["collection"]
                                 })];
                         case 1:
-                            file_1 = _b.sent();
-                            return [4 /*yield*/, collectionRepository.findOneBy({ id: file_1.collection.id })];
+                            file = _b.sent();
+                            return [4 /*yield*/, collectionRepository.findOneBy({ id: file.collection.id })];
                         case 2:
                             collection = _b.sent();
                             if (!collection) {
@@ -222,14 +222,14 @@ var ClientService = /** @class */ (function () {
                                 return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Downlaod Not allowed for these collection")];
                             }
                             if (!collection.downloadPin) return [3 /*break*/, 3];
-                            return [2 /*return*/, this.collectionFileDownloadPinRequired(collection, pin, file_1, res)];
-                        case 3: return [4 /*yield*/, this.getFileFromS3Bucket(file_1.key)];
+                            return [2 /*return*/, this.collectionFileDownloadPinRequired(collection, pin, file, res)];
+                        case 3: return [4 /*yield*/, this.getFileFromS3Bucket(file.key)];
                         case 4:
                             fileStream = _b.sent();
-                            fileMime = mime_1.default.getType(file_1.url);
+                            fileMime = mime_1.default.getType(file.url);
                             return [2 /*return*/, {
                                     result: fileStream,
-                                    name: file_1.name,
+                                    name: file.name,
                                     mime: fileMime
                                 }];
                         case 5: return [3 /*break*/, 7];
@@ -276,7 +276,7 @@ var ClientService = /** @class */ (function () {
                             return [2 /*return*/, this.collectionDownloadPinRequired(collection, pin, files, res)];
                         case 3:
                             _b = {};
-                            return [4 /*yield*/, this.createZipfile(files)];
+                            return [4 /*yield*/, this.createZipfile(collection.id, files)];
                         case 4: return [2 /*return*/, (_b.zipFile = _c.sent(),
                                 _b.name = collection.name,
                                 _b)];
@@ -302,7 +302,7 @@ var ClientService = /** @class */ (function () {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Wrong Pin Provided")];
                         }
                         _a = {};
-                        return [4 /*yield*/, this.createZipfile(files)];
+                        return [4 /*yield*/, this.createZipfile(collection.id, files)];
                     case 1: return [2 /*return*/, (_a.zipFile = _b.sent(),
                             _a.name = collection.name,
                             _a)];
@@ -333,17 +333,12 @@ var ClientService = /** @class */ (function () {
             });
         }); };
     }
-    ClientService.prototype.createZipfile = function (files) {
+    ClientService.prototype.createZipfile = function (collection, files) {
         return __awaiter(this, void 0, void 0, function () {
             var filesName;
             return __generator(this, function (_a) {
-                filesName = ['Screenshot_2023-04-13-23-17-14-676_com.whatsapp.jpg',
-                    'Screenshot_2023-03-28-12-40-32-515_com.flipkart.android.jpg',
-                    'Screenshot_2023-03-28-12-40-28-528_com.flipkart.android.jpg',
-                    'Screenshot_2023-02-28-00-05-02-089_com.android.chrome.jpg',
-                    'IMG_20230311_211159.jpg'];
-                console.log(filesName);
-                return [2 /*return*/, this.s3.getZipStream("53", filesName)];
+                filesName = files.map(function (file) { return file.name; });
+                return [2 /*return*/, this.s3.getZipStream(collection.toString(), filesName)];
             });
         });
     };
