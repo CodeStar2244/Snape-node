@@ -62,10 +62,12 @@ var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var collections_model_1 = require("./collections.model");
 var constants_1 = require("../../config/constants");
+var agent_service_1 = require("../user/agent.service");
 var CollectionService = /** @class */ (function () {
     function CollectionService() {
         var _this = this;
         this.s3 = new awss3_1.AWSS3();
+        this.agentService = new agent_service_1.AgentService();
         this.createCollection = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
             var collectionRepository, designRepo, themerepo, collection, theme, error_1;
             return __generator(this, function (_a) {
@@ -231,11 +233,11 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.deleteCollection = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, fileRepo, collection, files, _i, files_1, file, error_6;
+            var collectionRepository, fileRepo, collection, files, _i, files_1, file, agentSpace, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 5, , 6]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
                         return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
@@ -255,21 +257,24 @@ var CollectionService = /** @class */ (function () {
                         return [4 /*yield*/, collectionRepository.delete({ id: id })];
                     case 3:
                         _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collection)];
+                        return [4 /*yield*/, this.agentService.getRemaningBalance(userDetails)];
                     case 4:
+                        agentSpace = _a.sent();
+                        return [2 /*return*/, agentSpace];
+                    case 5:
                         error_6 = _a.sent();
                         console.log(error_6, "er");
                         throw responseBuilder_1.ResponseBuilder.error(error_6);
-                    case 5: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         }); };
         this.deleteFiles = function (userDetails, id, ids) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, fileRepo, collection, idsArr, queryOptions, files, _i, files_2, file, filesToBeDeleted, error_7;
+            var collectionRepository, fileRepo, collection, idsArr, queryOptions, files, _i, files_2, file, filesToBeDeleted, agentSpace, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 5, , 6]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
                         return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
@@ -297,11 +302,14 @@ var CollectionService = /** @class */ (function () {
                         return [4 /*yield*/, fileRepo.delete(ids)];
                     case 3:
                         filesToBeDeleted = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(filesToBeDeleted)];
+                        return [4 /*yield*/, this.agentService.getRemaningBalance(userDetails)];
                     case 4:
+                        agentSpace = _a.sent();
+                        return [2 /*return*/, agentSpace];
+                    case 5:
                         error_7 = _a.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_7);
-                    case 5: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         }); };
@@ -523,11 +531,11 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.uploadFiles = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, _i, files_4, file, existFile, reponse, error_13;
+            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, _i, files_4, file, existFile, reponse, agentSpace, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 10, , 11]);
+                        _a.trys.push([0, 11, , 12]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
                         return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
@@ -580,14 +588,17 @@ var CollectionService = /** @class */ (function () {
                     case 8: return [4 /*yield*/, Promise.all(filesUploadArr)];
                     case 9:
                         reponse = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(reponse, "Files Uploaded")];
+                        return [4 /*yield*/, this.agentService.getRemaningBalance(userDetails)];
                     case 10:
+                        agentSpace = _a.sent();
+                        return [2 /*return*/, agentSpace];
+                    case 11:
                         error_13 = _a.sent();
                         if (error_13.message === constants_1.FILE_ALREADY_EXISTS) {
                             throw responseBuilder_1.ResponseBuilder.fileExists(error_13, constants_1.FILE_ALREADY_EXISTS);
                         }
                         throw responseBuilder_1.ResponseBuilder.error(error_13, "Internal Server Error");
-                    case 11: return [2 /*return*/];
+                    case 12: return [2 /*return*/];
                 }
             });
         }); };

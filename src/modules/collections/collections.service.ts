@@ -9,9 +9,11 @@ import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { UpdateCollectionModel, CollectionDesignModel } from "./collections.model";
 import { CDN_URL, FILE_ALREADY_EXISTS } from "../../config/constants";
+import { AgentService } from "../user/agent.service";
 
 export class CollectionService {
     private s3 = new AWSS3();
+    private agentService = new AgentService();
     public createCollection = async (body, userDetails) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
@@ -167,8 +169,8 @@ export class CollectionService {
 
             }
             await collectionRepository.delete({ id: id });
-
-            return ResponseBuilder.data(collection);
+            const agentSpace = await this.agentService.getRemaningBalance(userDetails);
+            return agentSpace;
 
         } catch (error) {
             console.log(error, "er")
@@ -202,8 +204,9 @@ export class CollectionService {
 
             }
             const filesToBeDeleted = await fileRepo.delete(ids);
-
-            return ResponseBuilder.data(filesToBeDeleted);
+        
+            const agentSpace = await this.agentService.getRemaningBalance(userDetails);
+            return agentSpace;
 
         } catch (error) {
             throw ResponseBuilder.error(error)
@@ -409,8 +412,8 @@ export class CollectionService {
 
             const reponse = await Promise.all(filesUploadArr);
 
-
-            return ResponseBuilder.data(reponse, "Files Uploaded");
+            const agentSpace = await this.agentService.getRemaningBalance(userDetails);
+            return agentSpace;
 
 
 
