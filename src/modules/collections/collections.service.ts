@@ -8,7 +8,7 @@ import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { UpdateCollectionModel, CollectionDesignModel } from "./collections.model";
-import { CDN_URL, FILE_ALREADY_EXISTS } from "../../config/constants";
+import { CDN_URL, FILE_ALREADY_EXISTS, FRONT_URL } from "../../config/constants";
 import { AgentService } from "../user/agent.service";
 import { uuid } from 'uuidv4';
 
@@ -20,10 +20,12 @@ export class CollectionService {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const designRepo = AppDataSource.getRepository(CollectionDesign);
             const themerepo = AppDataSource.getRepository(CollectionThemes);
+            const slug = uuid();
             const collection = await collectionRepository.save({
                 name: body.name,
                 eventDate: body.eventDate,
-                url:uuid(),
+                url:FRONT_URL+slug,
+                slug,
                 createdBy: userDetails.id
             });
             const theme = await themerepo.findOneBy({ id: 1 });

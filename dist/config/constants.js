@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CDN_URL = exports.FREE_ACCOUNT_STORAGE = exports.FILE_ALREADY_EXISTS = exports.PAYMENT_STATUS = exports.COLLECTION_STATUS = exports.RES_STATUS = exports.RES_CODE = exports.DATE_FORMAT_REPORT_DATE = exports.DATE_FORMAT_REPORT = exports.DATE_FORMAT = exports.IMAGE_EXT = exports.RECORDS_PER_PAGE = exports.TIME_FORMAT = exports.TIME_STAMP_FORMAT = exports.BAD_DATA = exports.CODE = exports.MESSAGE = void 0;
+exports.FRONT_URL = exports.CDN_URL = exports.FREE_ACCOUNT_STORAGE = exports.FILE_ALREADY_EXISTS = exports.PAYMENT_STATUS = exports.COLLECTION_STATUS = exports.RES_STATUS = exports.RES_CODE = exports.DATE_FORMAT_REPORT_DATE = exports.DATE_FORMAT_REPORT = exports.DATE_FORMAT = exports.IMAGE_EXT = exports.RECORDS_PER_PAGE = exports.TIME_FORMAT = exports.TIME_STAMP_FORMAT = exports.BAD_DATA = exports.CODE = exports.MESSAGE = void 0;
 exports.MESSAGE = {
     TIMEZONE: "Asia/Kolkata",
     PASSWORD_SALT: 8,
@@ -38,4 +38,5 @@ exports.PAYMENT_STATUS = {
 exports.FILE_ALREADY_EXISTS = "File Already Exists";
 exports.FREE_ACCOUNT_STORAGE = 3072;
 exports.CDN_URL = "https://snape-buckets.b-cdn.net/";
+exports.FRONT_URL = "http://snape-react-app.s3-website-us-east-1.amazonaws.com/view/";
 //# sourceMappingURL=constants.js.map

@@ -70,7 +70,7 @@ var CollectionService = /** @class */ (function () {
         this.s3 = new awss3_1.AWSS3();
         this.agentService = new agent_service_1.AgentService();
         this.createCollection = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, designRepo, themerepo, collection, theme, error_1;
+            var collectionRepository, designRepo, themerepo, slug, collection, theme, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -78,10 +78,12 @@ var CollectionService = /** @class */ (function () {
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         designRepo = db_config_1.AppDataSource.getRepository(collectionDesign_1.CollectionDesign);
                         themerepo = db_config_1.AppDataSource.getRepository(CollectionThemes_1.CollectionThemes);
+                        slug = (0, uuidv4_1.uuid)();
                         return [4 /*yield*/, collectionRepository.save({
                                 name: body.name,
                                 eventDate: body.eventDate,
-                                url: (0, uuidv4_1.uuid)(),
+                                url: constants_1.FRONT_URL + slug,
+                                slug: slug,
                                 createdBy: userDetails.id
                             })];
                     case 1:

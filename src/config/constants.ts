@@ -39,6 +39,7 @@ export const FILE_ALREADY_EXISTS ="File Already Exists";
 export const FREE_ACCOUNT_STORAGE = 3072;
 
 export const CDN_URL = "https://snape-buckets.b-cdn.net/";
+export const FRONT_URL = "http://snape-react-app.s3-website-us-east-1.amazonaws.com/view/"
 
 
 
