@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AssetUpdateModel = exports.AssetGetModel = exports.AssetCreateModel = exports.AssetStatus = exports.AssetType = void 0;
+exports.AssetUpdateModel = exports.AssetGetModel = exports.AssetCreateModel = exports.AssetStatus = exports.OrderValidation = exports.AssetFields = exports.AssetType = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var AssetType;
@@ -34,6 +34,17 @@ var AssetType;
     AssetType["SCREEN"] = "SCREEN";
     AssetType["PRINTER"] = "PRINTER";
 })(AssetType = exports.AssetType || (exports.AssetType = {}));
+var AssetFields;
+(function (AssetFields) {
+    AssetFields["nickName"] = "nickName";
+    AssetFields["deviceID"] = "deviceID";
+    AssetFields["deviceAmount"] = "deviceAmount";
+})(AssetFields = exports.AssetFields || (exports.AssetFields = {}));
+var OrderValidation;
+(function (OrderValidation) {
+    OrderValidation["ASC"] = "ASC";
+    OrderValidation["DESC"] = "DESC";
+})(OrderValidation = exports.OrderValidation || (exports.OrderValidation = {}));
 var AssetStatus;
 (function (AssetStatus) {
     AssetStatus["ACTIVE"] = "Active";
@@ -78,6 +89,8 @@ var AssetGetModel = /** @class */ (function (_super) {
     function AssetGetModel(body, params) {
         var _this = _super.call(this) || this;
         _this.status = params.status;
+        _this.sort = params.sort;
+        _this.order = params.order;
         return _this;
     }
     __decorate([
@@ -85,6 +98,16 @@ var AssetGetModel = /** @class */ (function (_super) {
         (0, class_validator_1.IsOptional)(),
         __metadata("design:type", String)
     ], AssetGetModel.prototype, "status", void 0);
+    __decorate([
+        (0, class_validator_1.IsEnum)(AssetFields),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], AssetGetModel.prototype, "sort", void 0);
+    __decorate([
+        (0, class_validator_1.IsEnum)(OrderValidation),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], AssetGetModel.prototype, "order", void 0);
     return AssetGetModel;
 }(model_1.Model));
 exports.AssetGetModel = AssetGetModel;

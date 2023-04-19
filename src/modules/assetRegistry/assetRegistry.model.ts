@@ -7,6 +7,15 @@ export enum AssetType {
     SCREEN="SCREEN",
     PRINTER="PRINTER"
 }
+export enum AssetFields {
+    nickName="nickName",
+    deviceID="deviceID",
+    deviceAmount="deviceAmount"
+}
+export enum OrderValidation {
+    ASC="ASC",
+    DESC="DESC"
+}
 
 export enum AssetStatus {
     ACTIVE="Active",
@@ -42,11 +51,22 @@ export class AssetGetModel extends Model {
     @IsEnum(AssetStatus)
     @IsOptional()
     status: AssetStatus
+   
+    @IsEnum(AssetFields)
+    @IsOptional()
+   
+    sort: AssetFields
+
+    @IsEnum(OrderValidation)
+    @IsOptional()
+    order: OrderValidation
 
 
     constructor(body: any, params?: any) {
         super();
         this.status = params.status
+        this.sort = params.sort
+        this.order = params.order
     }
 }
 

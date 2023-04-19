@@ -24,11 +24,18 @@ export class AssetRegistryService {
     }
     public getAssets = async (userDetails,params) => {
         try {
+           const {search,sort,order,status} = params;
            const assetRepo = AppDataSource.getRepository(Assets);
            const assetsquery =  assetRepo.createQueryBuilder("assets")
            .where(`"assets"."agentId" = :agentId`,{agentId:userDetails.id})
-           if(params.status){
+           if(status){
             assetsquery.andWhere("assets.status =:status",{status:params.status})
+           }
+           if (search) {
+            assetsquery.andWhere('assets.nickName ILIKE :name', { name: `%${search}%` })
+           }
+           if (sort && order) {
+            assetsquery.addOrderBy(`assets.${sort}`, order.toUpperCase())
            }
            const assets = await assetsquery.getMany();
            return ResponseBuilder.data(assets)

@@ -10,6 +10,7 @@ import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { UpdateCollectionModel, CollectionDesignModel } from "./collections.model";
 import { CDN_URL, FILE_ALREADY_EXISTS } from "../../config/constants";
 import { AgentService } from "../user/agent.service";
+import { uuid } from 'uuidv4';
 
 export class CollectionService {
     private s3 = new AWSS3();
@@ -22,6 +23,7 @@ export class CollectionService {
             const collection = await collectionRepository.save({
                 name: body.name,
                 eventDate: body.eventDate,
+                url:uuid(),
                 createdBy: userDetails.id
             });
             const theme = await themerepo.findOneBy({ id: 1 });

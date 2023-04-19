@@ -82,16 +82,23 @@ var AssetRegistryService = /** @class */ (function () {
             });
         }); };
         this.getAssets = function (userDetails, params) { return __awaiter(_this, void 0, void 0, function () {
-            var assetRepo, assetsquery, assets, error_1;
+            var search, sort, order, status_1, assetRepo, assetsquery, assets, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
+                        search = params.search, sort = params.sort, order = params.order, status_1 = params.status;
                         assetRepo = db_config_1.AppDataSource.getRepository(assets_1.default);
                         assetsquery = assetRepo.createQueryBuilder("assets")
                             .where("\"assets\".\"agentId\" = :agentId", { agentId: userDetails.id });
-                        if (params.status) {
+                        if (status_1) {
                             assetsquery.andWhere("assets.status =:status", { status: params.status });
+                        }
+                        if (search) {
+                            assetsquery.andWhere('assets.nickName ILIKE :name', { name: "%".concat(search, "%") });
+                        }
+                        if (sort && order) {
+                            assetsquery.addOrderBy("assets.".concat(sort), order.toUpperCase());
                         }
                         return [4 /*yield*/, assetsquery.getMany()];
                     case 1:
@@ -181,7 +188,7 @@ var AssetRegistryService = /** @class */ (function () {
             });
         }); };
         this.updateAsset = function (userDetails, params, body) { return __awaiter(_this, void 0, void 0, function () {
-            var assetRepo, assetsquery, asset, _a, nickName, deviceAmount, deviceID, status_1, type, updateObject, updatedAsset, error_3;
+            var assetRepo, assetsquery, asset, _a, nickName, deviceAmount, deviceID, status_2, type, updateObject, updatedAsset, error_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -196,12 +203,12 @@ var AssetRegistryService = /** @class */ (function () {
                         if (!asset) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Asset Not found", 404)];
                         }
-                        _a = new assetRegistry_model_1.AssetUpdateModel(body), nickName = _a.nickName, deviceAmount = _a.deviceAmount, deviceID = _a.deviceID, status_1 = _a.status, type = _a.type;
+                        _a = new assetRegistry_model_1.AssetUpdateModel(body), nickName = _a.nickName, deviceAmount = _a.deviceAmount, deviceID = _a.deviceID, status_2 = _a.status, type = _a.type;
                         updateObject = {
                             nickName: nickName,
                             deviceAmount: deviceAmount,
                             deviceID: deviceID,
-                            status: status_1,
+                            status: status_2,
                             type: type
                         };
                         return [4 /*yield*/, assetRepo.save(__assign(__assign({}, asset), updateObject))];

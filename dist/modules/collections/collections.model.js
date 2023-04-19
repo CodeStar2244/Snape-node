@@ -24,12 +24,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UploadFilesModel = exports.CollectionDesignModel = exports.UpdateCollectionModel = exports.CreateCollectionModel = void 0;
+exports.UploadFilesModel = exports.CollectionDesignModel = exports.UpdateCollectionModel = exports.CollectionGetModel = exports.CreateCollectionModel = void 0;
 var class_validator_1 = require("class-validator");
 var Collection_1 = require("../../entities/Collection");
 var Files_1 = require("../../entities/Files");
 var model_1 = require("../../helpers/model");
 var collectionDesign_1 = require("../../entities/collectionDesign");
+var assetRegistry_model_1 = require("../assetRegistry/assetRegistry.model");
 var CreateCollectionModel = /** @class */ (function (_super) {
     __extends(CreateCollectionModel, _super);
     function CreateCollectionModel(body, params) {
@@ -51,6 +52,21 @@ var CreateCollectionModel = /** @class */ (function (_super) {
     return CreateCollectionModel;
 }(model_1.Model));
 exports.CreateCollectionModel = CreateCollectionModel;
+var CollectionGetModel = /** @class */ (function (_super) {
+    __extends(CollectionGetModel, _super);
+    function CollectionGetModel(body, params) {
+        var _this = _super.call(this) || this;
+        _this.order = params.order;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsEnum)(assetRegistry_model_1.OrderValidation),
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], CollectionGetModel.prototype, "order", void 0);
+    return CollectionGetModel;
+}(model_1.Model));
+exports.CollectionGetModel = CollectionGetModel;
 var UpdateCollectionModel = /** @class */ (function (_super) {
     __extends(UpdateCollectionModel, _super);
     function UpdateCollectionModel(body, params) {

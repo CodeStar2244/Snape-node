@@ -63,6 +63,7 @@ var responseBuilder_1 = require("../../helpers/responseBuilder");
 var collections_model_1 = require("./collections.model");
 var constants_1 = require("../../config/constants");
 var agent_service_1 = require("../user/agent.service");
+var uuidv4_1 = require("uuidv4");
 var CollectionService = /** @class */ (function () {
     function CollectionService() {
         var _this = this;
@@ -80,6 +81,7 @@ var CollectionService = /** @class */ (function () {
                         return [4 /*yield*/, collectionRepository.save({
                                 name: body.name,
                                 eventDate: body.eventDate,
+                                url: (0, uuidv4_1.uuid)(),
                                 createdBy: userDetails.id
                             })];
                     case 1:

@@ -4,6 +4,7 @@ import { FileType } from "../../entities/Files";
 import { Model } from "../../helpers/model";
 import { Type } from 'class-transformer';
 import { GridSpacingEnum, GridStyleEnum } from "../../entities/collectionDesign";
+import { OrderValidation } from "../assetRegistry/assetRegistry.model";
 
 
 export class CreateCollectionModel extends Model {
@@ -19,6 +20,17 @@ export class CreateCollectionModel extends Model {
         super();
         this.name = body.name;
         this.eventDate = body.eventDate
+    }
+}
+
+export class CollectionGetModel extends Model {
+
+    @IsEnum(OrderValidation)
+    @IsOptional()
+    order: OrderValidation
+    constructor(body: any, params?: any) {
+        super();
+        this.order = params.order
     }
 }
 export class UpdateCollectionModel extends Model {
