@@ -17,6 +17,6 @@ const userController:UserController = new UserController()
 //Signup
 router.post(USER_ROUTES.LOGIN , userController.login );
 router.post(USER_ROUTES.ENTERPRISE_REGISTER , v.validate(EnterpriseRegister),userController.enterpriseRegister );
-router.post(USER_ROUTES.ENTERPRISE_LOGIN , v.validate(EnterpriseRegister),userController.enterpriseLogin );
+router.post(USER_ROUTES.ENTERPRISE_LOGIN ,userController.enterpriseLogin );
 router.get(USER_ROUTES.GET_REMANING_SPACE, new Middleware().authenticateUser , userController.getRemaningBalance );
  export const UserRoute: Router = router;
