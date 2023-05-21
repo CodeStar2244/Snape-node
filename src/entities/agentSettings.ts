@@ -2,7 +2,10 @@ import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, Ma
 import { AssetType } from "../modules/assetRegistry/assetRegistry.model";
 import { Tblagent } from "./Tblagent";
 
-
+export enum AgentType {
+    ENTERPRISE="ENTERPRISE",
+    STUDIO = "STUDIO"
+}
 @Entity("agentsettings",{schema:"public"})
 export default class AgentSettings{
 
@@ -30,6 +33,13 @@ export default class AgentSettings{
         precision:2
     })
     totalStorage:number
+
+    @Column({
+        type:"enum",
+        enum:AgentType,
+        default:AgentType.STUDIO
+    })
+    type:AgentType
 
 
     

@@ -4,6 +4,8 @@ exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES
 exports.USER_ROUTES = {
     LOGIN: "/login",
     GET_REMANING_SPACE: "/get-remaining-space",
+    ENTERPRISE_REGISTER: "/enterprise-register",
+    ENTERPRISE_LOGIN: "/enterprise-login",
 };
 exports.COLLECTION_ROUTES = {
     CREATE_COLLECTION: "/",

@@ -10,4 +10,13 @@ export class PasswordDecryptor{
         decrypted = Buffer.concat([decrypted, decipher.final()]);
         return decrypted.toString();
     }
+
+    public encrypt(text) {
+        const key = crypto.randomBytes(32);
+        const iv = crypto.randomBytes(16);
+        let cipher = crypto.createCipheriv(PasswordDecryptor.algorithm, Buffer.from(key), iv);
+        let encrypted = cipher.update(text);
+        encrypted = Buffer.concat([encrypted, cipher.final()]);
+        return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex'), key: key.toString('hex') };
+    }
 }

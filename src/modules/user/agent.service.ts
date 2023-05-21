@@ -4,8 +4,10 @@ import { Tblagent } from "../../entities/Tblagent";
 import { Jwt } from "../../helpers/jwt";
 import { PasswordDecryptor } from "../../helpers/passwordDecryptor";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
-import AgentSettings from "../../entities/agentSettings";
+import AgentSettings, { AgentType } from "../../entities/agentSettings";
 import { FREE_ACCOUNT_STORAGE } from "../../config/constants";
+import { EnterpriseRegister } from "./agent.model";
+import EnterpriseSettings from "../../entities/enterpriseSettings";
 
 export class AgentService {
     private passWordDecrypt: PasswordDecryptor;
@@ -16,6 +18,8 @@ export class AgentService {
     public async login(email: string, password: string) {
         try {
             const agentRepo = AppDataSource.getRepository(Tblagent);
+            const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
+
 
             const agent = await agentRepo.findOne({
                 where: {
@@ -25,6 +29,16 @@ export class AgentService {
             if (!agent) {
                 throw ResponseBuilder.badRequest('Invalid credentials')
             }
+            const agentSettings = await agentSettingsRepo.findOne({
+                where:{
+                 agentId:{
+                     id:agent.id
+                 }
+                }
+             });
+             if(agentSettings.type === AgentType.ENTERPRISE){
+                throw ResponseBuilder.badRequest("Enterprise Agents not allowd to Studio Suit.")
+             }
             const decryptPassword = this.passWordDecrypt.decrypt({ encryptedData: agent.password, iv: agent.iv, key: agent.envkey });
             const userObj = {
                 email: agent.email,
@@ -48,6 +62,102 @@ export class AgentService {
 
             }
         } catch (error) {
+            throw error;
+        }
+
+
+    }
+    public async enterpriseLogin(email: string, password: string) {
+        try {
+            const agentRepo = AppDataSource.getRepository(Tblagent);
+            const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
+
+            const agent = await agentRepo.findOne({
+                where: {
+                    email: email
+                }
+            });
+            if (!agent) {
+                throw ResponseBuilder.badRequest('Invalid credentials')
+            }
+            const agentSettings = await agentSettingsRepo.findOne({
+                where:{
+                 agentId:{
+                     id:agent.id
+                 }
+                }
+             });
+             if(agentSettings.type === AgentType.STUDIO){
+                throw ResponseBuilder.badRequest("Studio suit Agents not allowd to enterprise.")
+             }
+            const decryptPassword = this.passWordDecrypt.decrypt({ encryptedData: agent.password, iv: agent.iv, key: agent.envkey });
+            const userObj = {
+                email: agent.email,
+                firstName: agent.firstname,
+                lastName: agent.lastname,
+                id: agent.id,
+                gender: agent.gender,
+                phone: agent.phone
+            }
+
+            if (decryptPassword !== password) {
+                throw ResponseBuilder.badRequest("Invalid credentials")
+
+            } else {
+                this.generateAgentSettings(agent.id);
+
+                return ResponseBuilder.data({
+                    token: Jwt.getAuthToken({ email: agent.email, agentId: agent.id }),
+                    user: userObj
+                })
+
+            }
+        } catch (error) {
+            throw error;
+        }
+
+
+    }
+    public async enterpriseRegister(enterPriseAgentObjInfo : EnterpriseRegister) {
+        try {
+            if(enterPriseAgentObjInfo.confirmPassword !== enterPriseAgentObjInfo.password){
+                return ResponseBuilder.badRequest("Password Confirmpassword doesn't match");
+            }
+            const agentRepo = AppDataSource.getRepository(Tblagent);
+            const agentSettingRepo = AppDataSource.getRepository(AgentSettings);
+            const enterpricesettingsRepo = AppDataSource.getRepository(EnterpriseSettings);
+            const existingAgent = await agentRepo.findOne({
+                where:{
+                    email:enterPriseAgentObjInfo.email
+                }
+            })
+            if(existingAgent){
+                return ResponseBuilder.badRequest("Agent Already exists")
+            }
+            const encryptedPassword = this.passWordDecrypt.encrypt(enterPriseAgentObjInfo.password);
+            const enterpriseAgent = await agentRepo.create({
+                email:enterPriseAgentObjInfo.email,
+                iv:encryptedPassword.iv,
+                password:encryptedPassword.encryptedData,
+                envkey:encryptedPassword.key,
+                firstname:enterPriseAgentObjInfo.name
+            })
+            const enterPriseAgentCreated = await agentRepo.save(enterpriseAgent);
+            const agentSettingDetails = await agentSettingRepo.create({
+                type:AgentType.ENTERPRISE,
+                agentId:enterPriseAgentCreated
+            })
+            agentSettingRepo.save(agentSettingDetails);
+            const enterpricesettings = await enterpricesettingsRepo.create({
+                agentId:enterPriseAgentCreated,
+                userName:enterPriseAgentObjInfo.userName,
+                registrationNumber:enterPriseAgentObjInfo.registrationNumber
+            })
+            enterpricesettingsRepo.save(enterpricesettings);
+            return ResponseBuilder.data(enterPriseAgentCreated)
+        }
+
+         catch (error) {
             throw error;
         }
 

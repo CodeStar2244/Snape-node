@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,19 +68,21 @@ var Tblagent_1 = require("../../entities/Tblagent");
 var jwt_1 = require("../../helpers/jwt");
 var passwordDecryptor_1 = require("../../helpers/passwordDecryptor");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
-var agentSettings_1 = __importDefault(require("../../entities/agentSettings"));
+var agentSettings_1 = __importStar(require("../../entities/agentSettings"));
+var enterpriseSettings_1 = __importDefault(require("../../entities/enterpriseSettings"));
 var AgentService = /** @class */ (function () {
     function AgentService() {
         this.passWordDecrypt = new passwordDecryptor_1.PasswordDecryptor();
     }
     AgentService.prototype.login = function (email, password) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentRepo, agent, decryptPassword, userObj, error_1;
+            var agentRepo, agentSettingsRepo, agent, agentSettings, decryptPassword, userObj, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 3, , 4]);
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
                         return [4 /*yield*/, agentRepo.findOne({
                                 where: {
                                     email: email
@@ -67,6 +92,18 @@ var AgentService = /** @class */ (function () {
                         agent = _a.sent();
                         if (!agent) {
                             throw responseBuilder_1.ResponseBuilder.badRequest('Invalid credentials');
+                        }
+                        return [4 /*yield*/, agentSettingsRepo.findOne({
+                                where: {
+                                    agentId: {
+                                        id: agent.id
+                                    }
+                                }
+                            })];
+                    case 2:
+                        agentSettings = _a.sent();
+                        if (agentSettings.type === agentSettings_1.AgentType.ENTERPRISE) {
+                            throw responseBuilder_1.ResponseBuilder.badRequest("Enterprise Agents not allowd to Studio Suit.");
                         }
                         decryptPassword = this.passWordDecrypt.decrypt({ encryptedData: agent.password, iv: agent.iv, key: agent.envkey });
                         userObj = {
@@ -87,18 +124,137 @@ var AgentService = /** @class */ (function () {
                                     user: userObj
                                 })];
                         }
-                        return [3 /*break*/, 3];
-                    case 2:
+                        return [3 /*break*/, 4];
+                    case 3:
                         error_1 = _a.sent();
                         throw error_1;
-                    case 3: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AgentService.prototype.enterpriseLogin = function (email, password) {
+        return __awaiter(this, void 0, void 0, function () {
+            var agentRepo, agentSettingsRepo, agent, agentSettings, decryptPassword, userObj, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
+                        return [4 /*yield*/, agentRepo.findOne({
+                                where: {
+                                    email: email
+                                }
+                            })];
+                    case 1:
+                        agent = _a.sent();
+                        if (!agent) {
+                            throw responseBuilder_1.ResponseBuilder.badRequest('Invalid credentials');
+                        }
+                        return [4 /*yield*/, agentSettingsRepo.findOne({
+                                where: {
+                                    agentId: {
+                                        id: agent.id
+                                    }
+                                }
+                            })];
+                    case 2:
+                        agentSettings = _a.sent();
+                        if (agentSettings.type === agentSettings_1.AgentType.STUDIO) {
+                            throw responseBuilder_1.ResponseBuilder.badRequest("Studio suit Agents not allowd to enterprise.");
+                        }
+                        decryptPassword = this.passWordDecrypt.decrypt({ encryptedData: agent.password, iv: agent.iv, key: agent.envkey });
+                        userObj = {
+                            email: agent.email,
+                            firstName: agent.firstname,
+                            lastName: agent.lastname,
+                            id: agent.id,
+                            gender: agent.gender,
+                            phone: agent.phone
+                        };
+                        if (decryptPassword !== password) {
+                            throw responseBuilder_1.ResponseBuilder.badRequest("Invalid credentials");
+                        }
+                        else {
+                            this.generateAgentSettings(agent.id);
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                    token: jwt_1.Jwt.getAuthToken({ email: agent.email, agentId: agent.id }),
+                                    user: userObj
+                                })];
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_2 = _a.sent();
+                        throw error_2;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AgentService.prototype.enterpriseRegister = function (enterPriseAgentObjInfo) {
+        return __awaiter(this, void 0, void 0, function () {
+            var agentRepo, agentSettingRepo, enterpricesettingsRepo, existingAgent, encryptedPassword, enterpriseAgent, enterPriseAgentCreated, agentSettingDetails, enterpricesettings, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 6, , 7]);
+                        if (enterPriseAgentObjInfo.confirmPassword !== enterPriseAgentObjInfo.password) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Password Confirmpassword doesn't match")];
+                        }
+                        agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        agentSettingRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
+                        enterpricesettingsRepo = db_config_1.AppDataSource.getRepository(enterpriseSettings_1.default);
+                        return [4 /*yield*/, agentRepo.findOne({
+                                where: {
+                                    email: enterPriseAgentObjInfo.email
+                                }
+                            })];
+                    case 1:
+                        existingAgent = _a.sent();
+                        if (existingAgent) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Agent Already exists")];
+                        }
+                        encryptedPassword = this.passWordDecrypt.encrypt(enterPriseAgentObjInfo.password);
+                        return [4 /*yield*/, agentRepo.create({
+                                email: enterPriseAgentObjInfo.email,
+                                iv: encryptedPassword.iv,
+                                password: encryptedPassword.encryptedData,
+                                envkey: encryptedPassword.key,
+                                firstname: enterPriseAgentObjInfo.name
+                            })];
+                    case 2:
+                        enterpriseAgent = _a.sent();
+                        return [4 /*yield*/, agentRepo.save(enterpriseAgent)];
+                    case 3:
+                        enterPriseAgentCreated = _a.sent();
+                        return [4 /*yield*/, agentSettingRepo.create({
+                                type: agentSettings_1.AgentType.ENTERPRISE,
+                                agentId: enterPriseAgentCreated
+                            })];
+                    case 4:
+                        agentSettingDetails = _a.sent();
+                        agentSettingRepo.save(agentSettingDetails);
+                        return [4 /*yield*/, enterpricesettingsRepo.create({
+                                agentId: enterPriseAgentCreated,
+                                userName: enterPriseAgentObjInfo.userName,
+                                registrationNumber: enterPriseAgentObjInfo.registrationNumber
+                            })];
+                    case 5:
+                        enterpricesettings = _a.sent();
+                        enterpricesettingsRepo.save(enterpricesettings);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(enterPriseAgentCreated)];
+                    case 6:
+                        error_3 = _a.sent();
+                        throw error_3;
+                    case 7: return [2 /*return*/];
                 }
             });
         });
     };
     AgentService.prototype.getRemaningBalance = function (userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentSettingsRepo, agentSettings, dataToSend, error_2;
+            var agentSettingsRepo, agentSettings, dataToSend, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -115,8 +271,8 @@ var AgentService = /** @class */ (function () {
                         };
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
                     case 2:
-                        error_2 = _a.sent();
-                        throw error_2;
+                        error_4 = _a.sent();
+                        throw error_4;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -124,7 +280,7 @@ var AgentService = /** @class */ (function () {
     };
     AgentService.prototype.generateAgentSettings = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentSettingRepo, agentRepo, agentSetting, agent, agentSettingCreate, error_3;
+            var agentSettingRepo, agentRepo, agentSetting, agent, agentSettingCreate, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -157,7 +313,7 @@ var AgentService = /** @class */ (function () {
                         _a.label = 3;
                     case 3: return [3 /*break*/, 5];
                     case 4:
-                        error_3 = _a.sent();
+                        error_5 = _a.sent();
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

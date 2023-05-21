@@ -1,6 +1,8 @@
 export const USER_ROUTES = {
     LOGIN : "/login",
     GET_REMANING_SPACE : "/get-remaining-space",
+    ENTERPRISE_REGISTER : "/enterprise-register",
+    ENTERPRISE_LOGIN : "/enterprise-login",
 }
 export const COLLECTION_ROUTES = {
     CREATE_COLLECTION : "/",

@@ -9,8 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AgentType = void 0;
 var typeorm_1 = require("typeorm");
 var Tblagent_1 = require("./Tblagent");
+var AgentType;
+(function (AgentType) {
+    AgentType["ENTERPRISE"] = "ENTERPRISE";
+    AgentType["STUDIO"] = "STUDIO";
+})(AgentType = exports.AgentType || (exports.AgentType = {}));
 var AgentSettings = /** @class */ (function () {
     function AgentSettings() {
     }
@@ -44,6 +50,14 @@ var AgentSettings = /** @class */ (function () {
         }),
         __metadata("design:type", Number)
     ], AgentSettings.prototype, "totalStorage", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({
+            type: "enum",
+            enum: AgentType,
+            default: AgentType.STUDIO
+        }),
+        __metadata("design:type", String)
+    ], AgentSettings.prototype, "type", void 0);
     __decorate([
         (0, typeorm_1.OneToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
         (0, typeorm_1.JoinColumn)({ name: "agentId" }),

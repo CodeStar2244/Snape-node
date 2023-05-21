@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 var agent_service_1 = require("./agent.service");
+var agent_model_1 = require("./agent.model");
 var UserController = /** @class */ (function () {
     function UserController() {
         var _this = this;
@@ -59,8 +60,44 @@ var UserController = /** @class */ (function () {
                 }
             });
         }); };
+        this.enterpriseLogin = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, email, password, data, error_2;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.body, email = _a.email, password = _a.password;
+                        return [4 /*yield*/, this.agentService.enterpriseLogin(email, password)];
+                    case 1:
+                        data = _b.sent();
+                        return [2 /*return*/, res.status(data.code).json(data)];
+                    case 2:
+                        error_2 = _b.sent();
+                        return [2 /*return*/, res.status(error_2.code).json(error_2)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.enterpriseRegister = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var enterpriseAgent, data, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        enterpriseAgent = new agent_model_1.EnterpriseRegister(req.body, req.params);
+                        return [4 /*yield*/, this.agentService.enterpriseRegister(enterpriseAgent)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, res.status(data.code).json(data)];
+                    case 2:
+                        error_3 = _a.sent();
+                        return [2 /*return*/, res.status(error_3.code).json(error_3)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.getRemaningBalance = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var data, error_2;
+            var data, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -70,8 +107,8 @@ var UserController = /** @class */ (function () {
                         data = _a.sent();
                         return [2 /*return*/, res.status(data.code).json(data)];
                     case 2:
-                        error_2 = _a.sent();
-                        return [2 /*return*/, res.status(error_2.code).json(error_2)];
+                        error_4 = _a.sent();
+                        return [2 /*return*/, res.status(error_4.code).json(error_4)];
                     case 3: return [2 /*return*/];
                 }
             });

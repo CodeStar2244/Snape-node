@@ -14,6 +14,14 @@ var PasswordDecryptor = /** @class */ (function () {
         decrypted = Buffer.concat([decrypted, decipher.final()]);
         return decrypted.toString();
     };
+    PasswordDecryptor.prototype.encrypt = function (text) {
+        var key = crypto.randomBytes(32);
+        var iv = crypto.randomBytes(16);
+        var cipher = crypto.createCipheriv(PasswordDecryptor.algorithm, Buffer.from(key), iv);
+        var encrypted = cipher.update(text);
+        encrypted = Buffer.concat([encrypted, cipher.final()]);
+        return { iv: iv.toString('hex'), encryptedData: encrypted.toString('hex'), key: key.toString('hex') };
+    };
     PasswordDecryptor.algorithm = 'aes-256-cbc';
     return PasswordDecryptor;
 }());
