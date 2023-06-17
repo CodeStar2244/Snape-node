@@ -15,7 +15,6 @@ export default class AgentSettings{
     @Column({
         type:"float",
         default:0,
-        precision:2,
         nullable:true
     })
     storage:number;
@@ -23,26 +22,15 @@ export default class AgentSettings{
     @Column({
         type:"float",
         default:0,
-        precision:2,
         nullable:true
     })
     assets:number
     @Column({
         type:"float",
-        default:3072,
-        precision:2
+        default:3072
     })
     totalStorage:number
 
-    @Column({
-        type:"enum",
-        enum:AgentType,
-        default:AgentType.STUDIO
-    })
-    type:AgentType
-
-
-    
     @OneToOne(()=>Tblagent,(agent)=>agent.id,{onDelete:"CASCADE"})
     @JoinColumn({name:"agentId"})    
     agentId:Tblagent

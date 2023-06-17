@@ -36,43 +36,49 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.latestmigration1684664132684 = void 0;
-var latestmigration1684664132684 = /** @class */ (function () {
-    function latestmigration1684664132684() {
-        this.name = 'latestmigration1684664132684';
+exports.latestmigration1686996060360 = void 0;
+var latestmigration1686996060360 = /** @class */ (function () {
+    function latestmigration1686996060360() {
+        this.name = 'latestmigration1686996060360';
     }
-    latestmigration1684664132684.prototype.up = function (queryRunner) {
+    latestmigration1686996060360.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("CREATE TABLE \"enterpricesettings\" (\"id\" SERIAL NOT NULL, \"registrationNumber\" character varying NOT NULL, \"userName\" character varying NOT NULL, \"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), \"agentId\" integer, CONSTRAINT \"REL_d2ff9e3050d38d752625876605\" UNIQUE (\"agentId\"), CONSTRAINT \"PK_cf330db5ac9cb5293fe32a8f151\" PRIMARY KEY (\"id\"))")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" DROP COLUMN \"firstname\"")];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collections\" DROP COLUMN \"zipCreated\"")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" DROP COLUMN \"lastname\"")];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collections\" DROP COLUMN \"zipSize\"")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" ADD \"name\" character varying(100)")];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("CREATE TYPE \"public\".\"agentsettings_type_enum\" AS ENUM('ENTERPRISE', 'STUDIO')")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" DROP COLUMN \"createdAt\"")];
                     case 4:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" ADD \"type\" \"public\".\"agentsettings_type_enum\" NOT NULL DEFAULT 'STUDIO'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" ADD \"createdAt\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")];
                     case 5:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterpricesettings\" ADD CONSTRAINT \"FK_d2ff9e3050d38d7526258766053\" FOREIGN KEY (\"agentId\") REFERENCES \"tblagent\"(\"id\") ON DELETE CASCADE ON UPDATE NO ACTION")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" DROP COLUMN \"updatedAt\"")];
                     case 6:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" ADD \"updatedAt\" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()")];
+                    case 7:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" ADD CONSTRAINT \"FK_0f77f0a7240e46f56a011fbcec7\" FOREIGN KEY (\"roleid\") REFERENCES \"tblrole\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION")];
+                    case 8:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    latestmigration1684664132684.prototype.down = function (queryRunner) {
+    latestmigration1686996060360.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterpricesettings\" DROP CONSTRAINT \"FK_d2ff9e3050d38d7526258766053\"")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" DROP CONSTRAINT \"FK_0f77f0a7240e46f56a011fbcec7\"")];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"transportationcharge\" SET DEFAULT '0'")];
@@ -102,36 +108,42 @@ var latestmigration1684664132684 = /** @class */ (function () {
                         return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblbooking\" ALTER COLUMN \"subtotal\" SET DEFAULT '0'")];
                     case 10:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" ALTER COLUMN \"totalStorage\" TYPE double precision")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" DROP COLUMN \"updatedAt\"")];
                     case 11:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" ALTER COLUMN \"assets\" TYPE double precision")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" ADD \"updatedAt\" TIMESTAMP")];
                     case 12:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" ALTER COLUMN \"storage\" TYPE double precision")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" DROP COLUMN \"createdAt\"")];
                     case 13:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" DROP COLUMN \"type\"")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" ADD \"createdAt\" TIMESTAMP")];
                     case 14:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("DROP TYPE \"public\".\"agentsettings_type_enum\"")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" ALTER COLUMN \"totalStorage\" TYPE double precision")];
                     case 15:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collections\" ADD \"zipSize\" integer DEFAULT '0'")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" ALTER COLUMN \"assets\" TYPE double precision")];
                     case 16:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"collections\" ADD \"zipCreated\" boolean DEFAULT false")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"agentsettings\" ALTER COLUMN \"storage\" TYPE double precision")];
                     case 17:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("DROP TABLE \"enterpricesettings\"")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" DROP COLUMN \"name\"")];
                     case 18:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" ADD \"lastname\" character varying(100)")];
+                    case 19:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"enterPriseClient\" ADD \"firstname\" character varying(100)")];
+                    case 20:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return latestmigration1684664132684;
+    return latestmigration1686996060360;
 }());
-exports.latestmigration1684664132684 = latestmigration1684664132684;
-//# sourceMappingURL=1684664132684-latestmigration.js.map
+exports.latestmigration1686996060360 = latestmigration1686996060360;
+//# sourceMappingURL=1686996060360-latestmigration.js.map

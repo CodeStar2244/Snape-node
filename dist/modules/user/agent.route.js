@@ -14,7 +14,7 @@ var userController = new agent_controller_1.UserController();
 //Signup
 router.post(routes_1.USER_ROUTES.LOGIN, userController.login);
 router.post(routes_1.USER_ROUTES.ENTERPRISE_REGISTER, v.validate(agent_model_1.EnterpriseRegister), userController.enterpriseRegister);
-router.post(routes_1.USER_ROUTES.ENTERPRISE_LOGIN, userController.enterpriseLogin);
+router.post(routes_1.USER_ROUTES.ENTERPRISE_LOGIN, v.validate(agent_model_1.EnterpriseLogin), userController.enterpriseLogin);
 router.get(routes_1.USER_ROUTES.GET_REMANING_SPACE, new middleware_1.Middleware().authenticateUser, userController.getRemaningBalance);
 exports.UserRoute = router;
 //# sourceMappingURL=agent.route.js.map

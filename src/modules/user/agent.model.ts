@@ -35,6 +35,20 @@ export class EnterpriseRegister extends Model {
         
     }
 }
+export class EnterpriseLogin extends Model {
+    @IsString()
+    @IsEmail()
+    public email: string;
+
+    @IsNotEmpty()
+    public password: string;
+
+    constructor(body: any, params: any) {
+        super();
+        this.email = body.email;
+        this.password=body.password;        
+    }
+}
 
 
 

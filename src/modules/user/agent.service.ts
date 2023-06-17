@@ -8,7 +8,8 @@ import AgentSettings, { AgentType } from "../../entities/agentSettings";
 import { FREE_ACCOUNT_STORAGE } from "../../config/constants";
 import { EnterpriseRegister } from "./agent.model";
 import EnterpriseSettings from "../../entities/enterpriseSettings";
-
+import { EnterPriseClient } from "../../entities/enterPriseClient";
+import bcrypt from 'bcrypt';
 export class AgentService {
     private passWordDecrypt: PasswordDecryptor;
     constructor() {
@@ -30,15 +31,12 @@ export class AgentService {
                 throw ResponseBuilder.badRequest('Invalid credentials')
             }
             const agentSettings = await agentSettingsRepo.findOne({
-                where:{
-                 agentId:{
-                     id:agent.id
-                 }
+                where: {
+                    agentId: {
+                        id: agent.id
+                    }
                 }
-             });
-             if(agentSettings.type === AgentType.ENTERPRISE){
-                throw ResponseBuilder.badRequest("Enterprise Agents not allowd to Studio Suit.")
-             }
+            });
             const decryptPassword = this.passWordDecrypt.decrypt({ encryptedData: agent.password, iv: agent.iv, key: agent.envkey });
             const userObj = {
                 email: agent.email,
@@ -69,95 +67,70 @@ export class AgentService {
     }
     public async enterpriseLogin(email: string, password: string) {
         try {
-            const agentRepo = AppDataSource.getRepository(Tblagent);
+            const enterPriseClientRepo = AppDataSource.getRepository(EnterPriseClient);
             const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
-
-            const agent = await agentRepo.findOne({
+            const enterPriseClient = await enterPriseClientRepo.findOne({
                 where: {
                     email: email
                 }
             });
-            if (!agent) {
+            if (!enterPriseClient) {
                 throw ResponseBuilder.badRequest('Invalid credentials')
             }
-            const agentSettings = await agentSettingsRepo.findOne({
-                where:{
-                 agentId:{
-                     id:agent.id
-                 }
-                }
-             });
-             if(agentSettings.type === AgentType.STUDIO){
-                throw ResponseBuilder.badRequest("Studio suit Agents not allowd to enterprise.")
-             }
-            const decryptPassword = this.passWordDecrypt.decrypt({ encryptedData: agent.password, iv: agent.iv, key: agent.envkey });
+            const passwordCheck = await bcrypt.compare(password,enterPriseClient.password);
+            if(!passwordCheck){
+                throw ResponseBuilder.badRequest('Invalid credentials')
+            }
             const userObj = {
-                email: agent.email,
-                firstName: agent.firstname,
-                lastName: agent.lastname,
-                id: agent.id,
-                gender: agent.gender,
-                phone: agent.phone
+                email: enterPriseClient.email,
+                name:enterPriseClient.name,
+                id: enterPriseClient.id,
+                gender: enterPriseClient.gender,
+                phone: enterPriseClient.phone
             }
+            this.generateEnterpriseSettings(enterPriseClient.id);
 
-            if (decryptPassword !== password) {
-                throw ResponseBuilder.badRequest("Invalid credentials")
-
-            } else {
-                this.generateAgentSettings(agent.id);
-
-                return ResponseBuilder.data({
-                    token: Jwt.getAuthToken({ email: agent.email, agentId: agent.id }),
+            return ResponseBuilder.data({
+                    token: Jwt.getAuthToken({ email: enterPriseClient.email, clientId: enterPriseClient.id }),
                     user: userObj
-                })
+            })
 
-            }
+            
         } catch (error) {
             throw error;
         }
 
 
     }
-    public async enterpriseRegister(enterPriseAgentObjInfo : EnterpriseRegister) {
+    public async enterpriseRegister(enterPriseAgentObjInfo: EnterpriseRegister) {
         try {
-            if(enterPriseAgentObjInfo.confirmPassword !== enterPriseAgentObjInfo.password){
+            if (enterPriseAgentObjInfo.confirmPassword !== enterPriseAgentObjInfo.password) {
                 return ResponseBuilder.badRequest("Password Confirmpassword doesn't match");
             }
-            const agentRepo = AppDataSource.getRepository(Tblagent);
+            const enterPriseClientRepo = AppDataSource.getRepository(EnterPriseClient);
             const agentSettingRepo = AppDataSource.getRepository(AgentSettings);
             const enterpricesettingsRepo = AppDataSource.getRepository(EnterpriseSettings);
-            const existingAgent = await agentRepo.findOne({
-                where:{
-                    email:enterPriseAgentObjInfo.email
+            const existingAgent = await enterPriseClientRepo.findOne({
+                where: {
+                    email: enterPriseAgentObjInfo.email
                 }
             })
-            if(existingAgent){
-                return ResponseBuilder.badRequest("Agent Already exists")
+            if (existingAgent) {
+                return ResponseBuilder.badRequest("Enterpise Already exists")
             }
-            const encryptedPassword = this.passWordDecrypt.encrypt(enterPriseAgentObjInfo.password);
-            const enterpriseAgent = await agentRepo.create({
-                email:enterPriseAgentObjInfo.email,
-                iv:encryptedPassword.iv,
-                password:encryptedPassword.encryptedData,
-                envkey:encryptedPassword.key,
-                firstname:enterPriseAgentObjInfo.name
-            })
-            const enterPriseAgentCreated = await agentRepo.save(enterpriseAgent);
-            const agentSettingDetails = await agentSettingRepo.create({
-                type:AgentType.ENTERPRISE,
-                agentId:enterPriseAgentCreated
-            })
-            agentSettingRepo.save(agentSettingDetails);
-            const enterpricesettings = await enterpricesettingsRepo.create({
-                agentId:enterPriseAgentCreated,
-                userName:enterPriseAgentObjInfo.userName,
-                registrationNumber:enterPriseAgentObjInfo.registrationNumber
-            })
-            enterpricesettingsRepo.save(enterpricesettings);
-            return ResponseBuilder.data(enterPriseAgentCreated)
+            const encryptedPassword = await bcrypt.hash(enterPriseAgentObjInfo.password, 10);
+            const enterPriseClient = await enterPriseClientRepo.create({
+                email: enterPriseAgentObjInfo.email,
+                password: encryptedPassword,
+                name:enterPriseAgentObjInfo.name,
+                userName: enterPriseAgentObjInfo.userName,
+                registrationNumber: enterPriseAgentObjInfo.registrationNumber
+            });
+            const enterPriseClientCreated = await enterPriseClientRepo.save(enterPriseClient);
+            return ResponseBuilder.data(enterPriseClientCreated);
         }
 
-         catch (error) {
+        catch (error) {
             throw error;
         }
 
@@ -168,10 +141,10 @@ export class AgentService {
             const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
             const agentSettings = await agentSettingsRepo.createQueryBuilder("agentSettings")
                 .andWhere("agentSettings.agentId = :agentId", { agentId: userDetails.id }).getOne();
-            const dataToSend = { 
-                remainingSpace: (agentSettings.totalStorage - +agentSettings.storage).toFixed(2), 
-                usedSpace: +agentSettings.storage.toFixed(2), 
-                totalAllowedSpace:agentSettings.totalStorage.toFixed(2) 
+            const dataToSend = {
+                remainingSpace: (agentSettings.totalStorage - +agentSettings.storage).toFixed(2),
+                usedSpace: +agentSettings.storage.toFixed(2),
+                totalAllowedSpace: agentSettings.totalStorage.toFixed(2)
             }
             return ResponseBuilder.data(dataToSend)
 
@@ -207,6 +180,36 @@ export class AgentService {
 
                 })
                 agentSettingRepo.save(agentSettingCreate);
+            }
+
+        } catch (error) {
+
+        }
+    }
+    private async generateEnterpriseSettings(id: number) {
+        try {
+            const enterpriseSettingRepo = AppDataSource.getRepository(EnterpriseSettings);
+            const enterpriseClientRepo = AppDataSource.getRepository(EnterPriseClient);
+            const enterPriseSetting = await enterpriseSettingRepo.findOne({
+                where: {
+                    clientId: {
+                        id
+                    }
+                }
+            });
+            if (!enterPriseSetting) {
+                const client = await enterpriseClientRepo.findOne({
+                    where: {
+                        id
+                    }
+                })
+                const enterPriseSettingCreate = enterpriseSettingRepo.create({
+                    storage: 0,
+                    assets: 0,
+                    clientId: client
+
+                })
+                enterpriseSettingRepo.save(enterPriseSettingCreate);
             }
 
         } catch (error) {

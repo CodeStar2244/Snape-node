@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EnterpriseRegister = void 0;
+exports.EnterpriseLogin = exports.EnterpriseRegister = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var EnterpriseRegister = /** @class */ (function (_super) {
@@ -67,4 +67,24 @@ var EnterpriseRegister = /** @class */ (function (_super) {
     return EnterpriseRegister;
 }(model_1.Model));
 exports.EnterpriseRegister = EnterpriseRegister;
+var EnterpriseLogin = /** @class */ (function (_super) {
+    __extends(EnterpriseLogin, _super);
+    function EnterpriseLogin(body, params) {
+        var _this = _super.call(this) || this;
+        _this.email = body.email;
+        _this.password = body.password;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsString)(),
+        (0, class_validator_1.IsEmail)(),
+        __metadata("design:type", String)
+    ], EnterpriseLogin.prototype, "email", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], EnterpriseLogin.prototype, "password", void 0);
+    return EnterpriseLogin;
+}(model_1.Model));
+exports.EnterpriseLogin = EnterpriseLogin;
 //# sourceMappingURL=agent.model.js.map

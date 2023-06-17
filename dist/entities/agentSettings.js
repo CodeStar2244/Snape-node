@@ -28,7 +28,6 @@ var AgentSettings = /** @class */ (function () {
         (0, typeorm_1.Column)({
             type: "float",
             default: 0,
-            precision: 2,
             nullable: true
         }),
         __metadata("design:type", Number)
@@ -37,7 +36,6 @@ var AgentSettings = /** @class */ (function () {
         (0, typeorm_1.Column)({
             type: "float",
             default: 0,
-            precision: 2,
             nullable: true
         }),
         __metadata("design:type", Number)
@@ -45,19 +43,10 @@ var AgentSettings = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)({
             type: "float",
-            default: 3072,
-            precision: 2
+            default: 3072
         }),
         __metadata("design:type", Number)
     ], AgentSettings.prototype, "totalStorage", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({
-            type: "enum",
-            enum: AgentType,
-            default: AgentType.STUDIO
-        }),
-        __metadata("design:type", String)
-    ], AgentSettings.prototype, "type", void 0);
     __decorate([
         (0, typeorm_1.OneToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
         (0, typeorm_1.JoinColumn)({ name: "agentId" }),

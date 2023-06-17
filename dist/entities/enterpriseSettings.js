@@ -10,39 +10,54 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
-var Tblagent_1 = require("./Tblagent");
-var EnterpriseSettings = /** @class */ (function () {
-    function EnterpriseSettings() {
+var enterPriseClient_1 = require("./enterPriseClient");
+var EnterPriseSettings = /** @class */ (function () {
+    function EnterPriseSettings() {
     }
     __decorate([
         (0, typeorm_1.PrimaryGeneratedColumn)(),
         __metadata("design:type", Number)
-    ], EnterpriseSettings.prototype, "id", void 0);
+    ], EnterPriseSettings.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EnterpriseSettings.prototype, "registrationNumber", void 0);
+        (0, typeorm_1.Column)({
+            type: "float",
+            default: 0,
+            nullable: true
+        }),
+        __metadata("design:type", Number)
+    ], EnterPriseSettings.prototype, "storage", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EnterpriseSettings.prototype, "userName", void 0);
+        (0, typeorm_1.Column)({
+            type: "float",
+            default: 0,
+            nullable: true
+        }),
+        __metadata("design:type", Number)
+    ], EnterPriseSettings.prototype, "assets", void 0);
     __decorate([
-        (0, typeorm_1.OneToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
-        (0, typeorm_1.JoinColumn)({ name: "agentId" }),
-        __metadata("design:type", Tblagent_1.Tblagent)
-    ], EnterpriseSettings.prototype, "agentId", void 0);
+        (0, typeorm_1.Column)({
+            type: "float",
+            default: 3072
+        }),
+        __metadata("design:type", Number)
+    ], EnterPriseSettings.prototype, "totalStorage", void 0);
+    __decorate([
+        (0, typeorm_1.OneToOne)(function () { return enterPriseClient_1.EnterPriseClient; }, function (client) { return client.id; }, { onDelete: "CASCADE" }),
+        (0, typeorm_1.JoinColumn)({ name: "clientId" }),
+        __metadata("design:type", enterPriseClient_1.EnterPriseClient)
+    ], EnterPriseSettings.prototype, "clientId", void 0);
     __decorate([
         (0, typeorm_1.CreateDateColumn)({ type: 'timestamptz' }),
         __metadata("design:type", Date)
-    ], EnterpriseSettings.prototype, "createdAt", void 0);
+    ], EnterPriseSettings.prototype, "createdAt", void 0);
     __decorate([
         (0, typeorm_1.UpdateDateColumn)({ type: "timestamptz" }),
         __metadata("design:type", Date)
-    ], EnterpriseSettings.prototype, "updatedAt", void 0);
-    EnterpriseSettings = __decorate([
-        (0, typeorm_1.Entity)("enterpricesettings", { schema: "public" })
-    ], EnterpriseSettings);
-    return EnterpriseSettings;
+    ], EnterPriseSettings.prototype, "updatedAt", void 0);
+    EnterPriseSettings = __decorate([
+        (0, typeorm_1.Entity)("enterprisesettings", { schema: "public" })
+    ], EnterPriseSettings);
+    return EnterPriseSettings;
 }());
-exports.default = EnterpriseSettings;
+exports.default = EnterPriseSettings;
 //# sourceMappingURL=enterpriseSettings.js.map
