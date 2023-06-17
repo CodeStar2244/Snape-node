@@ -227,9 +227,35 @@ var AgentService = /** @class */ (function () {
             });
         });
     };
+    AgentService.prototype.getEnterpriseRemaningBalance = function (userDetails) {
+        return __awaiter(this, void 0, void 0, function () {
+            var agentSettingsRepo, agentSettings, dataToSend, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        agentSettingsRepo = db_config_1.AppDataSource.getRepository(enterpriseSettings_1.default);
+                        return [4 /*yield*/, agentSettingsRepo.createQueryBuilder("enterpriseSettings")
+                                .andWhere("enterpriseSettings.clientId = :clientId", { clientId: userDetails.id }).getOne()];
+                    case 1:
+                        agentSettings = _a.sent();
+                        dataToSend = {
+                            remainingSpace: (agentSettings.totalStorage - +agentSettings.storage).toFixed(2),
+                            usedSpace: +agentSettings.storage.toFixed(2),
+                            totalAllowedSpace: agentSettings.totalStorage.toFixed(2)
+                        };
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
+                    case 2:
+                        error_5 = _a.sent();
+                        throw error_5;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     AgentService.prototype.generateAgentSettings = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentSettingRepo, agentRepo, agentSetting, agent, agentSettingCreate, error_5;
+            var agentSettingRepo, agentRepo, agentSetting, agent, agentSettingCreate, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -262,7 +288,7 @@ var AgentService = /** @class */ (function () {
                         _a.label = 3;
                     case 3: return [3 /*break*/, 5];
                     case 4:
-                        error_5 = _a.sent();
+                        error_6 = _a.sent();
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
@@ -271,7 +297,7 @@ var AgentService = /** @class */ (function () {
     };
     AgentService.prototype.generateEnterpriseSettings = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var enterpriseSettingRepo, enterpriseClientRepo, enterPriseSetting, client, enterPriseSettingCreate, error_6;
+            var enterpriseSettingRepo, enterpriseClientRepo, enterPriseSetting, client, enterPriseSettingCreate, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -304,7 +330,7 @@ var AgentService = /** @class */ (function () {
                         _a.label = 3;
                     case 3: return [3 /*break*/, 5];
                     case 4:
-                        error_6 = _a.sent();
+                        error_7 = _a.sent();
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

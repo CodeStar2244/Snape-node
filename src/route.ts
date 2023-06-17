@@ -6,6 +6,7 @@ import { CollectionRoute } from "./modules/collections/collections.route";
 import { DashboardRoute } from "./modules/dashboard/dashboard.routes";
 import { ClientRoute } from "./modules/client/client.route";
 import { AssetRegistryRouter } from "./modules/assetRegistry/assetRegistry.route";
+import { EnterpriseCollectionRouter } from "./modules/enterpriseCollections/collections.route";
 export class Routes {
   private middleware = new Middleware();
   protected basePath: string;
@@ -34,6 +35,7 @@ export class Routes {
     router.use("/dashboard",this.middleware.authenticateUser,DashboardRoute);
     router.use("/asset",this.middleware.authenticateUser,AssetRegistryRouter);
     router.use("/client",ClientRoute);
+    router.use("/enterprise/collection",this.middleware.authenticateUser,EnterpriseCollectionRouter)
 
     router.all("/*", (req: Request, res: Response) => {
       return res.status(404).json({

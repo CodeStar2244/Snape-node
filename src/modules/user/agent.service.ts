@@ -156,6 +156,26 @@ export class AgentService {
 
     }
 
+    public async getEnterpriseRemaningBalance(userDetails) {
+        try {
+            const agentSettingsRepo = AppDataSource.getRepository(EnterpriseSettings);
+            const agentSettings = await agentSettingsRepo.createQueryBuilder("enterpriseSettings")
+                .andWhere("enterpriseSettings.clientId = :clientId", { clientId: userDetails.id }).getOne();
+            const dataToSend = {
+                remainingSpace: (agentSettings.totalStorage - +agentSettings.storage).toFixed(2),
+                usedSpace: +agentSettings.storage.toFixed(2),
+                totalAllowedSpace: agentSettings.totalStorage.toFixed(2)
+            }
+            return ResponseBuilder.data(dataToSend)
+
+
+        } catch (error) {
+            throw error;
+        }
+
+
+    }
+
     private async generateAgentSettings(id: number) {
         try {
             const agentSettingRepo = AppDataSource.getRepository(AgentSettings);
