@@ -9,6 +9,7 @@ import i18Backend from "i18next-fs-backend";
 import i18next from 'i18next';
 import i18middleware from "i18next-http-middleware";
 import { AWSS3 } from './helpers/awss3';
+import { EnterpriseRoutes } from './enterpriseroutes';
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ class App {
             next();
         });
         const routes = new Routes(NODE_ENV);
+        const enterpriseRoutes = new EnterpriseRoutes(NODE_ENV);
         
         this.app.all("/*", (req, res, next) => {
             res.setHeader("Access-Control-Allow-Origin", "*");
@@ -63,6 +65,7 @@ class App {
             }
         });
         this.app.use("/api/v1", routes.path());
+        this.app.use("/api/v2/enterprise", enterpriseRoutes.path());
 
         this.app.use(async (err, req, res, next) => {
             if (err) {

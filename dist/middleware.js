@@ -43,6 +43,7 @@ var jwt_1 = require("./helpers/jwt");
 var logger_1 = require("./helpers/logger");
 var Tblagent_1 = require("./entities/Tblagent");
 var db_config_1 = require("./db/db.config");
+var enterPriseClient_1 = require("./entities/enterPriseClient");
 var Middleware = /** @class */ (function () {
     function Middleware() {
         var _this = this;
@@ -53,6 +54,7 @@ var Middleware = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 4, , 5]);
+                        console.log("hii from authuse");
                         unAuthPayload = {
                             error: {
                                 message: req.i18n.t("ERR_USER_NOT_VERIFIED"),
@@ -105,6 +107,71 @@ var Middleware = /** @class */ (function () {
                         }
                         else {
                             console.log(error_1);
+                            unAuthPayload.error.message = req.i18n.t("ERR_INVALID_TOKEN");
+                            return [2 /*return*/, res.status(401).send(unAuthPayload.error)];
+                        }
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.authenticateEnterpriseUser = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
+            var unAuthPayload, token, tokenInfo, enterpriseRepo, enterpriseUser, userObj, error_2, unAuthPayload;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        unAuthPayload = {
+                            error: {
+                                message: req.i18n.t("ERR_USER_NOT_VERIFIED"),
+                                code: 401,
+                                status: false,
+                            },
+                        };
+                        if (!!(0, lodash_1.isEmpty)(req.headers.authorization)) return [3 /*break*/, 2];
+                        token = req.headers.authorization;
+                        tokenInfo = jwt_1.Jwt.decodeAuthToken(token).payload;
+                        enterpriseRepo = db_config_1.AppDataSource.getRepository(enterPriseClient_1.EnterPriseClient);
+                        return [4 /*yield*/, enterpriseRepo.findOneBy({ id: tokenInfo.agentId })];
+                    case 1:
+                        enterpriseUser = _a.sent();
+                        if (!enterpriseUser) {
+                            unAuthPayload.error.message = req.i18n.t("USER_NOT_EXIST");
+                            unAuthPayload.error.code = 404;
+                            return [2 /*return*/, res.status(unAuthPayload.error.code).send(unAuthPayload.error)];
+                        }
+                        if (!enterpriseUser.isactive) {
+                            unAuthPayload.error.message = req.i18n.t("ERR_ACCESS_REMOVED");
+                            unAuthPayload.error.code = 401;
+                            return [2 /*return*/, res.status(unAuthPayload.error.code).send(unAuthPayload.error)];
+                        }
+                        userObj = {
+                            email: enterpriseUser.email,
+                            id: enterpriseUser.id,
+                            name: enterpriseUser.name
+                        };
+                        req.user = userObj;
+                        next();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        unAuthPayload.error.message = req.i18n.t("ERR_UNAUTH");
+                        res.status(401).send(unAuthPayload.error);
+                        return [2 /*return*/];
+                    case 3: return [3 /*break*/, 5];
+                    case 4:
+                        error_2 = _a.sent();
+                        unAuthPayload = {
+                            error: {
+                                message: req.i18n.t("ERR_UNAUTH"),
+                                code: 401,
+                                status: false,
+                            },
+                        };
+                        if (error_2.name === "TokenExpiredError") {
+                            return [2 /*return*/, res.status(401).send(unAuthPayload.error)];
+                        }
+                        else {
+                            console.log(error_2);
                             unAuthPayload.error.message = req.i18n.t("ERR_INVALID_TOKEN");
                             return [2 /*return*/, res.status(401).send(unAuthPayload.error)];
                         }

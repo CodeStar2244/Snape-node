@@ -46,9 +46,6 @@ var jwt_1 = require("../../helpers/jwt");
 var passwordDecryptor_1 = require("../../helpers/passwordDecryptor");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var agentSettings_1 = __importDefault(require("../../entities/agentSettings"));
-var enterpriseSettings_1 = __importDefault(require("../../entities/enterpriseSettings"));
-var enterPriseClient_1 = require("../../entities/enterPriseClient");
-var bcrypt_1 = __importDefault(require("bcrypt"));
 var AgentService = /** @class */ (function () {
     function AgentService() {
         this.passWordDecrypt = new passwordDecryptor_1.PasswordDecryptor();
@@ -109,101 +106,9 @@ var AgentService = /** @class */ (function () {
             });
         });
     };
-    AgentService.prototype.enterpriseLogin = function (email, password) {
-        return __awaiter(this, void 0, void 0, function () {
-            var enterPriseClientRepo, agentSettingsRepo, enterPriseClient, passwordCheck, userObj, error_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        enterPriseClientRepo = db_config_1.AppDataSource.getRepository(enterPriseClient_1.EnterPriseClient);
-                        agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
-                        return [4 /*yield*/, enterPriseClientRepo.findOne({
-                                where: {
-                                    email: email
-                                }
-                            })];
-                    case 1:
-                        enterPriseClient = _a.sent();
-                        if (!enterPriseClient) {
-                            throw responseBuilder_1.ResponseBuilder.badRequest('Invalid credentials');
-                        }
-                        return [4 /*yield*/, bcrypt_1.default.compare(password, enterPriseClient.password)];
-                    case 2:
-                        passwordCheck = _a.sent();
-                        if (!passwordCheck) {
-                            throw responseBuilder_1.ResponseBuilder.badRequest('Invalid credentials');
-                        }
-                        userObj = {
-                            email: enterPriseClient.email,
-                            name: enterPriseClient.name,
-                            id: enterPriseClient.id,
-                            gender: enterPriseClient.gender,
-                            phone: enterPriseClient.phone
-                        };
-                        this.generateEnterpriseSettings(enterPriseClient.id);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
-                                token: jwt_1.Jwt.getAuthToken({ email: enterPriseClient.email, clientId: enterPriseClient.id }),
-                                user: userObj
-                            })];
-                    case 3:
-                        error_2 = _a.sent();
-                        throw error_2;
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    AgentService.prototype.enterpriseRegister = function (enterPriseAgentObjInfo) {
-        return __awaiter(this, void 0, void 0, function () {
-            var enterPriseClientRepo, agentSettingRepo, enterpricesettingsRepo, existingAgent, encryptedPassword, enterPriseClient, enterPriseClientCreated, error_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 5, , 6]);
-                        if (enterPriseAgentObjInfo.confirmPassword !== enterPriseAgentObjInfo.password) {
-                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Password Confirmpassword doesn't match")];
-                        }
-                        enterPriseClientRepo = db_config_1.AppDataSource.getRepository(enterPriseClient_1.EnterPriseClient);
-                        agentSettingRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
-                        enterpricesettingsRepo = db_config_1.AppDataSource.getRepository(enterpriseSettings_1.default);
-                        return [4 /*yield*/, enterPriseClientRepo.findOne({
-                                where: {
-                                    email: enterPriseAgentObjInfo.email
-                                }
-                            })];
-                    case 1:
-                        existingAgent = _a.sent();
-                        if (existingAgent) {
-                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Enterpise Already exists")];
-                        }
-                        return [4 /*yield*/, bcrypt_1.default.hash(enterPriseAgentObjInfo.password, 10)];
-                    case 2:
-                        encryptedPassword = _a.sent();
-                        return [4 /*yield*/, enterPriseClientRepo.create({
-                                email: enterPriseAgentObjInfo.email,
-                                password: encryptedPassword,
-                                name: enterPriseAgentObjInfo.name,
-                                userName: enterPriseAgentObjInfo.userName,
-                                registrationNumber: enterPriseAgentObjInfo.registrationNumber
-                            })];
-                    case 3:
-                        enterPriseClient = _a.sent();
-                        return [4 /*yield*/, enterPriseClientRepo.save(enterPriseClient)];
-                    case 4:
-                        enterPriseClientCreated = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(enterPriseClientCreated)];
-                    case 5:
-                        error_3 = _a.sent();
-                        throw error_3;
-                    case 6: return [2 /*return*/];
-                }
-            });
-        });
-    };
     AgentService.prototype.getRemaningBalance = function (userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentSettingsRepo, agentSettings, dataToSend, error_4;
+            var agentSettingsRepo, agentSettings, dataToSend, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -220,34 +125,8 @@ var AgentService = /** @class */ (function () {
                         };
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
                     case 2:
-                        error_4 = _a.sent();
-                        throw error_4;
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    AgentService.prototype.getEnterpriseRemaningBalance = function (userDetails) {
-        return __awaiter(this, void 0, void 0, function () {
-            var agentSettingsRepo, agentSettings, dataToSend, error_5;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        agentSettingsRepo = db_config_1.AppDataSource.getRepository(enterpriseSettings_1.default);
-                        return [4 /*yield*/, agentSettingsRepo.createQueryBuilder("enterpriseSettings")
-                                .andWhere("enterpriseSettings.clientId = :clientId", { clientId: userDetails.id }).getOne()];
-                    case 1:
-                        agentSettings = _a.sent();
-                        dataToSend = {
-                            remainingSpace: (agentSettings.totalStorage - +agentSettings.storage).toFixed(2),
-                            usedSpace: +agentSettings.storage.toFixed(2),
-                            totalAllowedSpace: agentSettings.totalStorage.toFixed(2)
-                        };
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
-                    case 2:
-                        error_5 = _a.sent();
-                        throw error_5;
+                        error_2 = _a.sent();
+                        throw error_2;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -255,7 +134,7 @@ var AgentService = /** @class */ (function () {
     };
     AgentService.prototype.generateAgentSettings = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentSettingRepo, agentRepo, agentSetting, agent, agentSettingCreate, error_6;
+            var agentSettingRepo, agentRepo, agentSetting, agent, agentSettingCreate, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -288,49 +167,7 @@ var AgentService = /** @class */ (function () {
                         _a.label = 3;
                     case 3: return [3 /*break*/, 5];
                     case 4:
-                        error_6 = _a.sent();
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    AgentService.prototype.generateEnterpriseSettings = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var enterpriseSettingRepo, enterpriseClientRepo, enterPriseSetting, client, enterPriseSettingCreate, error_7;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 4, , 5]);
-                        enterpriseSettingRepo = db_config_1.AppDataSource.getRepository(enterpriseSettings_1.default);
-                        enterpriseClientRepo = db_config_1.AppDataSource.getRepository(enterPriseClient_1.EnterPriseClient);
-                        return [4 /*yield*/, enterpriseSettingRepo.findOne({
-                                where: {
-                                    clientId: {
-                                        id: id
-                                    }
-                                }
-                            })];
-                    case 1:
-                        enterPriseSetting = _a.sent();
-                        if (!!enterPriseSetting) return [3 /*break*/, 3];
-                        return [4 /*yield*/, enterpriseClientRepo.findOne({
-                                where: {
-                                    id: id
-                                }
-                            })];
-                    case 2:
-                        client = _a.sent();
-                        enterPriseSettingCreate = enterpriseSettingRepo.create({
-                            storage: 0,
-                            assets: 0,
-                            clientId: client
-                        });
-                        enterpriseSettingRepo.save(enterPriseSettingCreate);
-                        _a.label = 3;
-                    case 3: return [3 /*break*/, 5];
-                    case 4:
-                        error_7 = _a.sent();
+                        error_3 = _a.sent();
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

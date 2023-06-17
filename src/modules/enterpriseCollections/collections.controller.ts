@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CollectionService } from "./collections.service";
 
-export class CollectoinController{
+export class EnterpriseCollectoinController{
     private collectionService = new CollectionService()
     public createCollection = async (req,res)=>{
         try {

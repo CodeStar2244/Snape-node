@@ -36,10 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CollectoinController = void 0;
+exports.EnterpriseCollectoinController = void 0;
 var collections_service_1 = require("./collections.service");
-var CollectoinController = /** @class */ (function () {
-    function CollectoinController() {
+var EnterpriseCollectoinController = /** @class */ (function () {
+    function EnterpriseCollectoinController() {
         var _this = this;
         this.collectionService = new collections_service_1.CollectionService();
         this.createCollection = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
@@ -267,7 +267,7 @@ var CollectoinController = /** @class */ (function () {
             });
         }); };
     }
-    return CollectoinController;
+    return EnterpriseCollectoinController;
 }());
-exports.CollectoinController = CollectoinController;
+exports.EnterpriseCollectoinController = EnterpriseCollectoinController;
 //# sourceMappingURL=collections.controller.js.map

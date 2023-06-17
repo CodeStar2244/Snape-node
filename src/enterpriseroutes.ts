@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
 import * as express from "express";
-import { UserRoute } from "./modules/user/agent.route";
 import { Middleware } from "./middleware";
-import { CollectionRoute } from "./modules/collections/collections.route";
-import { DashboardRoute } from "./modules/dashboard/dashboard.routes";
 import { ClientRoute } from "./modules/client/client.route";
 import { AssetRegistryRouter } from "./modules/assetRegistry/assetRegistry.route";
 import { EnterpriseCollectionRouter } from "./modules/enterpriseCollections/collections.route";
-export class Routes {
+import { EnterpriseClientRoutes } from "./modules/enterpriseUser/enterpriseclient.route";
+export class EnterpriseRoutes {
   private middleware = new Middleware();
   protected basePath: string;
 
@@ -30,10 +28,9 @@ export class Routes {
 
   public path() {
     const router = express.Router();
-    router.use("/agent", UserRoute);
-    router.use("/collection",this.middleware.authenticateUser,CollectionRoute);
-    router.use("/dashboard",this.middleware.authenticateUser,DashboardRoute);
-    router.use("/asset",this.middleware.authenticateUser,AssetRegistryRouter);
+    router.use("/client", EnterpriseClientRoutes);
+    router.use("/collection",this.middleware.authenticateEnterpriseUser,EnterpriseCollectionRouter);
+    router.use("/asset",this.middleware.authenticateEnterpriseUser,AssetRegistryRouter);
     router.use("/client",ClientRoute);
     router.all("/*", (req: Request, res: Response) => {
       return res.status(404).json({

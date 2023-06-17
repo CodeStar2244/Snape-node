@@ -7,7 +7,7 @@ var validator_1 = require("../../helpers/validator");
 var collections_controller_1 = require("./collections.controller");
 var collections_model_1 = require("./collections.model");
 var router = (0, express_1.Router)();
-var collectoinController = new collections_controller_1.CollectoinController();
+var collectoinController = new collections_controller_1.EnterpriseCollectoinController();
 var v = new validator_1.Validator();
 router.post(routes_1.COLLECTION_ROUTES.CREATE_COLLECTION, v.validate(collections_model_1.CreateCollectionModel), collectoinController.createCollection);
 router.post(routes_1.COLLECTION_ROUTES.UPLOAD_FILES, v.validate(collections_model_1.UploadFilesModel), collectoinController.filesUpload);

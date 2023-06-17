@@ -23,16 +23,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Routes = void 0;
+exports.EnterpriseRoutes = void 0;
 var express = __importStar(require("express"));
-var agent_route_1 = require("./modules/user/agent.route");
 var middleware_1 = require("./middleware");
-var collections_route_1 = require("./modules/collections/collections.route");
-var dashboard_routes_1 = require("./modules/dashboard/dashboard.routes");
 var client_route_1 = require("./modules/client/client.route");
 var assetRegistry_route_1 = require("./modules/assetRegistry/assetRegistry.route");
-var Routes = /** @class */ (function () {
-    function Routes(NODE_ENV) {
+var collections_route_1 = require("./modules/enterpriseCollections/collections.route");
+var enterpriseclient_route_1 = require("./modules/enterpriseUser/enterpriseclient.route");
+var EnterpriseRoutes = /** @class */ (function () {
+    function EnterpriseRoutes(NODE_ENV) {
         this.middleware = new middleware_1.Middleware();
         switch (NODE_ENV) {
             case "production":
@@ -43,17 +42,16 @@ var Routes = /** @class */ (function () {
                 break;
         }
     }
-    Routes.prototype.defaultRoute = function (req, res) {
+    EnterpriseRoutes.prototype.defaultRoute = function (req, res) {
         res.json({
             message: "Hello Snape!",
         });
     };
-    Routes.prototype.path = function () {
+    EnterpriseRoutes.prototype.path = function () {
         var router = express.Router();
-        router.use("/agent", agent_route_1.UserRoute);
-        router.use("/collection", this.middleware.authenticateUser, collections_route_1.CollectionRoute);
-        router.use("/dashboard", this.middleware.authenticateUser, dashboard_routes_1.DashboardRoute);
-        router.use("/asset", this.middleware.authenticateUser, assetRegistry_route_1.AssetRegistryRouter);
+        router.use("/client", enterpriseclient_route_1.EnterpriseClientRoutes);
+        router.use("/collection", this.middleware.authenticateEnterpriseUser, collections_route_1.EnterpriseCollectionRouter);
+        router.use("/asset", this.middleware.authenticateEnterpriseUser, assetRegistry_route_1.AssetRegistryRouter);
         router.use("/client", client_route_1.ClientRoute);
         router.all("/*", function (req, res) {
             return res.status(404).json({
@@ -62,7 +60,7 @@ var Routes = /** @class */ (function () {
         });
         return router;
     };
-    return Routes;
+    return EnterpriseRoutes;
 }());
-exports.Routes = Routes;
-//# sourceMappingURL=route.js.map
+exports.EnterpriseRoutes = EnterpriseRoutes;
+//# sourceMappingURL=enterpriseroutes.js.map

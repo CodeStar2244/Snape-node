@@ -5,16 +5,16 @@ import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { UpdateCollectionModel, CollectionDesignModel } from "./collections.model";
 import { CDN_URL, FILE_ALREADY_EXISTS, FRONT_URL } from "../../config/constants";
-import { AgentService } from "../user/agent.service";
 import { uuid } from 'uuidv4';
 import EnterpriseCollections from "../../entities/enterpriseCollections";
 import { EnterpriseCollectionTags } from "../../entities/enterpriseCollectionTags";
 import { EnterpriseCollectionDesign } from "../../entities/enterprisecollectionDesign";
 import EnterpriseFilesEntity from "../../entities/enterpriseFiles";
+import { EnterpriseClientService } from "../enterpriseUser/enterpriseclient.service";
 
 export class CollectionService {
     private s3 = new AWSS3();
-    private agentService = new AgentService();
+    private enterpriseClientService = new EnterpriseClientService();
     public createCollection = async (body, userDetails) => {
         try {
             const collectionRepository = AppDataSource.getRepository(EnterpriseCollections);
@@ -173,7 +173,7 @@ export class CollectionService {
 
             }
             await collectionRepository.delete({ id: id });
-            const clientSpace = await this.agentService.getEnterpriseRemaningBalance(userDetails);
+            const clientSpace = await this.enterpriseClientService.getEnterpriseRemaningBalance(userDetails);
             return clientSpace;
 
         } catch (error) {
@@ -209,7 +209,7 @@ export class CollectionService {
             }
             const filesToBeDeleted = await fileRepo.delete(ids);
         
-            const clientSpace = await this.agentService.getEnterpriseRemaningBalance(userDetails);
+            const clientSpace = await this.enterpriseClientService.getEnterpriseRemaningBalance(userDetails);
             return clientSpace;
 
         } catch (error) {
@@ -416,7 +416,7 @@ export class CollectionService {
 
             const reponse = await Promise.all(filesUploadArr);
 
-            const clientSpace = await this.agentService.getEnterpriseRemaningBalance(userDetails);
+            const clientSpace = await this.enterpriseClientService.getEnterpriseRemaningBalance(userDetails);
             return clientSpace;
 
 

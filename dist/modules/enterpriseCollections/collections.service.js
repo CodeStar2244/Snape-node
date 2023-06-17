@@ -58,17 +58,17 @@ var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var collections_model_1 = require("./collections.model");
 var constants_1 = require("../../config/constants");
-var agent_service_1 = require("../user/agent.service");
 var uuidv4_1 = require("uuidv4");
 var enterpriseCollections_1 = __importDefault(require("../../entities/enterpriseCollections"));
 var enterpriseCollectionTags_1 = require("../../entities/enterpriseCollectionTags");
 var enterprisecollectionDesign_1 = require("../../entities/enterprisecollectionDesign");
 var enterpriseFiles_1 = __importDefault(require("../../entities/enterpriseFiles"));
+var enterpriseclient_service_1 = require("../enterpriseUser/enterpriseclient.service");
 var CollectionService = /** @class */ (function () {
     function CollectionService() {
         var _this = this;
         this.s3 = new awss3_1.AWSS3();
-        this.agentService = new agent_service_1.AgentService();
+        this.enterpriseClientService = new enterpriseclient_service_1.EnterpriseClientService();
         this.createCollection = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
             var collectionRepository, designRepo, themerepo, slug, collection, theme, error_1;
             return __generator(this, function (_a) {
@@ -261,7 +261,7 @@ var CollectionService = /** @class */ (function () {
                         return [4 /*yield*/, collectionRepository.delete({ id: id })];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, this.agentService.getEnterpriseRemaningBalance(userDetails)];
+                        return [4 /*yield*/, this.enterpriseClientService.getEnterpriseRemaningBalance(userDetails)];
                     case 4:
                         clientSpace = _a.sent();
                         return [2 /*return*/, clientSpace];
@@ -306,7 +306,7 @@ var CollectionService = /** @class */ (function () {
                         return [4 /*yield*/, fileRepo.delete(ids)];
                     case 3:
                         filesToBeDeleted = _a.sent();
-                        return [4 /*yield*/, this.agentService.getEnterpriseRemaningBalance(userDetails)];
+                        return [4 /*yield*/, this.enterpriseClientService.getEnterpriseRemaningBalance(userDetails)];
                     case 4:
                         clientSpace = _a.sent();
                         return [2 /*return*/, clientSpace];
@@ -592,7 +592,7 @@ var CollectionService = /** @class */ (function () {
                     case 8: return [4 /*yield*/, Promise.all(filesUploadArr)];
                     case 9:
                         reponse = _a.sent();
-                        return [4 /*yield*/, this.agentService.getEnterpriseRemaningBalance(userDetails)];
+                        return [4 /*yield*/, this.enterpriseClientService.getEnterpriseRemaningBalance(userDetails)];
                     case 10:
                         clientSpace = _a.sent();
                         return [2 /*return*/, clientSpace];

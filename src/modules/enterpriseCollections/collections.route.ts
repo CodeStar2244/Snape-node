@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { COLLECTION_ROUTES } from "../../config/routes";
 import { Validator } from "../../helpers/validator";
-import { CollectoinController } from "./collections.controller";
+import { EnterpriseCollectoinController } from "./collections.controller";
 import { CollectionDesignModel, CollectionGetModel, CreateCollectionModel, UpdateCollectionModel, UploadFilesModel } from "./collections.model";
 
 
 const router: Router = Router(); 
-const collectoinController = new CollectoinController();
+const collectoinController = new EnterpriseCollectoinController();
 const v :Validator = new Validator();
 
 router.post(COLLECTION_ROUTES.CREATE_COLLECTION,v.validate(CreateCollectionModel),collectoinController.createCollection);

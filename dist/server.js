@@ -48,6 +48,7 @@ var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var i18next_fs_backend_1 = __importDefault(require("i18next-fs-backend"));
 var i18next_1 = __importDefault(require("i18next"));
 var i18next_http_middleware_1 = __importDefault(require("i18next-http-middleware"));
+var enterpriseroutes_1 = require("./enterpriseroutes");
 dotenv_1.default.config();
 var App = /** @class */ (function () {
     function App() {
@@ -79,6 +80,7 @@ var App = /** @class */ (function () {
             next();
         });
         var routes = new route_1.Routes(NODE_ENV);
+        var enterpriseRoutes = new enterpriseroutes_1.EnterpriseRoutes(NODE_ENV);
         this.app.all("/*", function (req, res, next) {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Request-Headers", "*");
@@ -94,6 +96,7 @@ var App = /** @class */ (function () {
             }
         });
         this.app.use("/api/v1", routes.path());
+        this.app.use("/api/v2/enterprise", enterpriseRoutes.path());
         this.app.use(function (err, req, res, next) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (err) {

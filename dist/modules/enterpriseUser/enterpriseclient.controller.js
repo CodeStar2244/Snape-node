@@ -37,18 +37,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
-var agent_service_1 = require("./agent.service");
+var enterpriseclient_service_1 = require("./enterpriseclient.service");
+var enterpriseclient_model_1 = require("./enterpriseclient.model");
 var UserController = /** @class */ (function () {
     function UserController() {
         var _this = this;
-        this.login = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.enterpriseLogin = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, email, password, data, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         _a = req.body, email = _a.email, password = _a.password;
-                        return [4 /*yield*/, this.agentService.login(email, password)];
+                        return [4 /*yield*/, this.enterpriseclientService.enterpriseLogin(email, password)];
                     case 1:
                         data = _b.sent();
                         return [2 /*return*/, res.status(data.code).json(data)];
@@ -59,13 +60,14 @@ var UserController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getRemaningBalance = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var data, error_2;
+        this.enterpriseRegister = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var enterpriseAgent, data, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.agentService.getRemaningBalance(req.user)];
+                        enterpriseAgent = new enterpriseclient_model_1.EnterpriseRegister(req.body, req.params);
+                        return [4 /*yield*/, this.enterpriseclientService.enterpriseRegister(enterpriseAgent)];
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, res.status(data.code).json(data)];
@@ -76,9 +78,26 @@ var UserController = /** @class */ (function () {
                 }
             });
         }); };
-        this.agentService = new agent_service_1.AgentService();
+        this.getRemaningBalance = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var data, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.enterpriseclientService.getEnterpriseRemaningBalance(req.user)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, res.status(data.code).json(data)];
+                    case 2:
+                        error_3 = _a.sent();
+                        return [2 /*return*/, res.status(error_3.code).json(error_3)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.enterpriseclientService = new enterpriseclient_service_1.EnterpriseClientService();
     }
     return UserController;
 }());
 exports.UserController = UserController;
-//# sourceMappingURL=agent.controller.js.map
+//# sourceMappingURL=enterpriseclient.controller.js.map
