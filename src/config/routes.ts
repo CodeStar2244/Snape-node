@@ -36,3 +36,7 @@ export const ASSET_REGISTRY_ROUTES = {
     DASHBOARD : "/dashboard",
     
 }
+export const AGENT_SERVICE = {
+    LIST_AGENTS : "/list-agents",
+    
+}

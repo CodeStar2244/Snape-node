@@ -30,6 +30,7 @@ var client_route_1 = require("./modules/client/client.route");
 var collections_route_1 = require("./modules/enterpriseCollections/collections.route");
 var enterpriseclient_route_1 = require("./modules/enterpriseUser/enterpriseclient.route");
 var enterpriseAssetRegistry_route_1 = require("./modules/enterpriseAssetRegistry/enterpriseAssetRegistry.route");
+var enterpriseAgentsRoutes_1 = require("./modules/enterpriseAgents/enterpriseAgentsRoutes");
 var EnterpriseRoutes = /** @class */ (function () {
     function EnterpriseRoutes(NODE_ENV) {
         this.middleware = new middleware_1.Middleware();
@@ -52,6 +53,7 @@ var EnterpriseRoutes = /** @class */ (function () {
         router.use("/client", enterpriseclient_route_1.EnterpriseClientRoutes);
         router.use("/collection", this.middleware.authenticateEnterpriseUser, collections_route_1.EnterpriseCollectionRouter);
         router.use("/asset", this.middleware.authenticateEnterpriseUser, enterpriseAssetRegistry_route_1.EnterpriseAssetRegistryRouter);
+        router.use("/agent", this.middleware.authenticateEnterpriseUser, enterpriseAgentsRoutes_1.EnterpriseAgentsRouter);
         router.use("/client", client_route_1.ClientRoute);
         router.all("/*", function (req, res) {
             return res.status(404).json({

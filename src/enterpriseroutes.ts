@@ -6,6 +6,7 @@ import { AssetRegistryRouter } from "./modules/assetRegistry/assetRegistry.route
 import { EnterpriseCollectionRouter } from "./modules/enterpriseCollections/collections.route";
 import { EnterpriseClientRoutes } from "./modules/enterpriseUser/enterpriseclient.route";
 import { EnterpriseAssetRegistryRouter } from "./modules/enterpriseAssetRegistry/enterpriseAssetRegistry.route";
+import { EnterpriseAgentsRouter } from "./modules/enterpriseAgents/enterpriseAgentsRoutes";
 export class EnterpriseRoutes {
   private middleware = new Middleware();
   protected basePath: string;
@@ -32,6 +33,7 @@ export class EnterpriseRoutes {
     router.use("/client", EnterpriseClientRoutes);
     router.use("/collection",this.middleware.authenticateEnterpriseUser,EnterpriseCollectionRouter);
     router.use("/asset",this.middleware.authenticateEnterpriseUser,EnterpriseAssetRegistryRouter);
+    router.use("/agent",this.middleware.authenticateEnterpriseUser,EnterpriseAgentsRouter);
     router.use("/client",ClientRoute);
     router.all("/*", (req: Request, res: Response) => {
       return res.status(404).json({

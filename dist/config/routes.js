@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login",
     GET_REMANING_SPACE: "/get-remaining-space",
@@ -36,5 +36,8 @@ exports.ASSET_REGISTRY_ROUTES = {
     GET_ASSET: "/",
     UPDATE_ASSET: "/:id",
     DASHBOARD: "/dashboard",
+};
+exports.AGENT_SERVICE = {
+    LIST_AGENTS: "/list-agents",
 };
 //# sourceMappingURL=routes.js.map
