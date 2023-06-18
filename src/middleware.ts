@@ -85,7 +85,7 @@ export class Middleware {
             const token = req.headers.authorization;
             const tokenInfo = Jwt.decodeAuthToken(token).payload;
             const enterpriseRepo = AppDataSource.getRepository(EnterPriseClient);
-            const enterpriseUser = await enterpriseRepo.findOneBy({id:tokenInfo.agentId});
+            const enterpriseUser = await enterpriseRepo.findOneBy({id:tokenInfo.clientId});
             if(!enterpriseUser){
                 unAuthPayload.error.message = req.i18n.t("USER_NOT_EXIST");
                 unAuthPayload.error.code = 404;

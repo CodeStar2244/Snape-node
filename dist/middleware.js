@@ -132,7 +132,7 @@ var Middleware = /** @class */ (function () {
                         token = req.headers.authorization;
                         tokenInfo = jwt_1.Jwt.decodeAuthToken(token).payload;
                         enterpriseRepo = db_config_1.AppDataSource.getRepository(enterPriseClient_1.EnterPriseClient);
-                        return [4 /*yield*/, enterpriseRepo.findOneBy({ id: tokenInfo.agentId })];
+                        return [4 /*yield*/, enterpriseRepo.findOneBy({ id: tokenInfo.clientId })];
                     case 1:
                         enterpriseUser = _a.sent();
                         if (!enterpriseUser) {
