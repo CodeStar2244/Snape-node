@@ -96,7 +96,7 @@ export class EnterpriseClientService {
                 .andWhere("enterpriseSettings.clientId = :clientId", { clientId: userDetails.id }).getOne();
             const dataToSend = {
                 remainingSpace: (agentSettings.totalStorage - +agentSettings.storage).toFixed(2),
-                usedSpace: +agentSettings.storage.toFixed(2),
+                usedSpace:  agentSettings.storage ? +agentSettings.storage.toFixed(2) : 0.00,
                 totalAllowedSpace: agentSettings.totalStorage.toFixed(2)
             }
             return ResponseBuilder.data(dataToSend)
