@@ -38,5 +38,8 @@ export const ASSET_REGISTRY_ROUTES = {
 }
 export const AGENT_SERVICE = {
     LIST_AGENTS : "/list-agents",
+    LIST_AGENTS_LOCATIONS : "/list-agents-locations",
+    GET_AGENT_DETAILS :"/get-agent-detail/:agentId",
+    GET_AGENT_CATEGORIES :"/get-agent-categories/:agentId",
     
 }

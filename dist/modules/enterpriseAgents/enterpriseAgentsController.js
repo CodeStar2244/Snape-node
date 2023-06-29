@@ -60,6 +60,60 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getAgentLocations = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentLocations(req.query, userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_2 = _a.sent();
+                        return [2 /*return*/, res.status(error_2.code).json(error_2)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getAgentDetails = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentDetails(req.params, userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_3 = _a.sent();
+                        return [2 /*return*/, res.status(error_3.code).json(error_3)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getAgentCategories = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentCategories(req.params, userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_4 = _a.sent();
+                        return [2 /*return*/, res.status(error_4.code).json(error_4)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return EnterpriseAgentsController;
 }());

@@ -10,5 +10,8 @@ var router = (0, express_1.Router)();
 var enterpriseAgentsController = new enterpriseAgentsController_1.EnterpriseAgentsController();
 var v = new validator_1.Validator();
 router.get(routes_1.AGENT_SERVICE.LIST_AGENTS, v.validate(enterpriseAgentsModel_1.AgentGetList), enterpriseAgentsController.getAgentList);
+router.get(routes_1.AGENT_SERVICE.LIST_AGENTS_LOCATIONS, v.validate(enterpriseAgentsModel_1.AgentGetList), enterpriseAgentsController.getAgentLocations);
+router.get(routes_1.AGENT_SERVICE.GET_AGENT_DETAILS, enterpriseAgentsController.getAgentDetails);
+router.get(routes_1.AGENT_SERVICE.GET_AGENT_CATEGORIES, enterpriseAgentsController.getAgentCategories);
 exports.EnterpriseAgentsRouter = router;
 //# sourceMappingURL=enterpriseAgentsRoutes.js.map
