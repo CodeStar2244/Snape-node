@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AgentGetList = void 0;
+exports.AgentGetLocationList = exports.AgentGetList = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var AgentGetList = /** @class */ (function (_super) {
@@ -68,4 +68,35 @@ var AgentGetList = /** @class */ (function (_super) {
     return AgentGetList;
 }(model_1.Model));
 exports.AgentGetList = AgentGetList;
+var AgentGetLocationList = /** @class */ (function (_super) {
+    __extends(AgentGetLocationList, _super);
+    function AgentGetLocationList(body, params) {
+        var _this = _super.call(this) || this;
+        _this.latitude = params.latitude;
+        _this.longitude = params.longitude;
+        if (params.range) {
+            _this.range = params.range;
+        }
+        else {
+            _this.range = 45;
+        }
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsLatitude)(),
+        __metadata("design:type", String)
+    ], AgentGetLocationList.prototype, "latitude", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsLongitude)(),
+        __metadata("design:type", String)
+    ], AgentGetLocationList.prototype, "longitude", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", Number)
+    ], AgentGetLocationList.prototype, "range", void 0);
+    return AgentGetLocationList;
+}(model_1.Model));
+exports.AgentGetLocationList = AgentGetLocationList;
 //# sourceMappingURL=enterpriseAgentsModel.js.map

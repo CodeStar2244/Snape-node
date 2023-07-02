@@ -41,3 +41,33 @@ export class AgentGetList extends Model {
     
 
 }
+
+
+export class AgentGetLocationList extends Model {
+   
+    @IsNotEmpty()
+    @IsLatitude()
+    latitude:String
+
+    @IsNotEmpty()
+    @IsLongitude()
+    longitude:String
+
+    @IsOptional()
+    range:number
+
+
+
+    constructor(body: any, params?: any) {
+        super();
+        this.latitude = params.latitude;
+        this.longitude = params.longitude;
+        if(params.range){
+            this.range = params.range
+        }else{
+            this.range = 45
+        }        
+    }
+    
+
+}

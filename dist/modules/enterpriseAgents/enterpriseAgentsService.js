@@ -161,6 +161,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
                             .leftJoin("tblmediacategories", "categories", "categories.id = mediamapping.mediacategoryid")
                             .leftJoin("tblimages", "images", "categories.id = images.entityid AND entitytype = 'mediacategory'")
                             .select("mediamapping.agentId", "id")
+                            .addSelect("images.imagepath", "image")
                             .addSelect("categories.title")
                             .where("mediamapping.agentId = :agentId", { agentId: agentId });
                         return [4 /*yield*/, agentQuery.getRawMany()];

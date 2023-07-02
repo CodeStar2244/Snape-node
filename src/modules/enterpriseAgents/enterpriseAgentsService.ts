@@ -91,6 +91,7 @@ export class EnterpriseAgentsService {
             .leftJoin("tblmediacategories","categories","categories.id = mediamapping.mediacategoryid")
             .leftJoin("tblimages","images","categories.id = images.entityid AND entitytype = 'mediacategory'")
             .select("mediamapping.agentId", "id")
+            .addSelect("images.imagepath","image")
             .addSelect("categories.title")
             .where("mediamapping.agentId = :agentId", { agentId });
         const agent = await agentQuery.getRawMany();
