@@ -6,16 +6,25 @@ import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { AgentGetList } from "./enterpriseAgentsModel";
 export class EnterpriseAgentsService {
     public async getAgents(query, userDetails) {
-        const queryObj = new AgentGetList(null, query);
+        try {
+            const queryObj = new AgentGetList(null, query);
         const agentRepo = AppDataSource.getRepository(Tblagent);
 
         const offset = (+queryObj.page) * +queryObj.limit;
         const limit = queryObj.limit;
         const agentQuery = agentRepo.createQueryBuilder("agent")
             .select("agent.id", "id")
+            .addSelect("agent.firstname", "firstname")
             .addSelect("agent.email", "email")
             .addSelect("agent.latitude", "latitude")
             .addSelect("agent.longitude", "longitude")
+            .addSelect("agent.lastname", "lastname")
+            .addSelect("agent.experiencelevel", "experiencelevel")
+            .addSelect("agent.speciality", "speciality")
+            .addSelect("agent.photograpyrate", "photograpyrate")
+            .addSelect("agent.videograpyrate", "videograpyrate")
+            .addSelect("agent.bothrate", "bothrate")
+            .addSelect("agent.createdondate", "createdAt")
             .addSelect(`calculate_distance(agent.latitude , agent.longitude,${queryObj.latitude} ,${queryObj.longitude},'K') as distance`)
             .where("agent.isonline = :isonline", { isonline: true })
             .andWhere(`calculate_distance(agent.latitude , agent.longitude,${queryObj.latitude} ,${queryObj.longitude},'K') < ${queryObj.range}`)
@@ -30,6 +39,10 @@ export class EnterpriseAgentsService {
             total: agnetCounts
         }
         return ResponseBuilder.data(dataToSend)
+        } catch (error) {
+            console.log(error , "Err")
+        } 
+        
     }
     public async getAgentLocations(query, userDetails) {
         const queryObj = new AgentGetList(null, query);

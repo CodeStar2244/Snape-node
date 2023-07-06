@@ -48,19 +48,28 @@ var EnterpriseAgentsService = /** @class */ (function () {
     }
     EnterpriseAgentsService.prototype.getAgents = function (query, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryObj, agentRepo, offset, limit, agentQuery, agents, agnetCounts, dataToSend;
+            var queryObj, agentRepo, offset, limit, agentQuery, agents, agnetCounts, dataToSend, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        _a.trys.push([0, 3, , 4]);
                         queryObj = new enterpriseAgentsModel_1.AgentGetList(null, query);
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
                         offset = (+queryObj.page) * +queryObj.limit;
                         limit = queryObj.limit;
                         agentQuery = agentRepo.createQueryBuilder("agent")
                             .select("agent.id", "id")
+                            .addSelect("agent.firstname", "firstname")
                             .addSelect("agent.email", "email")
                             .addSelect("agent.latitude", "latitude")
                             .addSelect("agent.longitude", "longitude")
+                            .addSelect("agent.lastname", "lastname")
+                            .addSelect("agent.experiencelevel", "experiencelevel")
+                            .addSelect("agent.speciality", "speciality")
+                            .addSelect("agent.photograpyrate", "photograpyrate")
+                            .addSelect("agent.videograpyrate", "videograpyrate")
+                            .addSelect("agent.bothrate", "bothrate")
+                            .addSelect("agent.createdondate", "createdAt")
                             .addSelect("calculate_distance(agent.latitude , agent.longitude,".concat(queryObj.latitude, " ,").concat(queryObj.longitude, ",'K') as distance"))
                             .where("agent.isonline = :isonline", { isonline: true })
                             .andWhere("calculate_distance(agent.latitude , agent.longitude,".concat(queryObj.latitude, " ,").concat(queryObj.longitude, ",'K') < ").concat(queryObj.range))
@@ -77,6 +86,11 @@ var EnterpriseAgentsService = /** @class */ (function () {
                             total: agnetCounts
                         };
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
+                    case 3:
+                        error_1 = _a.sent();
+                        console.log(error_1, "Err");
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -110,7 +124,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.getAgentDetails = function (params, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentId, agentRepo, agentQuery, agent, dataToSend, error_1;
+            var agentId, agentRepo, agentQuery, agent, dataToSend, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -138,8 +152,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         };
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
                     case 2:
-                        error_1 = _a.sent();
-                        console.log(error_1, "Er");
+                        error_2 = _a.sent();
+                        console.log(error_2, "Er");
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -148,7 +162,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.getAgentCategories = function (params, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentId, agentCategoriesRepo, mediaCategoriesRepo, agentQuery, agent, dataToSend, error_2;
+            var agentId, agentCategoriesRepo, mediaCategoriesRepo, agentQuery, agent, dataToSend, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -172,8 +186,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         };
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
                     case 2:
-                        error_2 = _a.sent();
-                        console.log(error_2, "Err");
+                        error_3 = _a.sent();
+                        console.log(error_3, "Err");
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
