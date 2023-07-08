@@ -59,6 +59,7 @@ var AgentService = /** @class */ (function () {
                         _a.trys.push([0, 3, , 4]);
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
                         agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
+                        console.log("============");
                         return [4 /*yield*/, agentRepo.findOne({
                                 where: {
                                     email: email
@@ -66,6 +67,7 @@ var AgentService = /** @class */ (function () {
                             })];
                     case 1:
                         agent = _a.sent();
+                        console.log(agent, '----agent------');
                         if (!agent) {
                             throw responseBuilder_1.ResponseBuilder.badRequest('Invalid credentials');
                         }
@@ -100,6 +102,7 @@ var AgentService = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 3:
                         error_1 = _a.sent();
+                        console.log(error_1, '------error----');
                         throw error_1;
                     case 4: return [2 /*return*/];
                 }

@@ -66,9 +66,11 @@ var Middleware = /** @class */ (function () {
                         token = req.headers.authorization;
                         tokenInfo = jwt_1.Jwt.decodeAuthToken(token).payload;
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        console.log(agentRepo, '--------agentRepo-------');
                         return [4 /*yield*/, agentRepo.findOneBy({ id: tokenInfo.agentId })];
                     case 1:
                         agent = _a.sent();
+                        console.log(agent, '------agent-------');
                         if (!agent) {
                             unAuthPayload.error.message = req.i18n.t("USER_NOT_EXIST");
                             unAuthPayload.error.code = 404;

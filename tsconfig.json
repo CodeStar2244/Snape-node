@@ -6,7 +6,16 @@
     "outDir": "./dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "esModuleInterop": true
-    
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "db.config": [
+        "src/db/db.config.ts"
+      ],
+      "entities/*": [
+        "src/entities/*"
+      ]
+    },
+    "moduleResolution": "Node"
   }
 }

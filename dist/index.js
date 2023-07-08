@@ -34,8 +34,8 @@ var PORT = process.env.PORT || 3000;
 var httpServer = http.createServer(server_1.default);
 var logger = new logger_1.Log();
 db_config_1.AppDataSource.initialize()
-    .then(function () {
-    console.log("Data Source has been initialized!");
+    .then(function (connection) {
+    console.log(connection, "Data Source has been initialized!");
 })
     .catch(function (err) {
     console.error("Error during Data Source initialization", err);

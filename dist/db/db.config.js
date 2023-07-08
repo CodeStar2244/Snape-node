@@ -8,6 +8,8 @@ var typeorm_1 = require("typeorm");
 var path_1 = __importDefault(require("path"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+console.log(path_1.default.join(__dirname, "../entities/*.js"), '----s--------');
+var Tblagent_1 = require("entities/Tblagent");
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "postgres",
     host: process.env.DB_HOST,
@@ -19,14 +21,12 @@ exports.AppDataSource = new typeorm_1.DataSource({
     logging: false,
     connectTimeoutMS: 60 * 60 * 1000,
     migrationsTableName: "migration_info_table",
-    entities: [
-        "".concat(path_1.default.join(__dirname, "../entities/*.js"))
-    ],
+    entities: [Tblagent_1.Tblagent],
     migrations: [
-        "".concat(path_1.default.join(__dirname, "../migration/*.js"))
+        "".concat(path_1.default.join(__dirname, "..\migration\*.js"))
     ],
     subscribers: [
-        "src/subscriber/**/*.ts"
+        "src\subscriber\**\*.ts"
     ],
 });
 //# sourceMappingURL=db.config.js.map
