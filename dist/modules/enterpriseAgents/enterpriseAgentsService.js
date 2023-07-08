@@ -72,8 +72,10 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         favouriteAgents = _a.sent();
                         agentsArr = favouriteAgents.map(function (obj) { return obj.agent; });
                         agentQuery = agentRepo.createQueryBuilder("agent")
+                            .leftJoin("tblimages", "images", "agent.id = images.entityid AND entitytype = 'agent'")
                             .select("agent.id", "id")
                             .addSelect("agent.firstname", "firstname")
+                            .addSelect("images.imagepath", "profile")
                             .addSelect("agent.email", "email")
                             .addSelect("agent.latitude", "latitude")
                             .addSelect("agent.longitude", "longitude")
