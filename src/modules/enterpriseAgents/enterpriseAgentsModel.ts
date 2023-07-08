@@ -2,6 +2,11 @@ import { IsEnum, IsLatitude, IsLongitude, IsNotEmpty, IsNumber, IsOptional, IsSt
 import { Model } from "../../helpers/model";
 import { NumOpenProactiveInsights } from "aws-sdk/clients/devopsguru";
 
+enum isFavourite {
+ "zero"='0',
+ "one"='1'
+}
+
 export class AgentGetList extends Model {
    
     @IsNotEmpty()
@@ -67,6 +72,22 @@ export class AgentGetLocationList extends Model {
         }else{
             this.range = 45
         }        
+    }
+    
+
+}
+
+
+export class AgentFavourite extends Model {
+
+    @IsNotEmpty()
+    @IsEnum(isFavourite)
+    isFavourite:string
+
+    constructor(body: any, params?: any) {
+        super();
+        this.isFavourite = params.isFavourite
+               
     }
     
 

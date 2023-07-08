@@ -24,9 +24,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AgentGetLocationList = exports.AgentGetList = void 0;
+exports.AgentFavourite = exports.AgentGetLocationList = exports.AgentGetList = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
+var isFavourite;
+(function (isFavourite) {
+    isFavourite["zero"] = "0";
+    isFavourite["one"] = "1";
+})(isFavourite || (isFavourite = {}));
 var AgentGetList = /** @class */ (function (_super) {
     __extends(AgentGetList, _super);
     function AgentGetList(body, params) {
@@ -99,4 +104,19 @@ var AgentGetLocationList = /** @class */ (function (_super) {
     return AgentGetLocationList;
 }(model_1.Model));
 exports.AgentGetLocationList = AgentGetLocationList;
+var AgentFavourite = /** @class */ (function (_super) {
+    __extends(AgentFavourite, _super);
+    function AgentFavourite(body, params) {
+        var _this = _super.call(this) || this;
+        _this.isFavourite = params.isFavourite;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsEnum)(isFavourite),
+        __metadata("design:type", String)
+    ], AgentFavourite.prototype, "isFavourite", void 0);
+    return AgentFavourite;
+}(model_1.Model));
+exports.AgentFavourite = AgentFavourite;
 //# sourceMappingURL=enterpriseAgentsModel.js.map

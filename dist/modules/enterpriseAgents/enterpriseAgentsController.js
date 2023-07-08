@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnterpriseAgentsController = void 0;
 var enterpriseAgentsService_1 = require("./enterpriseAgentsService");
+var enterpriseAgentsModel_1 = require("./enterpriseAgentsModel");
 var EnterpriseAgentsController = /** @class */ (function () {
     function EnterpriseAgentsController() {
         var _this = this;
@@ -110,6 +111,27 @@ var EnterpriseAgentsController = /** @class */ (function () {
                     case 2:
                         error_4 = _a.sent();
                         return [2 /*return*/, res.status(error_4.code).json(error_4)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.addRemoveFavourite = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, agentId, queryParams, result, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        agentId = req.params.agentId;
+                        queryParams = new enterpriseAgentsModel_1.AgentFavourite(req.body, req.query);
+                        return [4 /*yield*/, this.enterpriseAgentsService.addRemoveFavourite(queryParams, userDetails, agentId)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_5 = _a.sent();
+                        console.log("errror", error_5);
+                        return [2 /*return*/, res.status(error_5.code).json(error_5)];
                     case 3: return [2 /*return*/];
                 }
             });

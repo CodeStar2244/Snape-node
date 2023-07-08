@@ -35,12 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnterpriseAgentsService = void 0;
 var db_config_1 = require("../../db/db.config");
 var Tblagent_1 = require("../../entities/Tblagent");
 var Tblagentmediacategoriesmapping_1 = require("../../entities/Tblagentmediacategoriesmapping");
 var Tblmediacategories_1 = require("../../entities/Tblmediacategories");
+var enterPriseClient_1 = require("../../entities/enterPriseClient");
+var enterpriseAgentFavourite_1 = __importDefault(require("../../entities/enterpriseAgentFavourite"));
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var enterpriseAgentsModel_1 = require("./enterpriseAgentsModel");
 var EnterpriseAgentsService = /** @class */ (function () {
@@ -48,15 +53,24 @@ var EnterpriseAgentsService = /** @class */ (function () {
     }
     EnterpriseAgentsService.prototype.getAgents = function (query, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryObj, agentRepo, offset, limit, agentQuery, agents, agnetCounts, dataToSend, error_1;
+            var queryObj, agentRepo, enterpriseAgentFavouriteRepo, offset, limit, favouriteAgents, agentsArr, agentQuery, agents, agnetCounts, _i, agents_1, agent, dataToSend, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 4, , 5]);
                         queryObj = new enterpriseAgentsModel_1.AgentGetList(null, query);
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        enterpriseAgentFavouriteRepo = db_config_1.AppDataSource.getRepository(enterpriseAgentFavourite_1.default);
                         offset = (+queryObj.page) * +queryObj.limit;
                         limit = queryObj.limit;
+                        return [4 /*yield*/, enterpriseAgentFavouriteRepo.createQueryBuilder("fav")
+                                .select("fav.id", "id")
+                                .addSelect("fav.clientId", "client")
+                                .addSelect("fav.agentId", "agent")
+                                .where("fav.clientId = :clientId", { clientId: userDetails.id }).getRawMany()];
+                    case 1:
+                        favouriteAgents = _a.sent();
+                        agentsArr = favouriteAgents.map(function (obj) { return obj.agent; });
                         agentQuery = agentRepo.createQueryBuilder("agent")
                             .select("agent.id", "id")
                             .addSelect("agent.firstname", "firstname")
@@ -76,21 +90,30 @@ var EnterpriseAgentsService = /** @class */ (function () {
                             .offset(offset)
                             .limit(limit);
                         return [4 /*yield*/, agentQuery.getRawMany()];
-                    case 1:
+                    case 2:
                         agents = _a.sent();
                         return [4 /*yield*/, agentQuery.getCount()];
-                    case 2:
+                    case 3:
                         agnetCounts = _a.sent();
+                        for (_i = 0, agents_1 = agents; _i < agents_1.length; _i++) {
+                            agent = agents_1[_i];
+                            if (agentsArr.includes(agent.id)) {
+                                agent.isFavourite = true;
+                            }
+                            else {
+                                agent.isFavourite = false;
+                            }
+                        }
                         dataToSend = {
                             agents: agents,
                             total: agnetCounts
                         };
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
-                    case 3:
+                    case 4:
                         error_1 = _a.sent();
                         console.log(error_1, "Err");
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
@@ -168,7 +191,6 @@ var EnterpriseAgentsService = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         agentId = params.agentId;
-                        console.log(agentId, "agentID");
                         agentCategoriesRepo = db_config_1.AppDataSource.getRepository(Tblagentmediacategoriesmapping_1.Tblagentmediacategoriesmapping);
                         mediaCategoriesRepo = db_config_1.AppDataSource.getRepository(Tblmediacategories_1.Tblmediacategories);
                         agentQuery = agentCategoriesRepo.createQueryBuilder("mediamapping")
@@ -190,6 +212,63 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         console.log(error_3, "Err");
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    EnterpriseAgentsService.prototype.addRemoveFavourite = function (params, userDetails, agentId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var agentRepo, enterpriseRepo, enterpriseAgentFavouriteRepo, agent, enterpriseClient, enterpriseAgentFavourite, enterpriseAgentFavouriteEntry, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        enterpriseRepo = db_config_1.AppDataSource.getRepository(enterPriseClient_1.EnterPriseClient);
+                        enterpriseAgentFavouriteRepo = db_config_1.AppDataSource.getRepository(enterpriseAgentFavourite_1.default);
+                        return [4 /*yield*/, agentRepo.findOne({ where: { id: agentId } })];
+                    case 1:
+                        agent = _a.sent();
+                        return [4 /*yield*/, enterpriseRepo.findOne({ where: { id: userDetails.id } })];
+                    case 2:
+                        enterpriseClient = _a.sent();
+                        return [4 /*yield*/, enterpriseAgentFavouriteRepo.findOne({
+                                where: {
+                                    clientId: {
+                                        id: enterpriseClient.id
+                                    },
+                                    agentId: {
+                                        id: agent.id
+                                    }
+                                }
+                            })];
+                    case 3:
+                        enterpriseAgentFavourite = _a.sent();
+                        if (params.isFavourite === '0') {
+                            if (enterpriseAgentFavourite) {
+                                enterpriseAgentFavouriteRepo.remove(enterpriseAgentFavourite);
+                            }
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: 'Favourite Removed' })];
+                        }
+                        else {
+                            if (enterpriseAgentFavourite) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: 'Favourite Added Already' })];
+                            }
+                            else {
+                                enterpriseAgentFavouriteEntry = enterpriseAgentFavouriteRepo.create({
+                                    clientId: enterpriseClient,
+                                    agentId: agent
+                                });
+                                enterpriseAgentFavouriteRepo.save(enterpriseAgentFavouriteEntry);
+                            }
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: 'Favourite Added' })];
+                        }
+                        return [3 /*break*/, 5];
+                    case 4:
+                        error_4 = _a.sent();
+                        console.log(error_4, "Err");
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         });

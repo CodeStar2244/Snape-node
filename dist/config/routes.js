@@ -42,5 +42,6 @@ exports.AGENT_SERVICE = {
     LIST_AGENTS_LOCATIONS: "/list-agents-locations",
     GET_AGENT_DETAILS: "/get-agent-detail/:agentId",
     GET_AGENT_CATEGORIES: "/get-agent-categories/:agentId",
+    FAVOURITE: "/favourite/:agentId",
 };
 //# sourceMappingURL=routes.js.map
