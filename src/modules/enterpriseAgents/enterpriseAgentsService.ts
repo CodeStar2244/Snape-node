@@ -1,6 +1,7 @@
 import { AppDataSource } from "../../db/db.config";
 import { Tblagent } from "../../entities/Tblagent";
 import { Tblagentmediacategoriesmapping } from "../../entities/Tblagentmediacategoriesmapping";
+import { Tblbooking } from "../../entities/Tblbooking";
 import { Tblmediacategories } from "../../entities/Tblmediacategories";
 import { EnterPriseClient } from "../../entities/enterPriseClient";
 import EnterpriseAgentFavourite from "../../entities/enterpriseAgentFavourite";
@@ -129,6 +130,36 @@ export class EnterpriseAgentsService {
             agent
         }
         return ResponseBuilder.data(dataToSend)}
+        catch(error){
+            console.log(error , "Err")
+
+        }
+    }
+    public async getAgentReviews(params, userDetails) {
+        try{
+        const { agentId } = params;
+        const bookingRepo = AppDataSource.getRepository(Tblbooking);
+        const agentRepo = AppDataSource.getRepository(Tblagent);
+        const agent = await agentRepo.findOne({where:{id:agentId}});
+        if(!agent){
+            return ResponseBuilder.badRequest("Agent not exists")
+        }
+        const bookings = await bookingRepo.createQueryBuilder("b")
+        .leftJoin("tblimages","images","b.clientId = images.entityid AND entitytype = 'client'")
+        .leftJoin("tblclient","client","b.clientId = client.id")
+        .select("b.id","id")
+        .addSelect("client.firstname","firstname")
+        .addSelect("client.lastname","lastname")
+        .addSelect("images.imagepath","profile")
+        .addSelect("b.head","title")
+        .addSelect("b.message","description")
+        .addSelect("b.agentrating","rating")
+        .where("b.agentId = :agentId",{agentId})
+        .andWhere("b.bookingstatusid = 10")
+        .getRawMany();
+       
+        return ResponseBuilder.data({bookings})
+    }
         catch(error){
             console.log(error , "Err")
 

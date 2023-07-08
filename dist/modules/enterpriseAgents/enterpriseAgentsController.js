@@ -115,8 +115,26 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getAgentReviews = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentReviews(req.params, userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_5 = _a.sent();
+                        return [2 /*return*/, res.status(error_5.code).json(error_5)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.addRemoveFavourite = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, agentId, queryParams, result, error_5;
+            var userDetails, agentId, queryParams, result, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -129,9 +147,9 @@ var EnterpriseAgentsController = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_5 = _a.sent();
-                        console.log("errror", error_5);
-                        return [2 /*return*/, res.status(error_5.code).json(error_5)];
+                        error_6 = _a.sent();
+                        console.log("errror", error_6);
+                        return [2 /*return*/, res.status(error_6.code).json(error_6)];
                     case 3: return [2 /*return*/];
                 }
             });

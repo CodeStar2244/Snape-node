@@ -43,6 +43,7 @@ exports.EnterpriseAgentsService = void 0;
 var db_config_1 = require("../../db/db.config");
 var Tblagent_1 = require("../../entities/Tblagent");
 var Tblagentmediacategoriesmapping_1 = require("../../entities/Tblagentmediacategoriesmapping");
+var Tblbooking_1 = require("../../entities/Tblbooking");
 var Tblmediacategories_1 = require("../../entities/Tblmediacategories");
 var enterPriseClient_1 = require("../../entities/enterPriseClient");
 var enterpriseAgentFavourite_1 = __importDefault(require("../../entities/enterpriseAgentFavourite"));
@@ -218,9 +219,50 @@ var EnterpriseAgentsService = /** @class */ (function () {
             });
         });
     };
+    EnterpriseAgentsService.prototype.getAgentReviews = function (params, userDetails) {
+        return __awaiter(this, void 0, void 0, function () {
+            var agentId, bookingRepo, agentRepo, agent, bookings, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        agentId = params.agentId;
+                        bookingRepo = db_config_1.AppDataSource.getRepository(Tblbooking_1.Tblbooking);
+                        agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        return [4 /*yield*/, agentRepo.findOne({ where: { id: agentId } })];
+                    case 1:
+                        agent = _a.sent();
+                        if (!agent) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Agent not exists")];
+                        }
+                        return [4 /*yield*/, bookingRepo.createQueryBuilder("b")
+                                .leftJoin("tblimages", "images", "b.clientId = images.entityid AND entitytype = 'client'")
+                                .leftJoin("tblclient", "client", "b.clientId = client.id")
+                                .select("b.id", "id")
+                                .addSelect("client.firstname", "firstname")
+                                .addSelect("client.lastname", "lastname")
+                                .addSelect("images.imagepath", "profile")
+                                .addSelect("b.head", "title")
+                                .addSelect("b.message", "description")
+                                .addSelect("b.agentrating", "rating")
+                                .where("b.agentId = :agentId", { agentId: agentId })
+                                .andWhere("b.bookingstatusid = 10")
+                                .getRawMany()];
+                    case 2:
+                        bookings = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ bookings: bookings })];
+                    case 3:
+                        error_4 = _a.sent();
+                        console.log(error_4, "Err");
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     EnterpriseAgentsService.prototype.addRemoveFavourite = function (params, userDetails, agentId) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentRepo, enterpriseRepo, enterpriseAgentFavouriteRepo, agent, enterpriseClient, enterpriseAgentFavourite, enterpriseAgentFavouriteEntry, error_4;
+            var agentRepo, enterpriseRepo, enterpriseAgentFavouriteRepo, agent, enterpriseClient, enterpriseAgentFavourite, enterpriseAgentFavouriteEntry, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -267,8 +309,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         }
                         return [3 /*break*/, 5];
                     case 4:
-                        error_4 = _a.sent();
-                        console.log(error_4, "Err");
+                        error_5 = _a.sent();
+                        console.log(error_5, "Err");
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
