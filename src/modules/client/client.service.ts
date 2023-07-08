@@ -43,7 +43,7 @@ export class ClientService {
             }
             console.log(collection , "fa")
             const filesCollection = await filesRepository.createQueryBuilder("files")
-            .select("files.cdnUrl","url")
+            .select("files.compressedCdnUrl","url")
             .addSelect("files.name","name")
             .addSelect("files.size","size")
             .addSelect("files.id","id")

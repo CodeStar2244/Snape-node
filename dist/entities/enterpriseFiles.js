@@ -67,6 +67,18 @@ var EnterpriseFilesEntity = /** @class */ (function () {
         __metadata("design:type", String)
     ], EnterpriseFilesEntity.prototype, "type", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ nullable: true }),
+        __metadata("design:type", String)
+    ], EnterpriseFilesEntity.prototype, "compressedKey", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ nullable: true }),
+        __metadata("design:type", String)
+    ], EnterpriseFilesEntity.prototype, "compressedCdnUrl", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ nullable: true, type: "float", default: 0 }),
+        __metadata("design:type", Number)
+    ], EnterpriseFilesEntity.prototype, "compressedImageSize", void 0);
+    __decorate([
         (0, typeorm_1.ManyToOne)(function () { return enterpriseCollections_1.default; }, function (collection) { return collection.id; }, { onDelete: "CASCADE" }),
         __metadata("design:type", enterpriseCollections_1.default)
     ], EnterpriseFilesEntity.prototype, "collection", void 0);

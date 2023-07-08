@@ -44,6 +44,15 @@ export default class EnterpriseFilesEntity{
     })
     type:FileType
 
+    @Column({nullable:true})
+    compressedKey:string;
+
+    @Column({nullable:true})
+    compressedCdnUrl:string;
+
+    @Column({nullable:true , type:"float" , default:0})
+    compressedImageSize:number;
+
     @ManyToOne(()=>EnterpriseCollections,(collection)=>collection.id,{onDelete:"CASCADE"})
     collection:EnterpriseCollections;
 
