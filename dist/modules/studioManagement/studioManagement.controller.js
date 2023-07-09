@@ -36,21 +36,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EnterpriseAgentsController = void 0;
-var enterpriseAgentsService_1 = require("./enterpriseAgentsService");
-var enterpriseAgentsModel_1 = require("./enterpriseAgentsModel");
-var EnterpriseAgentsController = /** @class */ (function () {
-    function EnterpriseAgentsController() {
+exports.StudioManagementController = void 0;
+var studioManagement_service_1 = require("./studioManagement.service");
+var StudioManagementController = /** @class */ (function () {
+    function StudioManagementController() {
         var _this = this;
-        this.enterpriseAgentsService = new enterpriseAgentsService_1.EnterpriseAgentsService();
-        this.getAgentList = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.clientService = new studioManagement_service_1.StudioManagementService();
+        this.createClient = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var userDetails, result, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgents(req.query, userDetails)];
+                        return [4 /*yield*/, this.clientService.createClient(userDetails, req.body)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -61,14 +60,15 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getFavouriteAgentList = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, result, error_2;
+        this.getClient = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, search, result, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getFavouriteAgentList(req.query, userDetails)];
+                        search = req.query.search;
+                        return [4 /*yield*/, this.clientService.getClient(userDetails, search)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -79,14 +79,15 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getAgentLocations = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, result, error_3;
+        this.getSingleClient = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentLocations(req.query, userDetails)];
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.getClientDetails(userDetails, id)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -97,14 +98,15 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getAgentDetails = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, result, error_4;
+        this.deleteClient = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentDetails(req.params, userDetails)];
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.deleteClient(userDetails, id)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -115,65 +117,8 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getAgentCategories = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, result, error_5;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentCategories(req.params, userDetails)];
-                    case 1:
-                        result = _a.sent();
-                        return [2 /*return*/, res.status(result.code).json(result)];
-                    case 2:
-                        error_5 = _a.sent();
-                        return [2 /*return*/, res.status(error_5.code).json(error_5)];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        }); };
-        this.getAgentReviews = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, result, error_6;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentReviews(req.params, userDetails)];
-                    case 1:
-                        result = _a.sent();
-                        return [2 /*return*/, res.status(result.code).json(result)];
-                    case 2:
-                        error_6 = _a.sent();
-                        return [2 /*return*/, res.status(error_6.code).json(error_6)];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        }); };
-        this.addRemoveFavourite = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, agentId, queryParams, result, error_7;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        userDetails = req.user;
-                        agentId = req.params.agentId;
-                        queryParams = new enterpriseAgentsModel_1.AgentFavourite(req.body, req.query);
-                        return [4 /*yield*/, this.enterpriseAgentsService.addRemoveFavourite(queryParams, userDetails, agentId)];
-                    case 1:
-                        result = _a.sent();
-                        return [2 /*return*/, res.status(result.code).json(result)];
-                    case 2:
-                        error_7 = _a.sent();
-                        console.log("errror", error_7);
-                        return [2 /*return*/, res.status(error_7.code).json(error_7)];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        }); };
     }
-    return EnterpriseAgentsController;
+    return StudioManagementController;
 }());
-exports.EnterpriseAgentsController = EnterpriseAgentsController;
-//# sourceMappingURL=enterpriseAgentsController.js.map
+exports.StudioManagementController = StudioManagementController;
+//# sourceMappingURL=studioManagement.controller.js.map

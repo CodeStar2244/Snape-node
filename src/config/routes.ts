@@ -43,6 +43,7 @@ export const AGENT_SERVICE = {
     GET_AGENT_CATEGORIES :"/get-agent-categories/:agentId",
     FAVOURITE :"/favourite/:agentId",
     GET_AGENT_REVIEWS :"/get-agent-reviews/:agentId",
+    LIST_FAVOURITES :"/list-favourite-agents",
     
     
 }

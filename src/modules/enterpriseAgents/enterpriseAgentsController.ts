@@ -14,6 +14,16 @@ export class EnterpriseAgentsController{
             return res.status(error.code).json(error);        
         }
     }
+    public getFavouriteAgentList = async (req:any,res:Response)=>{
+        try {
+            const userDetails = req.user;
+            const result = await this.enterpriseAgentsService.getFavouriteAgentList(req.query,userDetails);
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
     public getAgentLocations = async (req:any,res:Response)=>{
         try {
             const userDetails = req.user;

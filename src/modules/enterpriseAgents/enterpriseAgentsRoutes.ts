@@ -14,6 +14,7 @@ router.get(AGENT_SERVICE.GET_AGENT_DETAILS ,enterpriseAgentsController.getAgentD
 router.get(AGENT_SERVICE.GET_AGENT_CATEGORIES ,enterpriseAgentsController.getAgentCategories);
 router.get(AGENT_SERVICE.GET_AGENT_REVIEWS ,enterpriseAgentsController.getAgentReviews);
 router.get(AGENT_SERVICE.FAVOURITE ,v.validate(AgentFavourite),enterpriseAgentsController.addRemoveFavourite);
+router.get(AGENT_SERVICE.LIST_FAVOURITES ,enterpriseAgentsController.getFavouriteAgentList);
 
 
 export  const  EnterpriseAgentsRouter:Router = router;

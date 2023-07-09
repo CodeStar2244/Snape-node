@@ -121,6 +121,57 @@ var EnterpriseAgentsService = /** @class */ (function () {
             });
         });
     };
+    EnterpriseAgentsService.prototype.getFavouriteAgentList = function (query, userDetails) {
+        return __awaiter(this, void 0, void 0, function () {
+            var queryObj, agentRepo, enterpriseAgentFavouriteRepo, offset, limit, favouriteAgentsQuery, agents, agnetCounts, dataToSend, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        queryObj = new enterpriseAgentsModel_1.AgentGetList(null, query);
+                        agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        enterpriseAgentFavouriteRepo = db_config_1.AppDataSource.getRepository(enterpriseAgentFavourite_1.default);
+                        offset = (+queryObj.page) * +queryObj.limit;
+                        limit = queryObj.limit;
+                        favouriteAgentsQuery = enterpriseAgentFavouriteRepo.createQueryBuilder("fav")
+                            .leftJoin("tblagent", "agent", "fav.agentId = agent.id")
+                            .leftJoin("tblimages", "images", "agent.id = images.entityid AND entitytype = 'agent'")
+                            .select("agent.id", "id")
+                            .addSelect("agent.firstname", "firstname")
+                            .addSelect("images.imagepath", "profile")
+                            .addSelect("agent.email", "email")
+                            .addSelect("agent.latitude", "latitude")
+                            .addSelect("agent.longitude", "longitude")
+                            .addSelect("agent.lastname", "lastname")
+                            .addSelect("agent.experiencelevel", "experiencelevel")
+                            .addSelect("agent.speciality", "speciality")
+                            .addSelect("agent.photograpyrate", "photograpyrate")
+                            .addSelect("agent.videograpyrate", "videograpyrate")
+                            .addSelect("agent.bothrate", "bothrate")
+                            .addSelect("agent.createdondate", "createdAt")
+                            .where("fav.clientId = :clientId ", { clientId: userDetails.id })
+                            .offset(offset)
+                            .limit(limit);
+                        return [4 /*yield*/, favouriteAgentsQuery.getRawMany()];
+                    case 1:
+                        agents = _a.sent();
+                        return [4 /*yield*/, favouriteAgentsQuery.getCount()];
+                    case 2:
+                        agnetCounts = _a.sent();
+                        dataToSend = {
+                            agents: agents,
+                            total: agnetCounts
+                        };
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
+                    case 3:
+                        error_2 = _a.sent();
+                        console.log(error_2, "Err");
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     EnterpriseAgentsService.prototype.getAgentLocations = function (query, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
             var queryObj, agentRepo, agentQuery, agents, dataToSend;
@@ -150,7 +201,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.getAgentDetails = function (params, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentId, agentRepo, agentQuery, agent, dataToSend, error_2;
+            var agentId, agentRepo, agentQuery, agent, dataToSend, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -178,8 +229,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         };
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
                     case 2:
-                        error_2 = _a.sent();
-                        console.log(error_2, "Er");
+                        error_3 = _a.sent();
+                        console.log(error_3, "Er");
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -188,7 +239,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.getAgentCategories = function (params, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentId, agentCategoriesRepo, mediaCategoriesRepo, agentQuery, agent, dataToSend, error_3;
+            var agentId, agentCategoriesRepo, mediaCategoriesRepo, agentQuery, agent, dataToSend, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -211,8 +262,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         };
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
                     case 2:
-                        error_3 = _a.sent();
-                        console.log(error_3, "Err");
+                        error_4 = _a.sent();
+                        console.log(error_4, "Err");
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -221,7 +272,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.getAgentReviews = function (params, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentId, bookingRepo, agentRepo, agent, bookings, error_4;
+            var agentId, bookingRepo, agentRepo, agent, bookings, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -252,8 +303,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         bookings = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ bookings: bookings })];
                     case 3:
-                        error_4 = _a.sent();
-                        console.log(error_4, "Err");
+                        error_5 = _a.sent();
+                        console.log(error_5, "Err");
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -262,7 +313,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.addRemoveFavourite = function (params, userDetails, agentId) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentRepo, enterpriseRepo, enterpriseAgentFavouriteRepo, agent, enterpriseClient, enterpriseAgentFavourite, enterpriseAgentFavouriteEntry, error_5;
+            var agentRepo, enterpriseRepo, enterpriseAgentFavouriteRepo, agent, enterpriseClient, enterpriseAgentFavourite, enterpriseAgentFavouriteEntry, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -309,8 +360,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         }
                         return [3 /*break*/, 5];
                     case 4:
-                        error_5 = _a.sent();
-                        console.log(error_5, "Err");
+                        error_6 = _a.sent();
+                        console.log(error_6, "Err");
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

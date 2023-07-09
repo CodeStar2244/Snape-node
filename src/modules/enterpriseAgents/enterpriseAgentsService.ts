@@ -63,6 +63,47 @@ export class EnterpriseAgentsService {
         } 
         
     }
+    public async getFavouriteAgentList(query, userDetails) {
+        try {
+            const queryObj = new AgentGetList(null, query);
+        const agentRepo = AppDataSource.getRepository(Tblagent);
+        const enterpriseAgentFavouriteRepo = AppDataSource.getRepository(EnterpriseAgentFavourite);
+    
+        const offset = (+queryObj.page) * +queryObj.limit;
+        const limit = queryObj.limit;
+
+        const favouriteAgentsQuery = enterpriseAgentFavouriteRepo.createQueryBuilder("fav")
+        .leftJoin("tblagent","agent","fav.agentId = agent.id")
+        .leftJoin("tblimages","images","agent.id = images.entityid AND entitytype = 'agent'")
+        .select("agent.id", "id")
+        .addSelect("agent.firstname", "firstname")
+        .addSelect("images.imagepath", "profile")
+        .addSelect("agent.email", "email")
+        .addSelect("agent.latitude", "latitude")
+        .addSelect("agent.longitude", "longitude")
+        .addSelect("agent.lastname", "lastname")
+        .addSelect("agent.experiencelevel", "experiencelevel")
+        .addSelect("agent.speciality", "speciality")
+        .addSelect("agent.photograpyrate", "photograpyrate")
+        .addSelect("agent.videograpyrate", "videograpyrate")
+        .addSelect("agent.bothrate", "bothrate")
+        .addSelect("agent.createdondate", "createdAt")
+        .where("fav.clientId = :clientId ",{clientId :userDetails.id})
+        .offset(offset)
+        .limit(limit);
+
+        const agents = await favouriteAgentsQuery.getRawMany();
+        const agnetCounts = await favouriteAgentsQuery.getCount();
+        const dataToSend = {
+            agents,
+            total: agnetCounts
+        }
+        return ResponseBuilder.data(dataToSend)
+        } catch (error) {
+            console.log(error , "Err")
+        } 
+        
+    }
     public async getAgentLocations(query, userDetails) {
         const queryObj = new AgentGetList(null, query);
         const agentRepo = AppDataSource.getRepository(Tblagent);
