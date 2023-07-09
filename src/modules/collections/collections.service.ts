@@ -57,6 +57,8 @@ export class CollectionService {
                 .addSelect("collections.photos", "photos")
                 .addSelect("collections.videos", "videos")
                 .addSelect("collections.eventDate", "eventDate")
+                .addSelect("collections.slug", "url")
+                .addSelect("collections.downloadPin", "downloadPin")
                 .where("collections.createdBy = :agentId", { agentId: userDetails.id })
                 .loadRelationIdAndMap("agentId", "collections.createdBy")
             if (search) {
