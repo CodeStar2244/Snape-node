@@ -108,44 +108,48 @@ var StudioManagementService = /** @class */ (function () {
             });
         }); };
         this.getClientDetails = function (userDetails, clientId) { return __awaiter(_this, void 0, void 0, function () {
-            var studioClientRepository, studioclient;
-            return __generator(this, function (_a) {
-                try {
-                    studioClientRepository = db_config_1.AppDataSource.getRepository(studioClient_1.default);
-                    studioclient = "";
-                    // await studioClientRepository.findOne({
-                    //     id: clientId, createdBy: userDetails.id
-                    // })
-                    return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(studioclient)];
-                }
-                catch (error) {
-                    throw responseBuilder_1.ResponseBuilder.error(error);
-                }
-                return [2 /*return*/];
-            });
-        }); };
-        this.deleteClient = function (userDetails, clientId) { return __awaiter(_this, void 0, void 0, function () {
             var studioClientRepository, studioclient, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         studioClientRepository = db_config_1.AppDataSource.getRepository(studioClient_1.default);
-                        studioclient = "";
-                        // await studioClientRepository.findOne({
-                        //     id: clientId, createdBy: userDetails.id
-                        // })
-                        if (!studioclient) {
-                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Client Not Found", 404)];
-                        }
-                        return [4 /*yield*/, studioClientRepository.delete({ id: clientId })];
+                        return [4 /*yield*/, studioClientRepository.findOne({
+                                id: clientId, createdBy: userDetails.id
+                            })];
                     case 1:
-                        _a.sent();
+                        studioclient = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(studioclient)];
                     case 2:
                         error_3 = _a.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_3);
                     case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteClient = function (userDetails, clientId) { return __awaiter(_this, void 0, void 0, function () {
+            var studioClientRepository, studioclient, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        studioClientRepository = db_config_1.AppDataSource.getRepository(studioClient_1.default);
+                        return [4 /*yield*/, studioClientRepository.findOne({
+                                id: clientId, createdBy: userDetails.id
+                            })];
+                    case 1:
+                        studioclient = _a.sent();
+                        if (!studioclient) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Client Not Found", 404)];
+                        }
+                        return [4 /*yield*/, studioClientRepository.delete({ id: clientId })];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(studioclient)];
+                    case 3:
+                        error_4 = _a.sent();
+                        throw responseBuilder_1.ResponseBuilder.error(error_4);
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
