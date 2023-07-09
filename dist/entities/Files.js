@@ -40,6 +40,18 @@ var FilesEntity = /** @class */ (function () {
         __metadata("design:type", String)
     ], FilesEntity.prototype, "cdnUrl", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ nullable: true }),
+        __metadata("design:type", String)
+    ], FilesEntity.prototype, "compressedKey", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ nullable: true }),
+        __metadata("design:type", String)
+    ], FilesEntity.prototype, "compressedCdnUrl", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ nullable: true, type: "float", default: 0 }),
+        __metadata("design:type", Number)
+    ], FilesEntity.prototype, "compressedImageSize", void 0);
+    __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], FilesEntity.prototype, "key", void 0);

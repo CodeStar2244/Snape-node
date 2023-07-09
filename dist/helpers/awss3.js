@@ -97,6 +97,28 @@ var AWSS3 = /** @class */ (function () {
                 }
             });
         }); };
+        this.getS3FileBuffer = function (key) { return __awaiter(_this, void 0, void 0, function () {
+            var params, data, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        params = {
+                            Bucket: process.env.S3_BUCKET_NAME,
+                            Key: key
+                        };
+                        return [4 /*yield*/, (this.s3.getObject(params))];
+                    case 1:
+                        data = (_a.sent()).promise();
+                        return [2 /*return*/, data];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.log(error_2, "error in readstreammm");
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.getZipStream = function (collection, files) {
             try {
                 return s3_zip_1.default
@@ -106,6 +128,29 @@ var AWSS3 = /** @class */ (function () {
                 console.log(error, "Err");
             }
         };
+        this.putS3File = function (compressedBuffer, key) { return __awaiter(_this, void 0, void 0, function () {
+            var params, result, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        params = {
+                            Body: compressedBuffer,
+                            Bucket: process.env.S3_BUCKET_NAME,
+                            Key: key
+                        };
+                        return [4 /*yield*/, this.s3.putObject(params).promise()];
+                    case 1:
+                        result = _a.sent();
+                        console.log('File uploaded successfully to S3!');
+                        return [2 /*return*/, result];
+                    case 2:
+                        error_3 = _a.sent();
+                        throw error_3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return AWSS3;
 }());

@@ -49,6 +49,21 @@ export class AWSS3 {
 
         }
     }
+    public getS3FileBuffer = async (key) => {
+        try {
+            const params = {
+                Bucket: process.env.S3_BUCKET_NAME,
+                Key: key
+
+            }
+             const data = (await (this.s3.getObject(params))).promise();
+             return data;
+        }
+        catch (error) {
+          console.log(error , "error in readstreammm")
+
+        }
+    }
     public getZipStream = (collection,files)=>{
         try {
             return s3Zip
@@ -57,6 +72,22 @@ export class AWSS3 {
             console.log(error , "Err")
         }
 
+    }
+
+    public putS3File = async(compressedBuffer,key)=>{
+        try {
+            const params = {
+                Body: compressedBuffer,
+                Bucket: process.env.S3_BUCKET_NAME,
+                Key: key
+              };
+              const result = await this.s3.putObject(params).promise();
+              console.log('File uploaded successfully to S3!');
+              return result;
+        } catch (error) {
+            throw error;
+            
+        }
     }
 
 }

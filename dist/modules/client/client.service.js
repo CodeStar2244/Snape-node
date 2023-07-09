@@ -127,7 +127,7 @@ var ClientService = /** @class */ (function () {
                             }
                             console.log(collection, "fa");
                             return [4 /*yield*/, filesRepository.createQueryBuilder("files")
-                                    .select("files.cdnUrl", "url")
+                                    .select("files.compressedCdnUrl", "url")
                                     .addSelect("files.name", "name")
                                     .addSelect("files.size", "size")
                                     .addSelect("files.id", "id")

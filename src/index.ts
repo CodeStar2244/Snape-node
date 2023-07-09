@@ -3,6 +3,7 @@ import * as http from 'http';
 import { DataSource } from "typeorm";
 import { Log } from './helpers/logger';
 import { AppDataSource } from './db/db.config';
+import { Utils } from './utils/utils';
 
 
 const PORT = process.env.PORT || 3000;

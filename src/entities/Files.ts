@@ -21,6 +21,15 @@ export default class FilesEntity{
     
     @Column()
     cdnUrl:string;
+
+    @Column({nullable:true})
+    compressedKey:string;
+
+    @Column({nullable:true})
+    compressedCdnUrl:string;
+
+    @Column({nullable:true , type:"float" , default:0})
+    compressedImageSize:number;
     
     @Column()
     key:string;

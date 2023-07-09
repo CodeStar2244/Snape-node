@@ -64,10 +64,12 @@ var enterpriseCollectionTags_1 = require("../../entities/enterpriseCollectionTag
 var enterprisecollectionDesign_1 = require("../../entities/enterprisecollectionDesign");
 var enterpriseFiles_1 = __importDefault(require("../../entities/enterpriseFiles"));
 var enterpriseclient_service_1 = require("../enterpriseUser/enterpriseclient.service");
+var utils_1 = require("../../utils/utils");
 var CollectionService = /** @class */ (function () {
     function CollectionService() {
         var _this = this;
         this.s3 = new awss3_1.AWSS3();
+        this.utils = new utils_1.Utils();
         this.enterpriseClientService = new enterpriseclient_service_1.EnterpriseClientService();
         this.createCollection = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
             var collectionRepository, designRepo, themerepo, slug, collection, theme, error_1;
@@ -336,7 +338,7 @@ var CollectionService = /** @class */ (function () {
                                 .addSelect("files.name", "name")
                                 .addSelect("files.key", "key")
                                 .addSelect("files.size", "size")
-                                .addSelect("files.cdnUrl", "url")
+                                .addSelect("files.compressedCdnUrl", "url")
                                 .addSelect("files.type", "type")
                                 .addSelect("files.createdAt", "createdAt")
                                 .addSelect("files.updatedAt", "updatedAt")
@@ -535,11 +537,11 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.uploadFiles = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, _i, files_4, file, existFile, reponse, clientSpace, error_13;
+            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, _i, files_4, file, existFile, compressedKey, reponse, clientSpace, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 11, , 12]);
+                        _a.trys.push([0, 12, , 13]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(enterpriseCollections_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(enterpriseFiles_1.default);
                         return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
@@ -560,7 +562,7 @@ var CollectionService = /** @class */ (function () {
                         _i = 0, files_4 = files;
                         _a.label = 3;
                     case 3:
-                        if (!(_i < files_4.length)) return [3 /*break*/, 8];
+                        if (!(_i < files_4.length)) return [3 /*break*/, 9];
                         file = files_4[_i];
                         return [4 /*yield*/, fileRepo.findOne({ where: { key: file.key } })];
                     case 4:
@@ -574,6 +576,9 @@ var CollectionService = /** @class */ (function () {
                         if (fileNamesArr.includes(file.name)) {
                             throw new Error(constants_1.FILE_ALREADY_EXISTS);
                         }
+                        return [4 /*yield*/, this.utils.compressImage(file.key, params.id)];
+                    case 7:
+                        compressedKey = _a.sent();
                         filesUploadArr.push(fileRepo.save({
                             name: file.name,
                             url: file.url,
@@ -581,28 +586,31 @@ var CollectionService = /** @class */ (function () {
                             type: file.type,
                             key: file.key,
                             cdnUrl: constants_1.CDN_URL + file.key,
+                            compressedKey: compressedKey.key,
+                            compressedCdnUrl: constants_1.CDN_URL + compressedKey.key,
+                            compressedImageSize: compressedKey.fileSize,
                             height: file.height,
                             width: file.width,
                             collection: params.id
                         }));
-                        _a.label = 7;
-                    case 7:
+                        _a.label = 8;
+                    case 8:
                         _i++;
                         return [3 /*break*/, 3];
-                    case 8: return [4 /*yield*/, Promise.all(filesUploadArr)];
-                    case 9:
+                    case 9: return [4 /*yield*/, Promise.all(filesUploadArr)];
+                    case 10:
                         reponse = _a.sent();
                         return [4 /*yield*/, this.enterpriseClientService.getEnterpriseRemaningBalance(userDetails)];
-                    case 10:
+                    case 11:
                         clientSpace = _a.sent();
                         return [2 /*return*/, clientSpace];
-                    case 11:
+                    case 12:
                         error_13 = _a.sent();
                         if (error_13.message === constants_1.FILE_ALREADY_EXISTS) {
                             throw responseBuilder_1.ResponseBuilder.fileExists(error_13, constants_1.FILE_ALREADY_EXISTS);
                         }
                         throw responseBuilder_1.ResponseBuilder.error(error_13, "Internal Server Error");
-                    case 12: return [2 /*return*/];
+                    case 13: return [2 /*return*/];
                 }
             });
         }); };

@@ -11,10 +11,12 @@ import { UpdateCollectionModel, CollectionDesignModel } from "./collections.mode
 import { CDN_URL, FILE_ALREADY_EXISTS, FRONT_URL } from "../../config/constants";
 import { AgentService } from "../user/agent.service";
 import { uuid } from 'uuidv4';
+import { Utils } from "../../utils/utils";
 
 export class CollectionService {
     private s3 = new AWSS3();
     private agentService = new AgentService();
+    private utils = new Utils();
     public createCollection = async (body, userDetails) => {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
@@ -233,7 +235,7 @@ export class CollectionService {
                 .addSelect("files.name", "name")
                 .addSelect("files.key", "key")
                 .addSelect("files.size", "size")
-                .addSelect("files.cdnUrl", "url")
+                .addSelect("files.compressedCdnUrl", "url")
                 .addSelect("files.type", "type")
                 .addSelect("files.createdAt", "createdAt")
                 .addSelect("files.updatedAt", "updatedAt")
@@ -401,6 +403,7 @@ export class CollectionService {
                     throw new Error(FILE_ALREADY_EXISTS);
 
                 }
+                const compressedKey = await this.utils.compressImage(file.key,params.id);
                 filesUploadArr.push(fileRepo.save({
                     name: file.name,
                     url: file.url,
@@ -408,6 +411,9 @@ export class CollectionService {
                     type: file.type,
                     key: file.key,
                     cdnUrl: CDN_URL + file.key,
+                    compressedKey:compressedKey.key,
+                    compressedCdnUrl:CDN_URL + compressedKey.key,
+                    compressedImageSize:compressedKey.fileSize,
                     height: file.height,
                     width: file.width,
                     collection: params.id
