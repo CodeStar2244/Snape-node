@@ -115,7 +115,9 @@ var StudioManagementService = /** @class */ (function () {
                         _a.trys.push([0, 2, , 3]);
                         studioClientRepository = db_config_1.AppDataSource.getRepository(studioClient_1.default);
                         return [4 /*yield*/, studioClientRepository.findOne({
-                                id: clientId, createdBy: userDetails.id
+                                where: {
+                                    id: clientId, createdBy: userDetails.id
+                                }
                             })];
                     case 1:
                         studioclient = _a.sent();
@@ -128,24 +130,26 @@ var StudioManagementService = /** @class */ (function () {
             });
         }); };
         this.deleteClient = function (userDetails, clientId) { return __awaiter(_this, void 0, void 0, function () {
-            var studioClientRepository, studioclient, error_4;
+            var studioClientRepository, studioClient, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
                         studioClientRepository = db_config_1.AppDataSource.getRepository(studioClient_1.default);
                         return [4 /*yield*/, studioClientRepository.findOne({
-                                id: clientId, createdBy: userDetails.id
+                                where: {
+                                    id: clientId, createdBy: userDetails.id
+                                }
                             })];
                     case 1:
-                        studioclient = _a.sent();
-                        if (!studioclient) {
+                        studioClient = _a.sent();
+                        if (!studioClient) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Client Not Found", 404)];
                         }
                         return [4 /*yield*/, studioClientRepository.delete({ id: clientId })];
                     case 2:
                         _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(studioclient)];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(studioClient)];
                     case 3:
                         error_4 = _a.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_4);

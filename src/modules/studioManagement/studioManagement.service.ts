@@ -46,7 +46,9 @@ export class StudioManagementService {
         try {
             const studioClientRepository = AppDataSource.getRepository(StudioClient);
             const studioclient = await studioClientRepository.findOne({
-                id: clientId, createdBy: userDetails.id
+                where:{
+                    id: clientId, createdBy: userDetails.id
+                }
             })
             return ResponseBuilder.data(studioclient);
 
@@ -59,14 +61,16 @@ export class StudioManagementService {
     public deleteClient = async (userDetails, clientId: number) => {
         try {
             const studioClientRepository = AppDataSource.getRepository(StudioClient);
-            const studioclient = await studioClientRepository.findOne({
-                id: clientId, createdBy: userDetails.id
+            const studioClient = await studioClientRepository.findOne({
+                where:{
+                    id: clientId, createdBy: userDetails.id
+                }
             })
-            if (!studioclient) {
+            if (!studioClient) {
                 return ResponseBuilder.badRequest("Client Not Found", 404);
             }
             await studioClientRepository.delete({ id: clientId });
-            return ResponseBuilder.data(studioclient);
+            return ResponseBuilder.data(studioClient);
 
         } catch (error) {
             throw ResponseBuilder.error(error)
