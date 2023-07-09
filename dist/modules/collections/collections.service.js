@@ -123,6 +123,8 @@ var CollectionService = /** @class */ (function () {
                                 .addSelect("collections.photos", "photos")
                                 .addSelect("collections.videos", "videos")
                                 .addSelect("collections.eventDate", "eventDate")
+                                .addSelect("collections.slug", "url")
+                                .addSelect("collections.downloadPin", "downloadPin")
                                 .where("collections.createdBy = :agentId", { agentId: userDetails.id })
                                 .loadRelationIdAndMap("agentId", "collections.createdBy")];
                     case 1:
@@ -537,11 +539,11 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.uploadFiles = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, _i, files_4, file, existFile, compressedKey, reponse, agentSpace, error_13;
+            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, compressedCollectoinPhoto, _i, files_4, file, existFile, compressedKey, reponse, agentSpace, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 12, , 13]);
+                        _a.trys.push([0, 14, , 15]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
                         return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
@@ -556,28 +558,32 @@ var CollectionService = /** @class */ (function () {
                         fileNamesArr = collectionFiles.result;
                         files = body.files;
                         filesUploadArr = [];
-                        if (collection.photos === 0) {
-                            collectioRepo.save(__assign(__assign({}, collection), { coverPhoto: constants_1.CDN_URL + files[0].key }));
-                        }
-                        _i = 0, files_4 = files;
-                        _a.label = 3;
+                        if (!(collection.photos === 0)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.utils.compressImage(files[0].key, params.id)];
                     case 3:
-                        if (!(_i < files_4.length)) return [3 /*break*/, 9];
+                        compressedCollectoinPhoto = _a.sent();
+                        collectioRepo.save(__assign(__assign({}, collection), { coverPhoto: constants_1.CDN_URL + compressedCollectoinPhoto.key }));
+                        _a.label = 4;
+                    case 4:
+                        _i = 0, files_4 = files;
+                        _a.label = 5;
+                    case 5:
+                        if (!(_i < files_4.length)) return [3 /*break*/, 11];
                         file = files_4[_i];
                         return [4 /*yield*/, fileRepo.findOne({ where: { key: file.key } })];
-                    case 4:
-                        existFile = _a.sent();
-                        if (!existFile) return [3 /*break*/, 6];
-                        return [4 /*yield*/, fileRepo.delete(existFile === null || existFile === void 0 ? void 0 : existFile.id)];
-                    case 5:
-                        _a.sent();
-                        _a.label = 6;
                     case 6:
+                        existFile = _a.sent();
+                        if (!existFile) return [3 /*break*/, 8];
+                        return [4 /*yield*/, fileRepo.delete(existFile === null || existFile === void 0 ? void 0 : existFile.id)];
+                    case 7:
+                        _a.sent();
+                        _a.label = 8;
+                    case 8:
                         if (fileNamesArr.includes(file.name)) {
                             throw new Error(constants_1.FILE_ALREADY_EXISTS);
                         }
                         return [4 /*yield*/, this.utils.compressImage(file.key, params.id)];
-                    case 7:
+                    case 9:
                         compressedKey = _a.sent();
                         filesUploadArr.push(fileRepo.save({
                             name: file.name,
@@ -593,24 +599,24 @@ var CollectionService = /** @class */ (function () {
                             width: file.width,
                             collection: params.id
                         }));
-                        _a.label = 8;
-                    case 8:
-                        _i++;
-                        return [3 /*break*/, 3];
-                    case 9: return [4 /*yield*/, Promise.all(filesUploadArr)];
+                        _a.label = 10;
                     case 10:
+                        _i++;
+                        return [3 /*break*/, 5];
+                    case 11: return [4 /*yield*/, Promise.all(filesUploadArr)];
+                    case 12:
                         reponse = _a.sent();
                         return [4 /*yield*/, this.agentService.getRemaningBalance(userDetails)];
-                    case 11:
+                    case 13:
                         agentSpace = _a.sent();
                         return [2 /*return*/, agentSpace];
-                    case 12:
+                    case 14:
                         error_13 = _a.sent();
                         if (error_13.message === constants_1.FILE_ALREADY_EXISTS) {
                             throw responseBuilder_1.ResponseBuilder.fileExists(error_13, constants_1.FILE_ALREADY_EXISTS);
                         }
                         throw responseBuilder_1.ResponseBuilder.error(error_13, "Internal Server Error");
-                    case 13: return [2 /*return*/];
+                    case 15: return [2 /*return*/];
                 }
             });
         }); };
