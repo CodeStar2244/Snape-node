@@ -190,9 +190,9 @@ export class ClientService {
                 },
                 relations:["collection"]
             });
-            const collection = await collectionRepository.findOneBy({ id})
+            const collection = await collectionRepository.findOneBy({ id});
             if (!collection) {
-                return ResponseBuilder.badRequest("File Not Found", 404);
+                return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
             if(!collection.download){
                 return ResponseBuilder.badRequest("Downlaod Not allowed for these collection");

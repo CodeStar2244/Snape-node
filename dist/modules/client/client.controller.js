@@ -124,7 +124,14 @@ var ClientController = /** @class */ (function () {
                         return [4 /*yield*/, this.clientService.downloadPinCheck(req.user, req.params.id, req.body, res)];
                     case 1:
                         result = _a.sent();
-                        return [2 /*return*/, res.status(result.code).json(result.result)];
+                        console.log(result);
+                        if (result.code === 200) {
+                            return [2 /*return*/, res.status(result.code).json(result.result)];
+                        }
+                        else {
+                            return [2 /*return*/, res.status(result.code).json(result.error)];
+                        }
+                        return [3 /*break*/, 3];
                     case 2:
                         error_4 = _a.sent();
                         return [2 /*return*/, res.status(error_4.code).json(error_4)];
