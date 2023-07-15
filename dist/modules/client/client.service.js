@@ -290,6 +290,94 @@ var ClientService = /** @class */ (function () {
                 });
             });
         };
+        this.downloadPinCheck = function (userDetails, id, _a, res) {
+            var pin = _a.pin;
+            return __awaiter(_this, void 0, void 0, function () {
+                var collectionRepository, fileRepo, files, collection, error_5;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            _b.trys.push([0, 3, , 4]);
+                            collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
+                            fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
+                            return [4 /*yield*/, fileRepo.find({
+                                    where: {
+                                        collection: {
+                                            id: id
+                                        }
+                                    },
+                                    relations: ["collection"]
+                                })];
+                        case 1:
+                            files = _b.sent();
+                            return [4 /*yield*/, collectionRepository.findOneBy({ id: id })];
+                        case 2:
+                            collection = _b.sent();
+                            if (!collection) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("File Not Found", 404)];
+                            }
+                            if (!collection.download) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Downlaod Not allowed for these collection")];
+                            }
+                            if (collection.downloadPin) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ donwloadPinRequired: true })];
+                            }
+                            else {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ donwloadPinRequired: false })];
+                            }
+                            return [3 /*break*/, 4];
+                        case 3:
+                            error_5 = _b.sent();
+                            console.log(error_5, "er");
+                            throw responseBuilder_1.ResponseBuilder.error(error_5);
+                        case 4: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        this.downloadFilePinCheck = function (userDetails, id, _a, res) {
+            var pin = _a.pin;
+            return __awaiter(_this, void 0, void 0, function () {
+                var collectionRepository, fileRepo, file, collection, error_6;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            _b.trys.push([0, 3, , 4]);
+                            collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
+                            fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
+                            return [4 /*yield*/, fileRepo.findOne({
+                                    where: {
+                                        id: id
+                                    },
+                                    relations: ["collection"]
+                                })];
+                        case 1:
+                            file = _b.sent();
+                            return [4 /*yield*/, collectionRepository.findOneBy({ id: file.collection.id })];
+                        case 2:
+                            collection = _b.sent();
+                            if (!collection) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("File Not Found", 404)];
+                            }
+                            if (!collection.download) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Downlaod Not allowed for these collection")];
+                            }
+                            if (collection.downloadPin) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ donwloadPinRequired: true })];
+                            }
+                            else {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ donwloadPinRequired: false })];
+                            }
+                            return [3 /*break*/, 4];
+                        case 3:
+                            error_6 = _b.sent();
+                            console.log(error_6, "er");
+                            throw responseBuilder_1.ResponseBuilder.error(error_6);
+                        case 4: return [2 /*return*/];
+                    }
+                });
+            });
+        };
         this.collectionDownloadPinRequired = function (collection, pin, files, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a;
             return __generator(this, function (_b) {

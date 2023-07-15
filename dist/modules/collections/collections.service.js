@@ -403,7 +403,7 @@ var CollectionService = /** @class */ (function () {
             });
         }); };
         this.updateCollection = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, tagRepo, collection, _a, name_1, url, eventDate, download, downloadPin, socialSharing, status_1, password, tags, coverPhoto, slug, tagsArr, collectionTagsArr, _i, tagsArr_1, tag, prevTag, newTag, updateObject, error_10;
+            var collectioRepo, tagRepo, collection, _a, name_1, url, eventDate, download, downloadPin, socialSharing, status_1, password, tags, coverPhoto, slug, tagsArr, collectionTagsArr, _i, tagsArr_1, tag, prevTag, newTag, donwloadPinNew, updateObject, error_10;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -437,12 +437,13 @@ var CollectionService = /** @class */ (function () {
                         _i++;
                         return [3 /*break*/, 2];
                     case 6:
+                        donwloadPinNew = downloadPin.length === 0 ? null : downloadPin;
                         updateObject = {
                             name: name_1,
                             url: url,
                             eventDate: eventDate,
                             download: download,
-                            downloadPin: downloadPin,
+                            downloadPin: donwloadPinNew,
                             status: status_1,
                             password: password,
                             socialSharing: socialSharing,

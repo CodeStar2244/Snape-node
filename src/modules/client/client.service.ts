@@ -178,6 +178,70 @@ export class ClientService {
 
 
     }
+    public downloadPinCheck = async (userDetails, id,{pin},res) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const fileRepo = AppDataSource.getRepository(FilesEntity)
+            const files = await fileRepo.find({
+                where:{
+                    collection:{
+                        id
+                    }
+                },
+                relations:["collection"]
+            });
+            const collection = await collectionRepository.findOneBy({ id})
+            if (!collection) {
+                return ResponseBuilder.badRequest("File Not Found", 404);
+            }
+            if(!collection.download){
+                return ResponseBuilder.badRequest("Downlaod Not allowed for these collection");
+            }
+            if(collection.downloadPin){
+                return ResponseBuilder.data({donwloadPinRequired:true});
+            }else{
+                return ResponseBuilder.data({donwloadPinRequired:false});
+            }
+        } catch (error) {
+            console.log(error, "er")
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
+    public downloadFilePinCheck = async (userDetails, id,{pin},res) => {
+        try {
+            const collectionRepository = AppDataSource.getRepository(Collections);
+            const fileRepo = AppDataSource.getRepository(FilesEntity)
+            const file = await fileRepo.findOne({
+                where:{
+                    id
+                },
+                relations:["collection"]
+            });
+            const collection = await collectionRepository.findOneBy({ id: file.collection.id })
+            if (!collection) {
+                return ResponseBuilder.badRequest("File Not Found", 404);
+            }
+            if(!collection.download){
+                return ResponseBuilder.badRequest("Downlaod Not allowed for these collection");
+            }
+            if(collection.downloadPin){
+                return ResponseBuilder.data({donwloadPinRequired:true});
+            }else{
+                return ResponseBuilder.data({donwloadPinRequired:false});
+            }
+        } catch (error) {
+            console.log(error, "er")
+            throw ResponseBuilder.error(error)
+
+        }
+
+
+
+    }
 
 
     private collectionDownloadPinRequired = async(collection,pin,files,res)=>{

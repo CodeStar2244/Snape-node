@@ -12,5 +12,7 @@ var v = new validator_1.Validator();
 router.post(routes_1.CLIENT_ROUTES.GET_COLLECTION_BY_ID_CLIENT, v.validate(client_model_1.CollectionDesignModel), clientController.getCollectionByUrl);
 router.post(routes_1.CLIENT_ROUTES.DOWNLOAD_FILE, clientController.downloadFile);
 router.post(routes_1.CLIENT_ROUTES.DOWNLOAD_COLLECTION, clientController.downloadCollection);
+router.post(routes_1.CLIENT_ROUTES.PIN_CHECK, clientController.downloadPinCheck);
+router.post(routes_1.CLIENT_ROUTES.FILE_PIN_CHECK, clientController.downloadFilePinCheck);
 exports.ClientRoute = router;
 //# sourceMappingURL=client.route.js.map

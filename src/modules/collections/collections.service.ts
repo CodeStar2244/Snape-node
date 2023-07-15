@@ -307,9 +307,10 @@ export class CollectionService {
                 collectionTagsArr.push(newTag);
 
             }
+            const donwloadPinNew = downloadPin.length === 0 ? null : downloadPin;
             const updateObject = {
                 name,
-                url, eventDate, download, downloadPin, status, password, socialSharing, coverPhoto, slug
+                url, eventDate, download, downloadPin:donwloadPinNew, status, password, socialSharing, coverPhoto, slug
             }
             await collectioRepo.save({ ...collection, ...updateObject, tags: collectionTagsArr })
             return this.getCollectionByID(userDetails, collection.id);

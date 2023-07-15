@@ -47,4 +47,21 @@ export class ClientController{
             return res.status(error.code).json(error);        
         }
     }
+
+    public downloadPinCheck = async (req,res:Response)=>{
+        try {
+            const result = await this.clientService.downloadPinCheck(req.user,req.params.id,req.body,res);
+             return res.status(result.code).json(result.result);
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
+    public downloadFilePinCheck = async (req,res:Response)=>{
+        try {
+            const result = await this.clientService.downloadFilePinCheck(req.user,req.params.id,req.body,res);
+             return res.status(result.code).json(result.result);
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
 }

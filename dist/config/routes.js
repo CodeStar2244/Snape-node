@@ -24,7 +24,9 @@ exports.COLLECTION_ROUTES = {
 exports.CLIENT_ROUTES = {
     GET_COLLECTION_BY_ID_CLIENT: "/",
     DOWNLOAD_FILE: "/download-file/:id",
-    DOWNLOAD_COLLECTION: "/download-collection/:id"
+    DOWNLOAD_COLLECTION: "/download-collection/:id",
+    PIN_CHECK: "/downloadpincheck/:id",
+    FILE_PIN_CHECK: "/downloadfilepincheck/:id"
 };
 exports.DASHBOARD_ROTUES = {
     GET_SUMMARY: "/summary",

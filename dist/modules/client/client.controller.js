@@ -115,6 +115,41 @@ var ClientController = /** @class */ (function () {
                 }
             });
         }); };
+        this.downloadPinCheck = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clientService.downloadPinCheck(req.user, req.params.id, req.body, res)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result.result)];
+                    case 2:
+                        error_4 = _a.sent();
+                        return [2 /*return*/, res.status(error_4.code).json(error_4)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.downloadFilePinCheck = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        console.log("file pin check");
+                        return [4 /*yield*/, this.clientService.downloadFilePinCheck(req.user, req.params.id, req.body, res)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result.result)];
+                    case 2:
+                        error_5 = _a.sent();
+                        return [2 /*return*/, res.status(error_5.code).json(error_5)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return ClientController;
 }());
