@@ -138,7 +138,6 @@ var ClientController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        console.log("file pin check");
                         return [4 /*yield*/, this.clientService.downloadFilePinCheck(req.user, req.params.id, req.body, res)];
                     case 1:
                         result = _a.sent();
