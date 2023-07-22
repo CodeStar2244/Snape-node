@@ -46,8 +46,7 @@ export const AGENT_SERVICE = {
     FAVOURITE :"/favourite/:agentId",
     GET_AGENT_REVIEWS :"/get-agent-reviews/:agentId",
     LIST_FAVOURITES :"/list-favourite-agents",
-    
-    
+    BOOK_AGENT:"/bookagent/:id",
 }
 
 export const STUDIO_MANAGEMENT_ROUTES = {

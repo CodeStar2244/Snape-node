@@ -1,3 +1,4 @@
+import { EnterpriseBooking } from "../../entities/enterpriseBooking";
 import { AppDataSource } from "../../db/db.config";
 import { Tblagent } from "../../entities/Tblagent";
 import { Tblagentmediacategoriesmapping } from "../../entities/Tblagentmediacategoriesmapping";
@@ -6,7 +7,8 @@ import { Tblmediacategories } from "../../entities/Tblmediacategories";
 import { EnterPriseClient } from "../../entities/enterPriseClient";
 import EnterpriseAgentFavourite from "../../entities/enterpriseAgentFavourite";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
-import { AgentFavourite, AgentGetList } from "./enterpriseAgentsModel";
+import { AgentFavourite, AgentGetList, BookAgent } from "./enterpriseAgentsModel";
+import { DeepPartial } from "typeorm";
 export class EnterpriseAgentsService {
     public async getAgents(query, userDetails) {
         try {
@@ -99,6 +101,40 @@ export class EnterpriseAgentsService {
             total: agnetCounts
         }
         return ResponseBuilder.data(dataToSend)
+        } catch (error) {
+            console.log(error , "Err")
+        } 
+        
+    }
+    public async bookAgentRequest(body:BookAgent,params, userDetails) {
+        try {
+            const agentId = params.id;
+            const enterpriseClientRepo = AppDataSource.getRepository(EnterPriseClient);
+            const agentRepo = AppDataSource.getRepository(Tblagent);
+            const enterpriseBookingRepo = AppDataSource.getRepository(EnterpriseBooking);
+            const agent = await agentRepo.findOne({where:{id:agentId}});
+            if(!agent){
+                return ResponseBuilder.badRequest("Agent Not found")
+            }
+            const enterpriseClient = await enterpriseClientRepo.findOne({where:{
+                id:userDetails.id
+            }});
+            const enterpriseBooking = enterpriseBookingRepo.create({
+                bookingDate:body.bookingDate,
+                bookingStartDateTime:body.bookingStartDateTime,
+                bookingEndDateTime:body.bookingEndDateTime,
+                bookingstatusid:0,
+                address1:body.address1,
+                address2:body.address2,
+                agentId:agent,
+                clientId:enterpriseClient,
+                hours:body.hours,
+                latitude:body.latitude,
+                speciality:body.speciality,
+                longitude:body.longitude
+            });
+            const created = await enterpriseBookingRepo.save(enterpriseBooking);    
+            return ResponseBuilder.data(created);
         } catch (error) {
             console.log(error , "Err")
         } 

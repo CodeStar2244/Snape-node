@@ -2,7 +2,7 @@ import { Router } from "express";
 import { AGENT_SERVICE, ASSET_REGISTRY_ROUTES } from "../../config/routes";
 import { Validator } from "../../helpers/validator";
 import { EnterpriseAgentsController } from "./enterpriseAgentsController";
-import { AgentFavourite, AgentGetList } from "./enterpriseAgentsModel";
+import { AgentFavourite, AgentGetList, BookAgent } from "./enterpriseAgentsModel";
 
 const router: Router = Router(); 
 const enterpriseAgentsController = new EnterpriseAgentsController();
@@ -15,6 +15,6 @@ router.get(AGENT_SERVICE.GET_AGENT_CATEGORIES ,enterpriseAgentsController.getAge
 router.get(AGENT_SERVICE.GET_AGENT_REVIEWS ,enterpriseAgentsController.getAgentReviews);
 router.get(AGENT_SERVICE.FAVOURITE ,v.validate(AgentFavourite),enterpriseAgentsController.addRemoveFavourite);
 router.get(AGENT_SERVICE.LIST_FAVOURITES ,enterpriseAgentsController.getFavouriteAgentList);
-
+router.post(AGENT_SERVICE.BOOK_AGENT,v.validate(BookAgent),enterpriseAgentsController.bookAgentRequest);
 
 export  const  EnterpriseAgentsRouter:Router = router;

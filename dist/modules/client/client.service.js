@@ -313,7 +313,6 @@ var ClientService = /** @class */ (function () {
                             return [4 /*yield*/, collectionRepository.findOneBy({ id: id })];
                         case 2:
                             collection = _b.sent();
-                            console.log(collection, "col");
                             if (!collection) {
                                 return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                             }

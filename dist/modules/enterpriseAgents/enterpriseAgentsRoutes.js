@@ -16,5 +16,6 @@ router.get(routes_1.AGENT_SERVICE.GET_AGENT_CATEGORIES, enterpriseAgentsControll
 router.get(routes_1.AGENT_SERVICE.GET_AGENT_REVIEWS, enterpriseAgentsController.getAgentReviews);
 router.get(routes_1.AGENT_SERVICE.FAVOURITE, v.validate(enterpriseAgentsModel_1.AgentFavourite), enterpriseAgentsController.addRemoveFavourite);
 router.get(routes_1.AGENT_SERVICE.LIST_FAVOURITES, enterpriseAgentsController.getFavouriteAgentList);
+router.post(routes_1.AGENT_SERVICE.BOOK_AGENT, v.validate(enterpriseAgentsModel_1.BookAgent), enterpriseAgentsController.bookAgentRequest);
 exports.EnterpriseAgentsRouter = router;
 //# sourceMappingURL=enterpriseAgentsRoutes.js.map

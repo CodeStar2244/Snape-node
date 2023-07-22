@@ -79,14 +79,14 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getAgentLocations = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.bookAgentRequest = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var userDetails, result, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentLocations(req.query, userDetails)];
+                        return [4 /*yield*/, this.enterpriseAgentsService.bookAgentRequest(req.body, req.params, userDetails)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -97,14 +97,14 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getAgentDetails = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.getAgentLocations = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var userDetails, result, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentDetails(req.params, userDetails)];
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentLocations(req.query, userDetails)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -115,14 +115,14 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getAgentCategories = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.getAgentDetails = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var userDetails, result, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentCategories(req.params, userDetails)];
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentDetails(req.params, userDetails)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -133,14 +133,14 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getAgentReviews = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.getAgentCategories = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var userDetails, result, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentReviews(req.params, userDetails)];
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentCategories(req.params, userDetails)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -151,8 +151,26 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getAgentReviews = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentReviews(req.params, userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_7 = _a.sent();
+                        return [2 /*return*/, res.status(error_7.code).json(error_7)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.addRemoveFavourite = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, agentId, queryParams, result, error_7;
+            var userDetails, agentId, queryParams, result, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -165,9 +183,9 @@ var EnterpriseAgentsController = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_7 = _a.sent();
-                        console.log("errror", error_7);
-                        return [2 /*return*/, res.status(error_7.code).json(error_7)];
+                        error_8 = _a.sent();
+                        console.log("errror", error_8);
+                        return [2 /*return*/, res.status(error_8.code).json(error_8)];
                     case 3: return [2 /*return*/];
                 }
             });

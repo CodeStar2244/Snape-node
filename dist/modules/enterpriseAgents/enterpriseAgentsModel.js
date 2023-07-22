@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AgentFavourite = exports.AgentGetLocationList = exports.AgentGetList = void 0;
+exports.BookAgent = exports.AgentFavourite = exports.AgentGetLocationList = exports.AgentGetList = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var isFavourite;
@@ -32,6 +32,12 @@ var isFavourite;
     isFavourite["zero"] = "0";
     isFavourite["one"] = "1";
 })(isFavourite || (isFavourite = {}));
+var speciality;
+(function (speciality) {
+    speciality[speciality["photographer"] = 1] = "photographer";
+    speciality[speciality["videographer"] = 2] = "videographer";
+    speciality[speciality["both"] = 3] = "both";
+})(speciality || (speciality = {}));
 var AgentGetList = /** @class */ (function (_super) {
     __extends(AgentGetList, _super);
     function AgentGetList(body, params) {
@@ -119,4 +125,58 @@ var AgentFavourite = /** @class */ (function (_super) {
     return AgentFavourite;
 }(model_1.Model));
 exports.AgentFavourite = AgentFavourite;
+var BookAgent = /** @class */ (function (_super) {
+    __extends(BookAgent, _super);
+    function BookAgent(body, params) {
+        var _this = _super.call(this) || this;
+        _this.bookingDate = body.bookingDate;
+        _this.bookingStartDateTime = body.bookingStartDateTime;
+        _this.bookingEndDateTime = body.bookingEndDateTime;
+        _this.address1 = body.address1;
+        _this.latitude = body.latitude;
+        _this.longitude = body.longitude;
+        _this.speciality = body.speciality;
+        _this.hours = body.hours;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", Date)
+    ], BookAgent.prototype, "bookingDate", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], BookAgent.prototype, "bookingStartDateTime", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], BookAgent.prototype, "bookingEndDateTime", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], BookAgent.prototype, "address1", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], BookAgent.prototype, "address2", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], BookAgent.prototype, "latitude", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], BookAgent.prototype, "longitude", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsEnum)(speciality),
+        __metadata("design:type", Number)
+    ], BookAgent.prototype, "speciality", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", Number)
+    ], BookAgent.prototype, "hours", void 0);
+    return BookAgent;
+}(model_1.Model));
+exports.BookAgent = BookAgent;
 //# sourceMappingURL=enterpriseAgentsModel.js.map

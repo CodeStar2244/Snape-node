@@ -1,10 +1,15 @@
 import { IsEnum, IsLatitude, IsLongitude, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
 import { Model } from "../../helpers/model";
-import { NumOpenProactiveInsights } from "aws-sdk/clients/devopsguru";
+import { NumOpenProactiveInsights, NumOpenReactiveInsights } from "aws-sdk/clients/devopsguru";
 
 enum isFavourite {
  "zero"='0',
  "one"='1'
+}
+enum speciality {
+ "photographer"=1,
+ "videographer"=2,
+ "both"=3,
 }
 
 export class AgentGetList extends Model {
@@ -88,6 +93,52 @@ export class AgentFavourite extends Model {
         super();
         this.isFavourite = params.isFavourite
                
+    }
+    
+
+}
+export class BookAgent extends Model {
+
+    @IsNotEmpty()
+    bookingDate:Date;
+    
+    @IsNotEmpty()
+    bookingStartDateTime:string;
+
+    @IsNotEmpty()
+    bookingEndDateTime:string;
+
+    @IsNotEmpty()
+    address1:string;
+
+    @IsOptional()
+    address2:string;
+
+    @IsNotEmpty()
+    latitude:string;
+
+    @IsNotEmpty()
+    longitude:string;
+
+    @IsNotEmpty()
+    @IsEnum(speciality)
+    speciality:number;
+    
+    @IsNotEmpty()
+    hours:number
+
+    constructor(body: any, params?: any) {
+        super();
+        this.bookingDate=body.bookingDate;
+        this.bookingStartDateTime=body.bookingStartDateTime;
+        this.bookingEndDateTime=body.bookingEndDateTime;
+        this.address1=body.address1;
+        this.latitude=body.latitude;
+        this.longitude=body.longitude;
+        this.speciality=body.speciality;
+        this.hours=  body.hours;
+
+
     }
     
 
