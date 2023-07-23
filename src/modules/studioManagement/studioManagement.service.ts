@@ -79,19 +79,13 @@ export class StudioManagementService {
           .where("id = :id", { id: params.id })
           .execute();
   
-          const studioClientRepository = AppDataSource.getRepository(StudioClient);
-          const query = await studioClientRepository.createQueryBuilder("studioclient")
-              .select("studioclient.name", "name")
-              .select("studioclient.id", "id")
-              .addSelect("studioclient.email", "email")
-              .addSelect("studioclient.phone", "phone")
-              .addSelect("studioclient.profileUrl", "profileUrl")
-              .addSelect("studioclient.createdAt", "createdAt")
-              .where("studioclient.createdBy = :agentId", { agentId: userDetails.id })
-              .loadRelationIdAndMap("agentId", "studioclient.createdBy")
-          const studioclient = await query.getRawMany();
+          const specialityRepository = await AppDataSource
+          .getRepository(StudioSpeciality)
+          .createQueryBuilder("faq")
+          .where("faq.id = :id", { id: params.id })
+          .getOne();
   
-        return ResponseBuilder.data({ message: "Speciality edit successfully", data: studioclient });
+        return ResponseBuilder.data({ message: "Speciality edit successfully", data: specialityRepository });
       } catch (error) {
         console.log(error);
         return ResponseBuilder.badRequest(error?.message)
