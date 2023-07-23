@@ -55,17 +55,22 @@ var db_config_1 = require("../../db/db.config");
 var studioClient_1 = __importDefault(require("../../entities/studioClient"));
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var studioSpeciality_1 = require("../../entities/studioSpeciality");
+var constants_1 = require("../../config/constants");
 var StudioManagementService = /** @class */ (function () {
     function StudioManagementService() {
         var _this = this;
         this.createClient = function (userDetails, body) { return __awaiter(_this, void 0, void 0, function () {
-            var studioClientRepository, studioClient, error_1;
+            var studioClientRepository, params, studioClient, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         studioClientRepository = db_config_1.AppDataSource.getRepository(studioClient_1.default);
-                        return [4 /*yield*/, studioClientRepository.save(__assign(__assign({}, body), { createdBy: userDetails.id }))];
+                        params = __assign(__assign({}, body), { createdBy: userDetails.id });
+                        if (body.profileUrl) {
+                            params = __assign(__assign({}, params), { profileUrl: constants_1.CDN_URL + body.profileUrl });
+                        }
+                        return [4 /*yield*/, studioClientRepository.save(params)];
                     case 1:
                         studioClient = _a.sent();
                         console.log(userDetails, '----userDetails-----');
@@ -166,8 +171,11 @@ var StudioManagementService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        params.agentId = user.id;
+                        params.createdBy = user.id;
                         specialityRepository = db_config_1.AppDataSource.getRepository(studioSpeciality_1.StudioSpeciality);
+                        if (params.imageUrl) {
+                            params = __assign(__assign({}, params), { imageUrl: constants_1.CDN_URL + params.imageUrl });
+                        }
                         createUser = specialityRepository.create(params);
                         return [4 /*yield*/, specialityRepository.save(createUser)];
                     case 1:
@@ -215,6 +223,9 @@ var StudioManagementService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
+                        if (body.imageUrl) {
+                            body = __assign(__assign({}, params), { imageUrl: constants_1.CDN_URL + body.imageUrl });
+                        }
                         return [4 /*yield*/, db_config_1.AppDataSource
                                 .getRepository(studioSpeciality_1.StudioSpeciality)
                                 .createQueryBuilder()

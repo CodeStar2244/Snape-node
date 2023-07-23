@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var Tblagent_1 = require("./Tblagent");
+var constants_1 = require("../config/constants");
 var StudioClient = /** @class */ (function () {
     function StudioClient() {
     }
@@ -36,7 +37,7 @@ var StudioClient = /** @class */ (function () {
         __metadata("design:type", String)
     ], StudioClient.prototype, "phone", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ type: "text", default: 'default/userprofile.png' }),
+        (0, typeorm_1.Column)({ type: "text", default: "".concat(constants_1.CDN_URL, "default/userprofile.png") }),
         __metadata("design:type", String)
     ], StudioClient.prototype, "profileUrl", void 0);
     __decorate([

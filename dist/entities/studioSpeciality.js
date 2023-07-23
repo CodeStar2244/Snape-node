@@ -13,6 +13,7 @@ exports.StudioSpeciality = void 0;
 var typeorm_1 = require("typeorm");
 var class_validator_1 = require("class-validator");
 var Tblagent_1 = require("./Tblagent");
+var constants_1 = require("../config/constants");
 var StudioSpeciality = /** @class */ (function () {
     function StudioSpeciality() {
     }
@@ -26,7 +27,7 @@ var StudioSpeciality = /** @class */ (function () {
         __metadata("design:type", String)
     ], StudioSpeciality.prototype, "name", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ type: "text", default: 'default/special.png' }),
+        (0, typeorm_1.Column)({ type: "text", default: "".concat(constants_1.CDN_URL, "default/userprofile.png") }),
         __metadata("design:type", String)
     ], StudioSpeciality.prototype, "imageUrl", void 0);
     __decorate([

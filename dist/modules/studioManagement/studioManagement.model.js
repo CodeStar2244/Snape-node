@@ -34,7 +34,7 @@ var CreateStudioClientModel = /** @class */ (function (_super) {
         _this.name = body.name;
         _this.email = body.email;
         _this.phone = body.phone;
-        _this.profileUrl = body.profileUrl;
+        _this.profileUrl = body === null || body === void 0 ? void 0 : body.profileUrl;
         return _this;
     }
     __decorate([
