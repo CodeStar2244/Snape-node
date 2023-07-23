@@ -52,6 +52,7 @@ var AgentGetList = /** @class */ (function (_super) {
         }
         _this.page = params.page;
         _this.limit = params.limit;
+        _this.speciality = Number(params.speciality);
         return _this;
     }
     __decorate([
@@ -68,6 +69,11 @@ var AgentGetList = /** @class */ (function (_super) {
         (0, class_validator_1.IsOptional)(),
         __metadata("design:type", Number)
     ], AgentGetList.prototype, "range", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        (0, class_validator_1.IsEnum)(speciality),
+        __metadata("design:type", Number)
+    ], AgentGetList.prototype, "speciality", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         __metadata("design:type", Number)
