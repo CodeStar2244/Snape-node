@@ -42,4 +42,60 @@ export class StudioManagementController {
             return res.status(error.code).json(error);
         }
     }
+
+
+    addSpeciality = async (req: any, res: any) => {
+        try {
+          const params = req.body;
+          const user = req.user;
+          const result = await this.clientService.addSpeciality(params, user);
+    
+          res.status(result.code).json(result?.result || result?.error);
+        } catch (error) {
+          res
+            .status(500)
+            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+        }
+      };
+    
+      //Profile
+      getSpeciality = async (req: any, res: any) => {
+        try {
+          const result = await this.clientService.getSpeciality(req.user);
+          res.status(result.code).json(result?.result || result?.error);
+        } catch (error) {
+          res
+            .status(500)
+            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+        }
+      };
+    
+      editSpeciality = async (req: Request, res: any) => {
+        try {
+          const result = await this.clientService.editSpeciality(
+            req.params,
+            req.body
+          );
+          res.status(result.code).json(result?.result || result?.error);
+        } catch (error) {
+          res
+            .status(500)
+            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+        }
+      };
+    
+      deleteSpeciality = async (req: Request, res: any) => {
+        try {
+          const result = await this.clientService.deleteSpeciality(
+            req.params
+          );
+          res.status(result.code).json(result?.result || result?.error);
+        } catch (error) {
+          res
+            .status(500)
+            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+        }
+      };
+
+
 }

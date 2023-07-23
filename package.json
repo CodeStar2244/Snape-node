@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --outDir dist",
-    "start": "tsc --watch & nodemon --inspect dist",
+    "start": "nodemon ./src/index.ts",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:run": " npm run build && ts-node ./node_modules/typeorm/cli.js  -d dist/db/db.config.js migration:run",

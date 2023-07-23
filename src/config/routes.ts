@@ -55,3 +55,10 @@ export const STUDIO_MANAGEMENT_ROUTES = {
     GET_CLIENT: "/client/:id",
     DELETE_CLIENT: "/client"
 }
+
+export const SPECIALITY_ROUTES = {
+    CREATE_SPECIALITY: "/speciality",
+    GET_SPECIALITY: "/speciality",
+    EDIT_SPECIALITY: "/speciality/:id",
+    DELETE_SPECIALITY: "/speciality"
+}

@@ -22,6 +22,9 @@ export default class StudioClient {
     })
     phone: string | null;
 
+    @Column({ type: "text", default: 'default/userprofile.png' })
+    profileUrl: string;
+
     @ManyToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
     @JoinColumn({ name: "agentId" })
     createdBy
