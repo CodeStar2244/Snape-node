@@ -32,6 +32,16 @@ export class StudioManagementController {
             return res.status(error.code).json(error);
         }
     }
+    public updateClient = async (req, res) => {
+      try {
+          const userDetails = req.user;
+          const { id } = req.params;
+          const result = await this.clientService.editClient(req.params,req.body,userDetails);
+          return res.status(result.code).json(result);
+      } catch (error) {
+          return res.status(error.code).json(error);
+      }
+  }
     public deleteClient = async (req, res) => {
         try {
             const userDetails = req.user;

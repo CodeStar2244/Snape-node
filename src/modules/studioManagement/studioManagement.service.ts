@@ -29,6 +29,7 @@ export class StudioManagementService {
             const studioClientRepository = AppDataSource.getRepository(StudioClient);
             const query = await studioClientRepository.createQueryBuilder("studioclient")
                 .select("studioclient.name", "name")
+                .select("studioclient.id", "id")
                 .addSelect("studioclient.email", "email")
                 .addSelect("studioclient.phone", "phone")
                 .addSelect("studioclient.profileUrl", "profileUrl")
@@ -63,6 +64,39 @@ export class StudioManagementService {
 
         }
     }
+
+
+    editClient = async (params, body,userDetails) => {
+      try {
+          if(body.profileUrl){
+              body={...body,profileUrl:CDN_URL+body.profileUrl}
+          }
+        await AppDataSource
+          .getRepository(StudioClient)
+          .createQueryBuilder()
+          .update(StudioClient)
+          .set(body)
+          .where("id = :id", { id: params.id })
+          .execute();
+  
+          const studioClientRepository = AppDataSource.getRepository(StudioClient);
+          const query = await studioClientRepository.createQueryBuilder("studioclient")
+              .select("studioclient.name", "name")
+              .select("studioclient.id", "id")
+              .addSelect("studioclient.email", "email")
+              .addSelect("studioclient.phone", "phone")
+              .addSelect("studioclient.profileUrl", "profileUrl")
+              .addSelect("studioclient.createdAt", "createdAt")
+              .where("studioclient.createdBy = :agentId", { agentId: userDetails.id })
+              .loadRelationIdAndMap("agentId", "studioclient.createdBy")
+          const studioclient = await query.getRawMany();
+  
+        return ResponseBuilder.data({ message: "Speciality edit successfully", data: studioclient });
+      } catch (error) {
+        console.log(error);
+        return ResponseBuilder.badRequest(error?.message)
+      }
+    };
 
     public deleteClient = async (userDetails, clientId: number) => {
         try {

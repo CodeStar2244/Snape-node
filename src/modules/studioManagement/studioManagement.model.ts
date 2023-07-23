@@ -30,6 +30,29 @@ export class CreateStudioClientModel extends Model {
     }
 }
 
+export class UpdateStudioClientModel extends Model {
+
+    @IsOptional()
+    public name: string;
+
+    @IsOptional()
+    public email: string;
+
+    @IsOptional()
+    public phone: string;
+
+    @IsOptional()
+    profileUrl: string
+
+    constructor(body: any, params: any) {
+        super();
+        this.name = body.name;
+        this.email = body.email
+        this.phone = body.phone
+        this.profileUrl = body?.profileUrl
+    }
+}
+
 export class CreateSpeciality extends Model {
     @IsNotEmpty({
         message: 'Please enter question',

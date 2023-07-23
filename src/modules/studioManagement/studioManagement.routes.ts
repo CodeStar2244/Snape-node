@@ -2,7 +2,7 @@ import { Router } from "express";
 import { STUDIO_MANAGEMENT_ROUTES,SPECIALITY_ROUTES } from "../../config/routes";
 import { Validator } from "../../helpers/validator";
 import { StudioManagementController } from "./studioManagement.controller";
-import { CreateStudioClientModel,CreateSpeciality,GetSpeciality,UpdateSpeciality } from "./studioManagement.model";
+import { CreateStudioClientModel,CreateSpeciality,GetSpeciality,UpdateSpeciality,UpdateStudioClientModel } from "./studioManagement.model";
 import {StudioManagementMiddleware} from './studioManagement.middleware';
 
 const router: Router = Router();
@@ -13,6 +13,7 @@ const v: Validator = new Validator();
 router.get(STUDIO_MANAGEMENT_ROUTES.GET_CLIENTS, studioManagementController.getClient);
 router.get(STUDIO_MANAGEMENT_ROUTES.GET_CLIENT, studioManagementController.getSingleClient);
 router.post(STUDIO_MANAGEMENT_ROUTES.CREATE_CLIENT, v.validate(CreateStudioClientModel), studioManagementController.createClient);
+router.post(STUDIO_MANAGEMENT_ROUTES.UPDATE_CLIENT, v.validate(UpdateStudioClientModel), studioManagementController.updateClient);
 router.delete(STUDIO_MANAGEMENT_ROUTES.DELETE_CLIENT, studioManagementController.deleteClient);
 
 //Add Speciality
