@@ -117,6 +117,93 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
+        this.addSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var params, user, result, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        params = req.body;
+                        user = req.user;
+                        return [4 /*yield*/, this.clientService.addSpeciality(params, user)];
+                    case 1:
+                        result = _a.sent();
+                        res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_5 = _a.sent();
+                        res
+                            .status(500)
+                            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        //Profile
+        this.getSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clientService.getSpeciality(req.user)];
+                    case 1:
+                        result = _a.sent();
+                        res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_6 = _a.sent();
+                        res
+                            .status(500)
+                            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.editSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clientService.editSpeciality(req.params, req.body)];
+                    case 1:
+                        result = _a.sent();
+                        res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_7 = _a.sent();
+                        res
+                            .status(500)
+                            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_8;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clientService.deleteSpeciality(req.params)];
+                    case 1:
+                        result = _a.sent();
+                        res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_8 = _a.sent();
+                        res
+                            .status(500)
+                            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return StudioManagementController;
 }());
