@@ -90,9 +90,12 @@ var EnterpriseAgentsService = /** @class */ (function () {
                             .addSelect("agent.createdondate", "createdAt")
                             .addSelect("calculate_distance(agent.latitude , agent.longitude,".concat(queryObj.latitude, " ,").concat(queryObj.longitude, ",'K') as distance"))
                             .where("agent.isonline = :isonline", { isonline: true })
-                            .andWhere("calculate_distance(agent.latitude , agent.longitude,".concat(queryObj.latitude, " ,").concat(queryObj.longitude, ",'K') < ").concat(queryObj.range))
-                            .offset(offset)
-                            .limit(limit);
+                            .andWhere("calculate_distance(agent.latitude , agent.longitude,".concat(queryObj.latitude, " ,").concat(queryObj.longitude, ",'K') < ").concat(queryObj.range));
+                        if (query.speciality) {
+                            agentQuery.andWhere("agent.speciality = :speciality", { speciality: query.speciality });
+                        }
+                        agentQuery.offset(offset);
+                        agentQuery.limit(limit);
                         return [4 /*yield*/, agentQuery.getRawMany()];
                     case 2:
                         agents = _a.sent();
@@ -238,6 +241,9 @@ var EnterpriseAgentsService = /** @class */ (function () {
                             .addSelect("calculate_distance(agent.latitude , agent.longitude,".concat(queryObj.latitude, " ,").concat(queryObj.longitude, ",'K') as distance"))
                             .where("agent.isonline = :isonline", { isonline: true })
                             .andWhere("calculate_distance(agent.latitude , agent.longitude,".concat(queryObj.latitude, " ,").concat(queryObj.longitude, ",'K') < ").concat(queryObj.range));
+                        if (query.speciality) {
+                            agentQuery.andWhere("agent.speciality = :speciality", { speciality: query.speciality });
+                        }
                         return [4 /*yield*/, agentQuery.getRawMany()];
                     case 1:
                         agents = _a.sent();

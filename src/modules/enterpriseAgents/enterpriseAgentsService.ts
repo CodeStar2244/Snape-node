@@ -10,7 +10,7 @@ import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { AgentFavourite, AgentGetList, BookAgent } from "./enterpriseAgentsModel";
 import { DeepPartial } from "typeorm";
 export class EnterpriseAgentsService {
-    public async getAgents(query, userDetails) {
+    public async getAgents(query:AgentGetList, userDetails) {
         try {
             const queryObj = new AgentGetList(null, query);
         const agentRepo = AppDataSource.getRepository(Tblagent);
@@ -42,8 +42,11 @@ export class EnterpriseAgentsService {
             .addSelect(`calculate_distance(agent.latitude , agent.longitude,${queryObj.latitude} ,${queryObj.longitude},'K') as distance`)
             .where("agent.isonline = :isonline", { isonline: true })
             .andWhere(`calculate_distance(agent.latitude , agent.longitude,${queryObj.latitude} ,${queryObj.longitude},'K') < ${queryObj.range}`)
-            .offset(offset)
-            .limit(limit);
+            if(query.speciality){
+                agentQuery .andWhere("agent.speciality = :speciality", { speciality: query.speciality });
+            }
+            agentQuery.offset(offset)
+            agentQuery.limit(limit);
 
 
         const agents = await agentQuery.getRawMany();
@@ -151,6 +154,9 @@ export class EnterpriseAgentsService {
             .addSelect(`calculate_distance(agent.latitude , agent.longitude,${queryObj.latitude} ,${queryObj.longitude},'K') as distance`)
             .where("agent.isonline = :isonline", { isonline: true })
             .andWhere(`calculate_distance(agent.latitude , agent.longitude,${queryObj.latitude} ,${queryObj.longitude},'K') < ${queryObj.range}`)
+            if(query.speciality){
+                agentQuery .andWhere("agent.speciality = :speciality", { speciality: query.speciality });
+            }
 
 
         const agents = await agentQuery.getRawMany();

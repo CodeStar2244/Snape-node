@@ -54,6 +54,7 @@ exports.StudioManagementService = void 0;
 var db_config_1 = require("../../db/db.config");
 var studioClient_1 = __importDefault(require("../../entities/studioClient"));
 var responseBuilder_1 = require("../../helpers/responseBuilder");
+var studioSpeciality_1 = require("../../entities/studioSpeciality");
 var StudioManagementService = /** @class */ (function () {
     function StudioManagementService() {
         var _this = this;
@@ -88,6 +89,8 @@ var StudioManagementService = /** @class */ (function () {
                                 .select("studioclient.name", "name")
                                 .addSelect("studioclient.email", "email")
                                 .addSelect("studioclient.phone", "phone")
+                                .addSelect("studioclient.profileUrl", "profileUrl")
+                                .addSelect("studioclient.createdAt", "createdAt")
                                 .where("studioclient.createdBy = :agentId", { agentId: userDetails.id })
                                 .loadRelationIdAndMap("agentId", "studioclient.createdBy")];
                     case 1:
@@ -154,6 +157,105 @@ var StudioManagementService = /** @class */ (function () {
                         error_4 = _a.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_4);
                     case 4: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.addSpeciality = function (params, user) { return __awaiter(_this, void 0, void 0, function () {
+            var specialityRepository, createUser, data, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        params.agentId = user.id;
+                        specialityRepository = db_config_1.AppDataSource.getRepository(studioSpeciality_1.StudioSpeciality);
+                        createUser = specialityRepository.create(params);
+                        return [4 /*yield*/, specialityRepository.save(createUser)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: data,
+                                message: "Speciality added successfully",
+                            })];
+                    case 2:
+                        error_5 = _a.sent();
+                        console.log(error_5);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_5 === null || error_5 === void 0 ? void 0 : error_5.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getSpeciality = function (user) { return __awaiter(_this, void 0, void 0, function () {
+            var specialityRepository, query, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        specialityRepository = db_config_1.AppDataSource.getRepository(studioSpeciality_1.StudioSpeciality);
+                        return [4 /*yield*/, specialityRepository.createQueryBuilder("studioclient")
+                                .select("studioclient.id", "id")
+                                .addSelect("studioclient.name", "name")
+                                .addSelect("studioclient.imageUrl", "imageUrl")
+                                .addSelect("studioclient.createdAt", "createdAt")
+                                .where("studioclient.createdBy = :agentId", { agentId: user.id })
+                                .loadRelationIdAndMap("agentId", "studioclient.createdBy")];
+                    case 1:
+                        query = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { specialityDetails: query } })];
+                    case 2:
+                        error_6 = _a.sent();
+                        console.log(error_6);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_6 === null || error_6 === void 0 ? void 0 : error_6.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.editSpeciality = function (params, body) { return __awaiter(_this, void 0, void 0, function () {
+            var specialityRepository, error_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, db_config_1.AppDataSource
+                                .getRepository(studioSpeciality_1.StudioSpeciality)
+                                .createQueryBuilder()
+                                .update(studioSpeciality_1.StudioSpeciality)
+                                .set(body)
+                                .where("id = :id", { id: params.id })
+                                .execute()];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, db_config_1.AppDataSource
+                                .getRepository(studioSpeciality_1.StudioSpeciality)
+                                .createQueryBuilder("faq")
+                                .where("faq.id = :id", { id: params.id })
+                                .getOne()];
+                    case 2:
+                        specialityRepository = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Speciality edit successfully", data: specialityRepository })];
+                    case 3:
+                        error_7 = _a.sent();
+                        console.log(error_7);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_7 === null || error_7 === void 0 ? void 0 : error_7.message)];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteSpeciality = function (params) { return __awaiter(_this, void 0, void 0, function () {
+            var userRepository, error_8;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userRepository = db_config_1.AppDataSource.getRepository(studioSpeciality_1.StudioSpeciality);
+                        return [4 /*yield*/, userRepository.delete({ id: params.id })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Faq deleted successfully" })];
+                    case 2:
+                        error_8 = _a.sent();
+                        console.log(error_8);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_8 === null || error_8 === void 0 ? void 0 : error_8.message)];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); };

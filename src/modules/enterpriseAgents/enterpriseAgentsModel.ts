@@ -25,6 +25,10 @@ export class AgentGetList extends Model {
     @IsOptional()
     range:number
 
+    @IsOptional()
+    @IsEnum(speciality)
+    speciality:number;
+
     @IsNotEmpty()
     page:number
 
@@ -45,7 +49,8 @@ export class AgentGetList extends Model {
             this.range = 45
         }
         this.page = params.page;
-        this.limit = params.limit
+        this.limit = params.limit;
+        this.speciality = Number(params.speciality)
         
     }
     

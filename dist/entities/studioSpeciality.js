@@ -9,53 +9,43 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.StudioSpeciality = void 0;
 var typeorm_1 = require("typeorm");
+var class_validator_1 = require("class-validator");
 var Tblagent_1 = require("./Tblagent");
-var StudioClient = /** @class */ (function () {
-    function StudioClient() {
+var StudioSpeciality = /** @class */ (function () {
+    function StudioSpeciality() {
     }
     __decorate([
         (0, typeorm_1.PrimaryGeneratedColumn)(),
         __metadata("design:type", Number)
-    ], StudioClient.prototype, "id", void 0);
+    ], StudioSpeciality.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ type: "varchar", length: 250 }),
+        (0, class_validator_1.IsNotEmpty)(),
         __metadata("design:type", String)
-    ], StudioClient.prototype, "name", void 0);
+    ], StudioSpeciality.prototype, "name", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ type: "text", default: 'default/special.png' }),
         __metadata("design:type", String)
-    ], StudioClient.prototype, "email", void 0);
-    __decorate([
-        (0, typeorm_1.Column)("character varying", {
-            name: "phone",
-            nullable: true,
-            unique: true,
-            length: 30,
-        }),
-        __metadata("design:type", String)
-    ], StudioClient.prototype, "phone", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ type: "text", default: 'default/userprofile.png' }),
-        __metadata("design:type", String)
-    ], StudioClient.prototype, "profileUrl", void 0);
+    ], StudioSpeciality.prototype, "imageUrl", void 0);
     __decorate([
         (0, typeorm_1.ManyToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
         (0, typeorm_1.JoinColumn)({ name: "agentId" }),
         __metadata("design:type", Object)
-    ], StudioClient.prototype, "createdBy", void 0);
+    ], StudioSpeciality.prototype, "createdBy", void 0);
     __decorate([
-        (0, typeorm_1.CreateDateColumn)({ type: 'timestamptz' }),
+        (0, typeorm_1.CreateDateColumn)(),
         __metadata("design:type", Date)
-    ], StudioClient.prototype, "createdAt", void 0);
+    ], StudioSpeciality.prototype, "createdAt", void 0);
     __decorate([
-        (0, typeorm_1.UpdateDateColumn)({ type: "timestamptz" }),
+        (0, typeorm_1.UpdateDateColumn)(),
         __metadata("design:type", Date)
-    ], StudioClient.prototype, "updatedAt", void 0);
-    StudioClient = __decorate([
-        (0, typeorm_1.Entity)("studioclient", { schema: "public" })
-    ], StudioClient);
-    return StudioClient;
+    ], StudioSpeciality.prototype, "updatedAt", void 0);
+    StudioSpeciality = __decorate([
+        (0, typeorm_1.Entity)({ name: "studiospeciality" })
+    ], StudioSpeciality);
+    return StudioSpeciality;
 }());
-exports.default = StudioClient;
-//# sourceMappingURL=studioClient.js.map
+exports.StudioSpeciality = StudioSpeciality;
+//# sourceMappingURL=studioSpeciality.js.map
