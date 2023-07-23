@@ -2,13 +2,17 @@ import { AppDataSource } from "../../db/db.config";
 import StudioClient from "../../entities/studioClient";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { StudioSpeciality } from "../../entities/studioSpeciality";
+import { CDN_URL, FILE_ALREADY_EXISTS, FRONT_URL } from "../../config/constants";
+
 export class StudioManagementService {
     public createClient = async (userDetails, body) => {
         try {
             const studioClientRepository = AppDataSource.getRepository(StudioClient);
-            const studioClient = await studioClientRepository.save({
-                ...body, createdBy: userDetails.id
-            })
+            let params={...body,createdBy: userDetails.id}
+            if(body.profileUrl){
+                params={...params,profileUrl:CDN_URL+body.profileUrl}
+            }
+            const studioClient = await studioClientRepository.save(params)
             console.log(userDetails, '----userDetails-----');
 
             return ResponseBuilder.data(studioClient, "Studio Client created SuccessFully");
@@ -84,8 +88,11 @@ export class StudioManagementService {
 
     addSpeciality = async (params: any, user: any): Promise<any> => {
         try {
-          params.agentId = user.id;
+          params.createdBy = user.id;
           const specialityRepository = AppDataSource.getRepository(StudioSpeciality);
+            if(params.imageUrl){
+                params={...params,imageUrl:CDN_URL+params.imageUrl}
+            }
           const createUser = specialityRepository.create(params);
           const data = await specialityRepository.save(createUser);
           return ResponseBuilder.data({
@@ -118,6 +125,9 @@ export class StudioManagementService {
       };
       editSpeciality = async (params, body): Promise<any> => {
         try {
+            if(body.imageUrl){
+                body={...params,imageUrl:CDN_URL+body.imageUrl}
+            }
           await AppDataSource
             .getRepository(StudioSpeciality)
             .createQueryBuilder()

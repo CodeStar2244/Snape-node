@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Tblagent } from "./Tblagent";
-
+import {CDN_URL} from "../config/constants"
 
 @Entity("studioclient", { schema: "public" })
 export default class StudioClient {
@@ -22,7 +22,7 @@ export default class StudioClient {
     })
     phone: string | null;
 
-    @Column({ type: "text", default: 'default/userprofile.png' })
+    @Column({ type: "text", default: `${CDN_URL}default/userprofile.png` })
     profileUrl: string;
 
     @ManyToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })

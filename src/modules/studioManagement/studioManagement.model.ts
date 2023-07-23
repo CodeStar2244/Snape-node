@@ -26,7 +26,7 @@ export class CreateStudioClientModel extends Model {
         this.name = body.name;
         this.email = body.email
         this.phone = body.phone
-        this.profileUrl = body.profileUrl
+        this.profileUrl = body?.profileUrl
     }
 }
 

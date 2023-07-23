@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { IsNotEmpty } from "class-validator";
 import { Tblagent } from "./Tblagent";
+import {CDN_URL} from "../config/constants"
 
 @Entity({ name: "studiospeciality" })
 export class StudioSpeciality {
@@ -19,7 +20,7 @@ export class StudioSpeciality {
   @IsNotEmpty()
   name: string;
 
-  @Column({ type: "text", default: 'default/special.png' })
+  @Column({ type: "text", default: `${CDN_URL}default/userprofile.png` })
   imageUrl: string;
 
   @ManyToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
