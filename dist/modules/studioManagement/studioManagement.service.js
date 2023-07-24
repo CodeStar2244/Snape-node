@@ -92,6 +92,7 @@ var StudioManagementService = /** @class */ (function () {
                         studioClientRepository = db_config_1.AppDataSource.getRepository(studioClient_1.default);
                         return [4 /*yield*/, studioClientRepository.createQueryBuilder("studioclient")
                                 .select("studioclient.name", "name")
+                                .select("studioclient.id", "id")
                                 .addSelect("studioclient.email", "email")
                                 .addSelect("studioclient.phone", "phone")
                                 .addSelect("studioclient.profileUrl", "profileUrl")
@@ -137,8 +138,42 @@ var StudioManagementService = /** @class */ (function () {
                 }
             });
         }); };
+        this.editClient = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
+            var specialityRepository, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        if (body.profileUrl) {
+                            body = __assign(__assign({}, body), { profileUrl: constants_1.CDN_URL + body.profileUrl });
+                        }
+                        return [4 /*yield*/, db_config_1.AppDataSource
+                                .getRepository(studioClient_1.default)
+                                .createQueryBuilder()
+                                .update(studioClient_1.default)
+                                .set(body)
+                                .where("id = :id", { id: params.id })
+                                .execute()];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, db_config_1.AppDataSource
+                                .getRepository(studioSpeciality_1.StudioSpeciality)
+                                .createQueryBuilder("faq")
+                                .where("faq.id = :id", { id: params.id })
+                                .getOne()];
+                    case 2:
+                        specialityRepository = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Speciality edit successfully", data: specialityRepository })];
+                    case 3:
+                        error_4 = _a.sent();
+                        console.log(error_4);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_4 === null || error_4 === void 0 ? void 0 : error_4.message)];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); };
         this.deleteClient = function (userDetails, clientId) { return __awaiter(_this, void 0, void 0, function () {
-            var studioClientRepository, studioClient, error_4;
+            var studioClientRepository, studioClient, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -159,14 +194,14 @@ var StudioManagementService = /** @class */ (function () {
                         _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(studioClient)];
                     case 3:
-                        error_4 = _a.sent();
-                        throw responseBuilder_1.ResponseBuilder.error(error_4);
+                        error_5 = _a.sent();
+                        throw responseBuilder_1.ResponseBuilder.error(error_5);
                     case 4: return [2 /*return*/];
                 }
             });
         }); };
         this.addSpeciality = function (params, user) { return __awaiter(_this, void 0, void 0, function () {
-            var specialityRepository, createUser, data, error_5;
+            var specialityRepository, createUser, data, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -185,15 +220,15 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Speciality added successfully",
                             })];
                     case 2:
-                        error_5 = _a.sent();
-                        console.log(error_5);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_5 === null || error_5 === void 0 ? void 0 : error_5.message)];
+                        error_6 = _a.sent();
+                        console.log(error_6);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_6 === null || error_6 === void 0 ? void 0 : error_6.message)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.getSpeciality = function (user) { return __awaiter(_this, void 0, void 0, function () {
-            var specialityRepository, query, error_6;
+            var specialityRepository, query, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -210,15 +245,15 @@ var StudioManagementService = /** @class */ (function () {
                         query = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { specialityDetails: query } })];
                     case 2:
-                        error_6 = _a.sent();
-                        console.log(error_6);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_6 === null || error_6 === void 0 ? void 0 : error_6.message)];
+                        error_7 = _a.sent();
+                        console.log(error_7);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_7 === null || error_7 === void 0 ? void 0 : error_7.message)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.editSpeciality = function (params, body) { return __awaiter(_this, void 0, void 0, function () {
-            var specialityRepository, error_7;
+            var specialityRepository, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -244,15 +279,15 @@ var StudioManagementService = /** @class */ (function () {
                         specialityRepository = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Speciality edit successfully", data: specialityRepository })];
                     case 3:
-                        error_7 = _a.sent();
-                        console.log(error_7);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_7 === null || error_7 === void 0 ? void 0 : error_7.message)];
+                        error_8 = _a.sent();
+                        console.log(error_8);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_8 === null || error_8 === void 0 ? void 0 : error_8.message)];
                     case 4: return [2 /*return*/];
                 }
             });
         }); };
         this.deleteSpeciality = function (params) { return __awaiter(_this, void 0, void 0, function () {
-            var userRepository, error_8;
+            var userRepository, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -263,9 +298,9 @@ var StudioManagementService = /** @class */ (function () {
                         _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Faq deleted successfully" })];
                     case 2:
-                        error_8 = _a.sent();
-                        console.log(error_8);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_8 === null || error_8 === void 0 ? void 0 : error_8.message)];
+                        error_9 = _a.sent();
+                        console.log(error_9);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_9 === null || error_9 === void 0 ? void 0 : error_9.message)];
                     case 3: return [2 /*return*/];
                 }
             });

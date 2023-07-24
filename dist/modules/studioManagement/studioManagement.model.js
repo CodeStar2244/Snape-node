@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.CreateStudioClientModel = void 0;
+exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.UpdateStudioClientModel = exports.CreateStudioClientModel = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var CreateStudioClientModel = /** @class */ (function (_super) {
@@ -62,6 +62,35 @@ var CreateStudioClientModel = /** @class */ (function (_super) {
     return CreateStudioClientModel;
 }(model_1.Model));
 exports.CreateStudioClientModel = CreateStudioClientModel;
+var UpdateStudioClientModel = /** @class */ (function (_super) {
+    __extends(UpdateStudioClientModel, _super);
+    function UpdateStudioClientModel(body, params) {
+        var _this = _super.call(this) || this;
+        _this.name = body.name;
+        _this.email = body.email;
+        _this.phone = body.phone;
+        _this.profileUrl = body === null || body === void 0 ? void 0 : body.profileUrl;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], UpdateStudioClientModel.prototype, "name", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], UpdateStudioClientModel.prototype, "email", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], UpdateStudioClientModel.prototype, "phone", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], UpdateStudioClientModel.prototype, "profileUrl", void 0);
+    return UpdateStudioClientModel;
+}(model_1.Model));
+exports.UpdateStudioClientModel = UpdateStudioClientModel;
 var CreateSpeciality = /** @class */ (function (_super) {
     __extends(CreateSpeciality, _super);
     function CreateSpeciality(body) {

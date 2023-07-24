@@ -14,6 +14,7 @@ var v = new validator_1.Validator();
 router.get(routes_1.STUDIO_MANAGEMENT_ROUTES.GET_CLIENTS, studioManagementController.getClient);
 router.get(routes_1.STUDIO_MANAGEMENT_ROUTES.GET_CLIENT, studioManagementController.getSingleClient);
 router.post(routes_1.STUDIO_MANAGEMENT_ROUTES.CREATE_CLIENT, v.validate(studioManagement_model_1.CreateStudioClientModel), studioManagementController.createClient);
+router.post(routes_1.STUDIO_MANAGEMENT_ROUTES.UPDATE_CLIENT, v.validate(studioManagement_model_1.UpdateStudioClientModel), studioManagementController.updateClient);
 router.delete(routes_1.STUDIO_MANAGEMENT_ROUTES.DELETE_CLIENT, studioManagementController.deleteClient);
 //Add Speciality
 router.post(routes_1.SPECIALITY_ROUTES.CREATE_SPECIALITY, v.validate(studioManagement_model_1.CreateSpeciality), studioManagementController.addSpeciality);

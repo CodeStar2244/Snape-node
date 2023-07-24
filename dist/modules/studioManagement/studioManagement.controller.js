@@ -98,8 +98,27 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
-        this.deleteClient = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.updateClient = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var userDetails, id, result, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.editClient(req.params, req.body, userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_4 = _a.sent();
+                        return [2 /*return*/, res.status(error_4.code).json(error_4)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteClient = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -111,14 +130,14 @@ var StudioManagementController = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_4 = _a.sent();
-                        return [2 /*return*/, res.status(error_4.code).json(error_4)];
+                        error_5 = _a.sent();
+                        return [2 /*return*/, res.status(error_5.code).json(error_5)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.addSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var params, user, result, error_5;
+            var params, user, result, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -126,28 +145,6 @@ var StudioManagementController = /** @class */ (function () {
                         params = req.body;
                         user = req.user;
                         return [4 /*yield*/, this.clientService.addSpeciality(params, user)];
-                    case 1:
-                        result = _a.sent();
-                        res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
-                        return [3 /*break*/, 3];
-                    case 2:
-                        error_5 = _a.sent();
-                        res
-                            .status(500)
-                            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        }); };
-        //Profile
-        this.getSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var result, error_6;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.clientService.getSpeciality(req.user)];
                     case 1:
                         result = _a.sent();
                         res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
@@ -162,13 +159,14 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
-        this.editSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        //Profile
+        this.getSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var result, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.clientService.editSpeciality(req.params, req.body)];
+                        return [4 /*yield*/, this.clientService.getSpeciality(req.user)];
                     case 1:
                         result = _a.sent();
                         res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
@@ -183,8 +181,29 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
-        this.deleteSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.editSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var result, error_8;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clientService.editSpeciality(req.params, req.body)];
+                    case 1:
+                        result = _a.sent();
+                        res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_8 = _a.sent();
+                        res
+                            .status(500)
+                            .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteSpeciality = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -195,7 +214,7 @@ var StudioManagementController = /** @class */ (function () {
                         res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
                         return [3 /*break*/, 3];
                     case 2:
-                        error_8 = _a.sent();
+                        error_9 = _a.sent();
                         res
                             .status(500)
                             .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });

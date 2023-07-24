@@ -53,6 +53,7 @@ exports.STUDIO_MANAGEMENT_ROUTES = {
     CREATE_CLIENT: "/client",
     GET_CLIENTS: "/client",
     GET_CLIENT: "/client/:id",
+    UPDATE_CLIENT: "/client/:id",
     DELETE_CLIENT: "/client"
 };
 exports.SPECIALITY_ROUTES = {
