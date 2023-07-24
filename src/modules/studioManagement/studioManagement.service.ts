@@ -85,7 +85,7 @@ export class StudioManagementService {
           .where("faq.id = :id", { id: params.id })
           .getOne();
   
-        return ResponseBuilder.data({ message: "Speciality edit successfully", data: specialityRepository });
+        return ResponseBuilder.data({ message: "Client edit successfully", data: specialityRepository });
       } catch (error) {
         console.log(error);
         return ResponseBuilder.badRequest(error?.message)
