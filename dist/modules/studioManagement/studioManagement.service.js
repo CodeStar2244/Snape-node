@@ -163,7 +163,7 @@ var StudioManagementService = /** @class */ (function () {
                                 .getOne()];
                     case 2:
                         specialityRepository = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Speciality edit successfully", data: specialityRepository })];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Client edit successfully", data: specialityRepository })];
                     case 3:
                         error_4 = _a.sent();
                         console.log(error_4);
