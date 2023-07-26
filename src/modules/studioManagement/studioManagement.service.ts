@@ -28,8 +28,8 @@ export class StudioManagementService {
         try {
             const studioClientRepository = AppDataSource.getRepository(StudioClient);
             const query = await studioClientRepository.createQueryBuilder("studioclient")
-                .select("studioclient.name", "name")
                 .select("studioclient.id", "id")
+                .addSelect("studioclient.name", "name")
                 .addSelect("studioclient.email", "email")
                 .addSelect("studioclient.phone", "phone")
                 .addSelect("studioclient.profileUrl", "profileUrl")
