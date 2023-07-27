@@ -91,8 +91,8 @@ var StudioManagementService = /** @class */ (function () {
                         _a.trys.push([0, 3, , 4]);
                         studioClientRepository = db_config_1.AppDataSource.getRepository(studioClient_1.default);
                         return [4 /*yield*/, studioClientRepository.createQueryBuilder("studioclient")
-                                .select("studioclient.name", "name")
                                 .select("studioclient.id", "id")
+                                .addSelect("studioclient.name", "name")
                                 .addSelect("studioclient.email", "email")
                                 .addSelect("studioclient.phone", "phone")
                                 .addSelect("studioclient.profileUrl", "profileUrl")

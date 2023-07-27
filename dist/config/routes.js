@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SPECIALITY_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.PORTFOLIO_ROUTES = exports.SPECIALITY_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login",
     GET_REMANING_SPACE: "/get-remaining-space",
@@ -61,5 +61,16 @@ exports.SPECIALITY_ROUTES = {
     GET_SPECIALITY: "/speciality",
     EDIT_SPECIALITY: "/speciality/:id",
     DELETE_SPECIALITY: "/speciality"
+};
+exports.PORTFOLIO_ROUTES = {
+    CREATE_COLLECTION: "/",
+    GET_COLLECTIONS: "/",
+    GET_COLLECTION_BY_ID: "/:id",
+    UPLOAD_FILES: "/:id",
+    DELETE_COLLECTION: "/:id",
+    GET_FILES: "/files/:id",
+    GET_FILES_NAME: "/files-name/:id",
+    DELETE_FILES: "/files/:id",
+    CHANGE_COVERPHOTO: "/coverphoto/:id",
 };
 //# sourceMappingURL=routes.js.map

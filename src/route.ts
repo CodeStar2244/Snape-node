@@ -8,6 +8,7 @@ import { ClientRoute } from "./modules/client/client.route";
 import { AssetRegistryRouter } from "./modules/assetRegistry/assetRegistry.route";
 import { EnterpriseCollectionRouter } from "./modules/enterpriseCollections/collections.route";
 import { StudioManagementRouter } from "./modules/studioManagement/studioManagement.routes";
+import { PortfolioRoute } from "./modules/agentPortfolio/portfolio.route";
 export class Routes {
   private middleware = new Middleware();
   protected basePath: string;
@@ -34,6 +35,7 @@ export class Routes {
     router.use("/agent", UserRoute);
     router.use("/collection",this.middleware.authenticateUser,CollectionRoute);
     router.use("/dashboard",this.middleware.authenticateUser,DashboardRoute);
+    router.use("/portfolio",this.middleware.authenticateUser,PortfolioRoute);
     router.use("/asset",this.middleware.authenticateUser,AssetRegistryRouter);
     router.use("/studiomanagement",this.middleware.authenticateUser,StudioManagementRouter);
     router.use("/client",ClientRoute);
