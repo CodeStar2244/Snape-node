@@ -82,9 +82,41 @@ var Utils = /** @class */ (function () {
             });
         });
     };
+    Utils.prototype.compressPortfolioImage = function (path, collectionId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var key, image, imageBuffer, compressedImageBuffer, fileSizeInBytes, fileSize, result, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        key = path;
+                        return [4 /*yield*/, this.s3.getS3FileBuffer(path)];
+                    case 1:
+                        image = _a.sent();
+                        imageBuffer = image.Body;
+                        return [4 /*yield*/, sharp(imageBuffer)
+                                .jpeg({ quality: 80 }) // Compress the image with desired quality (80% in this example)
+                                .toBuffer()];
+                    case 2:
+                        compressedImageBuffer = _a.sent();
+                        fileSizeInBytes = compressedImageBuffer.byteLength;
+                        fileSize = fileSizeInBytes / (1024 * 1024);
+                        console.log(fileSize, "fileSizeMB");
+                        return [4 /*yield*/, this.s3.putS3File(compressedImageBuffer, key)];
+                    case 3:
+                        result = _a.sent();
+                        return [2 /*return*/, { key: key, fileSize: fileSize }];
+                    case 4:
+                        error_2 = _a.sent();
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
     Utils.prototype.compressAllImages = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var fileRepo, files, _i, files_1, file, compressedKey, error_2;
+            var fileRepo, files, _i, files_1, file, compressedKey, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -119,8 +151,8 @@ var Utils = /** @class */ (function () {
                         return [3 /*break*/, 2];
                     case 6: return [3 /*break*/, 8];
                     case 7:
-                        error_2 = _a.sent();
-                        console.log(error_2);
+                        error_3 = _a.sent();
+                        console.log(error_3);
                         return [3 /*break*/, 8];
                     case 8: return [2 /*return*/];
                 }
@@ -129,7 +161,7 @@ var Utils = /** @class */ (function () {
     };
     Utils.prototype.updateCompressedCdnurl = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var fileRepo, files, _i, files_2, file, error_3;
+            var fileRepo, files, _i, files_2, file, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -161,8 +193,8 @@ var Utils = /** @class */ (function () {
                         return [3 /*break*/, 2];
                     case 5: return [3 /*break*/, 7];
                     case 6:
-                        error_3 = _a.sent();
-                        console.log(error_3);
+                        error_4 = _a.sent();
+                        console.log(error_4);
                         return [3 /*break*/, 7];
                     case 7: return [2 /*return*/];
                 }

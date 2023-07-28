@@ -63,3 +63,17 @@ export const SPECIALITY_ROUTES = {
     EDIT_SPECIALITY: "/speciality/:id",
     DELETE_SPECIALITY: "/speciality"
 }
+
+
+export const PORTFOLIO_ROUTES = {
+    CREATE_COLLECTION: "/",
+    GET_COLLECTIONS: "/",
+    GET_COLLECTION_BY_ID: "/:id",
+    UPLOAD_FILES: "/:id",
+    DELETE_COLLECTION: "/:id",
+    GET_FILES: "/files/:id",
+    GET_FILES_NAME: "/files-name/:id",
+    DELETE_FILES: "/files/:id",
+    CHANGE_COVERPHOTO: "/coverphoto/:id",
+
+}

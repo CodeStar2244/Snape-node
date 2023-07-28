@@ -215,9 +215,7 @@ var CollectionService = /** @class */ (function () {
                         _a.trys.push([0, 3, , 4]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         designRepo = db_config_1.AppDataSource.getRepository(collectionDesign_1.CollectionDesign);
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: {
-                                    id: userDetails.id
-                                } })];
+                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
                     case 1:
                         collection = _a.sent();
                         if (!collection) {
@@ -250,9 +248,7 @@ var CollectionService = /** @class */ (function () {
                         _a.trys.push([0, 5, , 6]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: {
-                                    id: userDetails.id
-                                } })];
+                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
                     case 1:
                         collection = _a.sent();
                         if (!collection) {
@@ -289,9 +285,7 @@ var CollectionService = /** @class */ (function () {
                         _a.trys.push([0, 5, , 6]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: {
-                                    id: userDetails.id
-                                } })];
+                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
                     case 1:
                         collection = _a.sent();
                         if (!collection) {
@@ -335,9 +329,7 @@ var CollectionService = /** @class */ (function () {
                         _a.trys.push([0, 4, , 5]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: {
-                                    id: userDetails.id
-                                } })];
+                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
                     case 1:
                         collection = _a.sent();
                         if (!collection) {
@@ -382,9 +374,7 @@ var CollectionService = /** @class */ (function () {
                         _a.trys.push([0, 4, , 5]);
                         collectionRepository = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: {
-                                    id: userDetails.id
-                                } })];
+                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
                     case 1:
                         collection = _a.sent();
                         if (!collection) {
@@ -420,9 +410,7 @@ var CollectionService = /** @class */ (function () {
                         _b.trys.push([0, 8, , 9]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         tagRepo = db_config_1.AppDataSource.getRepository(CollectionTags_1.CollectionTags);
-                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: {
-                                    id: userDetails.id
-                                } })];
+                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
                     case 1:
                         collection = _b.sent();
                         if (!collection) {
@@ -486,9 +474,7 @@ var CollectionService = /** @class */ (function () {
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         designRepo = db_config_1.AppDataSource.getRepository(collectionDesign_1.CollectionDesign);
                         themerepo = db_config_1.AppDataSource.getRepository(CollectionThemes_1.CollectionThemes);
-                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: {
-                                    id: userDetails.id
-                                } })];
+                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
                     case 1:
                         collection = _b.sent();
                         if (!collection) {
@@ -536,9 +522,7 @@ var CollectionService = /** @class */ (function () {
                         _a.trys.push([0, 3, , 4]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         tagRepo = db_config_1.AppDataSource.getRepository(CollectionTags_1.CollectionTags);
-                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: {
-                                    id: userDetails.id
-                                } })];
+                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
                     case 1:
                         collection = _a.sent();
                         if (!collection) {
@@ -563,9 +547,7 @@ var CollectionService = /** @class */ (function () {
                         _a.trys.push([0, 14, , 15]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Collection_1.default);
                         fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: {
-                                    id: userDetails.id
-                                } })];
+                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
                     case 1:
                         collection = _a.sent();
                         if (!collection) {
