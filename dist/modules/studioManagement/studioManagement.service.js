@@ -240,7 +240,7 @@ var StudioManagementService = /** @class */ (function () {
                                 .addSelect("studioclient.imageUrl", "imageUrl")
                                 .addSelect("studioclient.createdAt", "createdAt")
                                 .where("studioclient.createdBy = :agentId", { agentId: user.id })
-                                .loadRelationIdAndMap("agentId", "studioclient.createdBy")];
+                                .loadRelationIdAndMap("agentId", "studioclient.createdBy").getRawMany()];
                     case 1:
                         query = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { specialityDetails: query } })];
