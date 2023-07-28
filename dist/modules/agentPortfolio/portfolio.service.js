@@ -54,7 +54,6 @@ exports.PortfolioService = void 0;
 var typeorm_1 = require("typeorm");
 var db_config_1 = require("../../db/db.config");
 var Portfolio_1 = __importDefault(require("../../entities/Portfolio"));
-var Files_1 = __importDefault(require("../../entities/Files"));
 var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var constants_1 = require("../../config/constants");
@@ -62,6 +61,7 @@ var agent_service_1 = require("../user/agent.service");
 var uuidv4_1 = require("uuidv4");
 var utils_1 = require("../../utils/utils");
 var Tblagent_1 = require("../../entities/Tblagent");
+var portfolioFiles_1 = __importDefault(require("../../entities/portfolioFiles"));
 var PortfolioService = /** @class */ (function () {
     function PortfolioService() {
         var _this = this;
@@ -69,13 +69,13 @@ var PortfolioService = /** @class */ (function () {
         this.agentService = new agent_service_1.AgentService();
         this.utils = new utils_1.Utils();
         this.createPortfolio = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var agentRepo, collectionRepository, slug, agent, portfolio, collection, error_1;
+            var agentRepo, portfolioRepository, slug, agent, portfolio, newPortFolio, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 4, , 5]);
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
-                        collectionRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
+                        portfolioRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
                         slug = (0, uuidv4_1.uuid)();
                         return [4 /*yield*/, agentRepo.findOne({
                                 where: {
@@ -84,7 +84,7 @@ var PortfolioService = /** @class */ (function () {
                             })];
                     case 1:
                         agent = _a.sent();
-                        return [4 /*yield*/, collectionRepository.findOne({
+                        return [4 /*yield*/, portfolioRepository.findOne({
                                 where: {
                                     createdBy: agent.id
                                 }
@@ -94,13 +94,13 @@ var PortfolioService = /** @class */ (function () {
                         if (portfolio) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Already Exists")];
                         }
-                        return [4 /*yield*/, collectionRepository.save({
+                        return [4 /*yield*/, portfolioRepository.save({
                                 name: agent.firstname + agent.lastname,
                                 createdBy: userDetails.id
                             })];
                     case 3:
-                        collection = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collection, "Portfolio created SuccessFully")];
+                        newPortFolio = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(newPortFolio, "Portfolio created SuccessFully")];
                     case 4:
                         error_1 = _a.sent();
                         console.log(error_1);
@@ -110,32 +110,32 @@ var PortfolioService = /** @class */ (function () {
             });
         }); };
         this.getPortfolios = function (userDetails, search, order, sort) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, query, collections, error_2;
+            var portfolioRepository, query, portfolios, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        collectionRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
-                        return [4 /*yield*/, collectionRepository.createQueryBuilder("collections")
-                                .select("collections.name", "name")
-                                .addSelect("collections.id", "id")
-                                .addSelect("collections.coverPhoto", "coverPhoto")
-                                .addSelect("collections.photos", "photos")
-                                .addSelect("collections.videos", "videos")
-                                .where("collections.createdBy = :agentId", { agentId: userDetails.id })
-                                .loadRelationIdAndMap("agentId", "collections.createdBy")];
+                        portfolioRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
+                        return [4 /*yield*/, portfolioRepository.createQueryBuilder("portfolios")
+                                .select("portfolios.name", "name")
+                                .addSelect("portfolios.id", "id")
+                                .addSelect("portfolios.coverPhoto", "coverPhoto")
+                                .addSelect("portfolios.photos", "photos")
+                                .addSelect("portfolios.videos", "videos")
+                                .where("portfolios.createdBy = :agentId", { agentId: userDetails.id })
+                                .loadRelationIdAndMap("agentId", "portfolios.createdBy")];
                     case 1:
                         query = _a.sent();
                         if (search) {
-                            query.andWhere('collections.name ILIKE :name', { name: "%".concat(search, "%") });
+                            query.andWhere('portfolios.name ILIKE :name', { name: "%".concat(search, "%") });
                         }
                         if (sort && order) {
-                            query.addOrderBy("collections.".concat(sort), order.toUpperCase());
+                            query.addOrderBy("portfolios.".concat(sort), order.toUpperCase());
                         }
                         return [4 /*yield*/, query.getRawMany()];
                     case 2:
-                        collections = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collections)];
+                        portfolios = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(portfolios)];
                     case 3:
                         error_2 = _a.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_2);
@@ -144,32 +144,32 @@ var PortfolioService = /** @class */ (function () {
             });
         }); };
         this.getPortfolioByID = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, collection, error_3;
+            var portfolioRepository, portfolio, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        collectionRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
-                        return [4 /*yield*/, collectionRepository.createQueryBuilder("collections")
-                                .select("collections.name", "name")
-                                .addSelect("collections.id", "id")
-                                .addSelect("collections.status", "status")
-                                .addSelect("collections.coverPhoto", "coverPhoto")
-                                .addSelect("collections.photos", "photos")
-                                .addSelect("collections.videos", "videos")
-                                .addSelect("collections.createdAt", "createdAt")
-                                .addSelect("collections.updatedAt", "updatedAt")
-                                .where("collections.createdBy = :agentId", { agentId: userDetails.id })
-                                .andWhere("collections.id =:id", { id: Number(id) })
-                                .loadRelationIdAndMap("agentId", "collections.createdBy")
-                                .addGroupBy("collections.id")
+                        portfolioRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
+                        return [4 /*yield*/, portfolioRepository.createQueryBuilder("portfolios")
+                                .select("portfolios.name", "name")
+                                .addSelect("portfolios.id", "id")
+                                .addSelect("portfolios.status", "status")
+                                .addSelect("portfolios.coverPhoto", "coverPhoto")
+                                .addSelect("portfolios.photos", "photos")
+                                .addSelect("portfolios.videos", "videos")
+                                .addSelect("portfolios.createdAt", "createdAt")
+                                .addSelect("portfolios.updatedAt", "updatedAt")
+                                .where("portfolios.createdBy = :agentId", { agentId: userDetails.id })
+                                .andWhere("portfolios.id =:id", { id: Number(id) })
+                                .loadRelationIdAndMap("agentId", "portfolios.createdBy")
+                                .addGroupBy("portfolios.id")
                                 .getRawOne()];
                     case 1:
-                        collection = _a.sent();
-                        if (!collection) {
+                        portfolio = _a.sent();
+                        if (!portfolio) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Not Found", 404)];
                         }
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collection)];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(portfolio)];
                     case 2:
                         error_3 = _a.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_3);
@@ -178,28 +178,30 @@ var PortfolioService = /** @class */ (function () {
             });
         }); };
         this.deletePortfolio = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, fileRepo, collection, files, _i, files_1, file, agentSpace, error_4;
+            var portfolioRepository, fileRepo, portfolio, files, _i, files_1, file, agentSpace, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
-                        collectionRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
-                        fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
+                        portfolioRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
+                        fileRepo = db_config_1.AppDataSource.getRepository(portfolioFiles_1.default);
+                        return [4 /*yield*/, portfolioRepository.findOneBy({ id: id, createdBy: {
+                                    id: userDetails.id
+                                } })];
                     case 1:
-                        collection = _a.sent();
-                        if (!collection) {
+                        portfolio = _a.sent();
+                        if (!portfolio) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Not Found", 404)];
                         }
                         return [4 /*yield*/, fileRepo.createQueryBuilder("files")
-                                .where({ collection: id }).loadAllRelationIds().orderBy({ "files.createdAt": "ASC" }).getMany()];
+                                .where({ portfolio: id }).loadAllRelationIds().orderBy({ "files.createdAt": "ASC" }).getMany()];
                     case 2:
                         files = _a.sent();
                         for (_i = 0, files_1 = files; _i < files_1.length; _i++) {
                             file = files_1[_i];
                             this.s3.deleteS3File(file.key);
                         }
-                        return [4 /*yield*/, collectionRepository.delete({ id: id })];
+                        return [4 /*yield*/, portfolioRepository.delete({ id: id })];
                     case 3:
                         _a.sent();
                         return [4 /*yield*/, this.agentService.getRemaningBalance(userDetails)];
@@ -215,23 +217,25 @@ var PortfolioService = /** @class */ (function () {
             });
         }); };
         this.deleteFiles = function (userDetails, id, ids) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, fileRepo, collection, idsArr, queryOptions, files, _i, files_2, file, filesToBeDeleted, agentSpace, error_5;
+            var portfolioRepository, fileRepo, portfolio, idsArr, queryOptions, files, _i, files_2, file, filesToBeDeleted, agentSpace, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
-                        collectionRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
-                        fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
+                        portfolioRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
+                        fileRepo = db_config_1.AppDataSource.getRepository(portfolioFiles_1.default);
+                        return [4 /*yield*/, portfolioRepository.findOneBy({ id: id, createdBy: {
+                                    id: userDetails.id
+                                } })];
                     case 1:
-                        collection = _a.sent();
-                        if (!collection) {
+                        portfolio = _a.sent();
+                        if (!portfolio) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Not Found", 404)];
                         }
                         idsArr = ids;
                         queryOptions = {
                             where: {
-                                collection: {
+                                portfolio: {
                                     id: id
                                 },
                                 id: (0, typeorm_1.In)(idsArr)
@@ -259,17 +263,17 @@ var PortfolioService = /** @class */ (function () {
             });
         }); };
         this.getPortfolioFiles = function (userDetails, id, search, sort, order) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, fileRepo, collection, query, files, error_6;
+            var portfolioRepository, fileRepo, portfolio, query, files, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 4, , 5]);
-                        collectionRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
-                        fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
+                        portfolioRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
+                        fileRepo = db_config_1.AppDataSource.getRepository(portfolioFiles_1.default);
+                        return [4 /*yield*/, portfolioRepository.findOneBy({ id: id, createdBy: userDetails.id })];
                     case 1:
-                        collection = _a.sent();
-                        if (!collection) {
+                        portfolio = _a.sent();
+                        if (!portfolio) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Not Found", 404)];
                         }
                         return [4 /*yield*/, fileRepo.createQueryBuilder("files")
@@ -281,8 +285,8 @@ var PortfolioService = /** @class */ (function () {
                                 .addSelect("files.type", "type")
                                 .addSelect("files.createdAt", "createdAt")
                                 .addSelect("files.updatedAt", "updatedAt")
-                                .addSelect("files.collectionId", "collectionId")
-                                .where({ collection: id }).loadAllRelationIds()];
+                                .addSelect("files.portfolioId", "portfolioId")
+                                .where({ portfolio: id }).loadAllRelationIds()];
                     case 2:
                         query = _a.sent();
                         if (search) {
@@ -304,22 +308,24 @@ var PortfolioService = /** @class */ (function () {
             });
         }); };
         this.getPortfolioFilesName = function (userDetails, id) { return __awaiter(_this, void 0, void 0, function () {
-            var collectionRepository, fileRepo, collection, query, files, fileNamesArr, _i, files_3, filename, error_7;
+            var portfolioRepository, fileRepo, portfolio, query, files, fileNamesArr, _i, files_3, filename, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 4, , 5]);
-                        collectionRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
-                        fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })];
+                        portfolioRepository = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
+                        fileRepo = db_config_1.AppDataSource.getRepository(portfolioFiles_1.default);
+                        return [4 /*yield*/, portfolioRepository.findOneBy({ id: id, createdBy: {
+                                    id: userDetails.id
+                                } })];
                     case 1:
-                        collection = _a.sent();
-                        if (!collection) {
+                        portfolio = _a.sent();
+                        if (!portfolio) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Not Found", 404)];
                         }
                         return [4 /*yield*/, fileRepo.createQueryBuilder("files")
                                 .select("files.name", "name")
-                                .where({ collection: id }).loadAllRelationIds()];
+                                .where({ portfolio: id }).loadAllRelationIds()];
                     case 2:
                         query = _a.sent();
                         return [4 /*yield*/, query.getRawMany()];
@@ -340,16 +346,18 @@ var PortfolioService = /** @class */ (function () {
             });
         }); };
         this.changeCoverPhoto = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, collection, updatePortfolio, error_8;
+            var collectioRepo, portfolio, updatePortfolio, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
-                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
+                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: {
+                                    id: userDetails.id
+                                } })];
                     case 1:
-                        collection = _a.sent();
-                        if (!collection) {
+                        portfolio = _a.sent();
+                        if (!portfolio) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Not Found", 404)];
                         }
                         return [4 /*yield*/, collectioRepo.update(params.id, { coverPhoto: body.url })];
@@ -364,30 +372,32 @@ var PortfolioService = /** @class */ (function () {
             });
         }); };
         this.uploadFiles = function (params, body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var collectioRepo, fileRepo, collection, collectionFiles, fileNamesArr, files, filesUploadArr, compressedCollectoinPhoto, _i, files_4, file, existFile, compressedKey, reponse, agentSpace, error_9;
+            var collectioRepo, fileRepo, portfolio, portfolioFiles, fileNamesArr, files, filesUploadArr, compressedCollectoinPhoto, _i, files_4, file, existFile, compressedKey, reponse, agentSpace, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 14, , 15]);
                         collectioRepo = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
-                        fileRepo = db_config_1.AppDataSource.getRepository(Files_1.default);
-                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id })];
+                        fileRepo = db_config_1.AppDataSource.getRepository(portfolioFiles_1.default);
+                        return [4 /*yield*/, collectioRepo.findOneBy({ id: params.id, createdBy: {
+                                    id: userDetails.id
+                                } })];
                     case 1:
-                        collection = _a.sent();
-                        if (!collection) {
+                        portfolio = _a.sent();
+                        if (!portfolio) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Not Found", 404)];
                         }
-                        return [4 /*yield*/, this.getPortfolioFilesName(userDetails, collection.id)];
+                        return [4 /*yield*/, this.getPortfolioFilesName(userDetails, portfolio.id)];
                     case 2:
-                        collectionFiles = _a.sent();
-                        fileNamesArr = collectionFiles.result;
+                        portfolioFiles = _a.sent();
+                        fileNamesArr = portfolioFiles.result;
                         files = body.files;
                         filesUploadArr = [];
-                        if (!(collection.photos === 0)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.utils.compressImage(files[0].key, params.id)];
+                        if (!(portfolio.photos === 0)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.utils.compressPortfolioImage(files[0].key, params.id)];
                     case 3:
                         compressedCollectoinPhoto = _a.sent();
-                        collectioRepo.save(__assign(__assign({}, collection), { coverPhoto: constants_1.CDN_URL + compressedCollectoinPhoto.key }));
+                        collectioRepo.save(__assign(__assign({}, portfolio), { coverPhoto: constants_1.CDN_URL + compressedCollectoinPhoto.key }));
                         _a.label = 4;
                     case 4:
                         _i = 0, files_4 = files;
@@ -407,7 +417,7 @@ var PortfolioService = /** @class */ (function () {
                         if (fileNamesArr.includes(file.name)) {
                             throw new Error(constants_1.FILE_ALREADY_EXISTS);
                         }
-                        return [4 /*yield*/, this.utils.compressImage(file.key, params.id)];
+                        return [4 /*yield*/, this.utils.compressPortfolioImage(file.key, params.id)];
                     case 9:
                         compressedKey = _a.sent();
                         filesUploadArr.push(fileRepo.save({
@@ -422,7 +432,7 @@ var PortfolioService = /** @class */ (function () {
                             compressedImageSize: compressedKey.fileSize,
                             height: file.height,
                             width: file.width,
-                            collection: params.id
+                            portfolio: params.id
                         }));
                         _a.label = 10;
                     case 10:
@@ -437,6 +447,7 @@ var PortfolioService = /** @class */ (function () {
                         return [2 /*return*/, agentSpace];
                     case 14:
                         error_9 = _a.sent();
+                        console.log(error_9, "errror");
                         if (error_9.message === constants_1.FILE_ALREADY_EXISTS) {
                             throw responseBuilder_1.ResponseBuilder.fileExists(error_9, constants_1.FILE_ALREADY_EXISTS);
                         }

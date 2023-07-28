@@ -28,6 +28,26 @@ export class Utils {
 
  }
 
+ public async compressPortfolioImage(path:string,collectionId){
+    try {
+        const key = path;
+        const image = await this.s3.getS3FileBuffer(path);
+        const imageBuffer = image.Body;
+        const compressedImageBuffer = await sharp(imageBuffer)
+    .jpeg({ quality: 80 }) // Compress the image with desired quality (80% in this example)
+    .toBuffer();
+
+    const fileSizeInBytes = compressedImageBuffer.byteLength;
+    const fileSize = fileSizeInBytes / (1024 * 1024); 
+    console.log(fileSize , "fileSizeMB")
+        const result = await this.s3.putS3File(compressedImageBuffer,key);
+    return {key , fileSize};         
+    } catch (error) {
+        
+    }
+
+ }
+
  public async compressAllImages(){
     try {
         const fileRepo = AppDataSource.getRepository(FilesEntity);

@@ -1,15 +1,14 @@
 import { In } from "typeorm";
 import { AppDataSource } from "../../db/db.config";
 import Portfolios from "../../entities/Portfolio"
-import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
-import { UpdatePortfolioModel, PortfolioDesignModel } from "./portfolio.model";
 import { CDN_URL, FILE_ALREADY_EXISTS, FRONT_URL } from "../../config/constants";
 import { AgentService } from "../user/agent.service";
 import { uuid } from 'uuidv4';
 import { Utils } from "../../utils/utils";
 import { Tblagent } from "../../entities/Tblagent";
+import PortFolioFiles from "../../entities/portfolioFiles";
 
 export class PortfolioService {
     private s3 = new AWSS3();
@@ -18,14 +17,14 @@ export class PortfolioService {
     public createPortfolio = async (body, userDetails) => {
         try {
             const agentRepo = AppDataSource.getRepository(Tblagent);
-            const collectionRepository = AppDataSource.getRepository(Portfolios);
+            const portfolioRepository = AppDataSource.getRepository(Portfolios);
             const slug = uuid();
             const agent = await agentRepo.findOne({
                 where:{
                     id:userDetails.id
                 }
             });
-            const portfolio = await collectionRepository.findOne({
+            const portfolio = await portfolioRepository.findOne({
                 where:{
                     createdBy:agent.id
                 }
@@ -33,11 +32,11 @@ export class PortfolioService {
             if(portfolio){
                 return ResponseBuilder.badRequest("Portfolio Already Exists");
             }
-            const collection = await collectionRepository.save({
+            const newPortFolio = await portfolioRepository.save({
                 name: agent.firstname + agent.lastname,
                 createdBy: userDetails.id
             });
-            return ResponseBuilder.data(collection, "Portfolio created SuccessFully");
+            return ResponseBuilder.data(newPortFolio, "Portfolio created SuccessFully");
 
         } catch (error) {
             console.log(error)
@@ -50,23 +49,23 @@ export class PortfolioService {
     }
     public getPortfolios = async (userDetails, search, order, sort) => {
         try {
-            const collectionRepository = AppDataSource.getRepository(Portfolios);
-            const query = await collectionRepository.createQueryBuilder("collections")
-                .select("collections.name", "name")
-                .addSelect("collections.id", "id")
-                .addSelect("collections.coverPhoto", "coverPhoto")
-                .addSelect("collections.photos", "photos")
-                .addSelect("collections.videos", "videos")
-                .where("collections.createdBy = :agentId", { agentId: userDetails.id })
-                .loadRelationIdAndMap("agentId", "collections.createdBy")
+            const portfolioRepository = AppDataSource.getRepository(Portfolios);
+            const query = await portfolioRepository.createQueryBuilder("portfolios")
+                .select("portfolios.name", "name")
+                .addSelect("portfolios.id", "id")
+                .addSelect("portfolios.coverPhoto", "coverPhoto")
+                .addSelect("portfolios.photos", "photos")
+                .addSelect("portfolios.videos", "videos")
+                .where("portfolios.createdBy = :agentId", { agentId: userDetails.id })
+                .loadRelationIdAndMap("agentId", "portfolios.createdBy")
             if (search) {
-                query.andWhere('collections.name ILIKE :name', { name: `%${search}%` })
+                query.andWhere('portfolios.name ILIKE :name', { name: `%${search}%` })
             }
             if (sort && order) {
-                query.addOrderBy(`collections.${sort}`, order.toUpperCase())
+                query.addOrderBy(`portfolios.${sort}`, order.toUpperCase())
             }
-            const collections = await query.getRawMany();
-            return ResponseBuilder.data(collections);
+            const portfolios = await query.getRawMany();
+            return ResponseBuilder.data(portfolios);
 
         } catch (error) {
             throw ResponseBuilder.error(error)
@@ -79,26 +78,26 @@ export class PortfolioService {
 
     public getPortfolioByID = async (userDetails, id) => {
         try {
-            const collectionRepository = AppDataSource.getRepository(Portfolios);
-            // const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
-            const collection = await collectionRepository.createQueryBuilder("collections")
-                .select("collections.name", "name")
-                .addSelect("collections.id", "id")
-                .addSelect("collections.status", "status")
-                .addSelect("collections.coverPhoto", "coverPhoto")
-                .addSelect("collections.photos", "photos")
-                .addSelect("collections.videos", "videos")
-                .addSelect("collections.createdAt", "createdAt")
-                .addSelect("collections.updatedAt", "updatedAt")
-                .where("collections.createdBy = :agentId", { agentId: userDetails.id })
-                .andWhere("collections.id =:id", { id: Number(id) })
-                .loadRelationIdAndMap("agentId", "collections.createdBy")
-                .addGroupBy("collections.id")
+            const portfolioRepository = AppDataSource.getRepository(Portfolios);
+            // const portfolio = await portfolioRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            const portfolio = await portfolioRepository.createQueryBuilder("portfolios")
+                .select("portfolios.name", "name")
+                .addSelect("portfolios.id", "id")
+                .addSelect("portfolios.status", "status")
+                .addSelect("portfolios.coverPhoto", "coverPhoto")
+                .addSelect("portfolios.photos", "photos")
+                .addSelect("portfolios.videos", "videos")
+                .addSelect("portfolios.createdAt", "createdAt")
+                .addSelect("portfolios.updatedAt", "updatedAt")
+                .where("portfolios.createdBy = :agentId", { agentId: userDetails.id })
+                .andWhere("portfolios.id =:id", { id: Number(id) })
+                .loadRelationIdAndMap("agentId", "portfolios.createdBy")
+                .addGroupBy("portfolios.id")
                 .getRawOne()
-            if (!collection) {
+            if (!portfolio) {
                 return ResponseBuilder.badRequest("Portfolio Not Found", 404);
             }
-            return ResponseBuilder.data(collection);
+            return ResponseBuilder.data(portfolio);
 
         } catch (error) {
             throw ResponseBuilder.error(error)
@@ -111,19 +110,21 @@ export class PortfolioService {
 
     public deletePortfolio = async (userDetails, id) => {
         try {
-            const collectionRepository = AppDataSource.getRepository(Portfolios);
-            const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
-            if (!collection) {
+            const portfolioRepository = AppDataSource.getRepository(Portfolios);
+            const fileRepo = AppDataSource.getRepository(PortFolioFiles);
+            const portfolio = await portfolioRepository.findOneBy({ id: id, createdBy: {
+                id:userDetails.id
+            }});
+            if (!portfolio) {
                 return ResponseBuilder.badRequest("Portfolio Not Found", 404);
             }
             const files = await fileRepo.createQueryBuilder("files")
-                .where({ collection: id }).loadAllRelationIds().orderBy({ "files.createdAt": "ASC" }).getMany();
+                .where({ portfolio: id }).loadAllRelationIds().orderBy({ "files.createdAt": "ASC" }).getMany();
             for (const file of files) {
                 this.s3.deleteS3File(file.key);
 
             }
-            await collectionRepository.delete({ id: id });
+            await portfolioRepository.delete({ id: id });
             const agentSpace = await this.agentService.getRemaningBalance(userDetails);
             return agentSpace;
 
@@ -138,16 +139,18 @@ export class PortfolioService {
     }
     public deleteFiles = async (userDetails, id, ids) => {
         try {
-            const collectionRepository = AppDataSource.getRepository(Portfolios);
-            const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
-            if (!collection) {
+            const portfolioRepository = AppDataSource.getRepository(Portfolios);
+            const fileRepo = AppDataSource.getRepository(PortFolioFiles);
+            const portfolio = await portfolioRepository.findOneBy({ id: id, createdBy: {
+                id:userDetails.id
+            } });
+            if (!portfolio) {
                 return ResponseBuilder.badRequest("Portfolio Not Found", 404);
             }
             const idsArr: Number[] = ids;
             const queryOptions = {
                 where: {
-                    collection: {
+                    portfolio: {
                         id
                     },
                     id: In(idsArr)
@@ -173,10 +176,10 @@ export class PortfolioService {
     }
     public getPortfolioFiles = async (userDetails, id, search, sort, order) => {
         try {
-            const collectionRepository = AppDataSource.getRepository(Portfolios);
-            const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
-            if (!collection) {
+            const portfolioRepository = AppDataSource.getRepository(Portfolios);
+            const fileRepo = AppDataSource.getRepository(PortFolioFiles);
+            const portfolio = await portfolioRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            if (!portfolio) {
                 return ResponseBuilder.badRequest("Portfolio Not Found", 404);
             }
             const query = await fileRepo.createQueryBuilder("files")
@@ -188,8 +191,8 @@ export class PortfolioService {
                 .addSelect("files.type", "type")
                 .addSelect("files.createdAt", "createdAt")
                 .addSelect("files.updatedAt", "updatedAt")
-                .addSelect("files.collectionId", "collectionId")
-                .where({ collection: id }).loadAllRelationIds();
+                .addSelect("files.portfolioId", "portfolioId")
+                .where({ portfolio: id }).loadAllRelationIds();
 
             if (search) {
                 query.andWhere('files.name like :name', { name: `%${search}%` })
@@ -211,15 +214,17 @@ export class PortfolioService {
     }
     public getPortfolioFilesName = async (userDetails, id) => {
         try {
-            const collectionRepository = AppDataSource.getRepository(Portfolios);
-            const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
-            if (!collection) {
+            const portfolioRepository = AppDataSource.getRepository(Portfolios);
+            const fileRepo = AppDataSource.getRepository(PortFolioFiles);
+            const portfolio = await portfolioRepository.findOneBy({ id: id, createdBy: {
+                id:userDetails.id
+            } });
+            if (!portfolio) {
                 return ResponseBuilder.badRequest("Portfolio Not Found", 404);
             }
             const query = await fileRepo.createQueryBuilder("files")
                 .select("files.name", "name")
-                .where({ collection: id }).loadAllRelationIds();
+                .where({ portfolio: id }).loadAllRelationIds();
             const files = await query.getRawMany();
             const fileNamesArr = [];
             for (const filename of files) {
@@ -240,8 +245,10 @@ export class PortfolioService {
     public changeCoverPhoto = async (params, body, userDetails) => {
         try {
             const collectioRepo = AppDataSource.getRepository(Portfolios);
-            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
-            if (!collection) {
+            const portfolio = await collectioRepo.findOneBy({ id: params.id, createdBy: {
+                id:userDetails.id
+            } });
+            if (!portfolio) {
                 return ResponseBuilder.badRequest("Portfolio Not Found", 404);
             }
 
@@ -259,18 +266,20 @@ export class PortfolioService {
     public uploadFiles = async (params, body, userDetails) => {
         try {
             const collectioRepo = AppDataSource.getRepository(Portfolios);
-            const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
-            if (!collection) {
+            const fileRepo = AppDataSource.getRepository(PortFolioFiles);
+            const portfolio = await collectioRepo.findOneBy({ id: params.id, createdBy: {
+                id:userDetails.id
+            } });
+            if (!portfolio) {
                 return ResponseBuilder.badRequest("Portfolio Not Found", 404);
             }
-            const collectionFiles = await this.getPortfolioFilesName(userDetails, collection.id);
-            const fileNamesArr: string[] = collectionFiles.result;
+            const portfolioFiles = await this.getPortfolioFilesName(userDetails, portfolio.id);
+            const fileNamesArr: string[] = portfolioFiles.result;
             const files = body.files;
             const filesUploadArr = [];
-            if (collection.photos === 0) {
-                const compressedCollectoinPhoto = await this.utils.compressImage(files[0].key,params.id);
-                collectioRepo.save({ ...collection, coverPhoto: CDN_URL + compressedCollectoinPhoto.key })
+            if (portfolio.photos === 0) {
+                const compressedCollectoinPhoto = await this.utils.compressPortfolioImage(files[0].key,params.id);
+                collectioRepo.save({ ...portfolio, coverPhoto: CDN_URL + compressedCollectoinPhoto.key })
             }
             for (const file of files) {
 
@@ -282,7 +291,7 @@ export class PortfolioService {
                     throw new Error(FILE_ALREADY_EXISTS);
 
                 }
-                const compressedKey = await this.utils.compressImage(file.key,params.id);
+                const compressedKey = await this.utils.compressPortfolioImage(file.key,params.id);
                 filesUploadArr.push(fileRepo.save({
                     name: file.name,
                     url: file.url,
@@ -295,7 +304,7 @@ export class PortfolioService {
                     compressedImageSize:compressedKey.fileSize,
                     height: file.height,
                     width: file.width,
-                    collection: params.id
+                    portfolio: params.id
                 }));
             }
 
@@ -309,6 +318,7 @@ export class PortfolioService {
 
         }
         catch (error) {
+            console.log(error , "errror")
             if (error.message === FILE_ALREADY_EXISTS) {
                 throw ResponseBuilder.fileExists(error, FILE_ALREADY_EXISTS)
             }
