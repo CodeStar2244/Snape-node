@@ -143,7 +143,7 @@ export class StudioManagementService {
                 .addSelect("studioclient.imageUrl", "imageUrl")
                 .addSelect("studioclient.createdAt", "createdAt")
                 .where("studioclient.createdBy = :agentId", { agentId: user.id })
-                .loadRelationIdAndMap("agentId", "studioclient.createdBy")
+                .loadRelationIdAndMap("agentId", "studioclient.createdBy").getRawMany();
 
           return ResponseBuilder.data({ data: { specialityDetails: query } });
         } catch (error) {

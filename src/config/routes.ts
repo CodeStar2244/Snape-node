@@ -61,5 +61,5 @@ export const SPECIALITY_ROUTES = {
     CREATE_SPECIALITY: "/speciality",
     GET_SPECIALITY: "/speciality",
     EDIT_SPECIALITY: "/speciality/:id",
-    DELETE_SPECIALITY: "/speciality/:id"
+    DELETE_SPECIALITY: "/speciality"
 }

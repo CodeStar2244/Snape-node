@@ -136,7 +136,9 @@ export class CollectionService {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const designRepo = AppDataSource.getRepository(CollectionDesign);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id })
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: {
+                id:userDetails.id
+            } })
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
@@ -166,7 +168,9 @@ export class CollectionService {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: {
+                id:userDetails.id
+            } });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
@@ -193,7 +197,9 @@ export class CollectionService {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: {
+                id:userDetails.id
+            }});
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
@@ -228,7 +234,9 @@ export class CollectionService {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: {
+                id:userDetails.id
+            } });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
@@ -266,7 +274,9 @@ export class CollectionService {
         try {
             const collectionRepository = AppDataSource.getRepository(Collections);
             const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectionRepository.findOneBy({ id: id, createdBy: userDetails.id });
+            const collection = await collectionRepository.findOneBy({ id: id, createdBy: {
+                id:userDetails.id
+            } });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
@@ -293,7 +303,9 @@ export class CollectionService {
         try {
             const collectioRepo = AppDataSource.getRepository(Collections);
             const tagRepo = AppDataSource.getRepository(CollectionTags)
-            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
+            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: {
+                id:userDetails.id
+            } });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
@@ -332,7 +344,9 @@ export class CollectionService {
             const collectioRepo = AppDataSource.getRepository(Collections);
             const designRepo = AppDataSource.getRepository(CollectionDesign);
             const themerepo = AppDataSource.getRepository(CollectionThemes);
-            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
+            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: {
+                id:userDetails.id
+            } });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
@@ -365,7 +379,9 @@ export class CollectionService {
         try {
             const collectioRepo = AppDataSource.getRepository(Collections);
             const tagRepo = AppDataSource.getRepository(CollectionTags)
-            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
+            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: {
+                id:userDetails.id
+            } });
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }
@@ -385,7 +401,9 @@ export class CollectionService {
         try {
             const collectioRepo = AppDataSource.getRepository(Collections);
             const fileRepo = AppDataSource.getRepository(FilesEntity);
-            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: userDetails.id });
+            const collection = await collectioRepo.findOneBy({ id: params.id, createdBy: {
+                id:userDetails.id
+            }});
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found", 404);
             }

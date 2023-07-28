@@ -91,8 +91,8 @@ var StudioManagementService = /** @class */ (function () {
                         _a.trys.push([0, 3, , 4]);
                         studioClientRepository = db_config_1.AppDataSource.getRepository(studioClient_1.default);
                         return [4 /*yield*/, studioClientRepository.createQueryBuilder("studioclient")
-                                .select("studioclient.name", "name")
                                 .select("studioclient.id", "id")
+                                .addSelect("studioclient.name", "name")
                                 .addSelect("studioclient.email", "email")
                                 .addSelect("studioclient.phone", "phone")
                                 .addSelect("studioclient.profileUrl", "profileUrl")
@@ -240,7 +240,7 @@ var StudioManagementService = /** @class */ (function () {
                                 .addSelect("studioclient.imageUrl", "imageUrl")
                                 .addSelect("studioclient.createdAt", "createdAt")
                                 .where("studioclient.createdBy = :agentId", { agentId: user.id })
-                                .loadRelationIdAndMap("agentId", "studioclient.createdBy")];
+                                .loadRelationIdAndMap("agentId", "studioclient.createdBy").getRawMany()];
                     case 1:
                         query = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { specialityDetails: query } })];
