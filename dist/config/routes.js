@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PORTFOLIO_ROUTES = exports.SPECIALITY_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.SPECIALITY_ROUTES = exports.PORTFOLIO_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login",
     GET_REMANING_SPACE: "/get-remaining-space",
@@ -56,12 +56,6 @@ exports.STUDIO_MANAGEMENT_ROUTES = {
     UPDATE_CLIENT: "/client/:id",
     DELETE_CLIENT: "/client/:id"
 };
-exports.SPECIALITY_ROUTES = {
-    CREATE_SPECIALITY: "/speciality",
-    GET_SPECIALITY: "/speciality",
-    EDIT_SPECIALITY: "/speciality/:id",
-    DELETE_SPECIALITY: "/speciality"
-};
 exports.PORTFOLIO_ROUTES = {
     CREATE_COLLECTION: "/",
     GET_COLLECTIONS: "/",
@@ -71,6 +65,12 @@ exports.PORTFOLIO_ROUTES = {
     GET_FILES: "/files/:id",
     GET_FILES_NAME: "/files-name/:id",
     DELETE_FILES: "/files/:id",
-    CHANGE_COVERPHOTO: "/coverphoto/:id",
+    CHANGE_COVERPHOTO: "/coverphoto/:id"
+};
+exports.SPECIALITY_ROUTES = {
+    CREATE_SPECIALITY: "/speciality",
+    GET_SPECIALITY: "/speciality",
+    EDIT_SPECIALITY: "/speciality/:id",
+    DELETE_SPECIALITY: "/speciality/:id"
 };
 //# sourceMappingURL=routes.js.map

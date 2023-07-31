@@ -57,6 +57,19 @@ export const STUDIO_MANAGEMENT_ROUTES = {
     DELETE_CLIENT: "/client/:id"
 }
 
+
+export const PORTFOLIO_ROUTES = {
+    CREATE_COLLECTION: "/",
+    GET_COLLECTIONS: "/",
+    GET_COLLECTION_BY_ID: "/:id",
+    UPLOAD_FILES: "/:id",
+    DELETE_COLLECTION: "/:id",
+    GET_FILES: "/files/:id",
+    GET_FILES_NAME: "/files-name/:id",
+    DELETE_FILES: "/files/:id",
+    CHANGE_COVERPHOTO: "/coverphoto/:id"
+}
+
 export const SPECIALITY_ROUTES = {
     CREATE_SPECIALITY: "/speciality",
     GET_SPECIALITY: "/speciality",
