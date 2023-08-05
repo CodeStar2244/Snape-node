@@ -69,7 +69,6 @@ var Utils = /** @class */ (function () {
                         compressedImageBuffer = _a.sent();
                         fileSizeInBytes = compressedImageBuffer.byteLength;
                         fileSize = fileSizeInBytes / (1024 * 1024);
-                        console.log(fileSize, "fileSizeMB");
                         return [4 /*yield*/, this.s3.putS3File(compressedImageBuffer, key)];
                     case 3:
                         result = _a.sent();
@@ -101,7 +100,6 @@ var Utils = /** @class */ (function () {
                         compressedImageBuffer = _a.sent();
                         fileSizeInBytes = compressedImageBuffer.byteLength;
                         fileSize = fileSizeInBytes / (1024 * 1024);
-                        console.log(fileSize, "fileSizeMB");
                         return [4 /*yield*/, this.s3.putS3File(compressedImageBuffer, key)];
                     case 3:
                         result = _a.sent();
@@ -135,16 +133,12 @@ var Utils = /** @class */ (function () {
                     case 2:
                         if (!(_i < files_1.length)) return [3 /*break*/, 6];
                         file = files_1[_i];
-                        console.log("Compressing..", file.id);
                         return [4 /*yield*/, this.compressImage(file.key, file.collectionId)];
                     case 3:
                         compressedKey = _a.sent();
-                        console.log(compressedKey);
-                        console.log("Converted from ".concat(file.size, " to ").concat(compressedKey.fileSize));
                         return [4 /*yield*/, fileRepo.update({ id: file.id }, { compressedKey: compressedKey.key, compressedImageSize: compressedKey.fileSize, compressedCdnUrl: constants_1.CDN_URL + compressedKey.key })];
                     case 4:
                         _a.sent();
-                        console.log("Updated File", file.id);
                         _a.label = 5;
                     case 5:
                         _i++;
@@ -176,17 +170,14 @@ var Utils = /** @class */ (function () {
                                 .addSelect("files.collectionId", "collectionId").getRawMany()];
                     case 1:
                         files = _a.sent();
-                        console.log(files);
                         _i = 0, files_2 = files;
                         _a.label = 2;
                     case 2:
                         if (!(_i < files_2.length)) return [3 /*break*/, 5];
                         file = files_2[_i];
-                        console.log("updating", file.id);
                         return [4 /*yield*/, fileRepo.update({ id: file.id }, { compressedCdnUrl: constants_1.CDN_URL + file.compressedKey })];
                     case 3:
                         _a.sent();
-                        console.log("Updated File", file.id);
                         _a.label = 4;
                     case 4:
                         _i++;

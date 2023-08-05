@@ -19,7 +19,6 @@ export class Utils {
 
     const fileSizeInBytes = compressedImageBuffer.byteLength;
     const fileSize = fileSizeInBytes / (1024 * 1024); 
-    console.log(fileSize , "fileSizeMB")
         const result = await this.s3.putS3File(compressedImageBuffer,key);
     return {key , fileSize};         
     } catch (error) {
@@ -39,7 +38,6 @@ export class Utils {
 
     const fileSizeInBytes = compressedImageBuffer.byteLength;
     const fileSize = fileSizeInBytes / (1024 * 1024); 
-    console.log(fileSize , "fileSizeMB")
         const result = await this.s3.putS3File(compressedImageBuffer,key);
     return {key , fileSize};         
     } catch (error) {
@@ -58,12 +56,8 @@ export class Utils {
         .addSelect("files.collectionId","collectionId")
         .where("files.compressedKey IS NULL").getRawMany();
         for(const file of files){
-            console.log("Compressing.." , file.id)
             const compressedKey = await this.compressImage(file.key , file.collectionId);
-            console.log(compressedKey);
-            console.log(`Converted from ${file.size} to ${compressedKey.fileSize}`)
            await fileRepo.update({id:file.id},{compressedKey:compressedKey.key , compressedImageSize:compressedKey.fileSize ,compressedCdnUrl : CDN_URL + compressedKey.key})
-            console.log("Updated File" , file.id)
 
 
 
@@ -84,11 +78,8 @@ export class Utils {
         .addSelect("files.compressedCdnUrl","compressedCdnUrl")
         .addSelect("files.size","size")
         .addSelect("files.collectionId","collectionId").getRawMany();
-        console.log(files)
         for(const file of files){
-            console.log("updating" , file.id)
             await fileRepo.update({id:file.id},{compressedCdnUrl : CDN_URL + file.compressedKey})
-            console.log("Updated File" , file.id)
         }
         
     } catch (error) {

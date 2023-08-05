@@ -49,9 +49,7 @@ exports.PortfolioGetModel = PortfolioGetModel;
 var UpdatePortfolioModel = /** @class */ (function (_super) {
     __extends(UpdatePortfolioModel, _super);
     function UpdatePortfolioModel(body, params) {
-        var _this = this;
-        console.log(body.eventDate, "dasta");
-        _this = _super.call(this) || this;
+        var _this = _super.call(this) || this;
         _this.name = body.name;
         _this.eventDate = body.eventDate;
         _this.url = body.url;

@@ -41,7 +41,6 @@ export class ClientService {
             if (!collection) {
                 return ResponseBuilder.badRequest("Collection Not Found or collection not published", 404);
             }
-            console.log(collection , "fa")
             const filesCollection = await filesRepository.createQueryBuilder("files")
             .select("files.compressedCdnUrl","url")
             .addSelect("files.name","name")

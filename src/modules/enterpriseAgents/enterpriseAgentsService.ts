@@ -9,6 +9,8 @@ import EnterpriseAgentFavourite from "../../entities/enterpriseAgentFavourite";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { AgentFavourite, AgentGetList, BookAgent } from "./enterpriseAgentsModel";
 import { DeepPartial } from "typeorm";
+import PortFolios, { CollectionStatus } from "../../entities/Portfolio";
+import PortFolioFiles from "../../entities/portfolioFiles";
 export class EnterpriseAgentsService {
     public async getAgents(query:AgentGetList, userDetails) {
         try {
@@ -213,6 +215,42 @@ export class EnterpriseAgentsService {
             agent
         }
         return ResponseBuilder.data(dataToSend)}
+        catch(error){
+            console.log(error , "Err")
+
+        }
+    }
+    public async getAgentPortfolio(params, userDetails) {
+        try{
+        const { agentId } = params;
+        const agentRepo = AppDataSource.getRepository(Tblagent);
+        const agentPortFolioRepo = AppDataSource.getRepository(PortFolios);
+        const portFolioFilesRepo = AppDataSource.getRepository(PortFolioFiles)
+        const agent = await agentRepo.findOne({where:{id:agentId}});
+        if(!agent){
+            return ResponseBuilder.badRequest('Agent not exits');
+        }
+        const agentPortfolio = await agentPortFolioRepo.findOne({
+            where:{
+                createdBy:{id:agent.id},
+                // status:CollectionStatus.HIDDEN
+
+            }
+        });
+        const portFolioFiles = await portFolioFilesRepo.find(({
+            where:{
+                portfolio:{id:agentPortfolio.id}
+            },
+            select:{
+                compressedCdnUrl:true,
+                width:true,
+                height:true,
+                id:true,
+                name:true,
+                type:true
+            }
+        }));        
+        return ResponseBuilder.data({portFolioFiles})}
         catch(error){
             console.log(error , "Err")
 

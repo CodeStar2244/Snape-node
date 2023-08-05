@@ -51,7 +51,6 @@ export class ClientController{
     public downloadPinCheck = async (req,res:Response)=>{
         try {
             const result = await this.clientService.downloadPinCheck(req.user,req.params.id,req.body,res);
-            console.log(result) 
             if(result.code === 200){
                 return res.status(result.code).json(result.result);
 

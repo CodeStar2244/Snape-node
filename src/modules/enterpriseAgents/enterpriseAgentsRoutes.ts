@@ -12,6 +12,7 @@ router.get(AGENT_SERVICE.LIST_AGENTS,v.validate(AgentGetList),enterpriseAgentsCo
 router.get(AGENT_SERVICE.LIST_AGENTS_LOCATIONS,v.validate(AgentGetList),enterpriseAgentsController.getAgentLocations);
 router.get(AGENT_SERVICE.GET_AGENT_DETAILS ,enterpriseAgentsController.getAgentDetails);
 router.get(AGENT_SERVICE.GET_AGENT_CATEGORIES ,enterpriseAgentsController.getAgentCategories);
+router.get(AGENT_SERVICE.GET_AGENT_PORTFOLIO ,enterpriseAgentsController.getAgentPortfolio);
 router.get(AGENT_SERVICE.GET_AGENT_REVIEWS ,enterpriseAgentsController.getAgentReviews);
 router.get(AGENT_SERVICE.FAVOURITE ,v.validate(AgentFavourite),enterpriseAgentsController.addRemoveFavourite);
 router.get(AGENT_SERVICE.LIST_FAVOURITES ,enterpriseAgentsController.getFavouriteAgentList);

@@ -20,14 +20,12 @@ export class AgentService {
             const agentRepo = AppDataSource.getRepository(Tblagent);
             const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
 
-            console.log("============");
 
             const agent = await agentRepo.findOne({
                 where: {
                     email: email
                 }
             });
-            console.log(agent, '----agent------');
 
             if (!agent) {
                 throw ResponseBuilder.badRequest('Invalid credentials')

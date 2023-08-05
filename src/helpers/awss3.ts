@@ -82,7 +82,6 @@ export class AWSS3 {
                 Key: key
               };
               const result = await this.s3.putObject(params).promise();
-              console.log('File uploaded successfully to S3!');
               return result;
         } catch (error) {
             throw error;

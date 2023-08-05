@@ -64,6 +64,16 @@ export class EnterpriseAgentsController{
             return res.status(error.code).json(error);        
         }
     }
+    public getAgentPortfolio = async (req:any,res:Response)=>{
+        try {
+            const userDetails = req.user;
+            const result = await this.enterpriseAgentsService.getAgentPortfolio(req.params,userDetails);
+            return res.status(result.code).json(result);
+            
+        } catch (error) {
+            return res.status(error.code).json(error);        
+        }
+    }
     public getAgentReviews = async (req:any,res:Response)=>{
         try {
             const userDetails = req.user;

@@ -12,7 +12,6 @@ export class Middleware {
 
     public authenticateUser = async (req, res, next: () => void) => {
         try {
-            console.log("hii from authuse")
             const unAuthPayload = {
                 error: {
                     message: req.i18n.t("ERR_USER_NOT_VERIFIED"),
@@ -24,10 +23,8 @@ export class Middleware {
                 const token = req.headers.authorization;
                 const tokenInfo = Jwt.decodeAuthToken(token).payload;
                 const agentRepo = AppDataSource.getRepository(Tblagent);
-                console.log(agentRepo, '--------agentRepo-------');
 
                 const agent = await agentRepo.findOneBy({ id: tokenInfo.agentId });
-                console.log(agent, '------agent-------');
 
                 if (!agent) {
                     unAuthPayload.error.message = req.i18n.t("USER_NOT_EXIST");

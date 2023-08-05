@@ -13,7 +13,6 @@ export class StudioManagementService {
                 params={...params,profileUrl:CDN_URL+body.profileUrl}
             }
             const studioClient = await studioClientRepository.save(params)
-            console.log(userDetails, '----userDetails-----');
 
             return ResponseBuilder.data(studioClient, "Studio Client created SuccessFully");
 

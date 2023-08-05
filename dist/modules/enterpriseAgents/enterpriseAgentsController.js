@@ -151,14 +151,14 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getAgentReviews = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.getAgentPortfolio = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var userDetails, result, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentReviews(req.params, userDetails)];
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentPortfolio(req.params, userDetails)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -169,8 +169,26 @@ var EnterpriseAgentsController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getAgentReviews = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_8;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.enterpriseAgentsService.getAgentReviews(req.params, userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_8 = _a.sent();
+                        return [2 /*return*/, res.status(error_8.code).json(error_8)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.addRemoveFavourite = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, agentId, queryParams, result, error_8;
+            var userDetails, agentId, queryParams, result, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -183,9 +201,9 @@ var EnterpriseAgentsController = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_8 = _a.sent();
-                        console.log("errror", error_8);
-                        return [2 /*return*/, res.status(error_8.code).json(error_8)];
+                        error_9 = _a.sent();
+                        console.log("errror", error_9);
+                        return [2 /*return*/, res.status(error_9.code).json(error_9)];
                     case 3: return [2 /*return*/];
                 }
             });

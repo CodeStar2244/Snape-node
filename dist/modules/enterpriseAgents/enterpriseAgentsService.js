@@ -50,6 +50,8 @@ var enterPriseClient_1 = require("../../entities/enterPriseClient");
 var enterpriseAgentFavourite_1 = __importDefault(require("../../entities/enterpriseAgentFavourite"));
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var enterpriseAgentsModel_1 = require("./enterpriseAgentsModel");
+var Portfolio_1 = __importDefault(require("../../entities/Portfolio"));
+var portfolioFiles_1 = __importDefault(require("../../entities/portfolioFiles"));
 var EnterpriseAgentsService = /** @class */ (function () {
     function EnterpriseAgentsService() {
     }
@@ -326,9 +328,59 @@ var EnterpriseAgentsService = /** @class */ (function () {
             });
         });
     };
+    EnterpriseAgentsService.prototype.getAgentPortfolio = function (params, userDetails) {
+        return __awaiter(this, void 0, void 0, function () {
+            var agentId, agentRepo, agentPortFolioRepo, portFolioFilesRepo, agent, agentPortfolio, portFolioFiles, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        agentId = params.agentId;
+                        agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        agentPortFolioRepo = db_config_1.AppDataSource.getRepository(Portfolio_1.default);
+                        portFolioFilesRepo = db_config_1.AppDataSource.getRepository(portfolioFiles_1.default);
+                        return [4 /*yield*/, agentRepo.findOne({ where: { id: agentId } })];
+                    case 1:
+                        agent = _a.sent();
+                        if (!agent) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest('Agent not exits')];
+                        }
+                        return [4 /*yield*/, agentPortFolioRepo.findOne({
+                                where: {
+                                    createdBy: { id: agent.id },
+                                    // status:CollectionStatus.HIDDEN
+                                }
+                            })];
+                    case 2:
+                        agentPortfolio = _a.sent();
+                        return [4 /*yield*/, portFolioFilesRepo.find(({
+                                where: {
+                                    portfolio: { id: agentPortfolio.id }
+                                },
+                                select: {
+                                    compressedCdnUrl: true,
+                                    width: true,
+                                    height: true,
+                                    id: true,
+                                    name: true,
+                                    type: true
+                                }
+                            }))];
+                    case 3:
+                        portFolioFiles = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ portFolioFiles: portFolioFiles })];
+                    case 4:
+                        error_6 = _a.sent();
+                        console.log(error_6, "Err");
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
     EnterpriseAgentsService.prototype.getAgentReviews = function (params, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentId, bookingRepo, agentRepo, agent, bookings, error_6;
+            var agentId, bookingRepo, agentRepo, agent, bookings, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -359,8 +411,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         bookings = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ bookings: bookings })];
                     case 3:
-                        error_6 = _a.sent();
-                        console.log(error_6, "Err");
+                        error_7 = _a.sent();
+                        console.log(error_7, "Err");
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -369,7 +421,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.addRemoveFavourite = function (params, userDetails, agentId) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentRepo, enterpriseRepo, enterpriseAgentFavouriteRepo, agent, enterpriseClient, enterpriseAgentFavourite, enterpriseAgentFavouriteEntry, error_7;
+            var agentRepo, enterpriseRepo, enterpriseAgentFavouriteRepo, agent, enterpriseClient, enterpriseAgentFavourite, enterpriseAgentFavouriteEntry, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -416,8 +468,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         }
                         return [3 /*break*/, 5];
                     case 4:
-                        error_7 = _a.sent();
-                        console.log(error_7, "Err");
+                        error_8 = _a.sent();
+                        console.log(error_8, "Err");
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

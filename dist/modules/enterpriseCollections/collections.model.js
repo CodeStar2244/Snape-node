@@ -70,9 +70,7 @@ exports.CollectionGetModel = CollectionGetModel;
 var UpdateCollectionModel = /** @class */ (function (_super) {
     __extends(UpdateCollectionModel, _super);
     function UpdateCollectionModel(body, params) {
-        var _this = this;
-        console.log(body.eventDate, "dasta");
-        _this = _super.call(this) || this;
+        var _this = _super.call(this) || this;
         _this.name = body.name;
         _this.eventDate = body.eventDate;
         _this.url = body.url;

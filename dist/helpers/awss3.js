@@ -142,7 +142,6 @@ var AWSS3 = /** @class */ (function () {
                         return [4 /*yield*/, this.s3.putObject(params).promise()];
                     case 1:
                         result = _a.sent();
-                        console.log('File uploaded successfully to S3!');
                         return [2 /*return*/, result];
                     case 2:
                         error_3 = _a.sent();

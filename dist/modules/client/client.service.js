@@ -125,7 +125,6 @@ var ClientService = /** @class */ (function () {
                             if (!collection) {
                                 return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found or collection not published", 404)];
                             }
-                            console.log(collection, "fa");
                             return [4 /*yield*/, filesRepository.createQueryBuilder("files")
                                     .select("files.compressedCdnUrl", "url")
                                     .addSelect("files.name", "name")

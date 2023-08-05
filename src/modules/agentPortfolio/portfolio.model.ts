@@ -70,7 +70,6 @@ export class UpdatePortfolioModel extends Model {
     public status: CollectionStatus
 
     constructor(body: any, params?: any) {
-        console.log(body.eventDate, "dasta")
         super();
         this.name = body.name
         this.eventDate = body.eventDate

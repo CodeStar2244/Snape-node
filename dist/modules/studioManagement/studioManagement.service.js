@@ -73,7 +73,6 @@ var StudioManagementService = /** @class */ (function () {
                         return [4 /*yield*/, studioClientRepository.save(params)];
                     case 1:
                         studioClient = _a.sent();
-                        console.log(userDetails, '----userDetails-----');
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(studioClient, "Studio Client created SuccessFully")];
                     case 2:
                         error_1 = _a.sent();
