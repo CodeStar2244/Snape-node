@@ -206,7 +206,7 @@ export class EnterpriseAgentsService {
         const agentQuery = agentCategoriesRepo.createQueryBuilder("mediamapping")
             .leftJoin("tblmediacategories","categories","categories.id = mediamapping.mediacategoryid")
             .leftJoin("tblimages","images","categories.id = images.entityid AND entitytype = 'mediacategory'")
-            .select("mediamapping.agentId", "id")
+            .select("mediamapping.mediacategoryid", "id")
             .addSelect("images.imagepath","image")
             .addSelect("categories.title")
             .where("mediamapping.agentId = :agentId", { agentId });
