@@ -112,4 +112,12 @@ export class EnterpriseBooking {
         default: () => "''",
     })
     medialink: string | null;
+
+    @Column("character varying", {
+        name: "mediacategories",
+        nullable: true,
+        length: 500,
+        default: () => "''",
+    })
+    mediacategories: string | null;
 }

@@ -136,7 +136,8 @@ export class EnterpriseAgentsService {
                 hours:body.hours,
                 latitude:body.latitude,
                 speciality:body.speciality,
-                longitude:body.longitude
+                longitude:body.longitude,
+                mediacategories:JSON.stringify(body.categories)
             });
             const created = await enterpriseBookingRepo.save(enterpriseBooking);    
             return ResponseBuilder.data(created);

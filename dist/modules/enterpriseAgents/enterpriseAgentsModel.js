@@ -143,6 +143,7 @@ var BookAgent = /** @class */ (function (_super) {
         _this.longitude = body.longitude;
         _this.speciality = body.speciality;
         _this.hours = body.hours;
+        _this.categories = body.categories;
         return _this;
     }
     __decorate([
@@ -165,6 +166,10 @@ var BookAgent = /** @class */ (function (_super) {
         (0, class_validator_1.IsOptional)(),
         __metadata("design:type", String)
     ], BookAgent.prototype, "address2", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", Array)
+    ], BookAgent.prototype, "categories", void 0);
     __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         __metadata("design:type", String)

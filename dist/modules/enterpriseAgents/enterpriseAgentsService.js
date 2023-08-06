@@ -212,7 +212,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                             hours: body.hours,
                             latitude: body.latitude,
                             speciality: body.speciality,
-                            longitude: body.longitude
+                            longitude: body.longitude,
+                            mediacategories: JSON.stringify(body.categories)
                         });
                         return [4 /*yield*/, enterpriseBookingRepo.save(enterpriseBooking)];
                     case 3:

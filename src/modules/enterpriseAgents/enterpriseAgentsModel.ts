@@ -119,6 +119,9 @@ export class BookAgent extends Model {
     @IsOptional()
     address2:string;
 
+    @IsOptional()
+    categories:number[];
+
     @IsNotEmpty()
     latitude:string;
 
@@ -142,6 +145,7 @@ export class BookAgent extends Model {
         this.longitude=body.longitude;
         this.speciality=body.speciality;
         this.hours=  body.hours;
+        this.categories = body.categories;
 
 
     }

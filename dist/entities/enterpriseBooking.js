@@ -142,6 +142,15 @@ var EnterpriseBooking = /** @class */ (function () {
         }),
         __metadata("design:type", String)
     ], EnterpriseBooking.prototype, "medialink", void 0);
+    __decorate([
+        (0, typeorm_1.Column)("character varying", {
+            name: "mediacategories",
+            nullable: true,
+            length: 500,
+            default: function () { return "''"; },
+        }),
+        __metadata("design:type", String)
+    ], EnterpriseBooking.prototype, "mediacategories", void 0);
     EnterpriseBooking = __decorate([
         (0, typeorm_1.Entity)("enterpriseBooking", { schema: "public" })
     ], EnterpriseBooking);
