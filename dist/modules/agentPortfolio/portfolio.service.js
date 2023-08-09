@@ -86,7 +86,9 @@ var PortfolioService = /** @class */ (function () {
                         agent = _a.sent();
                         return [4 /*yield*/, portfolioRepository.findOne({
                                 where: {
-                                    createdBy: agent.id
+                                    createdBy: {
+                                        id: agent.id
+                                    }
                                 }
                             })];
                     case 2:

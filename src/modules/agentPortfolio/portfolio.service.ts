@@ -26,7 +26,9 @@ export class PortfolioService {
             });
             const portfolio = await portfolioRepository.findOne({
                 where:{
-                    createdBy:agent.id
+                    createdBy:{
+                        id:agent.id
+                    }
                 }
             });
             if(portfolio){
