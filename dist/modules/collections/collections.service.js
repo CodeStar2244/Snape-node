@@ -449,7 +449,7 @@ var CollectionService = /** @class */ (function () {
                         _i++;
                         return [3 /*break*/, 2];
                     case 6:
-                        donwloadPinNew = downloadPin.length === 0 ? null : downloadPin;
+                        donwloadPinNew = (downloadPin === null || downloadPin === void 0 ? void 0 : downloadPin.length) === 0 ? null : downloadPin;
                         updateObject = {
                             name: name_1,
                             url: url,

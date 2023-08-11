@@ -319,7 +319,7 @@ export class CollectionService {
                 collectionTagsArr.push(newTag);
 
             }
-            const donwloadPinNew = downloadPin.length === 0 ? null : downloadPin;
+            const donwloadPinNew = downloadPin?.length === 0 ? null : downloadPin;
             const updateObject = {
                 name,
                 url, eventDate, download, downloadPin:donwloadPinNew, status, password, socialSharing, coverPhoto, slug
