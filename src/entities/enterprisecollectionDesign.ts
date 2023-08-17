@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { CollectionThemes } from "./CollectionThemes";
+import { CollectionThemes } from "./collectionThemes";
 import EnterpriseCollections from "./enterpriseCollections";
 
 export enum GridStyleEnum {

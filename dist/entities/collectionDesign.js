@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CollectionDesign = exports.GridSpacingEnum = exports.GridStyleEnum = void 0;
 var typeorm_1 = require("typeorm");
 var Collection_1 = __importDefault(require("./Collection"));
-var CollectionThemes_1 = require("./CollectionThemes");
+var collectionThemes_1 = require("./collectionThemes");
 var GridStyleEnum;
 (function (GridStyleEnum) {
     GridStyleEnum["VERTICAL"] = "column";
@@ -38,8 +38,8 @@ var CollectionDesign = /** @class */ (function () {
         __metadata("design:type", String)
     ], CollectionDesign.prototype, "typography", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return CollectionThemes_1.CollectionThemes; }, function (theme) { return theme.id; }, { nullable: true }),
-        __metadata("design:type", CollectionThemes_1.CollectionThemes)
+        (0, typeorm_1.ManyToOne)(function () { return collectionThemes_1.CollectionThemes; }, function (theme) { return theme.id; }, { nullable: true }),
+        __metadata("design:type", collectionThemes_1.CollectionThemes)
     ], CollectionDesign.prototype, "theme", void 0);
     __decorate([
         (0, typeorm_1.Column)({ type: "enum",

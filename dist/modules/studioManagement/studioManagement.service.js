@@ -156,7 +156,7 @@ var StudioManagementService = /** @class */ (function () {
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, db_config_1.AppDataSource
-                                .getRepository(studioSpeciality_1.StudioSpeciality)
+                                .getRepository(studioClient_1.default)
                                 .createQueryBuilder("faq")
                                 .where("faq.id = :id", { id: params.id })
                                 .getOne()];

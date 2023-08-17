@@ -79,7 +79,7 @@ export class StudioManagementService {
           .execute();
   
           const specialityRepository = await AppDataSource
-          .getRepository(StudioSpeciality)
+          .getRepository(StudioClient)
           .createQueryBuilder("faq")
           .where("faq.id = :id", { id: params.id })
           .getOne();

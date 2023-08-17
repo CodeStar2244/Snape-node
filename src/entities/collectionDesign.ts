@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Collections  from "./Collection";
-import { CollectionThemes } from "./CollectionThemes";
+import { CollectionThemes } from "./collectionThemes";
 
 export enum GridStyleEnum {
     VERTICAL="column",
