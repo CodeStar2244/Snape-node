@@ -223,6 +223,44 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getTemplates = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, type, result, error_10;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        type = req.query.type;
+                        return [4 /*yield*/, this.clientService.getTemplates(userDetails, type)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_10 = _a.sent();
+                        return [2 /*return*/, res.status(error_10.code).json(error_10)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.createTemplate = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, params, result, error_11;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        params = req.body;
+                        return [4 /*yield*/, this.clientService.createTemplates(userDetails, params)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_11 = _a.sent();
+                        return [2 /*return*/, res.status(error_11.code).json(error_11)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return StudioManagementController;
 }());

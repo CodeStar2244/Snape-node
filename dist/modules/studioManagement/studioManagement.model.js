@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.UpdateStudioClientModel = exports.CreateStudioClientModel = void 0;
+exports.CreateTemplate = exports.GetTemplates = exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.UpdateStudioClientModel = exports.CreateStudioClientModel = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var CreateStudioClientModel = /** @class */ (function (_super) {
@@ -157,4 +157,46 @@ var UpdateSpeciality = /** @class */ (function (_super) {
     return UpdateSpeciality;
 }(model_1.Model));
 exports.UpdateSpeciality = UpdateSpeciality;
+var GetTemplates = /** @class */ (function (_super) {
+    __extends(GetTemplates, _super);
+    function GetTemplates(body, query) {
+        var _this = _super.call(this) || this;
+        var type = query.type;
+        _this.type = type === null || type === void 0 ? void 0 : type.trim();
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsIn)(['Photography', 'Videography']),
+        __metadata("design:type", String)
+    ], GetTemplates.prototype, "type", void 0);
+    return GetTemplates;
+}(model_1.Model));
+exports.GetTemplates = GetTemplates;
+var CreateTemplate = /** @class */ (function (_super) {
+    __extends(CreateTemplate, _super);
+    function CreateTemplate(body) {
+        var _this = _super.call(this) || this;
+        var type = body.type, description = body.description, fields = body.fields;
+        _this.type = type === null || type === void 0 ? void 0 : type.trim();
+        _this.description = description === null || description === void 0 ? void 0 : description.trim();
+        _this.fields = fields;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsIn)(['Photography', 'Videography']),
+        __metadata("design:type", String)
+    ], CreateTemplate.prototype, "type", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateTemplate.prototype, "description", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", Array)
+    ], CreateTemplate.prototype, "fields", void 0);
+    return CreateTemplate;
+}(model_1.Model));
+exports.CreateTemplate = CreateTemplate;
 //# sourceMappingURL=studioManagement.model.js.map

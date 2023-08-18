@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength,IsOptional } from "class-validator";
+import { IsNotEmpty, IsString, MinLength, IsOptional, IsIn } from "class-validator";
 import { Model } from "../../helpers/model";
 
 
@@ -111,6 +111,48 @@ export class UpdateSpeciality extends Model {
         this.name = name?.trim();
         this.imageUrl = imageUrl?.trim();
     }
+}
+
+export class GetTemplates extends Model {
+
+    @IsNotEmpty()
+    @IsIn(['Photography', 'Videography'])
+    type: string
+
+    constructor(body: any, query: any) {
+        super();
+        const {
+            type
+        } = query;
+        this.type = type?.trim();
+
+    }
+
+}
+
+export class CreateTemplate extends Model {
+
+    @IsNotEmpty()
+    @IsIn(['Photography', 'Videography'])
+    type: string
+
+    @IsNotEmpty()
+    description: string
+
+    @IsOptional()
+    fields: any[]
+
+    constructor(body: any) {
+        super();
+        const {
+            type, description, fields
+        } = body;
+        this.type = type?.trim();
+        this.description = description?.trim();
+        this.fields = fields;
+
+    }
+
 }
 
 

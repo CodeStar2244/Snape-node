@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { STUDIO_MANAGEMENT_ROUTES,SPECIALITY_ROUTES } from "../../config/routes";
+import { STUDIO_MANAGEMENT_ROUTES, SPECIALITY_ROUTES, TEMPLATES_ROUTES } from "../../config/routes";
 import { Validator } from "../../helpers/validator";
 import { StudioManagementController } from "./studioManagement.controller";
-import { CreateStudioClientModel,CreateSpeciality,GetSpeciality,UpdateSpeciality,UpdateStudioClientModel } from "./studioManagement.model";
-import {StudioManagementMiddleware} from './studioManagement.middleware';
+import { CreateStudioClientModel, CreateSpeciality, GetSpeciality, UpdateSpeciality, UpdateStudioClientModel, GetTemplates, CreateTemplate } from "./studioManagement.model";
+import { StudioManagementMiddleware } from './studioManagement.middleware';
 
 const router: Router = Router();
 const studioManagementController = new StudioManagementController();
@@ -17,15 +17,19 @@ router.post(STUDIO_MANAGEMENT_ROUTES.UPDATE_CLIENT, v.validate(UpdateStudioClien
 router.delete(STUDIO_MANAGEMENT_ROUTES.DELETE_CLIENT, studioManagementController.deleteClient);
 
 //Add Speciality
-router.post(SPECIALITY_ROUTES.CREATE_SPECIALITY,  v.validate(CreateSpeciality), studioManagementController.addSpeciality);
+router.post(SPECIALITY_ROUTES.CREATE_SPECIALITY, v.validate(CreateSpeciality), studioManagementController.addSpeciality);
 
 //Get Speciality
 router.get(SPECIALITY_ROUTES.GET_SPECIALITY, studioManagementController.getSpeciality);
 
 //Edit Speciality
-router.post(SPECIALITY_ROUTES.EDIT_SPECIALITY,v.validate(UpdateSpeciality), studioManagementMiddleware.isSpecialityNotExists, studioManagementController.editSpeciality);
+router.post(SPECIALITY_ROUTES.EDIT_SPECIALITY, v.validate(UpdateSpeciality), studioManagementMiddleware.isSpecialityNotExists, studioManagementController.editSpeciality);
 
 //Delete Speciality
 router.delete(SPECIALITY_ROUTES.DELETE_SPECIALITY, studioManagementMiddleware.isSpecialityNotExists, studioManagementController.deleteSpeciality);
+
+router.get(TEMPLATES_ROUTES.GET_TEMPLATE, v.validate(GetTemplates), studioManagementController.getTemplates);
+
+router.post(TEMPLATES_ROUTES.ADD_UPDATE_TEMPLATE, v.validate(CreateTemplate), studioManagementController.createTemplate);
 
 export const StudioManagementRouter: Router = router;

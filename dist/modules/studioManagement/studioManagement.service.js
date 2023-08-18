@@ -56,6 +56,7 @@ var studioClient_1 = __importDefault(require("../../entities/studioClient"));
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var studioSpeciality_1 = require("../../entities/studioSpeciality");
 var constants_1 = require("../../config/constants");
+var studioTemplate_1 = require("../../entities/studioTemplate");
 var StudioManagementService = /** @class */ (function () {
     function StudioManagementService() {
         var _this = this;
@@ -301,6 +302,65 @@ var StudioManagementService = /** @class */ (function () {
                         console.log(error_9);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_9 === null || error_9 === void 0 ? void 0 : error_9.message)];
                     case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getTemplates = function (user, type) { return __awaiter(_this, void 0, void 0, function () {
+            var templateRepo, template, error_10;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        templateRepo = db_config_1.AppDataSource.getRepository(studioTemplate_1.StudioTemplate);
+                        return [4 /*yield*/, templateRepo.findOne({
+                                where: {
+                                    createdBy: { id: user === null || user === void 0 ? void 0 : user.id },
+                                    type: type,
+                                }
+                            })];
+                    case 1:
+                        template = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { template: template } })];
+                    case 2:
+                        error_10 = _a.sent();
+                        console.log(error_10);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_10 === null || error_10 === void 0 ? void 0 : error_10.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.createTemplates = function (user, params) { return __awaiter(_this, void 0, void 0, function () {
+            var templateRepo, isExist, error_11;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 5, , 6]);
+                        templateRepo = db_config_1.AppDataSource.getRepository(studioTemplate_1.StudioTemplate);
+                        return [4 /*yield*/, templateRepo.findOne({
+                                where: {
+                                    createdBy: { id: user === null || user === void 0 ? void 0 : user.id },
+                                    type: params === null || params === void 0 ? void 0 : params.type,
+                                }
+                            })];
+                    case 1:
+                        isExist = _a.sent();
+                        if (!isExist) return [3 /*break*/, 3];
+                        return [4 /*yield*/, templateRepo.update({
+                                createdBy: { id: user === null || user === void 0 ? void 0 : user.id },
+                                type: params === null || params === void 0 ? void 0 : params.type
+                            }, params)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Template updated successfully" })];
+                    case 3: return [4 /*yield*/, templateRepo.save(__assign(__assign({}, params), { createdBy: user === null || user === void 0 ? void 0 : user.id }))];
+                    case 4:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Template updated successfully" })];
+                    case 5:
+                        error_11 = _a.sent();
+                        console.log(error_11);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_11 === null || error_11 === void 0 ? void 0 : error_11.message)];
+                    case 6: return [2 /*return*/];
                 }
             });
         }); };

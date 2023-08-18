@@ -58,6 +58,11 @@ export const STUDIO_MANAGEMENT_ROUTES = {
     DELETE_CLIENT: "/client/:id"
 }
 
+export const TEMPLATES_ROUTES = {
+    GET_TEMPLATE: "/templates",
+    ADD_UPDATE_TEMPLATE: "/templates",
+}
+
 
 export const PORTFOLIO_ROUTES = {
     CREATE_COLLECTION: "/",

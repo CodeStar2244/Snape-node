@@ -24,5 +24,7 @@ router.get(routes_1.SPECIALITY_ROUTES.GET_SPECIALITY, studioManagementController
 router.post(routes_1.SPECIALITY_ROUTES.EDIT_SPECIALITY, v.validate(studioManagement_model_1.UpdateSpeciality), studioManagementMiddleware.isSpecialityNotExists, studioManagementController.editSpeciality);
 //Delete Speciality
 router.delete(routes_1.SPECIALITY_ROUTES.DELETE_SPECIALITY, studioManagementMiddleware.isSpecialityNotExists, studioManagementController.deleteSpeciality);
+router.get(routes_1.TEMPLATES_ROUTES.GET_TEMPLATE, v.validate(studioManagement_model_1.GetTemplates), studioManagementController.getTemplates);
+router.post(routes_1.TEMPLATES_ROUTES.ADD_UPDATE_TEMPLATE, v.validate(studioManagement_model_1.CreateTemplate), studioManagementController.createTemplate);
 exports.StudioManagementRouter = router;
 //# sourceMappingURL=studioManagement.routes.js.map
