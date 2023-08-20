@@ -63,6 +63,12 @@ export const TEMPLATES_ROUTES = {
     ADD_UPDATE_TEMPLATE: "/templates",
 }
 
+export const QUESTIONNARIES_ROUTES = {
+    GET_QUESTIONNARIES: "/questionnaries",
+    GET_CLIENT_QUESTIONNARIES: "/questionnaries/:id",
+    CREATE_QUESTIONNARIES: "/questionnaries",
+    DELETE_QUESTIONNARIES: "/questionnaries/:id",
+}
 
 export const PORTFOLIO_ROUTES = {
     CREATE_COLLECTION: "/",

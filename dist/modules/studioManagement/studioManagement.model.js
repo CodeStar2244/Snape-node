@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateTemplate = exports.GetTemplates = exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.UpdateStudioClientModel = exports.CreateStudioClientModel = void 0;
+exports.CreateQuestionnaries = exports.CreateTemplate = exports.GetTemplates = exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.UpdateStudioClientModel = exports.CreateStudioClientModel = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var CreateStudioClientModel = /** @class */ (function (_super) {
@@ -199,4 +199,45 @@ var CreateTemplate = /** @class */ (function (_super) {
     return CreateTemplate;
 }(model_1.Model));
 exports.CreateTemplate = CreateTemplate;
+var CreateQuestionnaries = /** @class */ (function (_super) {
+    __extends(CreateQuestionnaries, _super);
+    function CreateQuestionnaries(body) {
+        var _this = _super.call(this) || this;
+        var name = body.name, type = body.type, email = body.email, clientId = body.clientId, subject = body.subject, message = body.message;
+        _this.name = name === null || name === void 0 ? void 0 : name.trim();
+        _this.type = type === null || type === void 0 ? void 0 : type.trim();
+        _this.email = email === null || email === void 0 ? void 0 : email.trim();
+        _this.clientId = clientId;
+        _this.subject = subject === null || subject === void 0 ? void 0 : subject.trim();
+        _this.message = message === null || message === void 0 ? void 0 : message.trim();
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateQuestionnaries.prototype, "name", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        (0, class_validator_1.IsIn)(['Photography', 'Videography']),
+        __metadata("design:type", String)
+    ], CreateQuestionnaries.prototype, "type", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateQuestionnaries.prototype, "email", void 0);
+    __decorate([
+        (0, class_validator_1.IsNumber)(),
+        __metadata("design:type", Number)
+    ], CreateQuestionnaries.prototype, "clientId", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateQuestionnaries.prototype, "subject", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateQuestionnaries.prototype, "message", void 0);
+    return CreateQuestionnaries;
+}(model_1.Model));
+exports.CreateQuestionnaries = CreateQuestionnaries;
 //# sourceMappingURL=studioManagement.model.js.map

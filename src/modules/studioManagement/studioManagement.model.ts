@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength, IsOptional, IsIn } from "class-validator";
+import { IsNotEmpty, IsString, MinLength, IsOptional, IsIn, IsNumber } from "class-validator";
 import { Model } from "../../helpers/model";
 
 
@@ -151,6 +151,42 @@ export class CreateTemplate extends Model {
         this.description = description?.trim();
         this.fields = fields;
 
+    }
+
+}
+
+export class CreateQuestionnaries extends Model {
+
+    @IsNotEmpty()
+    name: string
+
+    @IsNotEmpty()
+    @IsIn(['Photography', 'Videography'])
+    type: string
+
+    @IsNotEmpty()
+    email: string
+
+    @IsNumber()
+    clientId: number
+
+    @IsNotEmpty()
+    subject: string
+
+    @IsNotEmpty()
+    message: string
+
+    constructor(body: any) {
+        super();
+        const {
+            name, type, email, clientId, subject, message
+        } = body;
+        this.name = name?.trim();
+        this.type = type?.trim();
+        this.email = email?.trim();
+        this.clientId = clientId;
+        this.subject = subject?.trim();
+        this.message = message?.trim();
     }
 
 }

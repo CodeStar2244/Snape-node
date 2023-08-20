@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { STUDIO_MANAGEMENT_ROUTES, SPECIALITY_ROUTES, TEMPLATES_ROUTES } from "../../config/routes";
+import { STUDIO_MANAGEMENT_ROUTES, SPECIALITY_ROUTES, TEMPLATES_ROUTES, QUESTIONNARIES_ROUTES } from "../../config/routes";
 import { Validator } from "../../helpers/validator";
 import { StudioManagementController } from "./studioManagement.controller";
-import { CreateStudioClientModel, CreateSpeciality, GetSpeciality, UpdateSpeciality, UpdateStudioClientModel, GetTemplates, CreateTemplate } from "./studioManagement.model";
+import { CreateStudioClientModel, CreateSpeciality, GetSpeciality, UpdateSpeciality, UpdateStudioClientModel, GetTemplates, CreateTemplate, CreateQuestionnaries } from "./studioManagement.model";
 import { StudioManagementMiddleware } from './studioManagement.middleware';
 
 const router: Router = Router();
@@ -31,5 +31,13 @@ router.delete(SPECIALITY_ROUTES.DELETE_SPECIALITY, studioManagementMiddleware.is
 router.get(TEMPLATES_ROUTES.GET_TEMPLATE, v.validate(GetTemplates), studioManagementController.getTemplates);
 
 router.post(TEMPLATES_ROUTES.ADD_UPDATE_TEMPLATE, v.validate(CreateTemplate), studioManagementController.createTemplate);
+
+router.post(QUESTIONNARIES_ROUTES.CREATE_QUESTIONNARIES, v.validate(CreateQuestionnaries), studioManagementController.createQuestionnaries);
+
+router.get(QUESTIONNARIES_ROUTES.GET_QUESTIONNARIES, studioManagementController.getQuestionnaries);
+
+router.get(QUESTIONNARIES_ROUTES.GET_CLIENT_QUESTIONNARIES, studioManagementController.getClientQuestionnaries);
+
+router.delete(QUESTIONNARIES_ROUTES.DELETE_QUESTIONNARIES, studioManagementController.deleteQuestionnaries);
 
 export const StudioManagementRouter: Router = router;

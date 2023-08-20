@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SPECIALITY_ROUTES = exports.PORTFOLIO_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.SPECIALITY_ROUTES = exports.PORTFOLIO_ROUTES = exports.QUESTIONNARIES_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login",
     GET_REMANING_SPACE: "/get-remaining-space",
@@ -60,6 +60,12 @@ exports.STUDIO_MANAGEMENT_ROUTES = {
 exports.TEMPLATES_ROUTES = {
     GET_TEMPLATE: "/templates",
     ADD_UPDATE_TEMPLATE: "/templates",
+};
+exports.QUESTIONNARIES_ROUTES = {
+    GET_QUESTIONNARIES: "/questionnaries",
+    GET_CLIENT_QUESTIONNARIES: "/questionnaries/:id",
+    CREATE_QUESTIONNARIES: "/questionnaries",
+    DELETE_QUESTIONNARIES: "/questionnaries/:id",
 };
 exports.PORTFOLIO_ROUTES = {
     CREATE_COLLECTION: "/",

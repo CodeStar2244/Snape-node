@@ -57,6 +57,7 @@ var responseBuilder_1 = require("../../helpers/responseBuilder");
 var studioSpeciality_1 = require("../../entities/studioSpeciality");
 var constants_1 = require("../../config/constants");
 var studioTemplate_1 = require("../../entities/studioTemplate");
+var studioQuestionnaries_1 = require("../../entities/studioQuestionnaries");
 var StudioManagementService = /** @class */ (function () {
     function StudioManagementService() {
         var _this = this;
@@ -361,6 +362,106 @@ var StudioManagementService = /** @class */ (function () {
                         console.log(error_11);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_11 === null || error_11 === void 0 ? void 0 : error_11.message)];
                     case 6: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.createQuestionnaries = function (user, params) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, templateRepo, template, fields, questionnarires, error_12;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioQuestionnaries_1.StudioQuestionnaries);
+                        templateRepo = db_config_1.AppDataSource.getRepository(studioTemplate_1.StudioTemplate);
+                        return [4 /*yield*/, templateRepo.findOne({
+                                where: {
+                                    type: params === null || params === void 0 ? void 0 : params.type,
+                                    createdBy: user === null || user === void 0 ? void 0 : user.id
+                                }
+                            })];
+                    case 1:
+                        template = _a.sent();
+                        fields = {
+                            description: template.description,
+                            fields: template.fields
+                        };
+                        return [4 /*yield*/, quesRepo.save(__assign(__assign({}, params), { template: fields, createdBy: user === null || user === void 0 ? void 0 : user.id }))];
+                    case 2:
+                        questionnarires = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { questionnarires: questionnarires }, message: "Questionnaries created successfully" })];
+                    case 3:
+                        error_12 = _a.sent();
+                        console.log(error_12);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_12 === null || error_12 === void 0 ? void 0 : error_12.message)];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getQuestionnaries = function (user) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, questionnarires, error_13;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioQuestionnaries_1.StudioQuestionnaries);
+                        return [4 /*yield*/, quesRepo.find({
+                                where: { createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
+                                order: { createdAt: 'DESC' },
+                                relations: ['clientId'],
+                                select: ['id', 'email', 'name', 'type', 'status', 'createdAt']
+                            })];
+                    case 1:
+                        questionnarires = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { questionnarires: questionnarires }, message: "Questionnaries created successfully" })];
+                    case 2:
+                        error_13 = _a.sent();
+                        console.log(error_13);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_13 === null || error_13 === void 0 ? void 0 : error_13.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getClientQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, questionnarires, error_14;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioQuestionnaries_1.StudioQuestionnaries);
+                        return [4 /*yield*/, quesRepo.findOne({
+                                where: { id: id, createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
+                                relations: ['clientId']
+                            })];
+                    case 1:
+                        questionnarires = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { questionnarires: questionnarires }, message: "Questionnaries created successfully" })];
+                    case 2:
+                        error_14 = _a.sent();
+                        console.log(error_14);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_14 === null || error_14 === void 0 ? void 0 : error_14.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, error_15;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioQuestionnaries_1.StudioQuestionnaries);
+                        return [4 /*yield*/, quesRepo.delete({
+                                id: id,
+                                createdBy: { id: user === null || user === void 0 ? void 0 : user.id }
+                            })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: {}, message: "Questionnaries deleted successfully" })];
+                    case 2:
+                        error_15 = _a.sent();
+                        console.log(error_15);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_15 === null || error_15 === void 0 ? void 0 : error_15.message)];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); };

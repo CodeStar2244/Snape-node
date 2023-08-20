@@ -4,6 +4,7 @@ import { ResponseBuilder } from "../../helpers/responseBuilder";
 import { StudioSpeciality } from "../../entities/studioSpeciality";
 import { CDN_URL, FILE_ALREADY_EXISTS, FRONT_URL } from "../../config/constants";
 import { StudioTemplate } from "../../entities/studioTemplate";
+import { StudioQuestionnaries } from "../../entities/studioQuestionnaries";
 
 export class StudioManagementService {
   public createClient = async (userDetails, body) => {
@@ -235,5 +236,78 @@ export class StudioManagementService {
     }
   }
 
+  public createQuestionnaries = async (user, params) => {
+    try {
+
+      const quesRepo = AppDataSource.getRepository(StudioQuestionnaries)
+      const templateRepo = AppDataSource.getRepository(StudioTemplate)
+
+      const template = await templateRepo.findOne({
+        where: {
+          type: params?.type,
+          createdBy: user?.id
+        }
+      })
+
+      const fields = {
+        description: template.description,
+        fields: template.fields
+      }
+
+      const questionnarires = await quesRepo.save({
+        ...params, template: fields, createdBy: user?.id
+      })
+
+      return ResponseBuilder.data({ data: { questionnarires }, message: "Questionnaries created successfully" });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message)
+    }
+  }
+
+  public getQuestionnaries = async (user) => {
+    try {
+      const quesRepo = AppDataSource.getRepository(StudioQuestionnaries)
+      const questionnarires = await quesRepo.find({
+        where: { createdBy: { id: user?.id } },
+        order: { createdAt: 'DESC' },
+        relations: ['clientId'],
+        select: ['id', 'email', 'name', 'type', 'status', 'createdAt']
+      })
+      return ResponseBuilder.data({ data: { questionnarires }, message: "Questionnaries created successfully" });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message)
+    }
+  }
+
+  public getClientQuestionnaries = async (user, id) => {
+    try {
+      const quesRepo = AppDataSource.getRepository(StudioQuestionnaries)
+      const questionnarires = await quesRepo.findOne({
+        where: { id, createdBy: { id: user?.id } },
+        relations: ['clientId']
+      })
+      return ResponseBuilder.data({ data: { questionnarires }, message: "Questionnaries created successfully" });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message)
+    }
+  }
+
+  public deleteQuestionnaries = async (user, id) => {
+    try {
+      const quesRepo = AppDataSource.getRepository(StudioQuestionnaries)
+      
+      await quesRepo.delete({
+        id, createdBy: { id: user?.id }
+      })
+
+      return ResponseBuilder.data({ data: {}, message: "Questionnaries deleted successfully" });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message)
+    }
+  }
 
 }

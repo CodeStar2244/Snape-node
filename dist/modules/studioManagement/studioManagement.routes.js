@@ -26,5 +26,9 @@ router.post(routes_1.SPECIALITY_ROUTES.EDIT_SPECIALITY, v.validate(studioManagem
 router.delete(routes_1.SPECIALITY_ROUTES.DELETE_SPECIALITY, studioManagementMiddleware.isSpecialityNotExists, studioManagementController.deleteSpeciality);
 router.get(routes_1.TEMPLATES_ROUTES.GET_TEMPLATE, v.validate(studioManagement_model_1.GetTemplates), studioManagementController.getTemplates);
 router.post(routes_1.TEMPLATES_ROUTES.ADD_UPDATE_TEMPLATE, v.validate(studioManagement_model_1.CreateTemplate), studioManagementController.createTemplate);
+router.post(routes_1.QUESTIONNARIES_ROUTES.CREATE_QUESTIONNARIES, v.validate(studioManagement_model_1.CreateQuestionnaries), studioManagementController.createQuestionnaries);
+router.get(routes_1.QUESTIONNARIES_ROUTES.GET_QUESTIONNARIES, studioManagementController.getQuestionnaries);
+router.get(routes_1.QUESTIONNARIES_ROUTES.GET_CLIENT_QUESTIONNARIES, studioManagementController.getClientQuestionnaries);
+router.delete(routes_1.QUESTIONNARIES_ROUTES.DELETE_QUESTIONNARIES, studioManagementController.deleteQuestionnaries);
 exports.StudioManagementRouter = router;
 //# sourceMappingURL=studioManagement.routes.js.map

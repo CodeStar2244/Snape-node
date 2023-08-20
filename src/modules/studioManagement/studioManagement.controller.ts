@@ -129,5 +129,48 @@ export class StudioManagementController {
     }
   }
 
+  public createQuestionnaries = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const params = req.body;
+      const result = await this.clientService.createQuestionnaries(userDetails, params);
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  }
+
+  public getQuestionnaries = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const result = await this.clientService.getQuestionnaries(userDetails);
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  }
+
+  public getClientQuestionnaries = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const { id } = req.params
+      const result = await this.clientService.getClientQuestionnaries(userDetails, id);
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  }
+
+  public deleteQuestionnaries = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const { id } = req.params
+      const result = await this.clientService.deleteQuestionnaries(userDetails, id);
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  }
+
 
 }

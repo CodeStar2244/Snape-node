@@ -261,6 +261,81 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
+        this.createQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, params, result, error_12;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        params = req.body;
+                        return [4 /*yield*/, this.clientService.createQuestionnaries(userDetails, params)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_12 = _a.sent();
+                        return [2 /*return*/, res.status(error_12.code).json(error_12)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_13;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.clientService.getQuestionnaries(userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_13 = _a.sent();
+                        return [2 /*return*/, res.status(error_13.code).json(error_13)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getClientQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_14;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.getClientQuestionnaries(userDetails, id)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_14 = _a.sent();
+                        return [2 /*return*/, res.status(error_14.code).json(error_14)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_15;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.deleteQuestionnaries(userDetails, id)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_15 = _a.sent();
+                        return [2 /*return*/, res.status(error_15.code).json(error_15)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return StudioManagementController;
 }());
