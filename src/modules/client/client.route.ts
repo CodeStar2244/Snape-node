@@ -14,5 +14,6 @@ router.post(CLIENT_ROUTES.DOWNLOAD_FILE,clientController.downloadFile);
 router.post(CLIENT_ROUTES.DOWNLOAD_COLLECTION,clientController.downloadCollection);
 router.post(CLIENT_ROUTES.PIN_CHECK,clientController.downloadPinCheck);
 router.post(CLIENT_ROUTES.FILE_PIN_CHECK,clientController.downloadFilePinCheck);
+router.get(CLIENT_ROUTES.GET_CLIENT_QUESTIONNARIES,clientController.getClientQuestionnaries);
 
 export  const  ClientRoute:Router = router;

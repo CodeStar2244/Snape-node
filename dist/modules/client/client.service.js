@@ -81,6 +81,7 @@ var Files_1 = __importDefault(require("../../entities/Files"));
 var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var mime_1 = __importDefault(require("mime"));
+var studioQuestionnaries_1 = require("../../entities/studioQuestionnaries");
 var ClientService = /** @class */ (function () {
     function ClientService() {
         var _this = this;
@@ -157,8 +158,10 @@ var ClientService = /** @class */ (function () {
         this.collectionPasswordRequired = function (collection, passwordCheckCollection, password, filesCollection) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (!password) {
-                    return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ passwordRequired: true, name: collection.name, coverPhoto: collection.coverPhoto,
-                            button: collection.button, accent: collection.accent, background: collection.background })];
+                    return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                            passwordRequired: true, name: collection.name, coverPhoto: collection.coverPhoto,
+                            button: collection.button, accent: collection.accent, background: collection.background
+                        })];
                 }
                 if (passwordCheckCollection.password !== password) {
                     return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Wrong Password Provided")];
@@ -180,9 +183,11 @@ var ClientService = /** @class */ (function () {
                         if (!collection) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Collection Not Found", 404)];
                         }
-                        return [4 /*yield*/, designRepo.findOneBy({ collections: {
+                        return [4 /*yield*/, designRepo.findOneBy({
+                                collections: {
                                     id: id
-                                } })];
+                                }
+                            })];
                     case 2:
                         collectionDesign = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(collectionDesign)];
@@ -416,6 +421,27 @@ var ClientService = /** @class */ (function () {
                                 name: file.name,
                                 mime: fileMime
                             }];
+                }
+            });
+        }); };
+        this.getClientQuestionnaries = function (id) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, questionnarires, error_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioQuestionnaries_1.StudioQuestionnaries);
+                        return [4 /*yield*/, quesRepo.findOne({
+                                where: { id: id }
+                            })];
+                    case 1:
+                        questionnarires = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { questionnarires: questionnarires }, message: "Questionnaries created successfully" })];
+                    case 2:
+                        error_7 = _a.sent();
+                        console.log(error_7);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_7 === null || error_7 === void 0 ? void 0 : error_7.message)];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); };

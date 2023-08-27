@@ -26,7 +26,8 @@ exports.CLIENT_ROUTES = {
     DOWNLOAD_FILE: "/download-file/:id",
     DOWNLOAD_COLLECTION: "/download-collection/:id",
     PIN_CHECK: "/downloadpincheck/:id",
-    FILE_PIN_CHECK: "/downloadfilepincheck/:id"
+    FILE_PIN_CHECK: "/downloadfilepincheck/:id",
+    GET_CLIENT_QUESTIONNARIES: "/view/questionnaries/:id",
 };
 exports.DASHBOARD_ROTUES = {
     GET_SUMMARY: "/summary",
@@ -63,7 +64,7 @@ exports.TEMPLATES_ROUTES = {
 };
 exports.QUESTIONNARIES_ROUTES = {
     GET_QUESTIONNARIES: "/questionnaries",
-    GET_CLIENT_QUESTIONNARIES: "/questionnaries/:id",
+    GET_CLIENT_QUESTIONNARIES: "/questionanries/:id",
     CREATE_QUESTIONNARIES: "/questionnaries",
     DELETE_QUESTIONNARIES: "/questionnaries/:id",
 };
