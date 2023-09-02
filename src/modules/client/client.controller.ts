@@ -79,4 +79,15 @@ export class ClientController {
             return res.status(error.code).json(error);
         }
     }
+
+    public submitClientQuestionnaries = async (req, res: Response) => {
+        try {
+            const { id } = req.params
+            const params = req.body
+            const result = await this.clientService.submitClientQuestionnaries(id, params);
+            return res.status(result.code).json(result.result);
+        } catch (error) {
+            return res.status(error.code).json(error);
+        }
+    }
 }

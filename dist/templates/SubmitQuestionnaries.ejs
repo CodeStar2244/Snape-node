@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4285f4;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="text-align: center; margin: 2%;color: black;">
+            <%= userName%>
+        </div>
+        <div style="text-align: center; margin: 2%; padding: 2% 5%; color: black;background-color: #f5f5f5;">
+            <p>
+                Your questionnaire has been completed
+            </p>
+            <p style="font-size: 1.1rem;font-weight: 550;">
+                Copy of General Photography Questionnaire
+            </p>
+        </div>
+        <div style="text-align: center; margin: 8% 0%;">
+            <a style="font-size: 0.8rem;" href="<%= link %>">
+                <button
+                    style="background-color: #ec1a25;color: white; border: none; padding: 2% 5%; cursor: pointer;">VIEW
+                    COMPLETED QUESTIONNARIE
+                </button>
+            </a>
+        </div>
+        <div style="text-align: center; margin: 6% 0%;">
+            <p style="font-size: 0.8rem;color: #500050;">
+                If the button does not work, copy and paste this URL into your browser's address bar:
+            </p>
+            <a style="font-size: 0.8rem;" href="<%= link %>">
+                <%= link%>
+            </a>
+        </div>
+        <div style="text-align: center; margin: 6% 0%;">
+            <p style="font-size: 0.8rem; color: #888888;">
+                <%= userName%>
+                    <br />
+                    Questions? Contact <%= userEmail%>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

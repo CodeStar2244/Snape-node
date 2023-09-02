@@ -15,5 +15,6 @@ router.post(routes_1.CLIENT_ROUTES.DOWNLOAD_COLLECTION, clientController.downloa
 router.post(routes_1.CLIENT_ROUTES.PIN_CHECK, clientController.downloadPinCheck);
 router.post(routes_1.CLIENT_ROUTES.FILE_PIN_CHECK, clientController.downloadFilePinCheck);
 router.get(routes_1.CLIENT_ROUTES.GET_CLIENT_QUESTIONNARIES, clientController.getClientQuestionnaries);
+router.post(routes_1.CLIENT_ROUTES.SUBMIT_CLIENT_QUESTIONNARIES, clientController.submitClientQuestionnaries);
 exports.ClientRoute = router;
 //# sourceMappingURL=client.route.js.map

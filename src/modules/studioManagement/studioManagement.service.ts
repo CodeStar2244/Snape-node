@@ -5,7 +5,7 @@ import { StudioSpeciality } from "../../entities/studioSpeciality";
 import { CDN_URL, FILE_ALREADY_EXISTS, FRONT_URL } from "../../config/constants";
 import { StudioTemplate } from "../../entities/studioTemplate";
 import { StudioQuestionnaries } from "../../entities/studioQuestionnaries";
-
+import { Mailer } from "../../helpers/mailer";
 export class StudioManagementService {
   public createClient = async (userDetails, body) => {
     try {
@@ -241,6 +241,7 @@ export class StudioManagementService {
 
       const quesRepo = AppDataSource.getRepository(StudioQuestionnaries)
       const templateRepo = AppDataSource.getRepository(StudioTemplate)
+      const clientRepo = AppDataSource.getRepository(StudioClient)
 
       const template = await templateRepo.findOne({
         where: {
@@ -254,10 +255,23 @@ export class StudioManagementService {
         fields: template.fields
       }
 
+      const client = await clientRepo.findOne({ where: { id: params?.clientId } })
+
       const questionnarires = await quesRepo.save({
         ...params, template: fields, createdBy: user?.id
       })
 
+      const renderData = {
+        userName: user?.firstName + ' ' + user?.lastName,
+        clientName: client?.name,
+        message: params?.message,
+        link: `https://studio.snape.app/view/questionnaries/${questionnarires?.id}`,
+        // link: `http://localhost:3000/view/questionnaries/${questionnarires?.id}`,
+        userEmail: user.email
+      }
+
+      const mailBody = await Mailer.renderTemplate('Questionarries', renderData)
+      Mailer.sendMail(params.email, params?.subject, mailBody)
       return ResponseBuilder.data({ data: { questionnarires }, message: "Questionnaries created successfully" });
     } catch (error) {
       console.log(error);
@@ -298,7 +312,7 @@ export class StudioManagementService {
   public deleteQuestionnaries = async (user, id) => {
     try {
       const quesRepo = AppDataSource.getRepository(StudioQuestionnaries)
-      
+
       await quesRepo.delete({
         id, createdBy: { id: user?.id }
       })

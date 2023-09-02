@@ -8,6 +8,8 @@ import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
 import mime from 'mime';
 import { StudioQuestionnaries } from "../../entities/studioQuestionnaries";
+import { Tblagent } from "../../entities/Tblagent";
+import { Mailer } from "../../helpers/mailer";
 export class ClientService {
     private s3 = new AWSS3();
     public getCollectionByUrl = async ({ url, password }) => {
@@ -295,6 +297,34 @@ export class ClientService {
                 where: { id }
             })
             return ResponseBuilder.data({ data: { questionnarires }, message: "Questionnaries created successfully" });
+        } catch (error) {
+            console.log(error);
+            return ResponseBuilder.badRequest(error?.message)
+        }
+    }
+
+    public submitClientQuestionnaries = async (id, params) => {
+        try {
+            const quesRepo = AppDataSource.getRepository(StudioQuestionnaries)
+            const agentRepo = AppDataSource.getRepository(Tblagent)
+            const questionnaries = await quesRepo.findOne({ where: { id }, relations: ['createdBy'] })
+            const userDetails = await agentRepo.findOne({ where: { id: questionnaries?.createdBy?.id } })
+
+            const renderData = {
+                userName: userDetails?.firstname + ' ' + userDetails?.lastname,
+                link: `https://studio.snape.app/view/questionnaries/${id}`,
+                // link: `http://localhost:3000/view/questionnaries/${id}`,
+                userEmail: userDetails.email
+            }
+            const mailBody = await Mailer.renderTemplate('SubmitQuestionnaries', renderData)
+            Mailer.sendMail(questionnaries?.email, 'Questionnaire is complete', mailBody)
+            await quesRepo.update({
+                id
+            }, {
+                template: params,
+                status: 'SUBMITTED'
+            })
+            return ResponseBuilder.data({ data: {}, message: "Questionnaries submitted successfully" });
         } catch (error) {
             console.log(error);
             return ResponseBuilder.badRequest(error?.message)

@@ -82,6 +82,8 @@ var awss3_1 = require("../../helpers/awss3");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var mime_1 = __importDefault(require("mime"));
 var studioQuestionnaries_1 = require("../../entities/studioQuestionnaries");
+var Tblagent_1 = require("../../entities/Tblagent");
+var mailer_1 = require("../../helpers/mailer");
 var ClientService = /** @class */ (function () {
     function ClientService() {
         var _this = this;
@@ -442,6 +444,48 @@ var ClientService = /** @class */ (function () {
                         console.log(error_7);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_7 === null || error_7 === void 0 ? void 0 : error_7.message)];
                     case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.submitClientQuestionnaries = function (id, params) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, agentRepo, questionnaries, userDetails, renderData, mailBody, error_8;
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 5, , 6]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioQuestionnaries_1.StudioQuestionnaries);
+                        agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        return [4 /*yield*/, quesRepo.findOne({ where: { id: id }, relations: ['createdBy'] })];
+                    case 1:
+                        questionnaries = _b.sent();
+                        return [4 /*yield*/, agentRepo.findOne({ where: { id: (_a = questionnaries === null || questionnaries === void 0 ? void 0 : questionnaries.createdBy) === null || _a === void 0 ? void 0 : _a.id } })];
+                    case 2:
+                        userDetails = _b.sent();
+                        renderData = {
+                            userName: (userDetails === null || userDetails === void 0 ? void 0 : userDetails.firstname) + ' ' + (userDetails === null || userDetails === void 0 ? void 0 : userDetails.lastname),
+                            link: "https://studio.snape.app/view/questionnaries/".concat(id),
+                            // link: `http://localhost:3000/view/questionnaries/${id}`,
+                            userEmail: userDetails.email
+                        };
+                        return [4 /*yield*/, mailer_1.Mailer.renderTemplate('SubmitQuestionnaries', renderData)];
+                    case 3:
+                        mailBody = _b.sent();
+                        mailer_1.Mailer.sendMail(questionnaries === null || questionnaries === void 0 ? void 0 : questionnaries.email, 'Questionnaire is complete', mailBody);
+                        return [4 /*yield*/, quesRepo.update({
+                                id: id
+                            }, {
+                                template: params,
+                                status: 'SUBMITTED'
+                            })];
+                    case 4:
+                        _b.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: {}, message: "Questionnaries submitted successfully" })];
+                    case 5:
+                        error_8 = _b.sent();
+                        console.log(error_8);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_8 === null || error_8 === void 0 ? void 0 : error_8.message)];
+                    case 6: return [2 /*return*/];
                 }
             });
         }); };

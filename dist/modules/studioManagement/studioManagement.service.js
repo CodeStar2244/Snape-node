@@ -58,6 +58,7 @@ var studioSpeciality_1 = require("../../entities/studioSpeciality");
 var constants_1 = require("../../config/constants");
 var studioTemplate_1 = require("../../entities/studioTemplate");
 var studioQuestionnaries_1 = require("../../entities/studioQuestionnaries");
+var mailer_1 = require("../../helpers/mailer");
 var StudioManagementService = /** @class */ (function () {
     function StudioManagementService() {
         var _this = this;
@@ -366,13 +367,14 @@ var StudioManagementService = /** @class */ (function () {
             });
         }); };
         this.createQuestionnaries = function (user, params) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, templateRepo, template, fields, questionnarires, error_12;
+            var quesRepo, templateRepo, clientRepo, template, fields, client, questionnarires, renderData, mailBody, error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 5, , 6]);
                         quesRepo = db_config_1.AppDataSource.getRepository(studioQuestionnaries_1.StudioQuestionnaries);
                         templateRepo = db_config_1.AppDataSource.getRepository(studioTemplate_1.StudioTemplate);
+                        clientRepo = db_config_1.AppDataSource.getRepository(studioClient_1.default);
                         return [4 /*yield*/, templateRepo.findOne({
                                 where: {
                                     type: params === null || params === void 0 ? void 0 : params.type,
@@ -385,15 +387,30 @@ var StudioManagementService = /** @class */ (function () {
                             description: template.description,
                             fields: template.fields
                         };
-                        return [4 /*yield*/, quesRepo.save(__assign(__assign({}, params), { template: fields, createdBy: user === null || user === void 0 ? void 0 : user.id }))];
+                        return [4 /*yield*/, clientRepo.findOne({ where: { id: params === null || params === void 0 ? void 0 : params.clientId } })];
                     case 2:
-                        questionnarires = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { questionnarires: questionnarires }, message: "Questionnaries created successfully" })];
+                        client = _a.sent();
+                        return [4 /*yield*/, quesRepo.save(__assign(__assign({}, params), { template: fields, createdBy: user === null || user === void 0 ? void 0 : user.id }))];
                     case 3:
+                        questionnarires = _a.sent();
+                        renderData = {
+                            userName: (user === null || user === void 0 ? void 0 : user.firstName) + ' ' + (user === null || user === void 0 ? void 0 : user.lastName),
+                            clientName: client === null || client === void 0 ? void 0 : client.name,
+                            message: params === null || params === void 0 ? void 0 : params.message,
+                            link: "https://studio.snape.app/view/questionnaries/".concat(questionnarires === null || questionnarires === void 0 ? void 0 : questionnarires.id),
+                            // link: `http://localhost:3000/view/questionnaries/${questionnarires?.id}`,
+                            userEmail: user.email
+                        };
+                        return [4 /*yield*/, mailer_1.Mailer.renderTemplate('Questionarries', renderData)];
+                    case 4:
+                        mailBody = _a.sent();
+                        mailer_1.Mailer.sendMail(params.email, params === null || params === void 0 ? void 0 : params.subject, mailBody);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ data: { questionnarires: questionnarires }, message: "Questionnaries created successfully" })];
+                    case 5:
                         error_12 = _a.sent();
                         console.log(error_12);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_12 === null || error_12 === void 0 ? void 0 : error_12.message)];
-                    case 4: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         }); };

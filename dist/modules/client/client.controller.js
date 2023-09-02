@@ -173,6 +173,25 @@ var ClientController = /** @class */ (function () {
                 }
             });
         }); };
+        this.submitClientQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var id, params, result, error_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        id = req.params.id;
+                        params = req.body;
+                        return [4 /*yield*/, this.clientService.submitClientQuestionnaries(id, params)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result.result)];
+                    case 2:
+                        error_7 = _a.sent();
+                        return [2 /*return*/, res.status(error_7.code).json(error_7)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return ClientController;
 }());

@@ -28,6 +28,7 @@ exports.CLIENT_ROUTES = {
     PIN_CHECK: "/downloadpincheck/:id",
     FILE_PIN_CHECK: "/downloadfilepincheck/:id",
     GET_CLIENT_QUESTIONNARIES: "/view/questionnaries/:id",
+    SUBMIT_CLIENT_QUESTIONNARIES: "/questionnaries/:id",
 };
 exports.DASHBOARD_ROTUES = {
     GET_SUMMARY: "/summary",
