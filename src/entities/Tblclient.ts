@@ -8,7 +8,6 @@ import {
 } from "typeorm";
 import { Tblrole } from "./Tblrole";
 
-
 @Entity("tblclient", { schema: "public" })
 export class Tblclient {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })

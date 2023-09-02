@@ -1,4 +1,11 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Tblclient } from "./Tblclient";
 
 @Entity("tblbooking", { schema: "public" })
@@ -57,22 +64,24 @@ export class Tblbooking {
 
   @Column("double precision", {
     name: "latitude",
-    nullable: true
+    nullable: true,
   })
   latitude: number | null;
 
   @Column("double precision", {
     name: "longitude",
-    nullable: true
+    nullable: true,
   })
   longitude: number | null;
 
   @Column("integer", { name: "bookingstatusid", nullable: true })
   bookingstatusid: number | null;
 
-
-  @ManyToOne(()=>Tblclient,(client)=>client.id,{onDelete:"CASCADE",onUpdate:"CASCADE"})
-  @JoinColumn({name:"clientid"})
+  @ManyToOne(() => Tblclient, (client) => client.id, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn({ name: "clientid" })
   clientid: number | null;
 
   @Column("integer", { name: "agentid", nullable: true })
@@ -219,7 +228,7 @@ export class Tblbooking {
 
   @Column("double precision", {
     name: "tipamount",
-    nullable: true
+    nullable: true,
   })
   tipamount: number | null;
 

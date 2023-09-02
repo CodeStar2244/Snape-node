@@ -1,65 +1,74 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import Collections from "./Collection";
 
-
 export enum FileType {
-    PHOTO="PHOTO",
-    VIDEO="VIDEO"
-  }
+  PHOTO = "PHOTO",
+  VIDEO = "VIDEO",
+}
 
-@Entity("files",{schema:"public"})
-export default class FilesEntity{
+@Entity("files", { schema: "public" })
+export default class FilesEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id:number;
+  @Column()
+  name: string;
 
-    @Column()
-    name:string;
+  @Column()
+  url: string;
 
-    @Column()
-    url:string;
-    
-    @Column()
-    cdnUrl:string;
+  @Column()
+  cdnUrl: string;
 
-    @Column({nullable:true})
-    compressedKey:string;
+  @Column({ nullable: true })
+  compressedKey: string;
 
-    @Column({nullable:true})
-    compressedCdnUrl:string;
+  @Column({ nullable: true })
+  compressedCdnUrl: string;
 
-    @Column({nullable:true , type:"float" , default:0})
-    compressedImageSize:number;
-    
-    @Column()
-    key:string;
-    
-    @Column({
-        type:"float",
-        default:0
-    })
-    size:number;
+  @Column({ nullable: true, type: "float", default: 0 })
+  compressedImageSize: number;
 
-    @Column()
-    height:number;
-    
-    @Column()
-    width:number;
+  @Column()
+  key: string;
 
-    @Column({
-        type: "enum",
-        enum: FileType,
-        default: FileType.PHOTO
-    })
-    type:FileType
+  @Column({
+    type: "float",
+    default: 0,
+  })
+  size: number;
 
-    @ManyToOne(()=>Collections,(collection)=>collection.id,{onDelete:"CASCADE"})
-    collection:Collections;
+  @Column()
+  height: number;
 
-    @CreateDateColumn({type:'timestamptz'})
-    createdAt: Date;
- 
-    @UpdateDateColumn({type:"timestamptz"})
-    updatedAt: Date;
+  @Column()
+  width: number;
 
+  @Column({
+    type: "enum",
+    enum: FileType,
+    default: FileType.PHOTO,
+  })
+  type: FileType;
+
+  @ManyToOne(() => Collections, (collection) => collection.id, {
+    onDelete: "CASCADE",
+  })
+  collection: Collections;
+
+  @CreateDateColumn({ type: "timestamptz" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamptz" })
+  updatedAt: Date;
 }

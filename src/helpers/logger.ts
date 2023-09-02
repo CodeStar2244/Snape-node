@@ -1,12 +1,9 @@
 import moment from "moment-timezone";
 import { createLogger, format, transports } from "winston";
 
-const {
-  combine, timestamp, prettyPrint, colorize,
-} = format;
+const { combine, timestamp, prettyPrint, colorize } = format;
 
 export class Log {
-
   public getLogger() {
     const timestampFormat: string = moment().format("YYYY-MM-DD HH:mm:ss");
     return createLogger({

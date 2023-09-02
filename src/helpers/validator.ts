@@ -4,14 +4,15 @@ export class Validator {
   public validate(arg: Model) {
     const classThis = this;
     return (req, res, next) => {
-      Model.getModel(arg, req.body, req.query).then((m2) => {
-        req.model = m2;
-        next();
-      }).catch((err) => {
-        const error = err.length > 0 ?
-          classThis.getError(err) : err;
-        return res.status(400).json({ error, code: 400 });
-      });
+      Model.getModel(arg, req.body, req.query)
+        .then((m2) => {
+          req.model = m2;
+          next();
+        })
+        .catch((err) => {
+          const error = err.length > 0 ? classThis.getError(err) : err;
+          return res.status(400).json({ error, code: 400 });
+        });
     };
   }
   private getError(err) {
@@ -21,5 +22,4 @@ export class Validator {
       return this.getError(err[0].children);
     }
   }
-
 }

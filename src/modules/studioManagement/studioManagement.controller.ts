@@ -2,16 +2,19 @@ import { Request } from "express";
 import { StudioManagementService } from "./studioManagement.service";
 
 export class StudioManagementController {
-  private clientService = new StudioManagementService()
+  private clientService = new StudioManagementService();
   public createClient = async (req, res) => {
     try {
       const userDetails = req.user;
-      const result = await this.clientService.createClient(userDetails, req.body);
+      const result = await this.clientService.createClient(
+        userDetails,
+        req.body,
+      );
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
+  };
   public getClient = async (req, res) => {
     try {
       const userDetails = req.user;
@@ -21,7 +24,7 @@ export class StudioManagementController {
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
+  };
   public getSingleClient = async (req, res) => {
     try {
       const userDetails = req.user;
@@ -31,17 +34,21 @@ export class StudioManagementController {
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
+  };
   public updateClient = async (req, res) => {
     try {
       const userDetails = req.user;
       const { id } = req.params;
-      const result = await this.clientService.editClient(req.params, req.body, userDetails);
+      const result = await this.clientService.editClient(
+        req.params,
+        req.body,
+        userDetails,
+      );
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
+  };
   public deleteClient = async (req, res) => {
     try {
       const userDetails = req.user;
@@ -51,8 +58,7 @@ export class StudioManagementController {
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
-
+  };
 
   addSpeciality = async (req: any, res: any) => {
     try {
@@ -62,9 +68,7 @@ export class StudioManagementController {
 
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res
-        .status(500)
-        .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
     }
   };
 
@@ -74,9 +78,7 @@ export class StudioManagementController {
       const result = await this.clientService.getSpeciality(req.user);
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res
-        .status(500)
-        .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
     }
   };
 
@@ -84,26 +86,20 @@ export class StudioManagementController {
     try {
       const result = await this.clientService.editSpeciality(
         req.params,
-        req.body
+        req.body,
       );
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res
-        .status(500)
-        .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
     }
   };
 
   deleteSpeciality = async (req: Request, res: any) => {
     try {
-      const result = await this.clientService.deleteSpeciality(
-        req.params
-      );
+      const result = await this.clientService.deleteSpeciality(req.params);
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res
-        .status(500)
-        .json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
     }
   };
 
@@ -116,29 +112,35 @@ export class StudioManagementController {
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
+  };
 
   public createTemplate = async (req, res) => {
     try {
       const userDetails = req.user;
       const params = req.body;
-      const result = await this.clientService.createTemplates(userDetails, params);
+      const result = await this.clientService.createTemplates(
+        userDetails,
+        params,
+      );
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
+  };
 
   public createQuestionnaries = async (req, res) => {
     try {
       const userDetails = req.user;
       const params = req.body;
-      const result = await this.clientService.createQuestionnaries(userDetails, params);
+      const result = await this.clientService.createQuestionnaries(
+        userDetails,
+        params,
+      );
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
+  };
 
   public getQuestionnaries = async (req, res) => {
     try {
@@ -148,29 +150,33 @@ export class StudioManagementController {
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
+  };
 
   public getClientQuestionnaries = async (req, res) => {
     try {
       const userDetails = req.user;
-      const { id } = req.params
-      const result = await this.clientService.getClientQuestionnaries(userDetails, id);
+      const { id } = req.params;
+      const result = await this.clientService.getClientQuestionnaries(
+        userDetails,
+        id,
+      );
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
+  };
 
   public deleteQuestionnaries = async (req, res) => {
     try {
       const userDetails = req.user;
-      const { id } = req.params
-      const result = await this.clientService.deleteQuestionnaries(userDetails, id);
+      const { id } = req.params;
+      const result = await this.clientService.deleteQuestionnaries(
+        userDetails,
+        id,
+      );
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
     }
-  }
-
-
+  };
 }

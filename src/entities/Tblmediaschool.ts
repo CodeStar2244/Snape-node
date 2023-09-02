@@ -10,13 +10,13 @@ export class Tblmediaschool {
 
   @Column("double precision", {
     name: "latitude",
-    nullable: true
+    nullable: true,
   })
   latitude: number | null;
 
   @Column("double precision", {
     name: "longitude",
-    nullable: true
+    nullable: true,
   })
   longitude: number | null;
 

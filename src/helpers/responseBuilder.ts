@@ -3,7 +3,6 @@ import { RES_STATUS } from "../config/constants";
 import { Failure } from "./error";
 
 export class ResponseBuilder {
-
   public static successMessage(msg: string): ResponseBuilder {
     const rb: ResponseBuilder = new ResponseBuilder();
     rb.code = 200;
@@ -14,7 +13,7 @@ export class ResponseBuilder {
 
   public static errorMessage(msg?: any): ResponseBuilder {
     const rb: ResponseBuilder = new ResponseBuilder();
-    
+
     rb.code = 500;
     rb.status = RES_STATUS.FAIL;
     rb.error = msg != null ? msg : l10n.t("ERR_INTERNAL_SERVER");
@@ -22,10 +21,19 @@ export class ResponseBuilder {
     return rb;
   }
 
-  public static badRequest(msg: any, code ?: number, extraPayload ?: any ): ResponseBuilder {
+  public static badRequest(
+    msg: any,
+    code?: number,
+    extraPayload?: any,
+  ): ResponseBuilder {
     const rb: ResponseBuilder = new ResponseBuilder();
     rb.code = code || 400;
-    rb.error = { message: msg, code: code || 400, status: false, ...extraPayload} ;
+    rb.error = {
+      message: msg,
+      code: code || 400,
+      status: false,
+      ...extraPayload,
+    };
     // rb.status = RES_STATUS.FAIL;
     return rb;
   }
@@ -34,7 +42,7 @@ export class ResponseBuilder {
     const rb: ResponseBuilder = new ResponseBuilder();
     rb.code = 200;
     result.code = 200;
-    result.data = msg ? { message:  msg,  ...result.data} : {  ...result.data };
+    result.data = msg ? { message: msg, ...result.data } : { ...result.data };
     rb.result = result;
     return rb;
   }
@@ -58,7 +66,9 @@ export class ResponseBuilder {
     rb.status = RES_STATUS.FAIL;
     rb.msg = msg || null;
     rb.description = err.description;
-    rb.result = err ? l10n.t("ERR_THROW_BY_CODE") : l10n.t("ERR_INTERNAL_SERVER") ;
+    rb.result = err
+      ? l10n.t("ERR_THROW_BY_CODE")
+      : l10n.t("ERR_INTERNAL_SERVER");
     return rb;
   }
   public static fileExists(err: Failure, msg?: string): ResponseBuilder {
@@ -71,7 +81,9 @@ export class ResponseBuilder {
     rb.status = RES_STATUS.FAIL;
     rb.msg = msg || null;
     rb.description = err.description;
-    rb.result = err ? l10n.t("ERR_THROW_BY_CODE") : l10n.t("ERR_INTERNAL_SERVER") ;
+    rb.result = err
+      ? l10n.t("ERR_THROW_BY_CODE")
+      : l10n.t("ERR_INTERNAL_SERVER");
     return rb;
   }
   public code: number;

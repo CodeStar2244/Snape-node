@@ -4,11 +4,17 @@ import * as constant from "../config/constants";
 export class Failure extends Error {
   public static error(err: any, data?: any) {
     if (err instanceof Failure) {
-      err.type  = err.type ? err.type : constant.BAD_DATA;
+      err.type = err.type ? err.type : constant.BAD_DATA;
       err.data = err.data === undefined ? data : err.data;
       return err;
     }
-    const error = new Failure(l10n.t("ERR_INTERNAL_SERVER"), "Error is thrown by code", err, false, data);
+    const error = new Failure(
+      l10n.t("ERR_INTERNAL_SERVER"),
+      "Error is thrown by code",
+      err,
+      false,
+      data,
+    );
     error.type = constant.CODE;
     error.errorStack = err;
     error.data = data;
@@ -20,7 +26,10 @@ export class Failure extends Error {
       err.type = isSpError ? constant.CODE : constant.BAD_DATA;
       return err;
     }
-    const error = new Failure(l10n.t("ERR_INTERNAL_SERVER"), "Error is thrown by code");
+    const error = new Failure(
+      l10n.t("ERR_INTERNAL_SERVER"),
+      "Error is thrown by code",
+    );
     error.type = constant.CODE;
     error.errorStack = err;
     return error;
@@ -28,11 +37,19 @@ export class Failure extends Error {
 
   public static throwApiError(response) {
     if (response && response.responseCode === "01") {
-      return new Failure(response.responseDescription || l10n.t("ERR_THIRD_PARTY"),
-      response.responseDescription || l10n.t("ERR_THIRD_PARTY"), response, false);
+      return new Failure(
+        response.responseDescription || l10n.t("ERR_THIRD_PARTY"),
+        response.responseDescription || l10n.t("ERR_THIRD_PARTY"),
+        response,
+        false,
+      );
     }
-    return new Failure(l10n.t("ERR_THIRD_PARTY"), response.responseDescription || l10n.t("ERR_THIRD_PARTY"),
-    response, false);
+    return new Failure(
+      l10n.t("ERR_THIRD_PARTY"),
+      response.responseDescription || l10n.t("ERR_THIRD_PARTY"),
+      response,
+      false,
+    );
   }
   public description: string;
   public errorStack: Json;
@@ -40,7 +57,13 @@ export class Failure extends Error {
   public type: "BAD_DATA" | "CODE";
   public data: any;
   // Better approach need to be found for type
-  constructor(title, description: string, errStack?: Json, isError?: boolean, data?: any) {
+  constructor(
+    title,
+    description: string,
+    errStack?: Json,
+    isError?: boolean,
+    data?: any,
+  ) {
     super(title);
     this.title = title;
     this.type = isError ? constant.CODE : constant.BAD_DATA;

@@ -12,7 +12,6 @@ import StudioClient from "./studioClient";
 
 @Entity({ name: "studioquestionnaries" })
 export class StudioQuestionnaries {
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -34,19 +33,19 @@ export class StudioQuestionnaries {
   @Column({ default: "AWAITING RESPONSE" })
   status: string;
 
-  @Column('jsonb', { default: {} })
-  template: object
+  @Column("jsonb", { default: {} })
+  template: object;
 
-  @Column('jsonb', { default: {} })
-  response: object
+  @Column("jsonb", { default: {} })
+  response: object;
 
   @ManyToOne(() => StudioClient, (client) => client.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "clientId" })
-  clientId: StudioClient
+  clientId: StudioClient;
 
   @ManyToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "agentId" })
-  createdBy
+  createdBy;
 
   @CreateDateColumn()
   createdAt: Date;

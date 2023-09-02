@@ -8,7 +8,6 @@ import {
 } from "typeorm";
 import { Tblrole } from "./Tblrole";
 
-
 @Entity("tblagent", { schema: "public" })
 export class Tblagent {
   @PrimaryGeneratedColumn({ type: "integer", name: "id" })
@@ -131,13 +130,13 @@ export class Tblagent {
 
   @Column("double precision", {
     name: "latitude",
-    nullable: true
+    nullable: true,
   })
   latitude: number | null;
 
   @Column("double precision", {
     name: "longitude",
-    nullable: true
+    nullable: true,
   })
   longitude: number | null;
 
@@ -179,7 +178,7 @@ export class Tblagent {
 
   @Column("double precision", {
     name: "bothrate",
-    nullable: true
+    nullable: true,
   })
   bothrate: number | null;
 

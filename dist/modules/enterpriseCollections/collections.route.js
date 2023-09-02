@@ -1,11 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.EnterpriseCollectionRouter = void 0;
-var express_1 = require("express");
-var routes_1 = require("../../config/routes");
-var validator_1 = require("../../helpers/validator");
-var collections_controller_1 = require("./collections.controller");
-var collections_model_1 = require("./collections.model");
+var express_1 = require('express');
+var routes_1 = require('../../config/routes');
+var validator_1 = require('../../helpers/validator');
+var collections_controller_1 = require('./collections.controller');
+var collections_model_1 = require('./collections.model');
 var router = (0, express_1.Router)();
 var collectoinController = new collections_controller_1.EnterpriseCollectoinController();
 var v = new validator_1.Validator();

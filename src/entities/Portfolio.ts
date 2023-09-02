@@ -1,53 +1,63 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { CollectionTags } from "./CollectionTags";
 import { Tblagent } from "./Tblagent";
 
 export enum CollectionStatus {
-    PUBLISH="PUBLISH",
-    HIDDEN="HIDDEN"
-  }
+  PUBLISH = "PUBLISH",
+  HIDDEN = "HIDDEN",
+}
 
-@Entity("portfolios",{schema:"public"})
-export default class PortFolios{
+@Entity("portfolios", { schema: "public" })
+export default class PortFolios {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id:number
+  @Column()
+  name: string;
 
-    @Column()
-    name:string
+  @Column({
+    type: "enum",
+    enum: CollectionStatus,
+    default: CollectionStatus.HIDDEN,
+  })
+  status: CollectionStatus;
 
-    @Column({
-        type: "enum",
-        enum: CollectionStatus,
-        default: CollectionStatus.HIDDEN
-    })
-    status:CollectionStatus
+  @Column({ nullable: true, default: 0 })
+  photos: number;
+  @Column({ nullable: true, default: 0 })
+  videos: number;
 
-    @Column({nullable:true,default:0})
-    photos:number
-    @Column({nullable:true,default:0})
-    videos:number
+  @Column({
+    nullable: true,
+    default: "https://snape-buckets.b-cdn.net/collectionphoto.jpg",
+  })
+  coverPhoto: string;
 
+  @Column({
+    type: "float",
+    default: 0,
+    nullable: true,
+  })
+  size: number;
 
-    @Column({nullable:true,default:"https://snape-buckets.b-cdn.net/collectionphoto.jpg"})
-    coverPhoto:string
+  @OneToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
+  @JoinColumn({ name: "agentId" })
+  createdBy;
 
-    @Column({
-        type:"float",
-        default:0,
-        nullable:true
-    })
-    size:number;
+  @CreateDateColumn({ type: "timestamptz" })
+  createdAt: Date;
 
-    @OneToOne(()=>Tblagent,(agent)=>agent.id,{onDelete:"CASCADE"})
-    @JoinColumn({name:"agentId"})
-    createdBy
-
-
-    @CreateDateColumn({type:'timestamptz'})
-    createdAt: Date;
- 
-    @UpdateDateColumn({type:"timestamptz"})
-    updatedAt: Date;
-
+  @UpdateDateColumn({ type: "timestamptz" })
+  updatedAt: Date;
 }

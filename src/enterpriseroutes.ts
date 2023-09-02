@@ -31,10 +31,22 @@ export class EnterpriseRoutes {
   public path() {
     const router = express.Router();
     router.use("/client", EnterpriseClientRoutes);
-    router.use("/collection",this.middleware.authenticateEnterpriseUser,EnterpriseCollectionRouter);
-    router.use("/asset",this.middleware.authenticateEnterpriseUser,EnterpriseAssetRegistryRouter);
-    router.use("/agent",this.middleware.authenticateEnterpriseUser,EnterpriseAgentsRouter);
-    router.use("/client",ClientRoute);
+    router.use(
+      "/collection",
+      this.middleware.authenticateEnterpriseUser,
+      EnterpriseCollectionRouter,
+    );
+    router.use(
+      "/asset",
+      this.middleware.authenticateEnterpriseUser,
+      EnterpriseAssetRegistryRouter,
+    );
+    router.use(
+      "/agent",
+      this.middleware.authenticateEnterpriseUser,
+      EnterpriseAgentsRouter,
+    );
+    router.use("/client", ClientRoute);
     router.all("/*", (req: Request, res: Response) => {
       return res.status(404).json({
         message: "ERR_URL_NOT_FOUND",

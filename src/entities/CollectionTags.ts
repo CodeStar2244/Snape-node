@@ -1,17 +1,21 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import Collections  from "./Collection";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import Collections from "./Collection";
 
 @Entity()
-export class CollectionTags{
+export class CollectionTags {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id:number
+  @Column({ unique: true })
+  tag: string;
 
-    @Column({unique:true})
-    tag:string
-
-    @ManyToMany(()=>Collections,(collection)=>collection.id)
-    @JoinTable({name:"collection_tag_join"})
-    collections:Collections[]
-
+  @ManyToMany(() => Collections, (collection) => collection.id)
+  @JoinTable({ name: "collection_tag_join" })
+  collections: Collections[];
 }

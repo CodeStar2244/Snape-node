@@ -1,65 +1,74 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import EnterpriseCollections from "./enterpriseCollections";
 
-
 export enum FileType {
-    PHOTO="PHOTO",
-    VIDEO="VIDEO"
-  }
+  PHOTO = "PHOTO",
+  VIDEO = "VIDEO",
+}
 
-@Entity("enterprisefiles",{schema:"public"})
-export default class EnterpriseFilesEntity{
+@Entity("enterprisefiles", { schema: "public" })
+export default class EnterpriseFilesEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id:number;
+  @Column()
+  name: string;
 
-    @Column()
-    name:string;
+  @Column()
+  url: string;
 
-    @Column()
-    url:string;
-    
-    @Column()
-    cdnUrl:string;
-    
-    @Column()
-    key:string;
-    
-    @Column({
-        type:"float",
-        default:0
-    })
-    size:number;
+  @Column()
+  cdnUrl: string;
 
-    @Column()
-    height:number;
-    
-    @Column()
-    width:number;
+  @Column()
+  key: string;
 
-    @Column({
-        type: "enum",
-        enum: FileType,
-        default: FileType.PHOTO
-    })
-    type:FileType
+  @Column({
+    type: "float",
+    default: 0,
+  })
+  size: number;
 
-    @Column({nullable:true})
-    compressedKey:string;
+  @Column()
+  height: number;
 
-    @Column({nullable:true})
-    compressedCdnUrl:string;
+  @Column()
+  width: number;
 
-    @Column({nullable:true , type:"float" , default:0})
-    compressedImageSize:number;
+  @Column({
+    type: "enum",
+    enum: FileType,
+    default: FileType.PHOTO,
+  })
+  type: FileType;
 
-    @ManyToOne(()=>EnterpriseCollections,(collection)=>collection.id,{onDelete:"CASCADE"})
-    collection:EnterpriseCollections;
+  @Column({ nullable: true })
+  compressedKey: string;
 
-    @CreateDateColumn({type:'timestamptz'})
-    createdAt: Date;
- 
-    @UpdateDateColumn({type:"timestamptz"})
-    updatedAt: Date;
+  @Column({ nullable: true })
+  compressedCdnUrl: string;
 
+  @Column({ nullable: true, type: "float", default: 0 })
+  compressedImageSize: number;
+
+  @ManyToOne(() => EnterpriseCollections, (collection) => collection.id, {
+    onDelete: "CASCADE",
+  })
+  collection: EnterpriseCollections;
+
+  @CreateDateColumn({ type: "timestamptz" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamptz" })
+  updatedAt: Date;
 }

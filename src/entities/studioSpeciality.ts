@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 import { IsNotEmpty } from "class-validator";
 import { Tblagent } from "./Tblagent";
-import {CDN_URL} from "../config/constants"
+import { CDN_URL } from "../config/constants";
 
 @Entity({ name: "studiospeciality" })
 export class StudioSpeciality {
@@ -25,7 +25,7 @@ export class StudioSpeciality {
 
   @ManyToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "agentId" })
-  createdBy
+  createdBy;
 
   @CreateDateColumn()
   createdAt: Date;

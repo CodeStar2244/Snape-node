@@ -33,12 +33,20 @@ export class Routes {
   public path() {
     const router = express.Router();
     router.use("/agent", UserRoute);
-    router.use("/collection",this.middleware.authenticateUser,CollectionRoute);
-    router.use("/dashboard",this.middleware.authenticateUser,DashboardRoute);
-    router.use("/portfolio",this.middleware.authenticateUser,PortfolioRoute);
-    router.use("/asset",this.middleware.authenticateUser,AssetRegistryRouter);
-    router.use("/studiomanagement",this.middleware.authenticateUser,StudioManagementRouter);
-    router.use("/client",ClientRoute);
+    router.use(
+      "/collection",
+      this.middleware.authenticateUser,
+      CollectionRoute,
+    );
+    router.use("/dashboard", this.middleware.authenticateUser, DashboardRoute);
+    router.use("/portfolio", this.middleware.authenticateUser, PortfolioRoute);
+    router.use("/asset", this.middleware.authenticateUser, AssetRegistryRouter);
+    router.use(
+      "/studiomanagement",
+      this.middleware.authenticateUser,
+      StudioManagementRouter,
+    );
+    router.use("/client", ClientRoute);
     router.all("/*", (req: Request, res: Response) => {
       return res.status(404).json({
         message: "ERR_URL_NOT_FOUND",

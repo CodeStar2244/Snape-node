@@ -6,11 +6,13 @@ export class StudioManagementMiddleware {
   public isSpecialityNotExists = async (
     req: any,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     const { id } = req.params;
     const userRepository = AppDataSource.getRepository(StudioSpeciality);
-    const result = await userRepository.findOne({ where: { id: Number(id), createdBy: { id: req?.user?.id } } });
+    const result = await userRepository.findOne({
+      where: { id: Number(id), createdBy: { id: req?.user?.id } },
+    });
 
     if (!result) {
       return res

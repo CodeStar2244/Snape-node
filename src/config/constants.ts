@@ -27,24 +27,17 @@ export const RES_STATUS = {
   SUCCESS: "success",
 };
 
-export const COLLECTION_STATUS={
-  PUBLISH:"PUBLISH",
-  UNPUBLISH:"UNPUBLISH"
-}
-export const PAYMENT_STATUS={
-  SUCESS:"success"
-}
-export const FILE_ALREADY_EXISTS ="File Already Exists";
+export const COLLECTION_STATUS = {
+  PUBLISH: "PUBLISH",
+  UNPUBLISH: "UNPUBLISH",
+};
+export const PAYMENT_STATUS = {
+  SUCESS: "success",
+};
+export const FILE_ALREADY_EXISTS = "File Already Exists";
 
 export const FREE_ACCOUNT_STORAGE = 3072;
 
 export const CDN_URL = "https://snape-buckets.b-cdn.net/";
-export const FRONT_URL = "http://snape-react-app.s3-website-us-east-1.amazonaws.com/view/"
-
-
-
-
-
-
-
-
+export const FRONT_URL =
+  "http://snape-react-app.s3-website-us-east-1.amazonaws.com/view/";
