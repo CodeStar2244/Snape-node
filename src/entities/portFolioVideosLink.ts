@@ -18,14 +18,14 @@ export enum VideoType {
 }
 
 @Entity("portFolioVideoLinks", { schema: "public" })
-export default class PortFolioFiles {
+export default class PortFolioVideoLinks {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
-
-  @Column()
+  @Column({
+    unique: true,
+    nullable: true,
+  })
   url: string;
 
   @Column()

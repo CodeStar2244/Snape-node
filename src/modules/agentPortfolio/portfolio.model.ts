@@ -187,8 +187,7 @@ export class UploadFilesModel extends Model {
 
 export class AddVideoLink extends Model {
   @IsNotEmpty()
-  @IsUrl()
-  url;
+  url: string;
 
   constructor(body: any, params: any) {
     super();

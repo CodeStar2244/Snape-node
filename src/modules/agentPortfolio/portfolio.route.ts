@@ -3,6 +3,7 @@ import { PORTFOLIO_ROUTES } from "../../config/routes";
 import { Validator } from "../../helpers/validator";
 import { PortfolioController } from "./portfolio.controller";
 import {
+  AddVideoLink,
   PortfolioGetModel,
   UpdatePortfolioModel,
   UploadFilesModel,
@@ -46,8 +47,8 @@ router.put(
 );
 router.post(
   PORTFOLIO_ROUTES.ADD_VIDEO_LINK,
-  v.validate(PortfolioGetModel),
-  portfolioController.changeCoverPhoto,
+  v.validate(AddVideoLink),
+  portfolioController.addVideoLink,
 );
 
 export const PortfolioRoute: Router = router;

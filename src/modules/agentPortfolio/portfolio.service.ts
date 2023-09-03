@@ -13,6 +13,11 @@ import { uuid } from "uuidv4";
 import { Utils } from "../../utils/utils";
 import { Tblagent } from "../../entities/Tblagent";
 import PortFolioFiles from "../../entities/portfolioFiles";
+import PortFolioVideoLinks, {
+  VideoType,
+} from "../../entities/portFolioVideosLink";
+import PortFolios from "../../entities/Portfolio";
+import { AddVideoLink } from "./portfolio.model";
 
 export class PortfolioService {
   private s3 = new AWSS3();
@@ -328,6 +333,86 @@ export class PortfolioService {
         throw ResponseBuilder.fileExists(error, FILE_ALREADY_EXISTS);
       }
       throw ResponseBuilder.error(error, "Internal Server Error");
+    }
+  };
+  public addVideoLink = async (params, body, userDetails) => {
+    try {
+      console.log("helo");
+      const videoBody = new AddVideoLink(body, params);
+      const portfolioVideoRepo =
+        AppDataSource.getRepository(PortFolioVideoLinks);
+      const portfolioRepo = AppDataSource.getRepository(PortFolios);
+      const portfolio = await portfolioRepo.findOneBy({
+        id: params.id,
+        createdBy: {
+          id: userDetails.id,
+        },
+      });
+      console.log(portfolio, "Portfolio");
+      if (!portfolio) {
+        return ResponseBuilder.badRequest("Portfolio Not Found", 404);
+      }
+      const videoLink = await portfolioVideoRepo.findOneBy({
+        url: videoBody.url,
+      });
+      console.log(videoLink, "Link");
+      if (videoLink) {
+        return ResponseBuilder.badRequest("Video Already exists");
+      }
+      if (videoBody.url.includes("iframe")) {
+        const uploadedVideo = await portfolioVideoRepo.save({
+          iframe: videoBody.url,
+          portfolio: params.id,
+        });
+        return ResponseBuilder.data({ uploadedVideo });
+      } else if (videoBody.url.includes("youtube")) {
+        const youtubeIframe = this.getIframeFromURL(videoBody.url);
+        console.log(youtubeIframe, "Iframe yourube");
+        const uploadedVideo = await portfolioVideoRepo.save({
+          url: videoBody.url,
+          portfolio: params.id,
+          iframe: youtubeIframe,
+          type: VideoType.YOUTUBE,
+        });
+        return ResponseBuilder.data({ uploadedVideo });
+      } else if (videoBody.url.includes("vimeo")) {
+        const vimeoIframe = this.getIframeFromURL(videoBody.url);
+        const uploadedVideo = await portfolioVideoRepo.save({
+          url: videoBody.url,
+          portfolio: params.id,
+          iframe: vimeoIframe,
+          type: VideoType.VIMEO,
+        });
+        return ResponseBuilder.data({ uploadedVideo });
+      }
+    } catch (error) {
+      console.log(error, "errror");
+      if (error.message === FILE_ALREADY_EXISTS) {
+        throw ResponseBuilder.fileExists(error, FILE_ALREADY_EXISTS);
+      }
+      throw ResponseBuilder.error(error, "Internal Server Error");
+    }
+  };
+  private getIframeFromURL = (videoURL: string) => {
+    if (videoURL.includes("iframe")) return videoURL;
+
+    const ytRegex =
+      /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?|watch)\?.*v=|youtu\.be\/)|^.*youtu\.be\/)([^"&?/\s]{11})/i;
+    const vimeoRegex = /vimeo\.com\/(?:video\/|.*\/videos\/)?([0-9]+)/i;
+
+    const ytMatch = videoURL.match(ytRegex);
+    const vimeoMatch = videoURL.match(vimeoRegex);
+
+    if (ytMatch) {
+      return `
+        <iframe src="https://www.youtube.com/embed/${ytMatch[1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        `;
+    } else if (vimeoMatch) {
+      return `
+        <iframe src="https://player.vimeo.com/video/${vimeoMatch[1]}?title=0&byline=0&portrait=0" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        `;
+    } else {
+      console.log("unknown video type");
     }
   };
 }

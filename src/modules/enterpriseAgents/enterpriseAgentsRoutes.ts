@@ -35,6 +35,10 @@ router.get(
   enterpriseAgentsController.getAgentPortfolio,
 );
 router.get(
+  AGENT_SERVICE.GET_AGENT_PORTFOLIO_VIDEOS,
+  enterpriseAgentsController.getAgenVideos,
+);
+router.get(
   AGENT_SERVICE.GET_AGENT_REVIEWS,
   enterpriseAgentsController.getAgentReviews,
 );

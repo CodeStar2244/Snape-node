@@ -44,6 +44,7 @@ export const AGENT_SERVICE = {
   GET_AGENT_DETAILS: "/get-agent-detail/:agentId",
   GET_AGENT_CATEGORIES: "/get-agent-categories/:agentId",
   GET_AGENT_PORTFOLIO: "/get-agent-portfolio/:agentId",
+  GET_AGENT_PORTFOLIO_VIDEOS: "/get-agent-videos/:agentId",
   FAVOURITE: "/favourite/:agentId",
   GET_AGENT_REVIEWS: "/get-agent-reviews/:agentId",
   LIST_FAVOURITES: "/list-favourite-agents",

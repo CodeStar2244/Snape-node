@@ -1,11 +1,11 @@
-'use strict';
-Object.defineProperty(exports, '__esModule', { value: true });
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.PortfolioRoute = void 0;
-var express_1 = require('express');
-var routes_1 = require('../../config/routes');
-var validator_1 = require('../../helpers/validator');
-var portfolio_controller_1 = require('./portfolio.controller');
-var portfolio_model_1 = require('./portfolio.model');
+var express_1 = require("express");
+var routes_1 = require("../../config/routes");
+var validator_1 = require("../../helpers/validator");
+var portfolio_controller_1 = require("./portfolio.controller");
+var portfolio_model_1 = require("./portfolio.model");
 var router = (0, express_1.Router)();
 var portfolioController = new portfolio_controller_1.PortfolioController();
 var v = new validator_1.Validator();
@@ -18,6 +18,6 @@ router.get(routes_1.PORTFOLIO_ROUTES.GET_FILES_NAME, portfolioController.getPort
 router.delete(routes_1.PORTFOLIO_ROUTES.DELETE_COLLECTION, portfolioController.deletePortfolio);
 router.delete(routes_1.PORTFOLIO_ROUTES.DELETE_FILES, portfolioController.deleteFiles);
 router.put(routes_1.PORTFOLIO_ROUTES.CHANGE_COVERPHOTO, portfolioController.changeCoverPhoto);
-router.post(routes_1.PORTFOLIO_ROUTES.ADD_VIDEO_LINK, v.validate(portfolio_model_1.PortfolioGetModel), portfolioController.changeCoverPhoto);
+router.post(routes_1.PORTFOLIO_ROUTES.ADD_VIDEO_LINK, v.validate(portfolio_model_1.AddVideoLink), portfolioController.addVideoLink);
 exports.PortfolioRoute = router;
 //# sourceMappingURL=portfolio.route.js.map

@@ -1,11 +1,11 @@
-'use strict';
-Object.defineProperty(exports, '__esModule', { value: true });
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnterpriseAssetRegistryRouter = void 0;
-var express_1 = require('express');
-var routes_1 = require('../../config/routes');
-var validator_1 = require('../../helpers/validator');
-var enterPriseAssetRegistry_controller_1 = require('./enterPriseAssetRegistry.controller');
-var enterpriseAssetRegistry_model_1 = require('./enterpriseAssetRegistry.model');
+var express_1 = require("express");
+var routes_1 = require("../../config/routes");
+var validator_1 = require("../../helpers/validator");
+var enterPriseAssetRegistry_controller_1 = require("./enterPriseAssetRegistry.controller");
+var enterpriseAssetRegistry_model_1 = require("./enterpriseAssetRegistry.model");
 var router = (0, express_1.Router)();
 var assetRegistryController = new enterPriseAssetRegistry_controller_1.EnterpriseAssetRegistryController();
 var v = new validator_1.Validator();

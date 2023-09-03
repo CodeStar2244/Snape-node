@@ -15,6 +15,7 @@ import {
 import { DeepPartial } from "typeorm";
 import PortFolios, { CollectionStatus } from "../../entities/Portfolio";
 import PortFolioFiles from "../../entities/portfolioFiles";
+import PortFolioVideoLinks from "../../entities/portFolioVideosLink";
 export class EnterpriseAgentsService {
   public async getAgents(query: AgentGetList, userDetails) {
     try {
@@ -292,6 +293,38 @@ export class EnterpriseAgentsService {
           id: true,
           name: true,
           type: true,
+        },
+      });
+      return ResponseBuilder.data({ portFolioFiles });
+    } catch (error) {
+      console.log(error, "Err");
+    }
+  }
+  public async getAgenVideos(params, userDetails) {
+    try {
+      const { agentId } = params;
+      const agentRepo = AppDataSource.getRepository(Tblagent);
+      const agentPortFolioRepo = AppDataSource.getRepository(PortFolios);
+      const portFolioVideosRepo =
+        AppDataSource.getRepository(PortFolioVideoLinks);
+      const agent = await agentRepo.findOne({ where: { id: agentId } });
+      if (!agent) {
+        return ResponseBuilder.badRequest("Agent not exits");
+      }
+      const agentPortfolio = await agentPortFolioRepo.findOne({
+        where: {
+          createdBy: { id: agent.id },
+          // status:CollectionStatus.HIDDEN
+        },
+      });
+      const portFolioFiles = await portFolioVideosRepo.find({
+        where: {
+          portfolio: { id: agentPortfolio.id },
+        },
+        select: {
+          iframe: true,
+          id: true,
+          url: true,
         },
       });
       return ResponseBuilder.data({ portFolioFiles });

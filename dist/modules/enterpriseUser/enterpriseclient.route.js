@@ -1,12 +1,12 @@
-'use strict';
-Object.defineProperty(exports, '__esModule', { value: true });
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.EnterpriseClientRoutes = void 0;
-var express_1 = require('express');
-var routes_1 = require('../../config/routes');
-var enterpriseclient_controller_1 = require('./enterpriseclient.controller');
-var middleware_1 = require('../../middleware');
-var validator_1 = require('../../helpers/validator');
-var enterpriseclient_model_1 = require('./enterpriseclient.model');
+var express_1 = require("express");
+var routes_1 = require("../../config/routes");
+var enterpriseclient_controller_1 = require("./enterpriseclient.controller");
+var middleware_1 = require("../../middleware");
+var validator_1 = require("../../helpers/validator");
+var enterpriseclient_model_1 = require("./enterpriseclient.model");
 // Assign router to the express.Router() instance
 var router = (0, express_1.Router)();
 var v = new validator_1.Validator();

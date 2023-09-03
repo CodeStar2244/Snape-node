@@ -114,4 +114,16 @@ export class PortfolioController {
       return res.status(error.code).json(error);
     }
   };
+  public addVideoLink = async (req, res) => {
+    try {
+      const result = await this.portfolioService.addVideoLink(
+        req.params,
+        req.body,
+        req.user,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
 }
