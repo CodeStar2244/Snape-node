@@ -519,7 +519,7 @@ var PortfolioService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 9, , 10]);
+                        _a.trys.push([0, 10, , 11]);
                         console.log("helo");
                         videoBody = new portfolio_model_1.AddVideoLink(body, params);
                         portfolioVideoRepo = db_config_1.AppDataSource.getRepository(portFolioVideosLink_1.default);
@@ -537,7 +537,7 @@ var PortfolioService = /** @class */ (function () {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Not Found", 404)];
                         }
                         return [4 /*yield*/, portfolioVideoRepo.findOneBy({
-                                url: videoBody.url
+                                url: videoBody.url,
                             })];
                     case 2:
                         videoLink = _a.sent();
@@ -545,6 +545,7 @@ var PortfolioService = /** @class */ (function () {
                         if (videoLink) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Video Already exists")];
                         }
+                        console.log(videoBody.url, "Url");
                         if (!videoBody.url.includes("iframe")) return [3 /*break*/, 4];
                         return [4 /*yield*/, portfolioVideoRepo.save({
                                 iframe: videoBody.url,
@@ -554,14 +555,14 @@ var PortfolioService = /** @class */ (function () {
                         uploadedVideo = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ uploadedVideo: uploadedVideo })];
                     case 4:
-                        if (!videoBody.url.includes("youtube")) return [3 /*break*/, 6];
+                        if (!videoBody.url.includes("youtu")) return [3 /*break*/, 6];
                         youtubeIframe = this.getIframeFromURL(videoBody.url);
                         console.log(youtubeIframe, "Iframe yourube");
                         return [4 /*yield*/, portfolioVideoRepo.save({
                                 url: videoBody.url,
                                 portfolio: params.id,
                                 iframe: youtubeIframe,
-                                type: portFolioVideosLink_1.VideoType.YOUTUBE
+                                type: portFolioVideosLink_1.VideoType.YOUTUBE,
                             })];
                     case 5:
                         uploadedVideo = _a.sent();
@@ -573,20 +574,21 @@ var PortfolioService = /** @class */ (function () {
                                 url: videoBody.url,
                                 portfolio: params.id,
                                 iframe: vimeoIframe,
-                                type: portFolioVideosLink_1.VideoType.VIMEO
+                                type: portFolioVideosLink_1.VideoType.VIMEO,
                             })];
                     case 7:
                         uploadedVideo = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ uploadedVideo: uploadedVideo })];
-                    case 8: return [3 /*break*/, 10];
-                    case 9:
+                    case 8: return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Video Url Not valid")];
+                    case 9: return [3 /*break*/, 11];
+                    case 10:
                         error_10 = _a.sent();
                         console.log(error_10, "errror");
                         if (error_10.message === constants_1.FILE_ALREADY_EXISTS) {
                             throw responseBuilder_1.ResponseBuilder.fileExists(error_10, constants_1.FILE_ALREADY_EXISTS);
                         }
                         throw responseBuilder_1.ResponseBuilder.error(error_10, "Internal Server Error");
-                    case 10: return [2 /*return*/];
+                    case 11: return [2 /*return*/];
                 }
             });
         }); };
@@ -597,6 +599,7 @@ var PortfolioService = /** @class */ (function () {
             var vimeoRegex = /vimeo\.com\/(?:video\/|.*\/videos\/)?([0-9]+)/i;
             var ytMatch = videoURL.match(ytRegex);
             var vimeoMatch = videoURL.match(vimeoRegex);
+            console.log(ytMatch, "ytmatch");
             if (ytMatch) {
                 return "\n        <iframe src=\"https://www.youtube.com/embed/".concat(ytMatch[1], "\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen></iframe>\n        ");
             }

@@ -337,7 +337,6 @@ export class PortfolioService {
   };
   public addVideoLink = async (params, body, userDetails) => {
     try {
-      console.log("helo");
       const videoBody = new AddVideoLink(body, params);
       const portfolioVideoRepo =
         AppDataSource.getRepository(PortFolioVideoLinks);
@@ -348,14 +347,12 @@ export class PortfolioService {
           id: userDetails.id,
         },
       });
-      console.log(portfolio, "Portfolio");
       if (!portfolio) {
         return ResponseBuilder.badRequest("Portfolio Not Found", 404);
       }
       const videoLink = await portfolioVideoRepo.findOneBy({
         url: videoBody.url,
       });
-      console.log(videoLink, "Link");
       if (videoLink) {
         return ResponseBuilder.badRequest("Video Already exists");
       }
@@ -365,9 +362,8 @@ export class PortfolioService {
           portfolio: params.id,
         });
         return ResponseBuilder.data({ uploadedVideo });
-      } else if (videoBody.url.includes("youtube")) {
+      } else if (videoBody.url.includes("youtu")) {
         const youtubeIframe = this.getIframeFromURL(videoBody.url);
-        console.log(youtubeIframe, "Iframe yourube");
         const uploadedVideo = await portfolioVideoRepo.save({
           url: videoBody.url,
           portfolio: params.id,
@@ -384,9 +380,10 @@ export class PortfolioService {
           type: VideoType.VIMEO,
         });
         return ResponseBuilder.data({ uploadedVideo });
+      } else {
+        return ResponseBuilder.badRequest("Video Url Not valid");
       }
     } catch (error) {
-      console.log(error, "errror");
       if (error.message === FILE_ALREADY_EXISTS) {
         throw ResponseBuilder.fileExists(error, FILE_ALREADY_EXISTS);
       }
@@ -402,6 +399,8 @@ export class PortfolioService {
 
     const ytMatch = videoURL.match(ytRegex);
     const vimeoMatch = videoURL.match(vimeoRegex);
+
+    console.log(ytMatch, "ytmatch");
 
     if (ytMatch) {
       return `

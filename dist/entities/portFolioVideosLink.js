@@ -30,7 +30,7 @@ var PortFolioVideoLinks = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)({
             unique: true,
-            nullable: true
+            nullable: true,
         }),
         __metadata("design:type", String)
     ], PortFolioVideoLinks.prototype, "url", void 0);

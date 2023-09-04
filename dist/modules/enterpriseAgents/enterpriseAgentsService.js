@@ -425,7 +425,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
                                 select: {
                                     iframe: true,
                                     id: true,
-                                    url: true
+                                    url: true,
                                 },
                             })];
                     case 3:
