@@ -10,6 +10,9 @@ import {
 import { StudioTemplate } from "../../entities/studioTemplate";
 import { StudioQuestionnaries } from "../../entities/studioQuestionnaries";
 import { Mailer } from "../../helpers/mailer";
+import StudioInvoice from "../../entities/studioInvoice";
+import moment from "moment-timezone";
+import StudioQuotation from "../../entities/studioQuotation";
 export class StudioManagementService {
   public createClient = async (userDetails, body) => {
     try {
@@ -295,6 +298,247 @@ export class StudioManagementService {
       return ResponseBuilder.data({
         data: { questionnarires },
         message: "Questionnaries created successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public createInvoice = async (user, params) => {
+    try {
+      const invoiceRepo = AppDataSource.getRepository(StudioInvoice);
+      const clientRepo = AppDataSource.getRepository(StudioClient);
+
+      const client = await clientRepo.findOne({
+        where: { id: params?.clientId },
+      });
+
+      const invoice = await invoiceRepo.save({
+        ...params,
+        clientId:client?.id,
+        createdBy: user?.id,
+      });
+
+      const formattedDate = moment(invoice?.dueOnReceipt).format("MMMM D, YYYY");
+
+      const renderData = {
+        userName: user?.firstName + " " + user?.lastName,
+        invoiceName: invoice?.name,
+        invoiceAmount:invoice?.totalAmount,
+        invoiceDetails:invoice?.invoiceDetails,
+        dueDate:formattedDate,
+        clientName: client?.name,
+        currency: invoice?.currency,
+        userEmail: user.email,
+      };
+
+      const mailBody = await Mailer.renderTemplate(
+        "Invoice",
+        renderData,
+      );
+      Mailer.sendMail(client?.email, params?.subject, mailBody);
+      return ResponseBuilder.data({
+        data: { invoice },
+        message: "invoice created successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public getInvoices = async (user) => {
+    try {
+      const quesRepo = AppDataSource.getRepository(StudioInvoice);
+      const invoices = await quesRepo.find({
+        where: {createdBy: { id: user?.id } },
+        relations: ["clientId"],
+      });
+      return ResponseBuilder.data({
+        data: { invoices },
+        message: "Invoices listed successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public getInvoice = async (user, id) => {
+    try {
+      const quesRepo = AppDataSource.getRepository(StudioInvoice);
+      const invoice = await quesRepo.findOne({
+        where: { id, createdBy: { id: user?.id } },
+        relations: ["clientId"],
+      });
+      return ResponseBuilder.data({
+        data: { invoice },
+        message: "Invoice get successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public editInvoice = async (params, body): Promise<any> => {
+    try {
+      const invoiceRepo = AppDataSource.getRepository(StudioInvoice);
+      
+      await invoiceRepo.update(
+          { id: params?.id },
+          body,
+      );
+
+      const invoice = await invoiceRepo.findOne({
+        where: { id:params?.id},
+        relations: ["clientId"],
+      });
+
+      return ResponseBuilder.data({
+        message: "Invoice edit successfully",
+        data: invoice,
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public deleteInvoice = async (user, id) => {
+    try {
+      const invoiceRepo = AppDataSource.getRepository(StudioInvoice);
+
+      await invoiceRepo.delete({
+        id,
+        createdBy: { id: user?.id },
+      });
+
+      return ResponseBuilder.data({
+        data: {},
+        message: "Invoices deleted successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+
+  
+
+  public createQuotation = async (user, params) => {
+    try {
+      const invoiceRepo = AppDataSource.getRepository(StudioQuotation);
+      const clientRepo = AppDataSource.getRepository(StudioClient);
+
+      const client = await clientRepo.findOne({
+        where: { id: params?.clientId },
+      });
+
+      const invoice = await invoiceRepo.save({
+        ...params,
+        clientId:client?.id,
+        createdBy: user?.id,
+      });
+
+      const renderData = {
+        userName: user?.firstName + " " + user?.lastName,
+        invoiceName: invoice?.name,
+        invoiceAmount:invoice?.totalAmount,
+        invoiceDetails:invoice?.invoiceDetails,
+        validFor:invoice?.validFor,
+        clientName: client?.name,
+        currency: invoice?.currency,
+        userEmail: user.email,
+      };
+
+      const mailBody = await Mailer.renderTemplate(
+        "Quotation",
+        renderData,
+      );
+      Mailer.sendMail(client?.email, params?.subject, mailBody);
+      return ResponseBuilder.data({
+        data: { invoice },
+        message: "quotation created successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public getQuotations = async (user) => {
+    try {
+      const quesRepo = AppDataSource.getRepository(StudioQuotation);
+      const quotations = await quesRepo.find({
+        where: {createdBy: { id: user?.id } },
+        relations: ["clientId"],
+      });
+      return ResponseBuilder.data({
+        data: { quotations },
+        message: "Quotations listed successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public getQuotation = async (user, id) => {
+    try {
+      const quesRepo = AppDataSource.getRepository(StudioQuotation);
+      const quotation = await quesRepo.findOne({
+        where: { id, createdBy: { id: user?.id } },
+        relations: ["clientId"],
+      });
+      return ResponseBuilder.data({
+        data: { quotation },
+        message: "Quotation get successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public editQuotation = async (params, body): Promise<any> => {
+    try {
+      const invoiceRepo = AppDataSource.getRepository(StudioQuotation);
+      
+      await invoiceRepo.update(
+          { id: params?.id },
+          body,
+      );
+
+      const quotation = await invoiceRepo.findOne({
+        where: { id:params?.id},
+        relations: ["clientId"],
+      });
+
+      return ResponseBuilder.data({
+        message: "Quotation edit successfully",
+        data: quotation,
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public deleteQuotation = async (user, id) => {
+    try {
+      const invoiceRepo = AppDataSource.getRepository(StudioQuotation);
+
+      await invoiceRepo.delete({
+        id,
+        createdBy: { id: user?.id },
+      });
+
+      return ResponseBuilder.data({
+        data: {},
+        message: "Quotation deleted successfully",
       });
     } catch (error) {
       console.log(error);

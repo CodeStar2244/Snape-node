@@ -71,6 +71,22 @@ export const QUESTIONNARIES_ROUTES = {
   DELETE_QUESTIONNARIES: "/questionnaries/:id",
 };
 
+export const INVOICE_ROUTES = {
+  GET_INVOICES: "/invoice",
+  GET_INVOICE: "/invoice/:id",
+  CREATE_INVOICE: "/invoice",
+  UPDATE_INVOICE: "/invoice/:id",
+  DELETE_INVOICE: "/invoice/:id",
+};
+
+export const QUOTATION_ROUTES = {
+  GET_QUOTATIONS: "/quotation",
+  GET_QUOTATION: "/quotation/:id",
+  CREATE_QUOTATION: "/quotation",
+  UPDATE_QUOTATION: "/quotation/:id",
+  DELETE_QUOTATION: "/quotation/:id",
+};
+
 export const PORTFOLIO_ROUTES = {
   CREATE_COLLECTION: "/",
   GET_COLLECTIONS: "/",

@@ -272,14 +272,15 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, result, error_13;
+        this.createInvoice = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, params, result, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.clientService.getQuestionnaries(userDetails)];
+                        params = req.body;
+                        return [4 /*yield*/, this.clientService.createInvoice(userDetails, params)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -290,8 +291,195 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getInvoices = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_14;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.clientService.getInvoices(userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_14 = _a.sent();
+                        return [2 /*return*/, res.status(error_14.code).json(error_14)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getInvoice = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_15;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.getInvoice(userDetails, id)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_15 = _a.sent();
+                        return [2 /*return*/, res.status(error_15.code).json(error_15)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.editInvoice = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_16;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clientService.editInvoice(req.params, req.body)];
+                    case 1:
+                        result = _a.sent();
+                        res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_16 = _a.sent();
+                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteInvoice = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_17;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.deleteInvoice(userDetails, id)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_17 = _a.sent();
+                        return [2 /*return*/, res.status(error_17.code).json(error_17)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.createQuotation = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, params, result, error_18;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        params = req.body;
+                        return [4 /*yield*/, this.clientService.createQuotation(userDetails, params)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_18 = _a.sent();
+                        return [2 /*return*/, res.status(error_18.code).json(error_18)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getQuotations = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_19;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.clientService.getQuotations(userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_19 = _a.sent();
+                        return [2 /*return*/, res.status(error_19.code).json(error_19)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getQuotation = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_20;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.getQuotation(userDetails, id)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_20 = _a.sent();
+                        return [2 /*return*/, res.status(error_20.code).json(error_20)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.editQuotation = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_21;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clientService.editQuotation(req.params, req.body)];
+                    case 1:
+                        result = _a.sent();
+                        res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_21 = _a.sent();
+                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteQuotation = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_22;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.deleteQuotation(userDetails, id)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_22 = _a.sent();
+                        return [2 /*return*/, res.status(error_22.code).json(error_22)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_23;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.clientService.getQuestionnaries(userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_23 = _a.sent();
+                        return [2 /*return*/, res.status(error_23.code).json(error_23)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.getClientQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, id, result, error_14;
+            var userDetails, id, result, error_24;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -303,14 +491,14 @@ var StudioManagementController = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_14 = _a.sent();
-                        return [2 /*return*/, res.status(error_14.code).json(error_14)];
+                        error_24 = _a.sent();
+                        return [2 /*return*/, res.status(error_24.code).json(error_24)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.deleteQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, id, result, error_15;
+            var userDetails, id, result, error_25;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -322,8 +510,8 @@ var StudioManagementController = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_15 = _a.sent();
-                        return [2 /*return*/, res.status(error_15.code).json(error_15)];
+                        error_25 = _a.sent();
+                        return [2 /*return*/, res.status(error_25.code).json(error_25)];
                     case 3: return [2 /*return*/];
                 }
             });

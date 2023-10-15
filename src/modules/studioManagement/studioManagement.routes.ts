@@ -4,6 +4,8 @@ import {
   SPECIALITY_ROUTES,
   TEMPLATES_ROUTES,
   QUESTIONNARIES_ROUTES,
+  INVOICE_ROUTES,
+  QUOTATION_ROUTES,
 } from "../../config/routes";
 import { Validator } from "../../helpers/validator";
 import { StudioManagementController } from "./studioManagement.controller";
@@ -16,6 +18,8 @@ import {
   GetTemplates,
   CreateTemplate,
   CreateQuestionnaries,
+  CreateInvoice,
+  CreateQuotation,
 } from "./studioManagement.model";
 import { StudioManagementMiddleware } from "./studioManagement.middleware";
 
@@ -106,6 +110,58 @@ router.get(
 router.delete(
   QUESTIONNARIES_ROUTES.DELETE_QUESTIONNARIES,
   studioManagementController.deleteQuestionnaries,
+);
+
+router.post(
+  INVOICE_ROUTES.CREATE_INVOICE,
+  v.validate(CreateInvoice),
+  studioManagementController.createInvoice,
+);
+
+router.get(
+  INVOICE_ROUTES.GET_INVOICES,
+  studioManagementController.getInvoices,
+);
+
+router.get(
+  INVOICE_ROUTES.GET_INVOICE,
+  studioManagementController.getInvoice,
+);
+
+router.post(
+  INVOICE_ROUTES.UPDATE_INVOICE,
+  studioManagementController.editInvoice,
+);
+
+router.delete(
+  INVOICE_ROUTES.DELETE_INVOICE,
+  studioManagementController.deleteInvoice,
+);
+
+router.post(
+  QUOTATION_ROUTES.CREATE_QUOTATION,
+  v.validate(CreateQuotation),
+  studioManagementController.createQuotation,
+);
+
+router.get(
+  QUOTATION_ROUTES.GET_QUOTATIONS,
+  studioManagementController.getQuotations,
+);
+
+router.get(
+  QUOTATION_ROUTES.GET_QUOTATION,
+  studioManagementController.getQuotation,
+);
+
+router.post(
+  QUOTATION_ROUTES.UPDATE_QUOTATION,
+  studioManagementController.editQuotation,
+);
+
+router.delete(
+  QUOTATION_ROUTES.DELETE_QUOTATION,
+  studioManagementController.deleteQuotation,
 );
 
 export const StudioManagementRouter: Router = router;

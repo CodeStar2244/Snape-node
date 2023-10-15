@@ -59,6 +59,9 @@ var constants_1 = require("../../config/constants");
 var studioTemplate_1 = require("../../entities/studioTemplate");
 var studioQuestionnaries_1 = require("../../entities/studioQuestionnaries");
 var mailer_1 = require("../../helpers/mailer");
+var studioInvoice_1 = __importDefault(require("../../entities/studioInvoice"));
+var moment_timezone_1 = __importDefault(require("moment-timezone"));
+var studioQuotation_1 = __importDefault(require("../../entities/studioQuotation"));
 var StudioManagementService = /** @class */ (function () {
     function StudioManagementService() {
         var _this = this;
@@ -432,8 +435,299 @@ var StudioManagementService = /** @class */ (function () {
                 }
             });
         }); };
+        this.createInvoice = function (user, params) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, clientRepo, client, invoice, formattedDate, renderData, mailBody, error_13;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        invoiceRepo = db_config_1.AppDataSource.getRepository(studioInvoice_1.default);
+                        clientRepo = db_config_1.AppDataSource.getRepository(studioClient_1.default);
+                        return [4 /*yield*/, clientRepo.findOne({
+                                where: { id: params === null || params === void 0 ? void 0 : params.clientId },
+                            })];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, invoiceRepo.save(__assign(__assign({}, params), { clientId: client === null || client === void 0 ? void 0 : client.id, createdBy: user === null || user === void 0 ? void 0 : user.id }))];
+                    case 2:
+                        invoice = _a.sent();
+                        formattedDate = (0, moment_timezone_1.default)(invoice === null || invoice === void 0 ? void 0 : invoice.dueOnReceipt).format("MMMM D, YYYY");
+                        renderData = {
+                            userName: (user === null || user === void 0 ? void 0 : user.firstName) + " " + (user === null || user === void 0 ? void 0 : user.lastName),
+                            invoiceName: invoice === null || invoice === void 0 ? void 0 : invoice.name,
+                            invoiceAmount: invoice === null || invoice === void 0 ? void 0 : invoice.totalAmount,
+                            invoiceDetails: invoice === null || invoice === void 0 ? void 0 : invoice.invoiceDetails,
+                            dueDate: formattedDate,
+                            clientName: client === null || client === void 0 ? void 0 : client.name,
+                            currency: invoice === null || invoice === void 0 ? void 0 : invoice.currency,
+                            userEmail: user.email,
+                        };
+                        return [4 /*yield*/, mailer_1.Mailer.renderTemplate("Invoice", renderData)];
+                    case 3:
+                        mailBody = _a.sent();
+                        mailer_1.Mailer.sendMail(client === null || client === void 0 ? void 0 : client.email, params === null || params === void 0 ? void 0 : params.subject, mailBody);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { invoice: invoice },
+                                message: "invoice created successfully",
+                            })];
+                    case 4:
+                        error_13 = _a.sent();
+                        console.log(error_13);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_13 === null || error_13 === void 0 ? void 0 : error_13.message)];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getInvoices = function (user) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, invoices, error_14;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioInvoice_1.default);
+                        return [4 /*yield*/, quesRepo.find({
+                                where: { createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
+                                relations: ["clientId"],
+                            })];
+                    case 1:
+                        invoices = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { invoices: invoices },
+                                message: "Invoices listed successfully",
+                            })];
+                    case 2:
+                        error_14 = _a.sent();
+                        console.log(error_14);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_14 === null || error_14 === void 0 ? void 0 : error_14.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getInvoice = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, invoice, error_15;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioInvoice_1.default);
+                        return [4 /*yield*/, quesRepo.findOne({
+                                where: { id: id, createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
+                                relations: ["clientId"],
+                            })];
+                    case 1:
+                        invoice = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { invoice: invoice },
+                                message: "Invoice get successfully",
+                            })];
+                    case 2:
+                        error_15 = _a.sent();
+                        console.log(error_15);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_15 === null || error_15 === void 0 ? void 0 : error_15.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.editInvoice = function (params, body) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, invoice, error_16;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        invoiceRepo = db_config_1.AppDataSource.getRepository(studioInvoice_1.default);
+                        return [4 /*yield*/, invoiceRepo.update({ id: params === null || params === void 0 ? void 0 : params.id }, body)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, invoiceRepo.findOne({
+                                where: { id: params === null || params === void 0 ? void 0 : params.id },
+                                relations: ["clientId"],
+                            })];
+                    case 2:
+                        invoice = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                message: "Invoice edit successfully",
+                                data: invoice,
+                            })];
+                    case 3:
+                        error_16 = _a.sent();
+                        console.log(error_16);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_16 === null || error_16 === void 0 ? void 0 : error_16.message)];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteInvoice = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, error_17;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        invoiceRepo = db_config_1.AppDataSource.getRepository(studioInvoice_1.default);
+                        return [4 /*yield*/, invoiceRepo.delete({
+                                id: id,
+                                createdBy: { id: user === null || user === void 0 ? void 0 : user.id },
+                            })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: {},
+                                message: "Invoices deleted successfully",
+                            })];
+                    case 2:
+                        error_17 = _a.sent();
+                        console.log(error_17);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_17 === null || error_17 === void 0 ? void 0 : error_17.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.createQuotation = function (user, params) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, clientRepo, client, invoice, renderData, mailBody, error_18;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        invoiceRepo = db_config_1.AppDataSource.getRepository(studioQuotation_1.default);
+                        clientRepo = db_config_1.AppDataSource.getRepository(studioClient_1.default);
+                        return [4 /*yield*/, clientRepo.findOne({
+                                where: { id: params === null || params === void 0 ? void 0 : params.clientId },
+                            })];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, invoiceRepo.save(__assign(__assign({}, params), { clientId: client === null || client === void 0 ? void 0 : client.id, createdBy: user === null || user === void 0 ? void 0 : user.id }))];
+                    case 2:
+                        invoice = _a.sent();
+                        renderData = {
+                            userName: (user === null || user === void 0 ? void 0 : user.firstName) + " " + (user === null || user === void 0 ? void 0 : user.lastName),
+                            invoiceName: invoice === null || invoice === void 0 ? void 0 : invoice.name,
+                            invoiceAmount: invoice === null || invoice === void 0 ? void 0 : invoice.totalAmount,
+                            invoiceDetails: invoice === null || invoice === void 0 ? void 0 : invoice.invoiceDetails,
+                            validFor: invoice === null || invoice === void 0 ? void 0 : invoice.validFor,
+                            clientName: client === null || client === void 0 ? void 0 : client.name,
+                            currency: invoice === null || invoice === void 0 ? void 0 : invoice.currency,
+                            userEmail: user.email,
+                        };
+                        return [4 /*yield*/, mailer_1.Mailer.renderTemplate("Quotation", renderData)];
+                    case 3:
+                        mailBody = _a.sent();
+                        mailer_1.Mailer.sendMail(client === null || client === void 0 ? void 0 : client.email, params === null || params === void 0 ? void 0 : params.subject, mailBody);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { invoice: invoice },
+                                message: "quotation created successfully",
+                            })];
+                    case 4:
+                        error_18 = _a.sent();
+                        console.log(error_18);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_18 === null || error_18 === void 0 ? void 0 : error_18.message)];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getQuotations = function (user) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, quotations, error_19;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioQuotation_1.default);
+                        return [4 /*yield*/, quesRepo.find({
+                                where: { createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
+                                relations: ["clientId"],
+                            })];
+                    case 1:
+                        quotations = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { quotations: quotations },
+                                message: "Quotations listed successfully",
+                            })];
+                    case 2:
+                        error_19 = _a.sent();
+                        console.log(error_19);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_19 === null || error_19 === void 0 ? void 0 : error_19.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getQuotation = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, quotation, error_20;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioQuotation_1.default);
+                        return [4 /*yield*/, quesRepo.findOne({
+                                where: { id: id, createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
+                                relations: ["clientId"],
+                            })];
+                    case 1:
+                        quotation = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { quotation: quotation },
+                                message: "Quotation get successfully",
+                            })];
+                    case 2:
+                        error_20 = _a.sent();
+                        console.log(error_20);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_20 === null || error_20 === void 0 ? void 0 : error_20.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.editQuotation = function (params, body) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, quotation, error_21;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        invoiceRepo = db_config_1.AppDataSource.getRepository(studioQuotation_1.default);
+                        return [4 /*yield*/, invoiceRepo.update({ id: params === null || params === void 0 ? void 0 : params.id }, body)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, invoiceRepo.findOne({
+                                where: { id: params === null || params === void 0 ? void 0 : params.id },
+                                relations: ["clientId"],
+                            })];
+                    case 2:
+                        quotation = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                message: "Quotation edit successfully",
+                                data: quotation,
+                            })];
+                    case 3:
+                        error_21 = _a.sent();
+                        console.log(error_21);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_21 === null || error_21 === void 0 ? void 0 : error_21.message)];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteQuotation = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, error_22;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        invoiceRepo = db_config_1.AppDataSource.getRepository(studioQuotation_1.default);
+                        return [4 /*yield*/, invoiceRepo.delete({
+                                id: id,
+                                createdBy: { id: user === null || user === void 0 ? void 0 : user.id },
+                            })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: {},
+                                message: "Quotation deleted successfully",
+                            })];
+                    case 2:
+                        error_22 = _a.sent();
+                        console.log(error_22);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_22 === null || error_22 === void 0 ? void 0 : error_22.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.getQuestionnaries = function (user) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, questionnarires, error_13;
+            var quesRepo, questionnarires, error_23;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -452,15 +746,15 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries created successfully",
                             })];
                     case 2:
-                        error_13 = _a.sent();
-                        console.log(error_13);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_13 === null || error_13 === void 0 ? void 0 : error_13.message)];
+                        error_23 = _a.sent();
+                        console.log(error_23);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_23 === null || error_23 === void 0 ? void 0 : error_23.message)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.getClientQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, questionnarires, error_14;
+            var quesRepo, questionnarires, error_24;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -477,15 +771,15 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries created successfully",
                             })];
                     case 2:
-                        error_14 = _a.sent();
-                        console.log(error_14);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_14 === null || error_14 === void 0 ? void 0 : error_14.message)];
+                        error_24 = _a.sent();
+                        console.log(error_24);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_24 === null || error_24 === void 0 ? void 0 : error_24.message)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.deleteQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, error_15;
+            var quesRepo, error_25;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -502,9 +796,9 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries deleted successfully",
                             })];
                     case 2:
-                        error_15 = _a.sent();
-                        console.log(error_15);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_15 === null || error_15 === void 0 ? void 0 : error_15.message)];
+                        error_25 = _a.sent();
+                        console.log(error_25);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_25 === null || error_25 === void 0 ? void 0 : error_25.message)];
                     case 3: return [2 /*return*/];
                 }
             });

@@ -520,7 +520,6 @@ var PortfolioService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 10, , 11]);
-                        console.log("helo");
                         videoBody = new portfolio_model_1.AddVideoLink(body, params);
                         portfolioVideoRepo = db_config_1.AppDataSource.getRepository(portFolioVideosLink_1.default);
                         portfolioRepo = db_config_1.AppDataSource.getRepository(Portfolio_2.default);
@@ -532,7 +531,6 @@ var PortfolioService = /** @class */ (function () {
                             })];
                     case 1:
                         portfolio = _a.sent();
-                        console.log(portfolio, "Portfolio");
                         if (!portfolio) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Portfolio Not Found", 404)];
                         }
@@ -541,11 +539,9 @@ var PortfolioService = /** @class */ (function () {
                             })];
                     case 2:
                         videoLink = _a.sent();
-                        console.log(videoLink, "Link");
                         if (videoLink) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Video Already exists")];
                         }
-                        console.log(videoBody.url, "Url");
                         if (!videoBody.url.includes("iframe")) return [3 /*break*/, 4];
                         return [4 /*yield*/, portfolioVideoRepo.save({
                                 iframe: videoBody.url,
@@ -557,7 +553,6 @@ var PortfolioService = /** @class */ (function () {
                     case 4:
                         if (!videoBody.url.includes("youtu")) return [3 /*break*/, 6];
                         youtubeIframe = this.getIframeFromURL(videoBody.url);
-                        console.log(youtubeIframe, "Iframe yourube");
                         return [4 /*yield*/, portfolioVideoRepo.save({
                                 url: videoBody.url,
                                 portfolio: params.id,
@@ -583,7 +578,6 @@ var PortfolioService = /** @class */ (function () {
                     case 9: return [3 /*break*/, 11];
                     case 10:
                         error_10 = _a.sent();
-                        console.log(error_10, "errror");
                         if (error_10.message === constants_1.FILE_ALREADY_EXISTS) {
                             throw responseBuilder_1.ResponseBuilder.fileExists(error_10, constants_1.FILE_ALREADY_EXISTS);
                         }

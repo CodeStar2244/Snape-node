@@ -172,3 +172,57 @@ export class CreateQuestionnaries extends Model {
     this.message = message?.trim();
   }
 }
+
+export class CreateInvoice extends Model {
+  @IsNotEmpty()
+  name: string;
+
+  @IsNotEmpty()
+  currency: string;
+
+  @IsNotEmpty()
+  subject: string;
+
+  @IsNotEmpty()
+  notes: string;
+
+  @IsNumber()
+  clientId: number;
+
+  constructor(body: any) {
+    super();
+    const { name, currency, notes, clientId, subject } = body;
+    this.name = name?.trim();
+    this.currency = currency?.trim();
+    this.subject = subject?.trim();
+    this.notes = notes?.trim();
+    this.clientId = clientId;
+  }
+}
+
+export class CreateQuotation extends Model {
+  @IsNotEmpty()
+  name: string;
+
+  @IsNotEmpty()
+  currency: string;
+
+  @IsNotEmpty()
+  subject: string;
+
+  @IsNotEmpty()
+  notes: string;
+
+  @IsNumber()
+  clientId: number;
+
+  constructor(body: any) {
+    super();
+    const { name, currency, notes, clientId, subject } = body;
+    this.name = name?.trim();
+    this.currency = currency?.trim();
+    this.subject = subject?.trim();
+    this.notes = notes?.trim();
+    this.clientId = clientId;
+  }
+}

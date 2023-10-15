@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateQuestionnaries = exports.CreateTemplate = exports.GetTemplates = exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.UpdateStudioClientModel = exports.CreateStudioClientModel = void 0;
+exports.CreateQuotation = exports.CreateInvoice = exports.CreateQuestionnaries = exports.CreateTemplate = exports.GetTemplates = exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.UpdateStudioClientModel = exports.CreateStudioClientModel = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var CreateStudioClientModel = /** @class */ (function (_super) {
@@ -240,4 +240,74 @@ var CreateQuestionnaries = /** @class */ (function (_super) {
     return CreateQuestionnaries;
 }(model_1.Model));
 exports.CreateQuestionnaries = CreateQuestionnaries;
+var CreateInvoice = /** @class */ (function (_super) {
+    __extends(CreateInvoice, _super);
+    function CreateInvoice(body) {
+        var _this = _super.call(this) || this;
+        var name = body.name, currency = body.currency, notes = body.notes, clientId = body.clientId, subject = body.subject;
+        _this.name = name === null || name === void 0 ? void 0 : name.trim();
+        _this.currency = currency === null || currency === void 0 ? void 0 : currency.trim();
+        _this.subject = subject === null || subject === void 0 ? void 0 : subject.trim();
+        _this.notes = notes === null || notes === void 0 ? void 0 : notes.trim();
+        _this.clientId = clientId;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateInvoice.prototype, "name", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateInvoice.prototype, "currency", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateInvoice.prototype, "subject", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateInvoice.prototype, "notes", void 0);
+    __decorate([
+        (0, class_validator_1.IsNumber)(),
+        __metadata("design:type", Number)
+    ], CreateInvoice.prototype, "clientId", void 0);
+    return CreateInvoice;
+}(model_1.Model));
+exports.CreateInvoice = CreateInvoice;
+var CreateQuotation = /** @class */ (function (_super) {
+    __extends(CreateQuotation, _super);
+    function CreateQuotation(body) {
+        var _this = _super.call(this) || this;
+        var name = body.name, currency = body.currency, notes = body.notes, clientId = body.clientId, subject = body.subject;
+        _this.name = name === null || name === void 0 ? void 0 : name.trim();
+        _this.currency = currency === null || currency === void 0 ? void 0 : currency.trim();
+        _this.subject = subject === null || subject === void 0 ? void 0 : subject.trim();
+        _this.notes = notes === null || notes === void 0 ? void 0 : notes.trim();
+        _this.clientId = clientId;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateQuotation.prototype, "name", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateQuotation.prototype, "currency", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateQuotation.prototype, "subject", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateQuotation.prototype, "notes", void 0);
+    __decorate([
+        (0, class_validator_1.IsNumber)(),
+        __metadata("design:type", Number)
+    ], CreateQuotation.prototype, "clientId", void 0);
+    return CreateQuotation;
+}(model_1.Model));
+exports.CreateQuotation = CreateQuotation;
 //# sourceMappingURL=studioManagement.model.js.map

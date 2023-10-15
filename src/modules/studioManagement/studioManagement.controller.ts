@@ -142,6 +142,139 @@ export class StudioManagementController {
     }
   };
 
+  public createInvoice = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const params = req.body;
+      const result = await this.clientService.createInvoice(
+        userDetails,
+        params,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  public getInvoices = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const result = await this.clientService.getInvoices(
+        userDetails
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  public getInvoice = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const { id } = req.params;
+      const result = await this.clientService.getInvoice(
+        userDetails,
+        id,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  editInvoice = async (req: Request, res: any) => {
+    try {
+      const result = await this.clientService.editInvoice(
+        req.params,
+        req.body,
+      );
+      res.status(result.code).json(result?.result || result?.error);
+    } catch (error) {
+      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+    }
+  };
+
+  public deleteInvoice = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const { id } = req.params;
+      const result = await this.clientService.deleteInvoice(
+        userDetails,
+        id,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  
+  public createQuotation = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const params = req.body;
+      const result = await this.clientService.createQuotation(
+        userDetails,
+        params,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  public getQuotations = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const result = await this.clientService.getQuotations(
+        userDetails
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  public getQuotation = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const { id } = req.params;
+      const result = await this.clientService.getQuotation(
+        userDetails,
+        id,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  public editQuotation = async (req: Request, res: any) => {
+    try {
+      const result = await this.clientService.editQuotation(
+        req.params,
+        req.body,
+      );
+      res.status(result.code).json(result?.result || result?.error);
+    } catch (error) {
+      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+    }
+  };
+
+  public deleteQuotation = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const { id } = req.params;
+      const result = await this.clientService.deleteQuotation(
+        userDetails,
+        id,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
   public getQuestionnaries = async (req, res) => {
     try {
       const userDetails = req.user;

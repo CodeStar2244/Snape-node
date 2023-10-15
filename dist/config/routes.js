@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SPECIALITY_ROUTES = exports.PORTFOLIO_ROUTES = exports.QUESTIONNARIES_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.SPECIALITY_ROUTES = exports.PORTFOLIO_ROUTES = exports.QUOTATION_ROUTES = exports.INVOICE_ROUTES = exports.QUESTIONNARIES_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login",
     GET_REMANING_SPACE: "/get-remaining-space",
@@ -69,6 +69,20 @@ exports.QUESTIONNARIES_ROUTES = {
     GET_CLIENT_QUESTIONNARIES: "/questionanries/:id",
     CREATE_QUESTIONNARIES: "/questionnaries",
     DELETE_QUESTIONNARIES: "/questionnaries/:id",
+};
+exports.INVOICE_ROUTES = {
+    GET_INVOICES: "/invoice",
+    GET_INVOICE: "/invoice/:id",
+    CREATE_INVOICE: "/invoice",
+    UPDATE_INVOICE: "/invoice/:id",
+    DELETE_INVOICE: "/invoice/:id",
+};
+exports.QUOTATION_ROUTES = {
+    GET_QUOTATIONS: "/quotation",
+    GET_QUOTATION: "/quotation/:id",
+    CREATE_QUOTATION: "/quotation",
+    UPDATE_QUOTATION: "/quotation/:id",
+    DELETE_QUOTATION: "/quotation/:id",
 };
 exports.PORTFOLIO_ROUTES = {
     CREATE_COLLECTION: "/",
