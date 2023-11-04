@@ -46,76 +46,87 @@ var axios_1 = __importDefault(require("axios"));
 var transactions_1 = __importDefault(require("../../entities/transactions"));
 var agentPlans_1 = __importDefault(require("../../entities/agentPlans"));
 var moment_1 = __importDefault(require("moment"));
+var plans_1 = __importDefault(require("../../entities/plans"));
+var agentSettings_1 = __importDefault(require("../../entities/agentSettings"));
 var AgentPaymentService = /** @class */ (function () {
     function AgentPaymentService() {
         var _this = this;
         this.initiatePayment = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
-            var paymentUrl, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, reference, authorization_url, error_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.generatePaymentLink(body.amount, userDetails.email, userDetails.id)];
+                        _b.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.generatePaymentLink(userDetails.email, userDetails.id, body.planId)];
                     case 1:
-                        paymentUrl = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ paymentUrl: paymentUrl })];
+                        _a = _b.sent(), reference = _a.reference, authorization_url = _a.authorization_url;
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ paymentUrl: authorization_url, reference: reference })];
                     case 2:
-                        error_1 = _a.sent();
+                        error_1 = _b.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_1);
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
-        this.generatePaymentLink = function (amount, email, agentId) { return __awaiter(_this, void 0, void 0, function () {
-            var transactions, additionalDetails, paymentDetails, headers, data, newTransaction, error_2;
+        this.generatePaymentLink = function (email, agentId, planId) { return __awaiter(_this, void 0, void 0, function () {
+            var transactions, planRepo, plan, additionalDetails, paymentDetails, headers, data, newTransaction, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 3, , 4]);
                         transactions = db_config_1.AppDataSource.getRepository(transactions_1.default);
+                        planRepo = db_config_1.AppDataSource.getRepository(plans_1.default);
+                        return [4 /*yield*/, planRepo.findOne({ where: {
+                                    id: planId
+                                } })];
+                    case 1:
+                        plan = _a.sent();
                         additionalDetails = {
                             agentId: agentId,
+                            planId: planId
                         };
                         paymentDetails = {
-                            amount: amount,
                             email: email,
                             currency: process.env.CURRENCY,
                             callback_url: process.env.PAYSTACK_CALLBACK,
                             metadata: JSON.stringify(additionalDetails),
-                            plan: "PLN_ulcpelooub9i6mi",
+                            plan: plan.code,
                         };
                         headers = {
                             authorization: "Bearer ".concat(process.env.PAYSTACK_SECRET),
                         };
                         return [4 /*yield*/, axios_1.default.post(process.env.PAYSTACK_API_URL + "initialize", paymentDetails, { headers: headers })];
-                    case 1:
+                    case 2:
                         data = (_a.sent()).data.data;
                         newTransaction = transactions.create({
                             agentId: agentId,
-                            amount: amount,
+                            amount: plan.amountPerMonth,
                             referenceId: data.reference,
                             transactionId: data.reference,
+                            planId: plan
                         });
                         transactions.save(newTransaction);
-                        return [2 /*return*/, data.authorization_url];
-                    case 2:
+                        return [2 /*return*/, { authorization_url: data.authorization_url, reference: data.reference }];
+                    case 3:
                         error_2 = _a.sent();
                         throw error_2;
-                    case 3: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
-        this.verifyTransaction = function (referenceId, userDetails, query) { return __awaiter(_this, void 0, void 0, function () {
-            var transactionsRepo, transaction, headers, data, error_3;
+        this.verifyTransaction = function (body, userDetails, query) { return __awaiter(_this, void 0, void 0, function () {
+            var referenceId, transactionsRepo, transaction, headers, data, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 7, , 8]);
+                        referenceId = query.reference;
                         transactionsRepo = db_config_1.AppDataSource.getRepository(transactions_1.default);
                         return [4 /*yield*/, transactionsRepo.findOne({
                                 where: {
                                     referenceId: referenceId,
                                 },
+                                relations: ["agentId", "planId"]
                             })];
                     case 1:
                         transaction = _a.sent();
@@ -129,7 +140,7 @@ var AgentPaymentService = /** @class */ (function () {
                     case 2:
                         data = (_a.sent()).data.data;
                         if (!(data.status === "success")) return [3 /*break*/, 5];
-                        return [4 /*yield*/, transactionsRepo.update(transaction.id, { status: data.status })];
+                        return [4 /*yield*/, transactionsRepo.update(transaction.id, { status: data.status, succeededAt: (0, moment_1.default)(data.paid_at) })];
                     case 3:
                         _a.sent();
                         return [4 /*yield*/, this.updateAgentPlanDetails(transaction.agentId, transaction.planId, transaction.referenceId)];
@@ -150,7 +161,7 @@ var AgentPaymentService = /** @class */ (function () {
                     case 6: return [3 /*break*/, 8];
                     case 7:
                         error_3 = _a.sent();
-                        throw error_3;
+                        throw responseBuilder_1.ResponseBuilder.error(error_3);
                     case 8: return [2 /*return*/];
                 }
             });
@@ -166,8 +177,8 @@ var AgentPaymentService = /** @class */ (function () {
                         return [4 /*yield*/, transactionsRepo.findOne({
                                 where: {
                                     referenceId: referenceId,
-                                    status: "Success",
-                                },
+                                    status: "success",
+                                }
                             })];
                     case 1:
                         transaction = _a.sent();
@@ -176,8 +187,8 @@ var AgentPaymentService = /** @class */ (function () {
                         }
                         return [4 /*yield*/, agentPlansRepo.findOne({
                                 where: {
-                                    agentId: { id: agentId },
-                                    planId: { id: planId },
+                                    agentId: { id: agentId.id },
+                                    planId: { id: planId.id },
                                 },
                             })];
                     case 2:
@@ -185,8 +196,8 @@ var AgentPaymentService = /** @class */ (function () {
                         if (!!agentPlan) return [3 /*break*/, 4];
                         validTill = (0, moment_1.default)(transaction.succeededAt).add(1, "month");
                         newAgentPlan = agentPlansRepo.create({
-                            agentId: agentId,
-                            planId: planId,
+                            agentId: agentId.id,
+                            planId: planId.id,
                             validTill: validTill,
                         });
                         return [4 /*yield*/, agentPlansRepo.save(newAgentPlan)];
@@ -197,11 +208,40 @@ var AgentPaymentService = /** @class */ (function () {
                         validTill = (0, moment_1.default)(transaction.succeededAt).add(1, "month");
                         agentPlansRepo.update(agentPlan.id, { validTill: validTill });
                         _a.label = 5;
-                    case 5: return [3 /*break*/, 7];
+                    case 5:
+                        this.updateAgentStorage(agentId.id, planId.storageInPlan, planId);
+                        return [3 /*break*/, 7];
                     case 6:
                         error_4 = _a.sent();
-                        return [3 /*break*/, 7];
+                        throw error_4;
                     case 7: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.updateAgentStorage = function (agent, storage, plan) { return __awaiter(_this, void 0, void 0, function () {
+            var agentSettingsRepo, agentSetting, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
+                        return [4 /*yield*/, agentSettingsRepo.findOne({
+                                where: {
+                                    agentId: {
+                                        id: agent
+                                    }
+                                }
+                            })];
+                    case 1:
+                        agentSetting = _a.sent();
+                        return [4 /*yield*/, agentSettingsRepo.update(agentSetting.id, { totalStorage: storage, currentPlan: plan })];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_5 = _a.sent();
+                        throw error_5;
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };

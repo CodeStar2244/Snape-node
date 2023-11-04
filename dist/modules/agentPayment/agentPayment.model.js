@@ -31,7 +31,6 @@ var InitiatePaymentModel = /** @class */ (function (_super) {
     __extends(InitiatePaymentModel, _super);
     function InitiatePaymentModel(body, params) {
         var _this = _super.call(this) || this;
-        _this.amount = body.amount;
         _this.planId = body.planId;
         return _this;
     }

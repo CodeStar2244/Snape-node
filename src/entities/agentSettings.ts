@@ -12,6 +12,7 @@ import {
 } from "typeorm";
 import { AssetType } from "../modules/assetRegistry/assetRegistry.model";
 import { Tblagent } from "./Tblagent";
+import Plans from "./plans";
 
 export enum AgentType {
   ENTERPRISE = "ENTERPRISE",
@@ -44,6 +45,10 @@ export default class AgentSettings {
   @OneToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "agentId" })
   agentId: Tblagent;
+
+  @ManyToOne(()=> Plans ,(plan)=>plan.id)
+  @JoinColumn({ name: "currentPlan" })
+  currentPlan:Plans
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;

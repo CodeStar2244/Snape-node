@@ -28,6 +28,9 @@ export default class Plans {
   @Column()
   amountPerMonth: number;
 
+  @Column({default:3072})
+  storageInPlan: number;
+
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 

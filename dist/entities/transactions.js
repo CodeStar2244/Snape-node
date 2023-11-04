@@ -49,7 +49,7 @@ var Transactions = /** @class */ (function () {
         __metadata("design:type", Tblagent_1.Tblagent)
     ], Transactions.prototype, "agentId", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ type: "timestamptz" }),
+        (0, typeorm_1.Column)({ type: "timestamptz", nullable: true }),
         __metadata("design:type", Date)
     ], Transactions.prototype, "succeededAt", void 0);
     __decorate([

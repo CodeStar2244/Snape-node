@@ -24,7 +24,6 @@ export class InitiatePaymentModel extends Model {
 
   constructor(body: any, params?: any) {
     super();
-    this.amount = body.amount;
     this.planId = body.planId;
   }
 }
