@@ -46,9 +46,9 @@ export default class AgentSettings {
   @JoinColumn({ name: "agentId" })
   agentId: Tblagent;
 
-  @ManyToOne(()=> Plans ,(plan)=>plan.id)
+  @ManyToOne(() => Plans, (plan) => plan.id)
   @JoinColumn({ name: "currentPlan" })
-  currentPlan:Plans
+  currentPlan: Plans;
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;

@@ -35,7 +35,7 @@ export default class Transactions {
   @JoinColumn({ name: "agentId" })
   agentId: Tblagent;
 
-  @Column({ type: "timestamptz",nullable:true })
+  @Column({ type: "timestamptz", nullable: true })
   succeededAt: Date;
 
   @CreateDateColumn({ type: "timestamptz" })

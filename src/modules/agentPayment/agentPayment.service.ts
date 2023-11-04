@@ -16,27 +16,29 @@ import AgentSettings from "../../entities/agentSettings";
 export class AgentPaymentService {
   public initiatePayment = async (body, userDetails) => {
     try {
-      const {reference,authorization_url} = await this.generatePaymentLink(
+      const { reference, authorization_url } = await this.generatePaymentLink(
         userDetails.email,
         userDetails.id,
-        body.planId
+        body.planId,
       );
-      return ResponseBuilder.data({ paymentUrl:authorization_url,reference });
+      return ResponseBuilder.data({ paymentUrl: authorization_url, reference });
     } catch (error) {
       throw ResponseBuilder.error(error);
     }
   };
 
-  private generatePaymentLink = async (email, agentId,planId) => {
+  private generatePaymentLink = async (email, agentId, planId) => {
     try {
       const transactions = AppDataSource.getRepository(Transactions);
       const planRepo = AppDataSource.getRepository(Plans);
-      const plan =  await planRepo.findOne({where:{
-         id:planId
-      }});
+      const plan = await planRepo.findOne({
+        where: {
+          id: planId,
+        },
+      });
       const additionalDetails = {
         agentId,
-        planId
+        planId,
       };
       const paymentDetails = {
         email,
@@ -57,26 +59,29 @@ export class AgentPaymentService {
       );
       const newTransaction = transactions.create({
         agentId,
-        amount:plan.amountPerMonth,
+        amount: plan.amountPerMonth,
         referenceId: data.reference,
         transactionId: data.reference,
-        planId:plan
+        planId: plan,
       });
       transactions.save(newTransaction);
-      return {authorization_url:data.authorization_url,reference:data.reference};
+      return {
+        authorization_url: data.authorization_url,
+        reference: data.reference,
+      };
     } catch (error) {
       throw error;
     }
   };
   public verifyTransaction = async (body, userDetails, query) => {
     try {
-      const  referenceId = query.reference;
+      const referenceId = query.reference;
       const transactionsRepo = AppDataSource.getRepository(Transactions);
       const transaction = await transactionsRepo.findOne({
         where: {
           referenceId,
         },
-        relations:["agentId","planId"]
+        relations: ["agentId", "planId"],
       });
       if (!transaction) {
         return ResponseBuilder.badRequest(
@@ -93,7 +98,10 @@ export class AgentPaymentService {
         { headers },
       );
       if (data.status === "success") {
-        await transactionsRepo.update(transaction.id, { status: data.status ,succeededAt:moment(data.paid_at) });
+        await transactionsRepo.update(transaction.id, {
+          status: data.status,
+          succeededAt: moment(data.paid_at),
+        });
         await this.updateAgentPlanDetails(
           transaction.agentId,
           transaction.planId,
@@ -110,7 +118,7 @@ export class AgentPaymentService {
         });
       }
     } catch (error) {
-        throw ResponseBuilder.error(error);
+      throw ResponseBuilder.error(error);
     }
   };
 
@@ -123,7 +131,7 @@ export class AgentPaymentService {
         where: {
           referenceId,
           status: "success",
-        }
+        },
       });
       if (!transaction) {
         return ResponseBuilder.badRequest(
@@ -148,26 +156,28 @@ export class AgentPaymentService {
         const validTill = moment(transaction.succeededAt).add(1, "month");
         agentPlansRepo.update(agentPlan.id, { validTill });
       }
-       this.updateAgentStorage(agentId.id,planId.storageInPlan,planId)
+      this.updateAgentStorage(agentId.id, planId.storageInPlan, planId);
     } catch (error) {
-        throw error;
+      throw error;
     }
   };
- 
-  private updateAgentStorage = async(agent,storage,plan)=>{
-    try {
-        const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
-        const agentSetting = await agentSettingsRepo.findOne({
-            where:{
-                agentId:{
-                    id:agent
-                }
-            }
-        });
-       await agentSettingsRepo.update(agentSetting.id,{totalStorage:storage,currentPlan:plan});
-    } catch (error) {
-        throw error;
-    }
 
-  }
+  private updateAgentStorage = async (agent, storage, plan) => {
+    try {
+      const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
+      const agentSetting = await agentSettingsRepo.findOne({
+        where: {
+          agentId: {
+            id: agent,
+          },
+        },
+      });
+      await agentSettingsRepo.update(agentSetting.id, {
+        totalStorage: storage,
+        currentPlan: plan,
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
 }
