@@ -19,14 +19,17 @@ export class AgentPaymentService {
     try {
       const agentPlanRepo = AppDataSource.getRepository(AgentPlans);
       const agentPlan = await agentPlanRepo.findOne({
-        where:{
-        agentId:{
-            id:userDetails.id
-        }},
-        relations:["planId"]
+        where: {
+          agentId: {
+            id: userDetails.id,
+          },
+        },
+        relations: ["planId"],
       });
-      if(moment().isBefore(agentPlan.validTill)){
-        return ResponseBuilder.badRequest(`${agentPlan.planId.name} is Already Active for this user`);
+      if (moment().isBefore(agentPlan.validTill)) {
+        return ResponseBuilder.badRequest(
+          `${agentPlan.planId.name} is Already Active for this user`,
+        );
       }
       const { reference, authorization_url } = await this.generatePaymentLink(
         userDetails.email,
@@ -58,7 +61,7 @@ export class AgentPaymentService {
         callback_url: process.env.PAYSTACK_CALLBACK,
         metadata: JSON.stringify(additionalDetails),
         plan: plan.code,
-        amount:plan.amountPerMonth
+        amount: plan.amountPerMonth,
       };
       const headers = {
         authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
@@ -83,7 +86,7 @@ export class AgentPaymentService {
         reference: data.reference,
       };
     } catch (error) {
-        console.log(error , "error")
+      console.log(error, "error");
       throw error;
     }
   };
@@ -94,10 +97,10 @@ export class AgentPaymentService {
       const transaction = await transactionsRepo.findOne({
         where: {
           referenceId,
-          agentId:{
-            id:userDetails.id
+          agentId: {
+            id: userDetails.id,
           },
-          status:"ongoing"
+          status: "ongoing",
         },
         relations: ["agentId", "planId"],
       });
@@ -128,19 +131,19 @@ export class AgentPaymentService {
         return ResponseBuilder.data({
           status: data.status,
           isSuccess: true,
-          isPending:false
+          isPending: false,
         });
       } else if (data.status === PAYSTACK_STATUS.FAILED) {
         return ResponseBuilder.data({
           status: data.status,
           isSuccess: false,
-          isPendig:false
+          isPendig: false,
         });
-      }else if (data.status === PAYSTACK_STATUS.ONGOING) {
+      } else if (data.status === PAYSTACK_STATUS.ONGOING) {
         return ResponseBuilder.data({
           status: data.status,
           isSuccess: false,
-          isPending:true
+          isPending: true,
         });
       }
     } catch (error) {

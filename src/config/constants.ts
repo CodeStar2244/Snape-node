@@ -43,7 +43,7 @@ export const FRONT_URL =
   "http://snape-react-app.s3-website-us-east-1.amazonaws.com/view/";
 
 export const PAYSTACK_STATUS = {
-   ONGOING:"ongoing",
-   SUCCESS:"success",
-   FAILED:"failed"
-  };
+  ONGOING: "ongoing",
+  SUCCESS: "success",
+  FAILED: "failed",
+};
