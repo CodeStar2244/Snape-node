@@ -8,10 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AgentType = void 0;
 var typeorm_1 = require("typeorm");
 var Tblagent_1 = require("./Tblagent");
+var plans_1 = __importDefault(require("./plans"));
 var AgentType;
 (function (AgentType) {
     AgentType["ENTERPRISE"] = "ENTERPRISE";
@@ -52,6 +56,11 @@ var AgentSettings = /** @class */ (function () {
         (0, typeorm_1.JoinColumn)({ name: "agentId" }),
         __metadata("design:type", Tblagent_1.Tblagent)
     ], AgentSettings.prototype, "agentId", void 0);
+    __decorate([
+        (0, typeorm_1.ManyToOne)(function () { return plans_1.default; }, function (plan) { return plan.id; }),
+        (0, typeorm_1.JoinColumn)({ name: "currentPlan" }),
+        __metadata("design:type", plans_1.default)
+    ], AgentSettings.prototype, "currentPlan", void 0);
     __decorate([
         (0, typeorm_1.CreateDateColumn)({ type: "timestamptz" }),
         __metadata("design:type", Date)

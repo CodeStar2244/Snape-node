@@ -120,15 +120,9 @@ router.post(
   studioManagementController.createInvoice,
 );
 
-router.get(
-  INVOICE_ROUTES.GET_INVOICES,
-  studioManagementController.getInvoices,
-);
+router.get(INVOICE_ROUTES.GET_INVOICES, studioManagementController.getInvoices);
 
-router.get(
-  INVOICE_ROUTES.GET_INVOICE,
-  studioManagementController.getInvoice,
-);
+router.get(INVOICE_ROUTES.GET_INVOICE, studioManagementController.getInvoice);
 
 router.post(
   INVOICE_ROUTES.UPDATE_INVOICE,
@@ -166,22 +160,15 @@ router.delete(
   studioManagementController.deleteQuotation,
 );
 
-
 router.post(
   BOOKING_ROUTES.CREATE_BOOKING,
   v.validate(CreateBooking),
   studioManagementController.createBooking,
 );
 
-router.get(
-  BOOKING_ROUTES.GET_BOOKINGS,
-  studioManagementController.getBookings,
-);
+router.get(BOOKING_ROUTES.GET_BOOKINGS, studioManagementController.getBookings);
 
-router.get(
-  BOOKING_ROUTES.GET_BOOKING,
-  studioManagementController.getBooking,
-);
+router.get(BOOKING_ROUTES.GET_BOOKING, studioManagementController.getBooking);
 
 router.post(
   BOOKING_ROUTES.UPDATE_BOOKING,

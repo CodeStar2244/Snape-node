@@ -15,51 +15,55 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var Tblagent_1 = require("./Tblagent");
 var plans_1 = __importDefault(require("./plans"));
-var Collections = /** @class */ (function () {
-    function Collections() {
+var Transactions = /** @class */ (function () {
+    function Transactions() {
     }
     __decorate([
         (0, typeorm_1.PrimaryGeneratedColumn)(),
         __metadata("design:type", Number)
-    ], Collections.prototype, "id", void 0);
+    ], Transactions.prototype, "id", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
-    ], Collections.prototype, "transactionId", void 0);
+    ], Transactions.prototype, "transactionId", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ default: "Pending" }),
+        (0, typeorm_1.Column)({ default: "ongoing" }),
         __metadata("design:type", String)
-    ], Collections.prototype, "status", void 0);
+    ], Transactions.prototype, "status", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", Number)
-    ], Collections.prototype, "amount", void 0);
+    ], Transactions.prototype, "amount", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
-    ], Collections.prototype, "referenceId", void 0);
+    ], Transactions.prototype, "referenceId", void 0);
     __decorate([
         (0, typeorm_1.ManyToOne)(function () { return plans_1.default; }, function (plan) { return plan.id; }),
         (0, typeorm_1.JoinColumn)({ name: "planId" }),
         __metadata("design:type", plans_1.default)
-    ], Collections.prototype, "planId", void 0);
+    ], Transactions.prototype, "planId", void 0);
     __decorate([
         (0, typeorm_1.ManyToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
         (0, typeorm_1.JoinColumn)({ name: "agentId" }),
         __metadata("design:type", Tblagent_1.Tblagent)
-    ], Collections.prototype, "agentId", void 0);
+    ], Transactions.prototype, "agentId", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ type: "timestamptz", nullable: true }),
+        __metadata("design:type", Date)
+    ], Transactions.prototype, "succeededAt", void 0);
     __decorate([
         (0, typeorm_1.CreateDateColumn)({ type: "timestamptz" }),
         __metadata("design:type", Date)
-    ], Collections.prototype, "createdAt", void 0);
+    ], Transactions.prototype, "createdAt", void 0);
     __decorate([
         (0, typeorm_1.UpdateDateColumn)({ type: "timestamptz" }),
         __metadata("design:type", Date)
-    ], Collections.prototype, "updatedAt", void 0);
-    Collections = __decorate([
+    ], Transactions.prototype, "updatedAt", void 0);
+    Transactions = __decorate([
         (0, typeorm_1.Entity)("transactions", { schema: "public" })
-    ], Collections);
-    return Collections;
+    ], Transactions);
+    return Transactions;
 }());
-exports.default = Collections;
+exports.default = Transactions;
 //# sourceMappingURL=transactions.js.map

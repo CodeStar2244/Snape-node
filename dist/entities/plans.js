@@ -34,6 +34,10 @@ var Plans = /** @class */ (function () {
         __metadata("design:type", Number)
     ], Plans.prototype, "amountPerMonth", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ default: 3072 }),
+        __metadata("design:type", Number)
+    ], Plans.prototype, "storageInPlan", void 0);
+    __decorate([
         (0, typeorm_1.CreateDateColumn)({ type: "timestamptz" }),
         __metadata("design:type", Date)
     ], Plans.prototype, "createdAt", void 0);

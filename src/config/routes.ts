@@ -108,6 +108,12 @@ export const PORTFOLIO_ROUTES = {
   ADD_VIDEO_LINK: "/videolink/:id",
 };
 
+export const AGENTPAYMENT_ROUTES = {
+  INITIATE_PAYMENT: "/initiate",
+  VERIFY_PAYMENT: "/verify",
+  GET_PLAN_DETAIL: "/plan",
+};
+
 export const SPECIALITY_ROUTES = {
   CREATE_SPECIALITY: "/speciality",
   GET_SPECIALITY: "/speciality",
