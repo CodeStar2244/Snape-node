@@ -9,12 +9,13 @@ const agentPaymentController = new AgentPaymentController();
 const v: Validator = new Validator();
 
 router.post(
-    AGENTPAYMENT_ROUTES.INITIATE_PAYMENT, v.validate(InitiatePaymentModel),
-    agentPaymentController.initiatePayment,
+  AGENTPAYMENT_ROUTES.INITIATE_PAYMENT,
+  v.validate(InitiatePaymentModel),
+  agentPaymentController.initiatePayment,
 );
 router.get(
-    AGENTPAYMENT_ROUTES.VERIFY_PAYMENT,
-    agentPaymentController.verifyTransaction,
+  AGENTPAYMENT_ROUTES.VERIFY_PAYMENT,
+  agentPaymentController.verifyTransaction,
 );
 
 export const AgentPaymentRoute: Router = router;

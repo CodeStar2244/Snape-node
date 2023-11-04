@@ -74,7 +74,7 @@ var AgentPaymentService = /** @class */ (function () {
                         _a.trys.push([0, 2, , 3]);
                         transactions = db_config_1.AppDataSource.getRepository(transactions_1.default);
                         additionalDetails = {
-                            agentId: agentId
+                            agentId: agentId,
                         };
                         paymentDetails = {
                             amount: amount,
@@ -82,10 +82,10 @@ var AgentPaymentService = /** @class */ (function () {
                             currency: process.env.CURRENCY,
                             callback_url: process.env.PAYSTACK_CALLBACK,
                             metadata: JSON.stringify(additionalDetails),
-                            plan: "PLN_ulcpelooub9i6mi"
+                            plan: "PLN_ulcpelooub9i6mi",
                         };
                         headers = {
-                            authorization: "Bearer ".concat(process.env.PAYSTACK_SECRET)
+                            authorization: "Bearer ".concat(process.env.PAYSTACK_SECRET),
                         };
                         return [4 /*yield*/, axios_1.default.post(process.env.PAYSTACK_API_URL + "initialize", paymentDetails, { headers: headers })];
                     case 1:
@@ -114,8 +114,8 @@ var AgentPaymentService = /** @class */ (function () {
                         transactionsRepo = db_config_1.AppDataSource.getRepository(transactions_1.default);
                         return [4 /*yield*/, transactionsRepo.findOne({
                                 where: {
-                                    referenceId: referenceId
-                                }
+                                    referenceId: referenceId,
+                                },
                             })];
                     case 1:
                         transaction = _a.sent();
@@ -123,7 +123,7 @@ var AgentPaymentService = /** @class */ (function () {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Transaction Not Found with this Reference Id")];
                         }
                         headers = {
-                            authorization: "Bearer ".concat(process.env.PAYSTACK_SECRET)
+                            authorization: "Bearer ".concat(process.env.PAYSTACK_SECRET),
                         };
                         return [4 /*yield*/, axios_1.default.get(process.env.PAYSTACK_API_URL + "verify/".concat(transaction.referenceId), { headers: headers })];
                     case 2:
@@ -137,13 +137,13 @@ var AgentPaymentService = /** @class */ (function () {
                         _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
                                 status: data.status,
-                                isSuccess: true
+                                isSuccess: true,
                             })];
                     case 5:
                         if (data.status === "failed") {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
                                     status: data.status,
-                                    isSuccess: false
+                                    isSuccess: false,
                                 })];
                         }
                         _a.label = 6;
@@ -166,8 +166,8 @@ var AgentPaymentService = /** @class */ (function () {
                         return [4 /*yield*/, transactionsRepo.findOne({
                                 where: {
                                     referenceId: referenceId,
-                                    status: "Success"
-                                }
+                                    status: "Success",
+                                },
                             })];
                     case 1:
                         transaction = _a.sent();
@@ -177,8 +177,8 @@ var AgentPaymentService = /** @class */ (function () {
                         return [4 /*yield*/, agentPlansRepo.findOne({
                                 where: {
                                     agentId: { id: agentId },
-                                    planId: { id: planId }
-                                }
+                                    planId: { id: planId },
+                                },
                             })];
                     case 2:
                         agentPlan = _a.sent();
@@ -187,7 +187,7 @@ var AgentPaymentService = /** @class */ (function () {
                         newAgentPlan = agentPlansRepo.create({
                             agentId: agentId,
                             planId: planId,
-                            validTill: validTill
+                            validTill: validTill,
                         });
                         return [4 /*yield*/, agentPlansRepo.save(newAgentPlan)];
                     case 3:

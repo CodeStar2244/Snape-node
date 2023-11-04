@@ -159,9 +159,7 @@ export class StudioManagementController {
   public getInvoices = async (req, res) => {
     try {
       const userDetails = req.user;
-      const result = await this.clientService.getInvoices(
-        userDetails
-      );
+      const result = await this.clientService.getInvoices(userDetails);
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
@@ -172,10 +170,7 @@ export class StudioManagementController {
     try {
       const userDetails = req.user;
       const { id } = req.params;
-      const result = await this.clientService.getInvoice(
-        userDetails,
-        id,
-      );
+      const result = await this.clientService.getInvoice(userDetails, id);
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
@@ -184,10 +179,7 @@ export class StudioManagementController {
 
   editInvoice = async (req: Request, res: any) => {
     try {
-      const result = await this.clientService.editInvoice(
-        req.params,
-        req.body,
-      );
+      const result = await this.clientService.editInvoice(req.params, req.body);
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
       res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
@@ -198,17 +190,13 @@ export class StudioManagementController {
     try {
       const userDetails = req.user;
       const { id } = req.params;
-      const result = await this.clientService.deleteInvoice(
-        userDetails,
-        id,
-      );
+      const result = await this.clientService.deleteInvoice(userDetails, id);
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
     }
   };
 
-  
   public createQuotation = async (req, res) => {
     try {
       const userDetails = req.user;
@@ -226,9 +214,7 @@ export class StudioManagementController {
   public getQuotations = async (req, res) => {
     try {
       const userDetails = req.user;
-      const result = await this.clientService.getQuotations(
-        userDetails
-      );
+      const result = await this.clientService.getQuotations(userDetails);
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
@@ -239,10 +225,7 @@ export class StudioManagementController {
     try {
       const userDetails = req.user;
       const { id } = req.params;
-      const result = await this.clientService.getQuotation(
-        userDetails,
-        id,
-      );
+      const result = await this.clientService.getQuotation(userDetails, id);
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);
@@ -265,10 +248,7 @@ export class StudioManagementController {
     try {
       const userDetails = req.user;
       const { id } = req.params;
-      const result = await this.clientService.deleteQuotation(
-        userDetails,
-        id,
-      );
+      const result = await this.clientService.deleteQuotation(userDetails, id);
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);

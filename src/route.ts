@@ -42,7 +42,7 @@ export class Routes {
     router.use("/dashboard", this.middleware.authenticateUser, DashboardRoute);
     router.use("/portfolio", this.middleware.authenticateUser, PortfolioRoute);
     router.use("/asset", this.middleware.authenticateUser, AssetRegistryRouter);
-    router.use("/payment", this.middleware.authenticateUser,AgentPaymentRoute );
+    router.use("/payment", this.middleware.authenticateUser, AgentPaymentRoute);
     router.use(
       "/studiomanagement",
       this.middleware.authenticateUser,

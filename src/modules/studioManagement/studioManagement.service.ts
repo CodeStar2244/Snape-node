@@ -316,27 +316,26 @@ export class StudioManagementService {
 
       const invoice = await invoiceRepo.save({
         ...params,
-        clientId:client?.id,
+        clientId: client?.id,
         createdBy: user?.id,
       });
 
-      const formattedDate = moment(invoice?.dueOnReceipt).format("MMMM D, YYYY");
+      const formattedDate = moment(invoice?.dueOnReceipt).format(
+        "MMMM D, YYYY",
+      );
 
       const renderData = {
         userName: user?.firstName + " " + user?.lastName,
         invoiceName: invoice?.name,
-        invoiceAmount:invoice?.totalAmount,
-        invoiceDetails:invoice?.invoiceDetails,
-        dueDate:formattedDate,
+        invoiceAmount: invoice?.totalAmount,
+        invoiceDetails: invoice?.invoiceDetails,
+        dueDate: formattedDate,
         clientName: client?.name,
         currency: invoice?.currency,
         userEmail: user.email,
       };
 
-      const mailBody = await Mailer.renderTemplate(
-        "Invoice",
-        renderData,
-      );
+      const mailBody = await Mailer.renderTemplate("Invoice", renderData);
       Mailer.sendMail(client?.email, params?.subject, mailBody);
       return ResponseBuilder.data({
         data: { invoice },
@@ -352,7 +351,7 @@ export class StudioManagementService {
     try {
       const quesRepo = AppDataSource.getRepository(StudioInvoice);
       const invoices = await quesRepo.find({
-        where: {createdBy: { id: user?.id } },
+        where: { createdBy: { id: user?.id } },
         relations: ["clientId"],
       });
       return ResponseBuilder.data({
@@ -385,14 +384,11 @@ export class StudioManagementService {
   public editInvoice = async (params, body): Promise<any> => {
     try {
       const invoiceRepo = AppDataSource.getRepository(StudioInvoice);
-      
-      await invoiceRepo.update(
-          { id: params?.id },
-          body,
-      );
+
+      await invoiceRepo.update({ id: params?.id }, body);
 
       const invoice = await invoiceRepo.findOne({
-        where: { id:params?.id},
+        where: { id: params?.id },
         relations: ["clientId"],
       });
 
@@ -425,9 +421,6 @@ export class StudioManagementService {
     }
   };
 
-
-  
-
   public createQuotation = async (user, params) => {
     try {
       const invoiceRepo = AppDataSource.getRepository(StudioQuotation);
@@ -439,25 +432,22 @@ export class StudioManagementService {
 
       const invoice = await invoiceRepo.save({
         ...params,
-        clientId:client?.id,
+        clientId: client?.id,
         createdBy: user?.id,
       });
 
       const renderData = {
         userName: user?.firstName + " " + user?.lastName,
         invoiceName: invoice?.name,
-        invoiceAmount:invoice?.totalAmount,
-        invoiceDetails:invoice?.invoiceDetails,
-        validFor:invoice?.validFor,
+        invoiceAmount: invoice?.totalAmount,
+        invoiceDetails: invoice?.invoiceDetails,
+        validFor: invoice?.validFor,
         clientName: client?.name,
         currency: invoice?.currency,
         userEmail: user.email,
       };
 
-      const mailBody = await Mailer.renderTemplate(
-        "Quotation",
-        renderData,
-      );
+      const mailBody = await Mailer.renderTemplate("Quotation", renderData);
       Mailer.sendMail(client?.email, params?.subject, mailBody);
       return ResponseBuilder.data({
         data: { invoice },
@@ -473,7 +463,7 @@ export class StudioManagementService {
     try {
       const quesRepo = AppDataSource.getRepository(StudioQuotation);
       const quotations = await quesRepo.find({
-        where: {createdBy: { id: user?.id } },
+        where: { createdBy: { id: user?.id } },
         relations: ["clientId"],
       });
       return ResponseBuilder.data({
@@ -506,14 +496,11 @@ export class StudioManagementService {
   public editQuotation = async (params, body): Promise<any> => {
     try {
       const invoiceRepo = AppDataSource.getRepository(StudioQuotation);
-      
-      await invoiceRepo.update(
-          { id: params?.id },
-          body,
-      );
+
+      await invoiceRepo.update({ id: params?.id }, body);
 
       const quotation = await invoiceRepo.findOne({
-        where: { id:params?.id},
+        where: { id: params?.id },
         relations: ["clientId"],
       });
 

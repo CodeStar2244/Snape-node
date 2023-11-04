@@ -118,15 +118,9 @@ router.post(
   studioManagementController.createInvoice,
 );
 
-router.get(
-  INVOICE_ROUTES.GET_INVOICES,
-  studioManagementController.getInvoices,
-);
+router.get(INVOICE_ROUTES.GET_INVOICES, studioManagementController.getInvoices);
 
-router.get(
-  INVOICE_ROUTES.GET_INVOICE,
-  studioManagementController.getInvoice,
-);
+router.get(INVOICE_ROUTES.GET_INVOICE, studioManagementController.getInvoice);
 
 router.post(
   INVOICE_ROUTES.UPDATE_INVOICE,
