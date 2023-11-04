@@ -69,8 +69,10 @@ var AgentPaymentService = /** @class */ (function () {
                             })];
                     case 1:
                         agentPlan = _b.sent();
-                        if ((0, moment_1.default)().isBefore(agentPlan.validTill)) {
-                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("".concat(agentPlan.planId.name, " is Already Active for this user"))];
+                        if (agentPlan) {
+                            if ((0, moment_1.default)().isBefore(agentPlan.validTill)) {
+                                return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("".concat(agentPlan.planId.name, " is Already Active for this user"))];
+                            }
                         }
                         return [4 /*yield*/, this.generatePaymentLink(userDetails.email, userDetails.id, body.planId)];
                     case 2:
@@ -78,6 +80,7 @@ var AgentPaymentService = /** @class */ (function () {
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ paymentUrl: authorization_url, reference: reference })];
                     case 3:
                         error_1 = _b.sent();
+                        console.log(error_1, "error");
                         throw responseBuilder_1.ResponseBuilder.error(error_1);
                     case 4: return [2 /*return*/];
                 }
@@ -234,7 +237,8 @@ var AgentPaymentService = /** @class */ (function () {
                         dataToSend = JSON.parse(JSON.stringify(agentPlan));
                         dataToSend.storageUsed = agentSetting.storage;
                         dataToSend.totalStorage = agentSetting.totalStorage;
-                        dataToSend.remainingStorage = agentSetting.totalStorage - agentSetting.storage;
+                        dataToSend.remainingStorage =
+                            agentSetting.totalStorage - agentSetting.storage;
                         dataToSend.daysLeft = (0, moment_1.default)(agentPlan.validTill).diff((0, moment_1.default)(), "days");
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
                     case 3:

@@ -26,10 +26,12 @@ export class AgentPaymentService {
         },
         relations: ["planId"],
       });
-      if (moment().isBefore(agentPlan.validTill)) {
-        return ResponseBuilder.badRequest(
-          `${agentPlan.planId.name} is Already Active for this user`,
-        );
+      if(agentPlan){
+        if (moment().isBefore(agentPlan.validTill)) {
+            return ResponseBuilder.badRequest(
+              `${agentPlan.planId.name} is Already Active for this user`,
+            );
+          }
       }
       const { reference, authorization_url } = await this.generatePaymentLink(
         userDetails.email,
@@ -38,6 +40,7 @@ export class AgentPaymentService {
       );
       return ResponseBuilder.data({ paymentUrl: authorization_url, reference });
     } catch (error) {
+     console.log(error , "error")
       throw ResponseBuilder.error(error);
     }
   };
