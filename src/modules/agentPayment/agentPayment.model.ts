@@ -17,9 +17,6 @@ import { Model } from "../../helpers/model";
 
 export class InitiatePaymentModel extends Model {
   @IsNumber()
-  public amount: number;
-
-  @IsNumber()
   public planId: number;
 
   constructor(body: any, params?: any) {

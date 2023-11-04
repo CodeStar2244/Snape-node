@@ -18,7 +18,7 @@ export default class Transactions {
   @Column()
   transactionId: string;
 
-  @Column({ default: "Pending" })
+  @Column({ default: "ongoing" })
   status: string;
 
   @Column()

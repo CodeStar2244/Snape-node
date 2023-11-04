@@ -37,10 +37,6 @@ var InitiatePaymentModel = /** @class */ (function (_super) {
     __decorate([
         (0, class_validator_1.IsNumber)(),
         __metadata("design:type", Number)
-    ], InitiatePaymentModel.prototype, "amount", void 0);
-    __decorate([
-        (0, class_validator_1.IsNumber)(),
-        __metadata("design:type", Number)
     ], InitiatePaymentModel.prototype, "planId", void 0);
     return InitiatePaymentModel;
 }(model_1.Model));

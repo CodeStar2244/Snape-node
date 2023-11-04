@@ -27,7 +27,7 @@ var Transactions = /** @class */ (function () {
         __metadata("design:type", String)
     ], Transactions.prototype, "transactionId", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ default: "Pending" }),
+        (0, typeorm_1.Column)({ default: "ongoing" }),
         __metadata("design:type", String)
     ], Transactions.prototype, "status", void 0);
     __decorate([
