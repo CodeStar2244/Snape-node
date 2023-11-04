@@ -5,6 +5,8 @@ import {
   IsOptional,
   IsIn,
   IsNumber,
+  IsDate,
+  IsDateString,
 } from "class-validator";
 import { Model } from "../../helpers/model";
 
@@ -222,6 +224,37 @@ export class CreateQuotation extends Model {
     this.name = name?.trim();
     this.currency = currency?.trim();
     this.subject = subject?.trim();
+    this.notes = notes?.trim();
+    this.clientId = clientId;
+  }
+}
+
+export class CreateBooking extends Model {
+  @IsNotEmpty()
+  title: string;
+
+  @IsNotEmpty()
+  description: string;
+
+  @IsOptional()
+  notes: string;
+
+  @IsNumber()
+  clientId: number;
+
+  @IsDateString()
+  startDate:Date
+
+  @IsDateString()
+  endDate:Date
+
+  constructor(body: any) {
+    super();
+    const { title, description, notes, clientId, startDate,endDate } = body;
+    this.title = title?.trim();
+    this.description = description?.trim();
+    this.startDate = startDate?.trim();
+    this.endDate = endDate?.trim();
     this.notes = notes?.trim();
     this.clientId = clientId;
   }

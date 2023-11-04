@@ -6,6 +6,7 @@ import {
   QUESTIONNARIES_ROUTES,
   INVOICE_ROUTES,
   QUOTATION_ROUTES,
+  BOOKING_ROUTES,
 } from "../../config/routes";
 import { Validator } from "../../helpers/validator";
 import { StudioManagementController } from "./studioManagement.controller";
@@ -20,6 +21,7 @@ import {
   CreateQuestionnaries,
   CreateInvoice,
   CreateQuotation,
+  CreateBooking,
 } from "./studioManagement.model";
 import { StudioManagementMiddleware } from "./studioManagement.middleware";
 
@@ -156,6 +158,33 @@ router.post(
 router.delete(
   QUOTATION_ROUTES.DELETE_QUOTATION,
   studioManagementController.deleteQuotation,
+);
+
+
+router.post(
+  BOOKING_ROUTES.CREATE_BOOKING,
+  v.validate(CreateBooking),
+  studioManagementController.createBooking,
+);
+
+router.get(
+  BOOKING_ROUTES.GET_BOOKINGS,
+  studioManagementController.getBookings,
+);
+
+router.get(
+  BOOKING_ROUTES.GET_BOOKING,
+  studioManagementController.getBooking,
+);
+
+router.post(
+  BOOKING_ROUTES.UPDATE_BOOKING,
+  studioManagementController.editBooking,
+);
+
+router.delete(
+  BOOKING_ROUTES.DELETE_BOOKING,
+  studioManagementController.deleteBooking,
 );
 
 export const StudioManagementRouter: Router = router;

@@ -255,6 +255,73 @@ export class StudioManagementController {
     }
   };
 
+
+  public createBooking = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const params = req.body;
+      const result = await this.clientService.createBooking(
+        userDetails,
+        params,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  public getBookings = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const result = await this.clientService.getBookings(
+        userDetails
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  public getBooking = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const { id } = req.params;
+      const result = await this.clientService.getBooking(
+        userDetails,
+        id,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  public editBooking = async (req: Request, res: any) => {
+    try {
+      const result = await this.clientService.editBooking(
+        req.params,
+        req.body,
+      );
+      res.status(result.code).json(result?.result || result?.error);
+    } catch (error) {
+      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+    }
+  };
+
+  public deleteBooking = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const { id } = req.params;
+      const result = await this.clientService.deleteBooking(
+        userDetails,
+        id,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
   public getQuestionnaries = async (req, res) => {
     try {
       const userDetails = req.user;

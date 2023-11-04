@@ -460,14 +460,15 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
-        this.getQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, result, error_23;
+        this.createBooking = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, params, result, error_23;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userDetails = req.user;
-                        return [4 /*yield*/, this.clientService.getQuestionnaries(userDetails)];
+                        params = req.body;
+                        return [4 /*yield*/, this.clientService.createBooking(userDetails, params)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
@@ -478,8 +479,101 @@ var StudioManagementController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getBookings = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_24;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.clientService.getBookings(userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_24 = _a.sent();
+                        return [2 /*return*/, res.status(error_24.code).json(error_24)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getBooking = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_25;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.getBooking(userDetails, id)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_25 = _a.sent();
+                        return [2 /*return*/, res.status(error_25.code).json(error_25)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.editBooking = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result, error_26;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.clientService.editBooking(req.params, req.body)];
+                    case 1:
+                        result = _a.sent();
+                        res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_26 = _a.sent();
+                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteBooking = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, id, result, error_27;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        id = req.params.id;
+                        return [4 /*yield*/, this.clientService.deleteBooking(userDetails, id)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_27 = _a.sent();
+                        return [2 /*return*/, res.status(error_27.code).json(error_27)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_28;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.clientService.getQuestionnaries(userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_28 = _a.sent();
+                        return [2 /*return*/, res.status(error_28.code).json(error_28)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.getClientQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, id, result, error_24;
+            var userDetails, id, result, error_29;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -491,14 +585,14 @@ var StudioManagementController = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_24 = _a.sent();
-                        return [2 /*return*/, res.status(error_24.code).json(error_24)];
+                        error_29 = _a.sent();
+                        return [2 /*return*/, res.status(error_29.code).json(error_29)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.deleteQuestionnaries = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userDetails, id, result, error_25;
+            var userDetails, id, result, error_30;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -510,8 +604,8 @@ var StudioManagementController = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, res.status(result.code).json(result)];
                     case 2:
-                        error_25 = _a.sent();
-                        return [2 /*return*/, res.status(error_25.code).json(error_25)];
+                        error_30 = _a.sent();
+                        return [2 /*return*/, res.status(error_30.code).json(error_30)];
                     case 3: return [2 /*return*/];
                 }
             });

@@ -62,6 +62,7 @@ var mailer_1 = require("../../helpers/mailer");
 var studioInvoice_1 = __importDefault(require("../../entities/studioInvoice"));
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 var studioQuotation_1 = __importDefault(require("../../entities/studioQuotation"));
+var studioBooking_1 = __importDefault(require("../../entities/studioBooking"));
 var StudioManagementService = /** @class */ (function () {
     function StudioManagementService() {
         var _this = this;
@@ -726,8 +727,139 @@ var StudioManagementService = /** @class */ (function () {
                 }
             });
         }); };
+        this.createBooking = function (user, params) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, clientRepo, client, booking, error_23;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        invoiceRepo = db_config_1.AppDataSource.getRepository(studioBooking_1.default);
+                        clientRepo = db_config_1.AppDataSource.getRepository(studioClient_1.default);
+                        return [4 /*yield*/, clientRepo.findOne({
+                                where: { id: params === null || params === void 0 ? void 0 : params.clientId },
+                            })];
+                    case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, invoiceRepo.save(__assign(__assign({}, params), { clientId: client === null || client === void 0 ? void 0 : client.id, createdBy: user === null || user === void 0 ? void 0 : user.id }))];
+                    case 2:
+                        booking = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { booking: booking },
+                                message: "booking created successfully",
+                            })];
+                    case 3:
+                        error_23 = _a.sent();
+                        console.log(error_23);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_23 === null || error_23 === void 0 ? void 0 : error_23.message)];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getBookings = function (user) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, booking, error_24;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioBooking_1.default);
+                        return [4 /*yield*/, quesRepo.find({
+                                where: { createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
+                                relations: ["clientId"],
+                            })];
+                    case 1:
+                        booking = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { booking: booking },
+                                message: "booking listed successfully",
+                            })];
+                    case 2:
+                        error_24 = _a.sent();
+                        console.log(error_24);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_24 === null || error_24 === void 0 ? void 0 : error_24.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getBooking = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
+            var quesRepo, booking, error_25;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        quesRepo = db_config_1.AppDataSource.getRepository(studioBooking_1.default);
+                        return [4 /*yield*/, quesRepo.findOne({
+                                where: { id: id, createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
+                                relations: ["clientId"],
+                            })];
+                    case 1:
+                        booking = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { booking: booking },
+                                message: "Booking get successfully",
+                            })];
+                    case 2:
+                        error_25 = _a.sent();
+                        console.log(error_25);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_25 === null || error_25 === void 0 ? void 0 : error_25.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.editBooking = function (params, body) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, booking, error_26;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        invoiceRepo = db_config_1.AppDataSource.getRepository(studioBooking_1.default);
+                        return [4 /*yield*/, invoiceRepo.update({ id: params === null || params === void 0 ? void 0 : params.id }, body)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, invoiceRepo.findOne({
+                                where: { id: params === null || params === void 0 ? void 0 : params.id },
+                                relations: ["clientId"],
+                            })];
+                    case 2:
+                        booking = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                message: "booking edit successfully",
+                                data: booking,
+                            })];
+                    case 3:
+                        error_26 = _a.sent();
+                        console.log(error_26);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_26 === null || error_26 === void 0 ? void 0 : error_26.message)];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.deleteBooking = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, error_27;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        invoiceRepo = db_config_1.AppDataSource.getRepository(studioBooking_1.default);
+                        return [4 /*yield*/, invoiceRepo.delete({
+                                id: id,
+                                createdBy: { id: user === null || user === void 0 ? void 0 : user.id },
+                            })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: {},
+                                message: "Booking deleted successfully",
+                            })];
+                    case 2:
+                        error_27 = _a.sent();
+                        console.log(error_27);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_27 === null || error_27 === void 0 ? void 0 : error_27.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.getQuestionnaries = function (user) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, questionnarires, error_23;
+            var quesRepo, questionnarires, error_28;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -746,15 +878,15 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries created successfully",
                             })];
                     case 2:
-                        error_23 = _a.sent();
-                        console.log(error_23);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_23 === null || error_23 === void 0 ? void 0 : error_23.message)];
+                        error_28 = _a.sent();
+                        console.log(error_28);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_28 === null || error_28 === void 0 ? void 0 : error_28.message)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.getClientQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, questionnarires, error_24;
+            var quesRepo, questionnarires, error_29;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -771,15 +903,15 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries created successfully",
                             })];
                     case 2:
-                        error_24 = _a.sent();
-                        console.log(error_24);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_24 === null || error_24 === void 0 ? void 0 : error_24.message)];
+                        error_29 = _a.sent();
+                        console.log(error_29);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_29 === null || error_29 === void 0 ? void 0 : error_29.message)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.deleteQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, error_25;
+            var quesRepo, error_30;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -796,9 +928,9 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries deleted successfully",
                             })];
                     case 2:
-                        error_25 = _a.sent();
-                        console.log(error_25);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_25 === null || error_25 === void 0 ? void 0 : error_25.message)];
+                        error_30 = _a.sent();
+                        console.log(error_30);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_30 === null || error_30 === void 0 ? void 0 : error_30.message)];
                     case 3: return [2 /*return*/];
                 }
             });

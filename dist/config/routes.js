@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SPECIALITY_ROUTES = exports.AGENTPAYMENT_ROUTES = exports.PORTFOLIO_ROUTES = exports.QUOTATION_ROUTES = exports.INVOICE_ROUTES = exports.QUESTIONNARIES_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.SPECIALITY_ROUTES = exports.AGENTPAYMENT_ROUTES = exports.PORTFOLIO_ROUTES = exports.BOOKING_ROUTES = exports.QUOTATION_ROUTES = exports.INVOICE_ROUTES = exports.QUESTIONNARIES_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login",
     GET_REMANING_SPACE: "/get-remaining-space",
@@ -83,6 +83,13 @@ exports.QUOTATION_ROUTES = {
     CREATE_QUOTATION: "/quotation",
     UPDATE_QUOTATION: "/quotation/:id",
     DELETE_QUOTATION: "/quotation/:id",
+};
+exports.BOOKING_ROUTES = {
+    GET_BOOKINGS: "/booking",
+    GET_BOOKING: "/booking/:id",
+    CREATE_BOOKING: "/booking",
+    UPDATE_BOOKING: "/booking/:id",
+    DELETE_BOOKING: "/booking/:id",
 };
 exports.PORTFOLIO_ROUTES = {
     CREATE_COLLECTION: "/",
