@@ -48,6 +48,7 @@ var agentPlans_1 = __importDefault(require("../../entities/agentPlans"));
 var moment_1 = __importDefault(require("moment"));
 var plans_1 = __importDefault(require("../../entities/plans"));
 var agentSettings_1 = __importDefault(require("../../entities/agentSettings"));
+var constants_1 = require("../../config/constants");
 var AgentPaymentService = /** @class */ (function () {
     function AgentPaymentService() {
         var _this = this;
@@ -61,10 +62,10 @@ var AgentPaymentService = /** @class */ (function () {
                         return [4 /*yield*/, agentPlanRepo.findOne({
                                 where: {
                                     agentId: {
-                                        id: userDetails.id
-                                    }
+                                        id: userDetails.id,
+                                    },
                                 },
-                                relations: ["planId"]
+                                relations: ["planId"],
                             })];
                     case 1:
                         agentPlan = _b.sent();
@@ -107,7 +108,7 @@ var AgentPaymentService = /** @class */ (function () {
                             callback_url: process.env.PAYSTACK_CALLBACK,
                             metadata: JSON.stringify(additionalDetails),
                             plan: plan.code,
-                            amount: plan.amountPerMonth
+                            amount: plan.amountPerMonth,
                         };
                         headers = {
                             authorization: "Bearer ".concat(process.env.PAYSTACK_SECRET),
@@ -147,9 +148,9 @@ var AgentPaymentService = /** @class */ (function () {
                                 where: {
                                     referenceId: referenceId,
                                     agentId: {
-                                        id: userDetails.id
+                                        id: userDetails.id,
                                     },
-                                    status: "ongoing"
+                                    status: "ongoing",
                                 },
                                 relations: ["agentId", "planId"],
                             })];
@@ -164,7 +165,7 @@ var AgentPaymentService = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.get(process.env.PAYSTACK_API_URL + "verify/".concat(transaction.referenceId), { headers: headers })];
                     case 2:
                         data = (_a.sent()).data.data;
-                        if (!(data.status === "success")) return [3 /*break*/, 5];
+                        if (!(data.status === constants_1.PAYSTACK_STATUS.SUCCESS)) return [3 /*break*/, 5];
                         return [4 /*yield*/, transactionsRepo.update(transaction.id, {
                                 status: data.status,
                                 succeededAt: (0, moment_1.default)(data.paid_at),
@@ -177,12 +178,21 @@ var AgentPaymentService = /** @class */ (function () {
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
                                 status: data.status,
                                 isSuccess: true,
+                                isPending: false,
                             })];
                     case 5:
-                        if (data.status === "failed") {
+                        if (data.status === constants_1.PAYSTACK_STATUS.FAILED) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
                                     status: data.status,
                                     isSuccess: false,
+                                    isPendig: false,
+                                })];
+                        }
+                        else if (data.status === constants_1.PAYSTACK_STATUS.ONGOING) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                    status: data.status,
+                                    isSuccess: false,
+                                    isPending: true,
                                 })];
                         }
                         _a.label = 6;
@@ -194,8 +204,48 @@ var AgentPaymentService = /** @class */ (function () {
                 }
             });
         }); };
+        this.getPlanDetail = function (body, userDetails) { return __awaiter(_this, void 0, void 0, function () {
+            var agentPlanRepo, agentSettingsRepo, agentPlan, agentSetting, dataToSend, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        agentPlanRepo = db_config_1.AppDataSource.getRepository(agentPlans_1.default);
+                        agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
+                        return [4 /*yield*/, agentPlanRepo.findOne({
+                                where: {
+                                    agentId: {
+                                        id: userDetails.id,
+                                    },
+                                },
+                                relations: ["planId"],
+                            })];
+                    case 1:
+                        agentPlan = _a.sent();
+                        return [4 /*yield*/, agentSettingsRepo.findOne({
+                                where: {
+                                    agentId: {
+                                        id: userDetails.id,
+                                    },
+                                },
+                            })];
+                    case 2:
+                        agentSetting = _a.sent();
+                        dataToSend = JSON.parse(JSON.stringify(agentPlan));
+                        dataToSend.storageUsed = agentSetting.storage;
+                        dataToSend.totalStorage = agentSetting.totalStorage;
+                        dataToSend.remainingStorage = agentSetting.totalStorage - agentSetting.storage;
+                        dataToSend.daysLeft = (0, moment_1.default)(agentPlan.validTill).diff((0, moment_1.default)(), "days");
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
+                    case 3:
+                        error_4 = _a.sent();
+                        throw responseBuilder_1.ResponseBuilder.error(error_4);
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); };
         this.updateAgentPlanDetails = function (agentId, planId, referenceId) { return __awaiter(_this, void 0, void 0, function () {
-            var agentPlansRepo, transactionsRepo, transaction, agentPlan, validTill, newAgentPlan, validTill, error_4;
+            var agentPlansRepo, transactionsRepo, transaction, agentPlan, validTill, newAgentPlan, validTill, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -240,14 +290,14 @@ var AgentPaymentService = /** @class */ (function () {
                         this.updateAgentStorage(agentId.id, planId.storageInPlan, planId);
                         return [3 /*break*/, 7];
                     case 6:
-                        error_4 = _a.sent();
-                        throw error_4;
+                        error_5 = _a.sent();
+                        throw error_5;
                     case 7: return [2 /*return*/];
                 }
             });
         }); };
         this.updateAgentStorage = function (agent, storage, plan) { return __awaiter(_this, void 0, void 0, function () {
-            var agentSettingsRepo, agentSetting, error_5;
+            var agentSettingsRepo, agentSetting, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -270,8 +320,8 @@ var AgentPaymentService = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 3:
-                        error_5 = _a.sent();
-                        throw error_5;
+                        error_6 = _a.sent();
+                        throw error_6;
                     case 4: return [2 /*return*/];
                 }
             });

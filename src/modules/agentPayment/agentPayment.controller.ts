@@ -26,4 +26,15 @@ export class AgentPaymentController {
       return res.status(error.code).json(error);
     }
   };
+  public getPlanDetail = async (req, res) => {
+    try {
+      const result = await this.agentPaymentService.getPlanDetail(
+        req.body,
+        req.user,
+      );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
 }

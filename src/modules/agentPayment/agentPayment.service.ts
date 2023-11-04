@@ -12,7 +12,7 @@ import AgentPlans from "../../entities/agentPlans";
 import moment from "moment";
 import Plans from "../../entities/plans";
 import AgentSettings from "../../entities/agentSettings";
-import { PAYSTACK_STATUS } from "src/config/constants";
+import { PAYSTACK_STATUS } from "../../config/constants";
 
 export class AgentPaymentService {
   public initiatePayment = async (body, userDetails) => {
@@ -146,6 +146,35 @@ export class AgentPaymentService {
           isPending: true,
         });
       }
+    } catch (error) {
+      throw ResponseBuilder.error(error);
+    }
+  };
+  public getPlanDetail = async (body, userDetails) => {
+    try {
+       const agentPlanRepo = AppDataSource.getRepository(AgentPlans);
+       const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
+       const agentPlan = await agentPlanRepo.findOne({
+        where: {
+          agentId: {
+            id: userDetails.id,
+          },
+        },
+        relations: ["planId"],
+      });
+      const agentSetting = await agentSettingsRepo.findOne({
+        where: {
+          agentId: {
+            id: userDetails.id,
+          },
+        },
+      });
+      const dataToSend = JSON.parse(JSON.stringify(agentPlan));
+      dataToSend.storageUsed = agentSetting.storage;
+      dataToSend.totalStorage = agentSetting.totalStorage;
+      dataToSend.remainingStorage = agentSetting.totalStorage - agentSetting.storage;
+      dataToSend.daysLeft = moment(agentPlan.validTill).diff(moment(),"days")
+      return ResponseBuilder.data(dataToSend);
     } catch (error) {
       throw ResponseBuilder.error(error);
     }

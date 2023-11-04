@@ -103,6 +103,7 @@ export const PORTFOLIO_ROUTES = {
 export const AGENTPAYMENT_ROUTES = {
   INITIATE_PAYMENT: "/initiate",
   VERIFY_PAYMENT: "/verify",
+  GET_PLAN_DETAIL: "/plan",
 };
 
 export const SPECIALITY_ROUTES = {

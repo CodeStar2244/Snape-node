@@ -11,5 +11,6 @@ var agentPaymentController = new agentPayment_controller_1.AgentPaymentControlle
 var v = new validator_1.Validator();
 router.post(routes_1.AGENTPAYMENT_ROUTES.INITIATE_PAYMENT, v.validate(agentPayment_model_1.InitiatePaymentModel), agentPaymentController.initiatePayment);
 router.get(routes_1.AGENTPAYMENT_ROUTES.VERIFY_PAYMENT, agentPaymentController.verifyTransaction);
+router.get(routes_1.AGENTPAYMENT_ROUTES.GET_PLAN_DETAIL, agentPaymentController.getPlanDetail);
 exports.AgentPaymentRoute = router;
 //# sourceMappingURL=agentPayment.route.js.map

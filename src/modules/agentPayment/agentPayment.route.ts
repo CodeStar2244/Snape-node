@@ -17,5 +17,9 @@ router.get(
   AGENTPAYMENT_ROUTES.VERIFY_PAYMENT,
   agentPaymentController.verifyTransaction,
 );
+router.get(
+  AGENTPAYMENT_ROUTES.GET_PLAN_DETAIL,
+  agentPaymentController.getPlanDetail,
+);
 
 export const AgentPaymentRoute: Router = router;

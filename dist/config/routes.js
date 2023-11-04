@@ -99,6 +99,7 @@ exports.PORTFOLIO_ROUTES = {
 exports.AGENTPAYMENT_ROUTES = {
     INITIATE_PAYMENT: "/initiate",
     VERIFY_PAYMENT: "/verify",
+    GET_PLAN_DETAIL: "/plan",
 };
 exports.SPECIALITY_ROUTES = {
     CREATE_SPECIALITY: "/speciality",
