@@ -3,7 +3,7 @@ import { AppDataSource } from "../../db/db.config";
 import Collections from "../../entities/Collection";
 import { CollectionDesign } from "../../entities/collectionDesign";
 import { CollectionTags } from "../../entities/CollectionTags";
-import { CollectionThemes } from "../../entities/CollectionThemes";
+import { CollectionThemes } from "../../entities/collectionThemes";
 import FilesEntity from "../../entities/Files";
 import { AWSS3 } from "../../helpers/awss3";
 import { ResponseBuilder } from "../../helpers/responseBuilder";
