@@ -33,6 +33,7 @@ var client_route_1 = require("./modules/client/client.route");
 var assetRegistry_route_1 = require("./modules/assetRegistry/assetRegistry.route");
 var studioManagement_routes_1 = require("./modules/studioManagement/studioManagement.routes");
 var portfolio_route_1 = require("./modules/agentPortfolio/portfolio.route");
+var agentPayment_route_1 = require("./modules/agentPayment/agentPayment.route");
 var Routes = /** @class */ (function () {
     function Routes(NODE_ENV) {
         this.middleware = new middleware_1.Middleware();
@@ -57,6 +58,7 @@ var Routes = /** @class */ (function () {
         router.use("/dashboard", this.middleware.authenticateUser, dashboard_routes_1.DashboardRoute);
         router.use("/portfolio", this.middleware.authenticateUser, portfolio_route_1.PortfolioRoute);
         router.use("/asset", this.middleware.authenticateUser, assetRegistry_route_1.AssetRegistryRouter);
+        router.use("/payment", this.middleware.authenticateUser, agentPayment_route_1.AgentPaymentRoute);
         router.use("/studiomanagement", this.middleware.authenticateUser, studioManagement_routes_1.StudioManagementRouter);
         router.use("/client", client_route_1.ClientRoute);
         router.all("/*", function (req, res) {

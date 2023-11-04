@@ -3,18 +3,15 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { CollectionTags } from "./CollectionTags";
 import { Tblagent } from "./Tblagent";
 import Plans from "./plans";
 
 @Entity("transactions", { schema: "public" })
-export default class Collections {
+export default class Transactions {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -37,6 +34,9 @@ export default class Collections {
   @ManyToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "agentId" })
   agentId: Tblagent;
+
+  @Column({ type: "timestamptz" })
+  succeededAt: Date;
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;

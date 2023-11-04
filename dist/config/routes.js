@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SPECIALITY_ROUTES = exports.PORTFOLIO_ROUTES = exports.QUOTATION_ROUTES = exports.INVOICE_ROUTES = exports.QUESTIONNARIES_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.SPECIALITY_ROUTES = exports.AGENTPAYMENT_ROUTES = exports.PORTFOLIO_ROUTES = exports.QUOTATION_ROUTES = exports.INVOICE_ROUTES = exports.QUESTIONNARIES_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login",
     GET_REMANING_SPACE: "/get-remaining-space",
@@ -95,6 +95,10 @@ exports.PORTFOLIO_ROUTES = {
     DELETE_FILES: "/files/:id",
     CHANGE_COVERPHOTO: "/coverphoto/:id",
     ADD_VIDEO_LINK: "/videolink/:id",
+};
+exports.AGENTPAYMENT_ROUTES = {
+    INITIATE_PAYMENT: "/initiate",
+    VERIFY_PAYMENT: "/verify",
 };
 exports.SPECIALITY_ROUTES = {
     CREATE_SPECIALITY: "/speciality",
