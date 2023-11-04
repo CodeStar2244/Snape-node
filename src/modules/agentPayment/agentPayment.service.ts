@@ -152,9 +152,9 @@ export class AgentPaymentService {
   };
   public getPlanDetail = async (body, userDetails) => {
     try {
-       const agentPlanRepo = AppDataSource.getRepository(AgentPlans);
-       const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
-       const agentPlan = await agentPlanRepo.findOne({
+      const agentPlanRepo = AppDataSource.getRepository(AgentPlans);
+      const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
+      const agentPlan = await agentPlanRepo.findOne({
         where: {
           agentId: {
             id: userDetails.id,
@@ -172,8 +172,9 @@ export class AgentPaymentService {
       const dataToSend = JSON.parse(JSON.stringify(agentPlan));
       dataToSend.storageUsed = agentSetting.storage;
       dataToSend.totalStorage = agentSetting.totalStorage;
-      dataToSend.remainingStorage = agentSetting.totalStorage - agentSetting.storage;
-      dataToSend.daysLeft = moment(agentPlan.validTill).diff(moment(),"days")
+      dataToSend.remainingStorage =
+        agentSetting.totalStorage - agentSetting.storage;
+      dataToSend.daysLeft = moment(agentPlan.validTill).diff(moment(), "days");
       return ResponseBuilder.data(dataToSend);
     } catch (error) {
       throw ResponseBuilder.error(error);
