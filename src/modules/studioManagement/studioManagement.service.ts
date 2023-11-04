@@ -534,8 +534,6 @@ export class StudioManagementService {
     }
   };
 
-
-
   public createBooking = async (user, params) => {
     try {
       const invoiceRepo = AppDataSource.getRepository(StudioBooking);
@@ -547,7 +545,7 @@ export class StudioManagementService {
 
       const booking = await invoiceRepo.save({
         ...params,
-        clientId:client?.id,
+        clientId: client?.id,
         createdBy: user?.id,
       });
 
@@ -565,7 +563,7 @@ export class StudioManagementService {
     try {
       const quesRepo = AppDataSource.getRepository(StudioBooking);
       const booking = await quesRepo.find({
-        where: {createdBy: { id: user?.id } },
+        where: { createdBy: { id: user?.id } },
         relations: ["clientId"],
       });
       return ResponseBuilder.data({
@@ -598,14 +596,11 @@ export class StudioManagementService {
   public editBooking = async (params, body): Promise<any> => {
     try {
       const invoiceRepo = AppDataSource.getRepository(StudioBooking);
-      
-      await invoiceRepo.update(
-          { id: params?.id },
-          body,
-      );
+
+      await invoiceRepo.update({ id: params?.id }, body);
 
       const booking = await invoiceRepo.findOne({
-        where: { id:params?.id},
+        where: { id: params?.id },
         relations: ["clientId"],
       });
 

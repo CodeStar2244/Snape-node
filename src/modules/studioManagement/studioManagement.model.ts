@@ -243,14 +243,14 @@ export class CreateBooking extends Model {
   clientId: number;
 
   @IsDateString()
-  startDate:Date
+  startDate: Date;
 
   @IsDateString()
-  endDate:Date
+  endDate: Date;
 
   constructor(body: any) {
     super();
-    const { title, description, notes, clientId, startDate,endDate } = body;
+    const { title, description, notes, clientId, startDate, endDate } = body;
     this.title = title?.trim();
     this.description = description?.trim();
     this.startDate = startDate?.trim();
