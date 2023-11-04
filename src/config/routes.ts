@@ -87,6 +87,14 @@ export const QUOTATION_ROUTES = {
   DELETE_QUOTATION: "/quotation/:id",
 };
 
+export const BOOKING_ROUTES = {
+  GET_BOOKINGS: "/booking",
+  GET_BOOKING: "/booking/:id",
+  CREATE_BOOKING: "/booking",
+  UPDATE_BOOKING: "/booking/:id",
+  DELETE_BOOKING: "/booking/:id",
+};
+
 export const PORTFOLIO_ROUTES = {
   CREATE_COLLECTION: "/",
   GET_COLLECTIONS: "/",

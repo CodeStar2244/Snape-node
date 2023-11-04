@@ -13,6 +13,7 @@ import { Mailer } from "../../helpers/mailer";
 import StudioInvoice from "../../entities/studioInvoice";
 import moment from "moment-timezone";
 import StudioQuotation from "../../entities/studioQuotation";
+import StudioBooking from "../../entities/studioBooking";
 export class StudioManagementService {
   public createClient = async (userDetails, body) => {
     try {
@@ -539,6 +540,110 @@ export class StudioManagementService {
       return ResponseBuilder.data({
         data: {},
         message: "Quotation deleted successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+
+
+  public createBooking = async (user, params) => {
+    try {
+      const invoiceRepo = AppDataSource.getRepository(StudioBooking);
+      const clientRepo = AppDataSource.getRepository(StudioClient);
+
+      const client = await clientRepo.findOne({
+        where: { id: params?.clientId },
+      });
+
+      const booking = await invoiceRepo.save({
+        ...params,
+        clientId:client?.id,
+        createdBy: user?.id,
+      });
+
+      return ResponseBuilder.data({
+        data: { booking },
+        message: "booking created successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public getBookings = async (user) => {
+    try {
+      const quesRepo = AppDataSource.getRepository(StudioBooking);
+      const booking = await quesRepo.find({
+        where: {createdBy: { id: user?.id } },
+        relations: ["clientId"],
+      });
+      return ResponseBuilder.data({
+        data: { booking },
+        message: "booking listed successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public getBooking = async (user, id) => {
+    try {
+      const quesRepo = AppDataSource.getRepository(StudioBooking);
+      const booking = await quesRepo.findOne({
+        where: { id, createdBy: { id: user?.id } },
+        relations: ["clientId"],
+      });
+      return ResponseBuilder.data({
+        data: { booking },
+        message: "Booking get successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public editBooking = async (params, body): Promise<any> => {
+    try {
+      const invoiceRepo = AppDataSource.getRepository(StudioBooking);
+      
+      await invoiceRepo.update(
+          { id: params?.id },
+          body,
+      );
+
+      const booking = await invoiceRepo.findOne({
+        where: { id:params?.id},
+        relations: ["clientId"],
+      });
+
+      return ResponseBuilder.data({
+        message: "booking edit successfully",
+        data: booking,
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public deleteBooking = async (user, id) => {
+    try {
+      const invoiceRepo = AppDataSource.getRepository(StudioBooking);
+
+      await invoiceRepo.delete({
+        id,
+        createdBy: { id: user?.id },
+      });
+
+      return ResponseBuilder.data({
+        data: {},
+        message: "Booking deleted successfully",
       });
     } catch (error) {
       console.log(error);

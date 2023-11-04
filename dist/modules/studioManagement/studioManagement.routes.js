@@ -40,5 +40,10 @@ router.get(routes_1.QUOTATION_ROUTES.GET_QUOTATIONS, studioManagementController.
 router.get(routes_1.QUOTATION_ROUTES.GET_QUOTATION, studioManagementController.getQuotation);
 router.post(routes_1.QUOTATION_ROUTES.UPDATE_QUOTATION, studioManagementController.editQuotation);
 router.delete(routes_1.QUOTATION_ROUTES.DELETE_QUOTATION, studioManagementController.deleteQuotation);
+router.post(routes_1.BOOKING_ROUTES.CREATE_BOOKING, v.validate(studioManagement_model_1.CreateBooking), studioManagementController.createBooking);
+router.get(routes_1.BOOKING_ROUTES.GET_BOOKINGS, studioManagementController.getBookings);
+router.get(routes_1.BOOKING_ROUTES.GET_BOOKING, studioManagementController.getBooking);
+router.post(routes_1.BOOKING_ROUTES.UPDATE_BOOKING, studioManagementController.editBooking);
+router.delete(routes_1.BOOKING_ROUTES.DELETE_BOOKING, studioManagementController.deleteBooking);
 exports.StudioManagementRouter = router;
 //# sourceMappingURL=studioManagement.routes.js.map

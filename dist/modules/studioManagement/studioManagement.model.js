@@ -24,7 +24,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateQuotation = exports.CreateInvoice = exports.CreateQuestionnaries = exports.CreateTemplate = exports.GetTemplates = exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.UpdateStudioClientModel = exports.CreateStudioClientModel = void 0;
+exports.CreateBooking = exports.CreateQuotation = exports.CreateInvoice = exports.CreateQuestionnaries = exports.CreateTemplate = exports.GetTemplates = exports.UpdateSpeciality = exports.GetSpeciality = exports.CreateSpeciality = exports.UpdateStudioClientModel = exports.CreateStudioClientModel = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
 var CreateStudioClientModel = /** @class */ (function (_super) {
@@ -310,4 +310,44 @@ var CreateQuotation = /** @class */ (function (_super) {
     return CreateQuotation;
 }(model_1.Model));
 exports.CreateQuotation = CreateQuotation;
+var CreateBooking = /** @class */ (function (_super) {
+    __extends(CreateBooking, _super);
+    function CreateBooking(body) {
+        var _this = _super.call(this) || this;
+        var title = body.title, description = body.description, notes = body.notes, clientId = body.clientId, startDate = body.startDate, endDate = body.endDate;
+        _this.title = title === null || title === void 0 ? void 0 : title.trim();
+        _this.description = description === null || description === void 0 ? void 0 : description.trim();
+        _this.startDate = startDate === null || startDate === void 0 ? void 0 : startDate.trim();
+        _this.endDate = endDate === null || endDate === void 0 ? void 0 : endDate.trim();
+        _this.notes = notes === null || notes === void 0 ? void 0 : notes.trim();
+        _this.clientId = clientId;
+        return _this;
+    }
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateBooking.prototype, "title", void 0);
+    __decorate([
+        (0, class_validator_1.IsNotEmpty)(),
+        __metadata("design:type", String)
+    ], CreateBooking.prototype, "description", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", String)
+    ], CreateBooking.prototype, "notes", void 0);
+    __decorate([
+        (0, class_validator_1.IsNumber)(),
+        __metadata("design:type", Number)
+    ], CreateBooking.prototype, "clientId", void 0);
+    __decorate([
+        (0, class_validator_1.IsDateString)(),
+        __metadata("design:type", Date)
+    ], CreateBooking.prototype, "startDate", void 0);
+    __decorate([
+        (0, class_validator_1.IsDateString)(),
+        __metadata("design:type", Date)
+    ], CreateBooking.prototype, "endDate", void 0);
+    return CreateBooking;
+}(model_1.Model));
+exports.CreateBooking = CreateBooking;
 //# sourceMappingURL=studioManagement.model.js.map
