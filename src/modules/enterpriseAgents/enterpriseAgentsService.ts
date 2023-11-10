@@ -42,6 +42,11 @@ export class EnterpriseAgentsService {
           "images",
           "agent.id = images.entityid AND entitytype = 'agent'",
         )
+        .leftJoin(
+          "tblagentmediacategoriesmapping",
+          "mediamapping",
+          "agent.id = mediamapping.agentId",
+        )
         .select("agent.id", "id")
         .addSelect("agent.firstname", "firstname")
         .addSelect("images.imagepath", "profile")
@@ -67,9 +72,14 @@ export class EnterpriseAgentsService {
           speciality: query.speciality,
         });
       }
+      if(query.category){
+        agentQuery.andWhere("mediamapping.mediacategoryid = :category", {
+          category: query.category,
+        });
+      }
+      agentQuery.groupBy('agent.id ,images.imagepath')
       agentQuery.offset(offset);
       agentQuery.limit(limit);
-
       const agents = await agentQuery.getRawMany();
       const agnetCounts = await agentQuery.getCount();
       for (const agent of agents) {
@@ -262,6 +272,20 @@ export class EnterpriseAgentsService {
         agent,
       };
       return ResponseBuilder.data(dataToSend);
+    } catch (error) {
+      console.log(error, "Err");
+    }
+  }
+  public async getMediaCategories(userDetails) {
+    try {
+      const mediaCategoriesRepo = AppDataSource.getRepository(Tblmediacategories);
+      const dataToSend = await mediaCategoriesRepo.find({where:{
+        isactive:true
+      },select:{
+        id:true,
+        title:true
+      }});
+      return ResponseBuilder.data(dataToSend)
     } catch (error) {
       console.log(error, "Err");
     }

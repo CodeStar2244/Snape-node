@@ -49,6 +49,7 @@ export const AGENT_SERVICE = {
   GET_AGENT_REVIEWS: "/get-agent-reviews/:agentId",
   LIST_FAVOURITES: "/list-favourite-agents",
   BOOK_AGENT: "/bookagent/:id",
+  GET_MEDIA_CATEGORIES:"/mediacategories"
 };
 
 export const STUDIO_MANAGEMENT_ROUTES = {

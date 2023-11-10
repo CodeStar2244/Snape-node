@@ -31,6 +31,10 @@ router.get(
   enterpriseAgentsController.getAgentCategories,
 );
 router.get(
+  AGENT_SERVICE.GET_MEDIA_CATEGORIES,
+  enterpriseAgentsController.getMediaCategories,
+);
+router.get(
   AGENT_SERVICE.GET_AGENT_PORTFOLIO,
   enterpriseAgentsController.getAgentPortfolio,
 );

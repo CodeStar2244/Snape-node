@@ -81,6 +81,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         agentQuery = agentRepo
                             .createQueryBuilder("agent")
                             .leftJoin("tblimages", "images", "agent.id = images.entityid AND entitytype = 'agent'")
+                            .leftJoin("tblagentmediacategoriesmapping", "mediamapping", "agent.id = mediamapping.agentId")
                             .select("agent.id", "id")
                             .addSelect("agent.firstname", "firstname")
                             .addSelect("images.imagepath", "profile")
@@ -102,6 +103,12 @@ var EnterpriseAgentsService = /** @class */ (function () {
                                 speciality: query.speciality,
                             });
                         }
+                        if (query.category) {
+                            agentQuery.andWhere("mediamapping.mediacategoryid = :category", {
+                                category: query.category,
+                            });
+                        }
+                        agentQuery.groupBy('agent.id ,images.imagepath');
                         agentQuery.offset(offset);
                         agentQuery.limit(limit);
                         return [4 /*yield*/, agentQuery.getRawMany()];
@@ -343,9 +350,35 @@ var EnterpriseAgentsService = /** @class */ (function () {
             });
         });
     };
+    EnterpriseAgentsService.prototype.getMediaCategories = function (userDetails) {
+        return __awaiter(this, void 0, void 0, function () {
+            var mediaCategoriesRepo, dataToSend, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        mediaCategoriesRepo = db_config_1.AppDataSource.getRepository(Tblmediacategories_1.Tblmediacategories);
+                        return [4 /*yield*/, mediaCategoriesRepo.find({ where: {
+                                    isactive: true
+                                }, select: {
+                                    id: true,
+                                    title: true
+                                } })];
+                    case 1:
+                        dataToSend = _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];
+                    case 2:
+                        error_6 = _a.sent();
+                        console.log(error_6, "Err");
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     EnterpriseAgentsService.prototype.getAgentPortfolio = function (params, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentId, agentRepo, agentPortFolioRepo, portFolioFilesRepo, agent, agentPortfolio, portFolioFiles, error_6;
+            var agentId, agentRepo, agentPortFolioRepo, portFolioFilesRepo, agent, agentPortfolio, portFolioFiles, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -385,8 +418,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         portFolioFiles = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ portFolioFiles: portFolioFiles })];
                     case 4:
-                        error_6 = _a.sent();
-                        console.log(error_6, "Err");
+                        error_7 = _a.sent();
+                        console.log(error_7, "Err");
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
@@ -395,7 +428,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.getAgenVideos = function (params, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentId, agentRepo, agentPortFolioRepo, portFolioVideosRepo, agent, agentPortfolio, portFolioFiles, error_7;
+            var agentId, agentRepo, agentPortFolioRepo, portFolioVideosRepo, agent, agentPortfolio, portFolioFiles, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -432,8 +465,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         portFolioFiles = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ portFolioFiles: portFolioFiles })];
                     case 4:
-                        error_7 = _a.sent();
-                        console.log(error_7, "Err");
+                        error_8 = _a.sent();
+                        console.log(error_8, "Err");
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
@@ -442,7 +475,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.getAgentReviews = function (params, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentId, bookingRepo, agentRepo, agent, bookings, error_8;
+            var agentId, bookingRepo, agentRepo, agent, bookings, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -474,8 +507,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         bookings = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ bookings: bookings })];
                     case 3:
-                        error_8 = _a.sent();
-                        console.log(error_8, "Err");
+                        error_9 = _a.sent();
+                        console.log(error_9, "Err");
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -484,7 +517,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
     };
     EnterpriseAgentsService.prototype.addRemoveFavourite = function (params, userDetails, agentId) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentRepo, enterpriseRepo, enterpriseAgentFavouriteRepo, agent, enterpriseClient, enterpriseAgentFavourite, enterpriseAgentFavouriteEntry, error_9;
+            var agentRepo, enterpriseRepo, enterpriseAgentFavouriteRepo, agent, enterpriseClient, enterpriseAgentFavourite, enterpriseAgentFavouriteEntry, error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -533,8 +566,8 @@ var EnterpriseAgentsService = /** @class */ (function () {
                         }
                         return [3 /*break*/, 5];
                     case 4:
-                        error_9 = _a.sent();
-                        console.log(error_9, "Err");
+                        error_10 = _a.sent();
+                        console.log(error_10, "Err");
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
