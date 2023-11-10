@@ -80,9 +80,8 @@ export class EnterpriseAgentsController {
   public getMediaCategories = async (req: any, res: Response) => {
     try {
       const userDetails = req.user;
-      const result = await this.enterpriseAgentsService.getMediaCategories(
-        userDetails,
-      );
+      const result =
+        await this.enterpriseAgentsService.getMediaCategories(userDetails);
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);

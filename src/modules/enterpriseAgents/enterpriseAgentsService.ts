@@ -72,12 +72,12 @@ export class EnterpriseAgentsService {
           speciality: query.speciality,
         });
       }
-      if(query.category){
+      if (query.category) {
         agentQuery.andWhere("mediamapping.mediacategoryid = :category", {
           category: query.category,
         });
       }
-      agentQuery.groupBy('agent.id ,images.imagepath')
+      agentQuery.groupBy("agent.id ,images.imagepath");
       agentQuery.offset(offset);
       agentQuery.limit(limit);
       const agents = await agentQuery.getRawMany();
@@ -278,14 +278,18 @@ export class EnterpriseAgentsService {
   }
   public async getMediaCategories(userDetails) {
     try {
-      const mediaCategoriesRepo = AppDataSource.getRepository(Tblmediacategories);
-      const dataToSend = await mediaCategoriesRepo.find({where:{
-        isactive:true
-      },select:{
-        id:true,
-        title:true
-      }});
-      return ResponseBuilder.data(dataToSend)
+      const mediaCategoriesRepo =
+        AppDataSource.getRepository(Tblmediacategories);
+      const dataToSend = await mediaCategoriesRepo.find({
+        where: {
+          isactive: true,
+        },
+        select: {
+          id: true,
+          title: true,
+        },
+      });
+      return ResponseBuilder.data(dataToSend);
     } catch (error) {
       console.log(error, "Err");
     }
