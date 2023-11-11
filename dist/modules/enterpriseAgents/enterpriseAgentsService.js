@@ -58,11 +58,12 @@ var EnterpriseAgentsService = /** @class */ (function () {
     }
     EnterpriseAgentsService.prototype.getAgents = function (query, userDetails) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryObj, agentRepo, enterpriseAgentFavouriteRepo, offset, limit, favouriteAgents, agentsArr, agentQuery, agents, agnetCounts, _i, agents_1, agent, dataToSend, error_1;
+            var sort, order, queryObj, agentRepo, enterpriseAgentFavouriteRepo, offset, limit, favouriteAgents, agentsArr, agentQuery, agents, agnetCounts, _i, agents_1, agent, dataToSend, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 4, , 5]);
+                        sort = query.sort, order = query.order;
                         queryObj = new enterpriseAgentsModel_1.AgentGetList(null, query);
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
                         enterpriseAgentFavouriteRepo = db_config_1.AppDataSource.getRepository(enterpriseAgentFavourite_1.default);
@@ -108,7 +109,11 @@ var EnterpriseAgentsService = /** @class */ (function () {
                                 category: query.category,
                             });
                         }
-                        agentQuery.groupBy('agent.id ,images.imagepath');
+                        console.log(agentQuery.getQuery());
+                        if (sort && order) {
+                            agentQuery.addOrderBy(sort, order);
+                        }
+                        agentQuery.groupBy("agent.id ,images.imagepath");
                         agentQuery.offset(offset);
                         agentQuery.limit(limit);
                         return [4 /*yield*/, agentQuery.getRawMany()];
@@ -358,12 +363,15 @@ var EnterpriseAgentsService = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         mediaCategoriesRepo = db_config_1.AppDataSource.getRepository(Tblmediacategories_1.Tblmediacategories);
-                        return [4 /*yield*/, mediaCategoriesRepo.find({ where: {
-                                    isactive: true
-                                }, select: {
+                        return [4 /*yield*/, mediaCategoriesRepo.find({
+                                where: {
+                                    isactive: true,
+                                },
+                                select: {
                                     id: true,
-                                    title: true
-                                } })];
+                                    title: true,
+                                },
+                            })];
                     case 1:
                         dataToSend = _a.sent();
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(dataToSend)];

@@ -19,6 +19,7 @@ import PortFolioVideoLinks from "../../entities/portFolioVideosLink";
 export class EnterpriseAgentsService {
   public async getAgents(query: AgentGetList, userDetails) {
     try {
+      const {sort,order} = query;
       const queryObj = new AgentGetList(null, query);
       const agentRepo = AppDataSource.getRepository(Tblagent);
       const enterpriseAgentFavouriteRepo = AppDataSource.getRepository(
@@ -76,6 +77,10 @@ export class EnterpriseAgentsService {
         agentQuery.andWhere("mediamapping.mediacategoryid = :category", {
           category: query.category,
         });
+      }
+      console.log(agentQuery.getQuery())
+      if (sort && order) {
+        agentQuery.addOrderBy(sort, order);
       }
       agentQuery.groupBy("agent.id ,images.imagepath");
       agentQuery.offset(offset);

@@ -12,11 +12,20 @@ import {
   NumOpenProactiveInsights,
   NumOpenReactiveInsights,
 } from "aws-sdk/clients/devopsguru";
+import { OrderValidation } from "../assetRegistry/assetRegistry.model";
 
 enum isFavourite {
   "zero" = "0",
   "one" = "1",
 }
+enum SORT {
+  "photograpyrate" = "photograpyrate",
+  "videograpyrate" = "videograpyrate",
+  "bothrate" = "bothrate",
+  "distance"="distance",
+  "experiencelevel"="experiencelevel"
+}
+
 enum speciality {
   "photographer" = 1,
   "videographer" = 2,
@@ -48,6 +57,14 @@ export class AgentGetList extends Model {
   @IsNotEmpty()
   limit: number;
 
+  @IsOptional()
+  @IsEnum(OrderValidation)
+  order: OrderValidation;
+
+  @IsOptional()
+  @IsEnum(SORT)
+  sort: SORT;
+
   constructor(body: any, params?: any) {
     super();
     this.latitude = params.latitude;
@@ -61,6 +78,8 @@ export class AgentGetList extends Model {
     this.limit = params.limit;
     this.speciality = Number(params.speciality);
     this.category = Number(params.category);
+    this.sort = params.sort;
+    this.order = params.order;
   }
 }
 
