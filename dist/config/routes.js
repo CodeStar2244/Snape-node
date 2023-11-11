@@ -52,6 +52,7 @@ exports.AGENT_SERVICE = {
     GET_AGENT_REVIEWS: "/get-agent-reviews/:agentId",
     LIST_FAVOURITES: "/list-favourite-agents",
     BOOK_AGENT: "/bookagent/:id",
+    GET_MEDIA_CATEGORIES: "/mediacategories",
 };
 exports.STUDIO_MANAGEMENT_ROUTES = {
     CREATE_CLIENT: "/client",

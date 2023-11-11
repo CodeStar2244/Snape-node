@@ -19,6 +19,7 @@ import PortFolioVideoLinks from "../../entities/portFolioVideosLink";
 export class EnterpriseAgentsService {
   public async getAgents(query: AgentGetList, userDetails) {
     try {
+      const { sort, order } = query;
       const queryObj = new AgentGetList(null, query);
       const agentRepo = AppDataSource.getRepository(Tblagent);
       const enterpriseAgentFavouriteRepo = AppDataSource.getRepository(
@@ -41,6 +42,11 @@ export class EnterpriseAgentsService {
           "tblimages",
           "images",
           "agent.id = images.entityid AND entitytype = 'agent'",
+        )
+        .leftJoin(
+          "tblagentmediacategoriesmapping",
+          "mediamapping",
+          "agent.id = mediamapping.agentId",
         )
         .select("agent.id", "id")
         .addSelect("agent.firstname", "firstname")
@@ -67,9 +73,18 @@ export class EnterpriseAgentsService {
           speciality: query.speciality,
         });
       }
+      if (query.category) {
+        agentQuery.andWhere("mediamapping.mediacategoryid = :category", {
+          category: query.category,
+        });
+      }
+      console.log(agentQuery.getQuery());
+      if (sort && order) {
+        agentQuery.addOrderBy(sort, order);
+      }
+      agentQuery.groupBy("agent.id ,images.imagepath");
       agentQuery.offset(offset);
       agentQuery.limit(limit);
-
       const agents = await agentQuery.getRawMany();
       const agnetCounts = await agentQuery.getCount();
       for (const agent of agents) {
@@ -261,6 +276,24 @@ export class EnterpriseAgentsService {
       const dataToSend = {
         agent,
       };
+      return ResponseBuilder.data(dataToSend);
+    } catch (error) {
+      console.log(error, "Err");
+    }
+  }
+  public async getMediaCategories(userDetails) {
+    try {
+      const mediaCategoriesRepo =
+        AppDataSource.getRepository(Tblmediacategories);
+      const dataToSend = await mediaCategoriesRepo.find({
+        where: {
+          isactive: true,
+        },
+        select: {
+          id: true,
+          title: true,
+        },
+      });
       return ResponseBuilder.data(dataToSend);
     } catch (error) {
       console.log(error, "Err");

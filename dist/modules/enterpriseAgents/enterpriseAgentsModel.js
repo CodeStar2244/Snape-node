@@ -27,11 +27,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookAgent = exports.AgentFavourite = exports.AgentGetLocationList = exports.AgentGetList = void 0;
 var class_validator_1 = require("class-validator");
 var model_1 = require("../../helpers/model");
+var assetRegistry_model_1 = require("../assetRegistry/assetRegistry.model");
 var isFavourite;
 (function (isFavourite) {
     isFavourite["zero"] = "0";
     isFavourite["one"] = "1";
 })(isFavourite || (isFavourite = {}));
+var SORT;
+(function (SORT) {
+    SORT["photograpyrate"] = "photograpyrate";
+    SORT["videograpyrate"] = "videograpyrate";
+    SORT["bothrate"] = "bothrate";
+    SORT["distance"] = "distance";
+    SORT["experiencelevel"] = "experiencelevel";
+})(SORT || (SORT = {}));
 var speciality;
 (function (speciality) {
     speciality[speciality["photographer"] = 1] = "photographer";
@@ -53,6 +62,9 @@ var AgentGetList = /** @class */ (function (_super) {
         _this.page = params.page;
         _this.limit = params.limit;
         _this.speciality = Number(params.speciality);
+        _this.category = Number(params.category);
+        _this.sort = params.sort;
+        _this.order = params.order;
         return _this;
     }
     __decorate([
@@ -75,6 +87,10 @@ var AgentGetList = /** @class */ (function (_super) {
         __metadata("design:type", Number)
     ], AgentGetList.prototype, "speciality", void 0);
     __decorate([
+        (0, class_validator_1.IsOptional)(),
+        __metadata("design:type", Number)
+    ], AgentGetList.prototype, "category", void 0);
+    __decorate([
         (0, class_validator_1.IsNotEmpty)(),
         __metadata("design:type", Number)
     ], AgentGetList.prototype, "page", void 0);
@@ -82,6 +98,16 @@ var AgentGetList = /** @class */ (function (_super) {
         (0, class_validator_1.IsNotEmpty)(),
         __metadata("design:type", Number)
     ], AgentGetList.prototype, "limit", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        (0, class_validator_1.IsEnum)(assetRegistry_model_1.OrderValidation),
+        __metadata("design:type", String)
+    ], AgentGetList.prototype, "order", void 0);
+    __decorate([
+        (0, class_validator_1.IsOptional)(),
+        (0, class_validator_1.IsEnum)(SORT),
+        __metadata("design:type", String)
+    ], AgentGetList.prototype, "sort", void 0);
     return AgentGetList;
 }(model_1.Model));
 exports.AgentGetList = AgentGetList;
