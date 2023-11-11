@@ -22,8 +22,8 @@ enum SORT {
   "photograpyrate" = "photograpyrate",
   "videograpyrate" = "videograpyrate",
   "bothrate" = "bothrate",
-  "distance"="distance",
-  "experiencelevel"="experiencelevel"
+  "distance" = "distance",
+  "experiencelevel" = "experiencelevel",
 }
 
 enum speciality {
