@@ -143,6 +143,9 @@ export class BookAgent extends Model {
   longitude: string;
 
   @IsNotEmpty()
+  brief: string;
+
+  @IsNotEmpty()
   @IsEnum(speciality)
   speciality: number;
 
@@ -160,5 +163,6 @@ export class BookAgent extends Model {
     this.speciality = body.speciality;
     this.hours = body.hours;
     this.categories = body.categories;
+    this.brief = body.brief;
   }
 }

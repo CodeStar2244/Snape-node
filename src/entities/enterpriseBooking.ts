@@ -47,6 +47,12 @@ export class EnterpriseBooking {
   })
   address2: string | null;
 
+  @Column("character varying", {
+    name: "brief",
+    length: 500,
+  })
+  brief: string;
+
   @Column("double precision", {
     name: "latitude",
   })

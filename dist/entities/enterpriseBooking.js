@@ -58,6 +58,13 @@ var EnterpriseBooking = /** @class */ (function () {
         __metadata("design:type", String)
     ], EnterpriseBooking.prototype, "address2", void 0);
     __decorate([
+        (0, typeorm_1.Column)("character varying", {
+            name: "brief",
+            length: 500,
+        }),
+        __metadata("design:type", String)
+    ], EnterpriseBooking.prototype, "brief", void 0);
+    __decorate([
         (0, typeorm_1.Column)("double precision", {
             name: "latitude",
         }),
