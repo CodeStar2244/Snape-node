@@ -181,7 +181,7 @@ export class EnterpriseAgentsService {
         speciality: body.speciality,
         longitude: body.longitude,
         mediacategories: JSON.stringify(body.categories),
-        brief:body.brief
+        brief: body.brief,
       });
       const created = await enterpriseBookingRepo.save(enterpriseBooking);
       return ResponseBuilder.data(created);
