@@ -1,18 +1,18 @@
 import { CronJob } from "cron";
 
 export class Cron {
-    constructor() {
-        this.dailyCron();
-    }
+  constructor() {
+    this.dailyCron();
+  }
 
-    public dailyCron = () => {
-        new CronJob(
-            "* * * * * *",
-            function () {
-                console.log("You will see this message every second");
-            },
-            null,
-            true
-        );
-    };
+  public dailyCron = () => {
+    new CronJob(
+      "* * * * * *",
+      function () {
+        console.log("You will see this message every second");
+      },
+      null,
+      true,
+    );
+  };
 }

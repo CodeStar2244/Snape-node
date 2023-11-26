@@ -47,7 +47,7 @@ class App {
     });
     const routes = new Routes(NODE_ENV);
     const enterpriseRoutes = new EnterpriseRoutes(NODE_ENV);
-    new Cron()
+    new Cron();
 
     this.app.all("/*", (req, res, next) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
