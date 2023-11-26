@@ -23,11 +23,11 @@ var StudioInvoice = /** @class */ (function () {
         __metadata("design:type", Number)
     ], StudioInvoice.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], StudioInvoice.prototype, "name", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], StudioInvoice.prototype, "currency", void 0);
     __decorate([
@@ -53,6 +53,10 @@ var StudioInvoice = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", Number)
+    ], StudioInvoice.prototype, "currentOutstanding", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ nullable: true }),
+        __metadata("design:type", Number)
     ], StudioInvoice.prototype, "discount", void 0);
     __decorate([
         (0, typeorm_1.Column)({ nullable: true }),
@@ -71,7 +75,9 @@ var StudioInvoice = /** @class */ (function () {
         __metadata("design:type", Date)
     ], StudioInvoice.prototype, "dueOnReceipt", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return studioClient_1.default; }, function (client) { return client.id; }, { onDelete: "CASCADE" }),
+        (0, typeorm_1.ManyToOne)(function () { return studioClient_1.default; }, function (client) { return client.id; }, {
+            onDelete: "CASCADE",
+        }),
         (0, typeorm_1.JoinColumn)({ name: "clientId" }),
         __metadata("design:type", studioClient_1.default)
     ], StudioInvoice.prototype, "clientId", void 0);

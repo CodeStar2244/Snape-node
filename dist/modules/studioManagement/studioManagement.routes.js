@@ -30,7 +30,7 @@ router.post(routes_1.QUESTIONNARIES_ROUTES.CREATE_QUESTIONNARIES, v.validate(stu
 router.get(routes_1.QUESTIONNARIES_ROUTES.GET_QUESTIONNARIES, studioManagementController.getQuestionnaries);
 router.get(routes_1.QUESTIONNARIES_ROUTES.GET_CLIENT_QUESTIONNARIES, studioManagementController.getClientQuestionnaries);
 router.delete(routes_1.QUESTIONNARIES_ROUTES.DELETE_QUESTIONNARIES, studioManagementController.deleteQuestionnaries);
-router.post(routes_1.INVOICE_ROUTES.CREATE_INVOICE, v.validate(studioManagement_model_1.CreateInvoice), studioManagementController.createInvoice);
+router.post(routes_1.INVOICE_ROUTES.CREATE_INVOICE, studioManagementController.createInvoice);
 router.get(routes_1.INVOICE_ROUTES.GET_INVOICES, studioManagementController.getInvoices);
 router.get(routes_1.INVOICE_ROUTES.GET_INVOICE, studioManagementController.getInvoice);
 router.post(routes_1.INVOICE_ROUTES.UPDATE_INVOICE, studioManagementController.editInvoice);

@@ -177,9 +177,15 @@ export class StudioManagementController {
     }
   };
 
-  editInvoice = async (req: Request, res: any) => {
+  editInvoice = async (req: any, res: any) => {
     try {
-      const result = await this.clientService.editInvoice(req.params, req.body);
+      const userDetails = req.user;
+
+      const result = await this.clientService.editInvoice(
+        req.params,
+        req.body,
+        userDetails
+      );
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
       res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });

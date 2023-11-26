@@ -235,7 +235,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
                             speciality: body.speciality,
                             longitude: body.longitude,
                             mediacategories: JSON.stringify(body.categories),
-                            brief: body.brief
+                            brief: body.brief,
                         });
                         return [4 /*yield*/, enterpriseBookingRepo.save(enterpriseBooking)];
                     case 3:

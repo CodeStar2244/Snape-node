@@ -104,7 +104,9 @@ var StudioManagementService = /** @class */ (function () {
                                 .addSelect("studioclient.phone", "phone")
                                 .addSelect("studioclient.profileUrl", "profileUrl")
                                 .addSelect("studioclient.createdAt", "createdAt")
-                                .where("studioclient.createdBy = :agentId", { agentId: userDetails.id })
+                                .where("studioclient.createdBy = :agentId", {
+                                agentId: userDetails.id,
+                            })
                                 .loadRelationIdAndMap("agentId", "studioclient.createdBy")];
                     case 1:
                         query = _a.sent();
@@ -254,7 +256,9 @@ var StudioManagementService = /** @class */ (function () {
                                 .addSelect("studioclient.name", "name")
                                 .addSelect("studioclient.imageUrl", "imageUrl")
                                 .addSelect("studioclient.createdAt", "createdAt")
-                                .where("studioclient.createdBy = :agentId", { agentId: user.id })
+                                .where("studioclient.createdBy = :agentId", {
+                                agentId: user.id,
+                            })
                                 .loadRelationIdAndMap("agentId", "studioclient.createdBy")
                                 .getRawMany()];
                     case 1:
@@ -313,7 +317,9 @@ var StudioManagementService = /** @class */ (function () {
                         return [4 /*yield*/, userRepository.delete({ id: params.id })];
                     case 1:
                         _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Faq deleted successfully" })];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                message: "Faq deleted successfully",
+                            })];
                     case 2:
                         error_9 = _a.sent();
                         console.log(error_9);
@@ -374,7 +380,9 @@ var StudioManagementService = /** @class */ (function () {
                     case 3: return [4 /*yield*/, templateRepo.save(__assign(__assign({}, params), { createdBy: user === null || user === void 0 ? void 0 : user.id }))];
                     case 4:
                         _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({ message: "Template updated successfully" })];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                message: "Template updated successfully",
+                            })];
                     case 5:
                         error_11 = _a.sent();
                         console.log(error_11);
@@ -437,11 +445,11 @@ var StudioManagementService = /** @class */ (function () {
             });
         }); };
         this.createInvoice = function (user, params) { return __awaiter(_this, void 0, void 0, function () {
-            var invoiceRepo, clientRepo, client, invoice, formattedDate, renderData, mailBody, error_13;
+            var invoiceRepo, clientRepo, client, invoice, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 3, , 4]);
                         invoiceRepo = db_config_1.AppDataSource.getRepository(studioInvoice_1.default);
                         clientRepo = db_config_1.AppDataSource.getRepository(studioClient_1.default);
                         return [4 /*yield*/, clientRepo.findOne({
@@ -452,30 +460,15 @@ var StudioManagementService = /** @class */ (function () {
                         return [4 /*yield*/, invoiceRepo.save(__assign(__assign({}, params), { clientId: client === null || client === void 0 ? void 0 : client.id, createdBy: user === null || user === void 0 ? void 0 : user.id }))];
                     case 2:
                         invoice = _a.sent();
-                        formattedDate = (0, moment_timezone_1.default)(invoice === null || invoice === void 0 ? void 0 : invoice.dueOnReceipt).format("MMMM D, YYYY");
-                        renderData = {
-                            userName: (user === null || user === void 0 ? void 0 : user.firstName) + " " + (user === null || user === void 0 ? void 0 : user.lastName),
-                            invoiceName: invoice === null || invoice === void 0 ? void 0 : invoice.name,
-                            invoiceAmount: invoice === null || invoice === void 0 ? void 0 : invoice.totalAmount,
-                            invoiceDetails: invoice === null || invoice === void 0 ? void 0 : invoice.invoiceDetails,
-                            dueDate: formattedDate,
-                            clientName: client === null || client === void 0 ? void 0 : client.name,
-                            currency: invoice === null || invoice === void 0 ? void 0 : invoice.currency,
-                            userEmail: user.email,
-                        };
-                        return [4 /*yield*/, mailer_1.Mailer.renderTemplate("Invoice", renderData)];
-                    case 3:
-                        mailBody = _a.sent();
-                        mailer_1.Mailer.sendMail(client === null || client === void 0 ? void 0 : client.email, params === null || params === void 0 ? void 0 : params.subject, mailBody);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
                                 data: { invoice: invoice },
                                 message: "invoice created successfully",
                             })];
-                    case 4:
+                    case 3:
                         error_13 = _a.sent();
                         console.log(error_13);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_13 === null || error_13 === void 0 ? void 0 : error_13.message)];
-                    case 5: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
@@ -489,6 +482,9 @@ var StudioManagementService = /** @class */ (function () {
                         return [4 /*yield*/, quesRepo.find({
                                 where: { createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
                                 relations: ["clientId"],
+                                order: {
+                                    createdAt: "DESC",
+                                },
                             })];
                     case 1:
                         invoices = _a.sent();
@@ -529,31 +525,60 @@ var StudioManagementService = /** @class */ (function () {
                 }
             });
         }); };
-        this.editInvoice = function (params, body) { return __awaiter(_this, void 0, void 0, function () {
-            var invoiceRepo, invoice, error_16;
+        this.editInvoice = function (params, body, user) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, clientRepo, updateReq, client, invoice, formattedDate, renderData, mailBody, error_16;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 6, , 7]);
                         invoiceRepo = db_config_1.AppDataSource.getRepository(studioInvoice_1.default);
-                        return [4 /*yield*/, invoiceRepo.update({ id: params === null || params === void 0 ? void 0 : params.id }, body)];
+                        clientRepo = db_config_1.AppDataSource.getRepository(studioClient_1.default);
+                        updateReq = __assign({}, body);
+                        updateReq === null || updateReq === void 0 ? true : delete updateReq.sendMail;
+                        return [4 /*yield*/, clientRepo.findOne({
+                                where: { id: params === null || params === void 0 ? void 0 : params.clientId },
+                            })];
                     case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, invoiceRepo.update({ id: params === null || params === void 0 ? void 0 : params.id }, updateReq)];
+                    case 2:
                         _a.sent();
                         return [4 /*yield*/, invoiceRepo.findOne({
                                 where: { id: params === null || params === void 0 ? void 0 : params.id },
                                 relations: ["clientId"],
                             })];
-                    case 2:
-                        invoice = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
-                                message: "Invoice edit successfully",
-                                data: invoice,
-                            })];
                     case 3:
+                        invoice = _a.sent();
+                        formattedDate = (0, moment_timezone_1.default)(invoice === null || invoice === void 0 ? void 0 : invoice.paymentDue).format("MMMM D, YYYY");
+                        if (!(body === null || body === void 0 ? void 0 : body.sendMail)) return [3 /*break*/, 5];
+                        renderData = {
+                            userName: (user === null || user === void 0 ? void 0 : user.firstName) + " " + (user === null || user === void 0 ? void 0 : user.lastName),
+                            invoiceName: invoice === null || invoice === void 0 ? void 0 : invoice.name,
+                            invoiceAmount: invoice === null || invoice === void 0 ? void 0 : invoice.totalAmount,
+                            invoiceDetails: invoice === null || invoice === void 0 ? void 0 : invoice.invoiceDetails,
+                            dueDate: formattedDate,
+                            clientName: client === null || client === void 0 ? void 0 : client.name,
+                            currency: invoice === null || invoice === void 0 ? void 0 : invoice.currency,
+                            userEmail: user.email,
+                            subTotalAmount: invoice === null || invoice === void 0 ? void 0 : invoice.subTotalAmount,
+                            totalAmount: invoice === null || invoice === void 0 ? void 0 : invoice.totalAmount,
+                            discount: invoice === null || invoice === void 0 ? void 0 : invoice.discount,
+                            tax: invoice === null || invoice === void 0 ? void 0 : invoice.tax,
+                        };
+                        return [4 /*yield*/, mailer_1.Mailer.renderTemplate("Invoice", renderData)];
+                    case 4:
+                        mailBody = _a.sent();
+                        mailer_1.Mailer.sendMail(client === null || client === void 0 ? void 0 : client.email, params === null || params === void 0 ? void 0 : params.subject, mailBody);
+                        _a.label = 5;
+                    case 5: return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                            message: "Invoice edit successfully",
+                            data: invoice,
+                        })];
+                    case 6:
                         error_16 = _a.sent();
                         console.log(error_16);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_16 === null || error_16 === void 0 ? void 0 : error_16.message)];
-                    case 4: return [2 /*return*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         }); };
@@ -634,6 +659,9 @@ var StudioManagementService = /** @class */ (function () {
                         return [4 /*yield*/, quesRepo.find({
                                 where: { createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
                                 relations: ["clientId"],
+                                order: {
+                                    createdAt: "DESC",
+                                },
                             })];
                     case 1:
                         quotations = _a.sent();

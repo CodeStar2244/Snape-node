@@ -1,67 +1,72 @@
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from "typeorm";
 import { Tblagent } from "./Tblagent";
 import StudioClient from "./studioClient";
 
 @Entity("studioinvoice", { schema: "public" })
 export default class StudioInvoice {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  name: string;
+    @Column({ nullable: true })
+    name: string;
 
-  @Column()
-  currency: string;
+    @Column({ nullable: true })
+    currency: string;
 
-  @Column({ nullable: true })
-  subject: string;
+    @Column({ nullable: true })
+    subject: string;
 
-  @Column({ default: "Draft" })
-  status: string;
+    @Column({ default: "Draft" })
+    status: string;
 
-  @Column("jsonb", { default: {} })
-  invoiceDetails: object;
+    @Column("jsonb", { default: {} })
+    invoiceDetails: object;
 
-  @Column({ nullable: true })
-  subTotalAmount: Number;
+    @Column({ nullable: true })
+    subTotalAmount: Number;
 
-  @Column({ nullable: true })
-  totalAmount: Number;
+    @Column({ nullable: true })
+    totalAmount: Number;
 
-  @Column({ nullable: true })
-  discount: Number;
+    @Column({ nullable: true })
+    currentOutstanding: Number;
 
-  @Column({ nullable: true })
-  tax: Number;
+    @Column({ nullable: true })
+    discount: Number;
 
-  @Column({ nullable: true })
-  notes: string;
+    @Column({ nullable: true })
+    tax: Number;
 
-  @Column({ nullable: true })
-  paymentDue: Date;
+    @Column({ nullable: true })
+    notes: string;
 
-  @Column({ nullable: true })
-  dueOnReceipt: Date;
+    @Column({ nullable: true })
+    paymentDue: Date;
 
-  @ManyToOne(() => StudioClient, (client) => client.id, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "clientId" })
-  clientId: StudioClient;
+    @Column({ nullable: true })
+    dueOnReceipt: Date;
 
-  @ManyToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
-  @JoinColumn({ name: "agentId" })
-  createdBy;
+    @ManyToOne(() => StudioClient, (client) => client.id, {
+        onDelete: "CASCADE",
+    })
+    @JoinColumn({ name: "clientId" })
+    clientId: StudioClient;
 
-  @CreateDateColumn({ type: "timestamptz" })
-  createdAt: Date;
+    @ManyToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "agentId" })
+    createdBy;
 
-  @UpdateDateColumn({ type: "timestamptz" })
-  updatedAt: Date;
+    @CreateDateColumn({ type: "timestamptz" })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: "timestamptz" })
+    updatedAt: Date;
 }

@@ -10,6 +10,7 @@ import i18next from "i18next";
 import i18middleware from "i18next-http-middleware";
 import { AWSS3 } from "./helpers/awss3";
 import { EnterpriseRoutes } from "./enterpriseroutes";
+import { Cron } from "./helpers/Cron";
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ class App {
     });
     const routes = new Routes(NODE_ENV);
     const enterpriseRoutes = new EnterpriseRoutes(NODE_ENV);
+    new Cron()
 
     this.app.all("/*", (req, res, next) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
