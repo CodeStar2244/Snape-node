@@ -33,7 +33,10 @@ export class UserController {
   };
   public updateAgentProfile = async (req, res) => {
     try {
-      const data = await this.agentService.updateAgentProfile(req.user,req.body);
+      const data = await this.agentService.updateAgentProfile(
+        req.user,
+        req.body,
+      );
       return res.status(data.code).json(data);
     } catch (error) {
       return res.status(error.code).json(error);
