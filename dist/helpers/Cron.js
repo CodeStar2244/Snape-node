@@ -6,7 +6,7 @@ var Cron = /** @class */ (function () {
     function Cron() {
         this.dailyCron = function () {
             new cron_1.CronJob("* * * * * *", function () {
-                console.log("You will see this message every second");
+                // console.log("You will see this message every second");
             }, null, true);
         };
         this.dailyCron();

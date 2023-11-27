@@ -35,7 +35,7 @@ router.get(routes_1.INVOICE_ROUTES.GET_INVOICES, studioManagementController.getI
 router.get(routes_1.INVOICE_ROUTES.GET_INVOICE, studioManagementController.getInvoice);
 router.post(routes_1.INVOICE_ROUTES.UPDATE_INVOICE, studioManagementController.editInvoice);
 router.delete(routes_1.INVOICE_ROUTES.DELETE_INVOICE, studioManagementController.deleteInvoice);
-router.post(routes_1.QUOTATION_ROUTES.CREATE_QUOTATION, v.validate(studioManagement_model_1.CreateQuotation), studioManagementController.createQuotation);
+router.post(routes_1.QUOTATION_ROUTES.CREATE_QUOTATION, studioManagementController.createQuotation);
 router.get(routes_1.QUOTATION_ROUTES.GET_QUOTATIONS, studioManagementController.getQuotations);
 router.get(routes_1.QUOTATION_ROUTES.GET_QUOTATION, studioManagementController.getQuotation);
 router.post(routes_1.QUOTATION_ROUTES.UPDATE_QUOTATION, studioManagementController.editQuotation);

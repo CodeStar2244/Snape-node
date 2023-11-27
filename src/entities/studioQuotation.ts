@@ -15,10 +15,10 @@ export default class StudioQuotation {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   currency: string;
 
   @Column({ nullable: true })

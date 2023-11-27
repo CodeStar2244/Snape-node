@@ -424,12 +424,13 @@ var StudioManagementController = /** @class */ (function () {
             });
         }); };
         this.editQuotation = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var result, error_21;
+            var userDetails, result, error_21;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.clientService.editQuotation(req.params, req.body)];
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.clientService.editQuotation(req.params, req.body, userDetails)];
                     case 1:
                         result = _a.sent();
                         res.status(result.code).json((result === null || result === void 0 ? void 0 : result.result) || (result === null || result === void 0 ? void 0 : result.error));

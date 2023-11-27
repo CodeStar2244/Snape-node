@@ -23,11 +23,11 @@ var StudioQuotation = /** @class */ (function () {
         __metadata("design:type", Number)
     ], StudioQuotation.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], StudioQuotation.prototype, "name", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], StudioQuotation.prototype, "currency", void 0);
     __decorate([

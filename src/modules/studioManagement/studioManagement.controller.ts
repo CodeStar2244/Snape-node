@@ -238,11 +238,14 @@ export class StudioManagementController {
     }
   };
 
-  public editQuotation = async (req: Request, res: any) => {
+  public editQuotation = async (req: any, res: any) => {
     try {
+      const userDetails = req.user;
+
       const result = await this.clientService.editQuotation(
         req.params,
         req.body,
+        userDetails
       );
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {

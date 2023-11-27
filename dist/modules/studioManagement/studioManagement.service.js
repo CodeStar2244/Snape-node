@@ -608,11 +608,11 @@ var StudioManagementService = /** @class */ (function () {
             });
         }); };
         this.createQuotation = function (user, params) { return __awaiter(_this, void 0, void 0, function () {
-            var invoiceRepo, clientRepo, client, invoice, renderData, mailBody, error_18;
+            var invoiceRepo, clientRepo, client, invoice, error_18;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 3, , 4]);
                         invoiceRepo = db_config_1.AppDataSource.getRepository(studioQuotation_1.default);
                         clientRepo = db_config_1.AppDataSource.getRepository(studioClient_1.default);
                         return [4 /*yield*/, clientRepo.findOne({
@@ -623,29 +623,15 @@ var StudioManagementService = /** @class */ (function () {
                         return [4 /*yield*/, invoiceRepo.save(__assign(__assign({}, params), { clientId: client === null || client === void 0 ? void 0 : client.id, createdBy: user === null || user === void 0 ? void 0 : user.id }))];
                     case 2:
                         invoice = _a.sent();
-                        renderData = {
-                            userName: (user === null || user === void 0 ? void 0 : user.firstName) + " " + (user === null || user === void 0 ? void 0 : user.lastName),
-                            invoiceName: invoice === null || invoice === void 0 ? void 0 : invoice.name,
-                            invoiceAmount: invoice === null || invoice === void 0 ? void 0 : invoice.totalAmount,
-                            invoiceDetails: invoice === null || invoice === void 0 ? void 0 : invoice.invoiceDetails,
-                            validFor: invoice === null || invoice === void 0 ? void 0 : invoice.validFor,
-                            clientName: client === null || client === void 0 ? void 0 : client.name,
-                            currency: invoice === null || invoice === void 0 ? void 0 : invoice.currency,
-                            userEmail: user.email,
-                        };
-                        return [4 /*yield*/, mailer_1.Mailer.renderTemplate("Quotation", renderData)];
-                    case 3:
-                        mailBody = _a.sent();
-                        mailer_1.Mailer.sendMail(client === null || client === void 0 ? void 0 : client.email, params === null || params === void 0 ? void 0 : params.subject, mailBody);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
                                 data: { invoice: invoice },
                                 message: "quotation created successfully",
                             })];
-                    case 4:
+                    case 3:
                         error_18 = _a.sent();
                         console.log(error_18);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_18 === null || error_18 === void 0 ? void 0 : error_18.message)];
-                    case 5: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
@@ -702,31 +688,59 @@ var StudioManagementService = /** @class */ (function () {
                 }
             });
         }); };
-        this.editQuotation = function (params, body) { return __awaiter(_this, void 0, void 0, function () {
-            var invoiceRepo, quotation, error_21;
+        this.editQuotation = function (params, body, user) { return __awaiter(_this, void 0, void 0, function () {
+            var invoiceRepo, clientRepo, updateReq, client, quotation, renderData, mailBody, error_21;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 6, , 7]);
                         invoiceRepo = db_config_1.AppDataSource.getRepository(studioQuotation_1.default);
-                        return [4 /*yield*/, invoiceRepo.update({ id: params === null || params === void 0 ? void 0 : params.id }, body)];
+                        clientRepo = db_config_1.AppDataSource.getRepository(studioClient_1.default);
+                        updateReq = __assign({}, body);
+                        updateReq === null || updateReq === void 0 ? true : delete updateReq.sendMail;
+                        return [4 /*yield*/, clientRepo.findOne({
+                                where: { id: params === null || params === void 0 ? void 0 : params.clientId },
+                            })];
                     case 1:
+                        client = _a.sent();
+                        return [4 /*yield*/, invoiceRepo.update({ id: params === null || params === void 0 ? void 0 : params.id }, updateReq)];
+                    case 2:
                         _a.sent();
                         return [4 /*yield*/, invoiceRepo.findOne({
                                 where: { id: params === null || params === void 0 ? void 0 : params.id },
                                 relations: ["clientId"],
                             })];
-                    case 2:
-                        quotation = _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
-                                message: "Quotation edit successfully",
-                                data: quotation,
-                            })];
                     case 3:
+                        quotation = _a.sent();
+                        if (!(body === null || body === void 0 ? void 0 : body.sendMail)) return [3 /*break*/, 5];
+                        renderData = {
+                            userName: (user === null || user === void 0 ? void 0 : user.firstName) + " " + (user === null || user === void 0 ? void 0 : user.lastName),
+                            invoiceName: quotation === null || quotation === void 0 ? void 0 : quotation.name,
+                            invoiceAmount: quotation === null || quotation === void 0 ? void 0 : quotation.totalAmount,
+                            invoiceDetails: quotation === null || quotation === void 0 ? void 0 : quotation.invoiceDetails,
+                            validFor: quotation === null || quotation === void 0 ? void 0 : quotation.validFor,
+                            clientName: client === null || client === void 0 ? void 0 : client.name,
+                            currency: quotation === null || quotation === void 0 ? void 0 : quotation.currency,
+                            userEmail: user.email,
+                            subTotalAmount: quotation === null || quotation === void 0 ? void 0 : quotation.subTotalAmount,
+                            totalAmount: quotation === null || quotation === void 0 ? void 0 : quotation.totalAmount,
+                            discount: quotation === null || quotation === void 0 ? void 0 : quotation.discount,
+                            tax: quotation === null || quotation === void 0 ? void 0 : quotation.tax,
+                        };
+                        return [4 /*yield*/, mailer_1.Mailer.renderTemplate("Quotation", renderData)];
+                    case 4:
+                        mailBody = _a.sent();
+                        mailer_1.Mailer.sendMail(client === null || client === void 0 ? void 0 : client.email, params === null || params === void 0 ? void 0 : params.subject, mailBody);
+                        _a.label = 5;
+                    case 5: return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                            message: "Quotation edit successfully",
+                            data: quotation,
+                        })];
+                    case 6:
                         error_21 = _a.sent();
                         console.log(error_21);
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_21 === null || error_21 === void 0 ? void 0 : error_21.message)];
-                    case 4: return [2 /*return*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         }); };
