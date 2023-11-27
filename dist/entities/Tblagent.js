@@ -269,6 +269,38 @@ var Tblagent = /** @class */ (function () {
     ], Tblagent.prototype, "accountno", void 0);
     __decorate([
         (0, typeorm_1.Column)("character varying", {
+            name: "bio",
+            nullable: true,
+            length: 400,
+        }),
+        __metadata("design:type", String)
+    ], Tblagent.prototype, "bio", void 0);
+    __decorate([
+        (0, typeorm_1.Column)("character varying", {
+            name: "location",
+            nullable: true,
+            length: 400,
+        }),
+        __metadata("design:type", String)
+    ], Tblagent.prototype, "location", void 0);
+    __decorate([
+        (0, typeorm_1.Column)("character varying", {
+            name: "businessName",
+            nullable: true,
+            length: 400,
+        }),
+        __metadata("design:type", String)
+    ], Tblagent.prototype, "businessName", void 0);
+    __decorate([
+        (0, typeorm_1.Column)("character varying", {
+            name: "timezone",
+            nullable: true,
+            length: 400,
+        }),
+        __metadata("design:type", String)
+    ], Tblagent.prototype, "timezone", void 0);
+    __decorate([
+        (0, typeorm_1.Column)("character varying", {
             name: "branchcode",
             nullable: true,
             length: 50,

@@ -36,42 +36,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.latestmigration1699279875810 = void 0;
-var latestmigration1699279875810 = /** @class */ (function () {
-    function latestmigration1699279875810() {
-        this.name = "latestmigration1699279875810";
+exports.Latestmigration1700997377521 = void 0;
+var Latestmigration1700997377521 = /** @class */ (function () {
+    function Latestmigration1700997377521() {
+        this.name = 'Latestmigration1700997377521';
     }
-    latestmigration1699279875810.prototype.up = function (queryRunner) {
+    Latestmigration1700997377521.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"studioinvoice\" ALTER COLUMN \"name\" DROP NOT NULL")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" ADD \"bio\" character varying(400)")];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"studioinvoice\" ALTER COLUMN \"currency\" DROP NOT NULL")];
-                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    latestmigration1699279875810.prototype.down = function (queryRunner) {
+    Latestmigration1700997377521.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"studioinvoice\" ALTER COLUMN \"currency\" SET NOT NULL")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" DROP COLUMN \"bio\"")];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"studioinvoice\" ALTER COLUMN \"name\" SET NOT NULL")];
-                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return latestmigration1699279875810;
+    return Latestmigration1700997377521;
 }());
-exports.latestmigration1699279875810 = latestmigration1699279875810;
-//# sourceMappingURL=1699279875810-latestmigration.js.map
+exports.Latestmigration1700997377521 = Latestmigration1700997377521;
+//# sourceMappingURL=1700997377521-latestmigration.js.map

@@ -23,4 +23,23 @@ export class UserController {
       return res.status(error.code).json(error);
     }
   };
+  public getAgentProfile = async (req, res) => {
+    try {
+      const data = await this.agentService.getAgentProfile(req.user);
+      return res.status(data.code).json(data);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+  public updateAgentProfile = async (req, res) => {
+    try {
+      const data = await this.agentService.updateAgentProfile(
+        req.user,
+        req.body,
+      );
+      return res.status(data.code).json(data);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
 }

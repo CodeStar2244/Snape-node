@@ -76,6 +76,40 @@ var UserController = /** @class */ (function () {
                 }
             });
         }); };
+        this.getAgentProfile = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var data, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.agentService.getAgentProfile(req.user)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, res.status(data.code).json(data)];
+                    case 2:
+                        error_3 = _a.sent();
+                        return [2 /*return*/, res.status(error_3.code).json(error_3)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.updateAgentProfile = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var data, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.agentService.updateAgentProfile(req.user, req.body)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, res.status(data.code).json(data)];
+                    case 2:
+                        error_4 = _a.sent();
+                        return [2 /*return*/, res.status(error_4.code).json(error_4)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.agentService = new agent_service_1.AgentService();
     }
     return UserController;

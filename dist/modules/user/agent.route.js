@@ -13,5 +13,7 @@ var userController = new agent_controller_1.UserController();
 //Signup
 router.post(routes_1.USER_ROUTES.LOGIN, userController.login);
 router.get(routes_1.USER_ROUTES.GET_REMANING_SPACE, new middleware_1.Middleware().authenticateUser, userController.getRemaningBalance);
+router.get(routes_1.USER_ROUTES.GET_PROFILE, new middleware_1.Middleware().authenticateUser, userController.getAgentProfile);
+router.post(routes_1.USER_ROUTES.GET_PROFILE, new middleware_1.Middleware().authenticateUser, userController.updateAgentProfile);
 exports.UserRoute = router;
 //# sourceMappingURL=agent.route.js.map

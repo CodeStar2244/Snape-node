@@ -16,4 +16,14 @@ router.get(
   new Middleware().authenticateUser,
   userController.getRemaningBalance,
 );
+router.get(
+  USER_ROUTES.GET_PROFILE,
+  new Middleware().authenticateUser,
+  userController.getAgentProfile,
+);
+router.post(
+  USER_ROUTES.GET_PROFILE,
+  new Middleware().authenticateUser,
+  userController.updateAgentProfile,
+);
 export const UserRoute: Router = router;

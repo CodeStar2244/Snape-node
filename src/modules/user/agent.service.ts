@@ -9,6 +9,7 @@ import { FREE_ACCOUNT_STORAGE } from "../../config/constants";
 import EnterpriseSettings from "../../entities/enterpriseSettings";
 import { EnterPriseClient } from "../../entities/enterPriseClient";
 import bcrypt from "bcrypt";
+import { Tblimages } from "../../entities/Tblimages";
 export class AgentService {
   private passWordDecrypt: PasswordDecryptor;
   constructor() {
@@ -84,6 +85,69 @@ export class AgentService {
         totalAllowedSpace: agentSettings.totalStorage.toFixed(2),
       };
       return ResponseBuilder.data(dataToSend);
+    } catch (error) {
+      throw error;
+    }
+  }
+  public async getAgentProfile(userDetails) {
+    try {
+      const agentRepo = AppDataSource.getRepository(Tblagent);
+      const imageRepo = AppDataSource.getRepository(Tblimages);
+      const agent = await agentRepo.findOne({
+        where: {
+          id: userDetails.id,
+        },
+        select: [
+          "bio",
+          "id",
+          "firstname",
+          "lastname",
+          "email",
+          "phone",
+          "gender",
+          "location",
+          "timezone",
+          "businessName",
+        ],
+      });
+      const profileImage = await imageRepo.findOne({
+        where: {
+          entityid: agent.id,
+          entitytype: "agent",
+        },
+      });
+      const agentToSend = {
+        ...agent,
+        profile: profileImage.imagepath,
+      };
+      console.log(profileImage, "profileIMage");
+
+      return ResponseBuilder.data(agentToSend);
+    } catch (error) {
+      throw error;
+    }
+  }
+  public async updateAgentProfile(userDetails, body) {
+    try {
+      const agentRepo = AppDataSource.getRepository(Tblagent);
+      const agent = await agentRepo.findOne({
+        where: {
+          id: userDetails.id,
+        },
+        select: ["id", "firstname", "lastname"],
+      });
+      if (!agent) {
+        return ResponseBuilder.badRequest("Agent Not found");
+      }
+      await agentRepo.update(agent.id, {
+        bio: body.bio,
+        location: body.location,
+        timezone: body.timezone,
+        firstname: body.firstname,
+        lastname: body.lastname,
+        businessName: body.businessName,
+      });
+      return ResponseBuilder.data(agent);
     } catch (error) {
       throw error;
     }

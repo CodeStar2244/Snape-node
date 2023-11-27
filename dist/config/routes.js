@@ -6,6 +6,7 @@ exports.USER_ROUTES = {
     GET_REMANING_SPACE: "/get-remaining-space",
     ENTERPRISE_REGISTER: "/enterprise-register",
     ENTERPRISE_LOGIN: "/enterprise-login",
+    GET_PROFILE: "/profile",
 };
 exports.COLLECTION_ROUTES = {
     CREATE_COLLECTION: "/",

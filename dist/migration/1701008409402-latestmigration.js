@@ -36,42 +36,48 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.latestmigration1699279875810 = void 0;
-var latestmigration1699279875810 = /** @class */ (function () {
-    function latestmigration1699279875810() {
-        this.name = "latestmigration1699279875810";
+exports.Latestmigration1701008409402 = void 0;
+var Latestmigration1701008409402 = /** @class */ (function () {
+    function Latestmigration1701008409402() {
+        this.name = 'Latestmigration1701008409402';
     }
-    latestmigration1699279875810.prototype.up = function (queryRunner) {
+    Latestmigration1701008409402.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"studioinvoice\" ALTER COLUMN \"name\" DROP NOT NULL")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" ADD \"location\" character varying(400)")];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"studioinvoice\" ALTER COLUMN \"currency\" DROP NOT NULL")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" ADD \"businessName\" character varying(400)")];
                     case 2:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" ADD \"timezone\" character varying(400)")];
+                    case 3:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    latestmigration1699279875810.prototype.down = function (queryRunner) {
+    Latestmigration1701008409402.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"studioinvoice\" ALTER COLUMN \"currency\" SET NOT NULL")];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" DROP COLUMN \"timezone\"")];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"studioinvoice\" ALTER COLUMN \"name\" SET NOT NULL")];
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" DROP COLUMN \"businessName\"")];
                     case 2:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.query("ALTER TABLE \"tblagent\" DROP COLUMN \"location\"")];
+                    case 3:
                         _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    return latestmigration1699279875810;
+    return Latestmigration1701008409402;
 }());
-exports.latestmigration1699279875810 = latestmigration1699279875810;
-//# sourceMappingURL=1699279875810-latestmigration.js.map
+exports.Latestmigration1701008409402 = Latestmigration1701008409402;
+//# sourceMappingURL=1701008409402-latestmigration.js.map
