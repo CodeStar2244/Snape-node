@@ -227,6 +227,33 @@ export class Tblagent {
   accountno: string | null;
 
   @Column("character varying", {
+    name: "bio",
+    nullable: true,
+    length: 400,
+  })
+  bio: string | null;
+  @Column("character varying", {
+    name: "location",
+    nullable: true,
+    length: 400,
+  })
+  location: string | null;
+
+  @Column("character varying", {
+    name: "businessName",
+    nullable: true,
+    length: 400,
+  })
+  businessName: string | null;
+
+  @Column("character varying", {
+    name: "timezone",
+    nullable: true,
+    length: 400,
+  })
+  timezone: string | null;
+
+  @Column("character varying", {
     name: "branchcode",
     nullable: true,
     length: 50,

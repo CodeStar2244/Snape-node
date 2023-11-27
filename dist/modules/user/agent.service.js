@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -46,6 +57,7 @@ var jwt_1 = require("../../helpers/jwt");
 var passwordDecryptor_1 = require("../../helpers/passwordDecryptor");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var agentSettings_1 = __importDefault(require("../../entities/agentSettings"));
+var Tblimages_1 = require("../../entities/Tblimages");
 var AgentService = /** @class */ (function () {
     function AgentService() {
         this.passWordDecrypt = new passwordDecryptor_1.PasswordDecryptor();
@@ -141,9 +153,81 @@ var AgentService = /** @class */ (function () {
             });
         });
     };
+    AgentService.prototype.getAgentProfile = function (userDetails) {
+        return __awaiter(this, void 0, void 0, function () {
+            var agentRepo, imageRepo, agent, profileImage, agentToSend, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        imageRepo = db_config_1.AppDataSource.getRepository(Tblimages_1.Tblimages);
+                        return [4 /*yield*/, agentRepo.findOne({ where: {
+                                    id: userDetails.id
+                                },
+                                select: ["bio", "id", "firstname", "lastname", "email", "phone", "gender", "location", "timezone", "businessName"]
+                            })];
+                    case 1:
+                        agent = _a.sent();
+                        return [4 /*yield*/, imageRepo.findOne({
+                                where: {
+                                    entityid: agent.id,
+                                    entitytype: "agent"
+                                }
+                            })];
+                    case 2:
+                        profileImage = _a.sent();
+                        agentToSend = __assign(__assign({}, agent), { profile: profileImage.imagepath });
+                        console.log(profileImage, "profileIMage");
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(agentToSend)];
+                    case 3:
+                        error_3 = _a.sent();
+                        throw error_3;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AgentService.prototype.updateAgentProfile = function (userDetails, body) {
+        return __awaiter(this, void 0, void 0, function () {
+            var agentRepo, agent, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
+                        return [4 /*yield*/, agentRepo.findOne({ where: {
+                                    id: userDetails.id
+                                },
+                                select: ["id", "firstname", "lastname"]
+                            })];
+                    case 1:
+                        agent = _a.sent();
+                        if (!agent) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Agent Not found")];
+                        }
+                        return [4 /*yield*/, agentRepo.update(agent.id, {
+                                bio: body.bio,
+                                location: body.location,
+                                timezone: body.timezone,
+                                firstname: body.firstname,
+                                lastname: body.lastname,
+                                businessName: body.businessName,
+                            })];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(agent)];
+                    case 3:
+                        error_4 = _a.sent();
+                        throw error_4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     AgentService.prototype.generateAgentSettings = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var agentSettingRepo, agentRepo, agentSetting, agent, agentSettingCreate, error_3;
+            var agentSettingRepo, agentRepo, agentSetting, agent, agentSettingCreate, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -176,7 +260,7 @@ var AgentService = /** @class */ (function () {
                         _a.label = 3;
                     case 3: return [3 /*break*/, 5];
                     case 4:
-                        error_3 = _a.sent();
+                        error_5 = _a.sent();
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

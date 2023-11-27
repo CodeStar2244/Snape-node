@@ -3,6 +3,7 @@ export const USER_ROUTES = {
   GET_REMANING_SPACE: "/get-remaining-space",
   ENTERPRISE_REGISTER: "/enterprise-register",
   ENTERPRISE_LOGIN: "/enterprise-login",
+  GET_PROFILE: "/profile",
 };
 export const COLLECTION_ROUTES = {
   CREATE_COLLECTION: "/",
