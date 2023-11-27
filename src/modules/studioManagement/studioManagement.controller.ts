@@ -245,7 +245,7 @@ export class StudioManagementController {
       const result = await this.clientService.editQuotation(
         req.params,
         req.body,
-        userDetails
+        userDetails,
       );
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
