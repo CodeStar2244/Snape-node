@@ -162,18 +162,30 @@ var AgentService = /** @class */ (function () {
                         _a.trys.push([0, 3, , 4]);
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
                         imageRepo = db_config_1.AppDataSource.getRepository(Tblimages_1.Tblimages);
-                        return [4 /*yield*/, agentRepo.findOne({ where: {
-                                    id: userDetails.id
+                        return [4 /*yield*/, agentRepo.findOne({
+                                where: {
+                                    id: userDetails.id,
                                 },
-                                select: ["bio", "id", "firstname", "lastname", "email", "phone", "gender", "location", "timezone", "businessName"]
+                                select: [
+                                    "bio",
+                                    "id",
+                                    "firstname",
+                                    "lastname",
+                                    "email",
+                                    "phone",
+                                    "gender",
+                                    "location",
+                                    "timezone",
+                                    "businessName",
+                                ],
                             })];
                     case 1:
                         agent = _a.sent();
                         return [4 /*yield*/, imageRepo.findOne({
                                 where: {
                                     entityid: agent.id,
-                                    entitytype: "agent"
-                                }
+                                    entitytype: "agent",
+                                },
                             })];
                     case 2:
                         profileImage = _a.sent();
@@ -196,10 +208,11 @@ var AgentService = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
-                        return [4 /*yield*/, agentRepo.findOne({ where: {
-                                    id: userDetails.id
+                        return [4 /*yield*/, agentRepo.findOne({
+                                where: {
+                                    id: userDetails.id,
                                 },
-                                select: ["id", "firstname", "lastname"]
+                                select: ["id", "firstname", "lastname"],
                             })];
                     case 1:
                         agent = _a.sent();

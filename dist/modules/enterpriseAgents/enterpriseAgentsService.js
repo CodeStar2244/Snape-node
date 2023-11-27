@@ -299,6 +299,7 @@ var EnterpriseAgentsService = /** @class */ (function () {
                             .addSelect("agent.firstname", "firstname")
                             .addSelect("images.imagepath", "profile")
                             .addSelect("agent.lastname", "lastname")
+                            .addSelect("agent.bio", "bio")
                             .addSelect("agent.experiencelevel", "experiencelevel")
                             .addSelect("agent.speciality", "speciality")
                             .addSelect("agent.photograpyrate", "photograpyrate")
