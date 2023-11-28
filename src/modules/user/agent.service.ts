@@ -91,7 +91,7 @@ export class AgentService {
   }
   public async getAgentProfile(userDetails) {
     try {
-      console.log("riun")
+      console.log("riun");
       const agentRepo = AppDataSource.getRepository(Tblagent);
       const imageRepo = AppDataSource.getRepository(Tblimages);
       const agent = await agentRepo.findOne({
@@ -125,7 +125,7 @@ export class AgentService {
 
       return ResponseBuilder.data(agentToSend);
     } catch (error) {
-      console.log(error , "Error")
+      console.log(error, "Error");
       throw error;
     }
   }
