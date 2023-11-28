@@ -121,7 +121,6 @@ export class AgentService {
         ...agent,
         profile: profileImage?.imagepath,
       };
-      console.log(profileImage, "profileIMage");
 
       return ResponseBuilder.data(agentToSend);
     } catch (error) {
