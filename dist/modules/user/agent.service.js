@@ -160,6 +160,7 @@ var AgentService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
+                        console.log("riun");
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
                         imageRepo = db_config_1.AppDataSource.getRepository(Tblimages_1.Tblimages);
                         return [4 /*yield*/, agentRepo.findOne({
@@ -189,11 +190,12 @@ var AgentService = /** @class */ (function () {
                             })];
                     case 2:
                         profileImage = _a.sent();
-                        agentToSend = __assign(__assign({}, agent), { profile: profileImage.imagepath });
+                        agentToSend = __assign(__assign({}, agent), { profile: profileImage === null || profileImage === void 0 ? void 0 : profileImage.imagepath });
                         console.log(profileImage, "profileIMage");
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(agentToSend)];
                     case 3:
                         error_3 = _a.sent();
+                        console.log(error_3, "Error");
                         throw error_3;
                     case 4: return [2 /*return*/];
                 }
