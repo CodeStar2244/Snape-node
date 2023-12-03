@@ -233,7 +233,7 @@ export class CreateBooking extends Model {
   @IsNotEmpty()
   title: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   description: string;
 
   @IsOptional()
