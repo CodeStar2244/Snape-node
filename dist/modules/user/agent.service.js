@@ -58,6 +58,7 @@ var passwordDecryptor_1 = require("../../helpers/passwordDecryptor");
 var responseBuilder_1 = require("../../helpers/responseBuilder");
 var agentSettings_1 = __importDefault(require("../../entities/agentSettings"));
 var Tblimages_1 = require("../../entities/Tblimages");
+var plans_1 = __importDefault(require("../../entities/plans"));
 var AgentService = /** @class */ (function () {
     function AgentService() {
         this.passWordDecrypt = new passwordDecryptor_1.PasswordDecryptor();
@@ -160,7 +161,6 @@ var AgentService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        console.log("riun");
                         agentRepo = db_config_1.AppDataSource.getRepository(Tblagent_1.Tblagent);
                         imageRepo = db_config_1.AppDataSource.getRepository(Tblimages_1.Tblimages);
                         return [4 /*yield*/, agentRepo.findOne({
@@ -191,7 +191,6 @@ var AgentService = /** @class */ (function () {
                     case 2:
                         profileImage = _a.sent();
                         agentToSend = __assign(__assign({}, agent), { profile: profileImage === null || profileImage === void 0 ? void 0 : profileImage.imagepath });
-                        console.log(profileImage, "profileIMage");
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(agentToSend)];
                     case 3:
                         error_3 = _a.sent();
@@ -278,6 +277,50 @@ var AgentService = /** @class */ (function () {
                         error_5 = _a.sent();
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    AgentService.prototype.getPlans = function (userDetails) {
+        return __awaiter(this, void 0, void 0, function () {
+            var planRepo, agentSettingsRepo, plans, agentActivatedPlan, plansToSend, _i, plansToSend_1, plan, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        planRepo = db_config_1.AppDataSource.getRepository(plans_1.default);
+                        agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
+                        return [4 /*yield*/, planRepo.find({
+                                order: {
+                                    id: "ASC"
+                                }
+                            })];
+                    case 1:
+                        plans = _a.sent();
+                        return [4 /*yield*/, agentSettingsRepo.findOne({
+                                where: {
+                                    agentId: userDetails === null || userDetails === void 0 ? void 0 : userDetails.id
+                                },
+                                relations: ["currentPlan"]
+                            })];
+                    case 2:
+                        agentActivatedPlan = _a.sent();
+                        plansToSend = JSON.parse(JSON.stringify(plans));
+                        for (_i = 0, plansToSend_1 = plansToSend; _i < plansToSend_1.length; _i++) {
+                            plan = plansToSend_1[_i];
+                            if ((plan === null || plan === void 0 ? void 0 : plan.id) === (agentActivatedPlan === null || agentActivatedPlan === void 0 ? void 0 : agentActivatedPlan.currentPlan.id)) {
+                                plan["active"] = true;
+                            }
+                            else {
+                                plan["active"] = false;
+                            }
+                        }
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(plansToSend)];
+                    case 3:
+                        error_6 = _a.sent();
+                        console.log(error_6, "Error");
+                        throw error_6;
+                    case 4: return [2 /*return*/];
                 }
             });
         });

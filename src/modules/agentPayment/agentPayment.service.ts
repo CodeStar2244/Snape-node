@@ -25,6 +25,9 @@ export class AgentPaymentService {
           },
         },
         relations: ["planId"],
+        order: {
+          id: "DESC",
+        },
       });
       if (agentPlan) {
         if (moment().isBefore(agentPlan.validTill)) {

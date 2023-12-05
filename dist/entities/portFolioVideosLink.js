@@ -19,6 +19,7 @@ var VideoType;
 (function (VideoType) {
     VideoType["YOUTUBE"] = "YOUTUBE";
     VideoType["VIMEO"] = "VIMEO";
+    VideoType["CUSTOM"] = "CUSTOM";
 })(VideoType = exports.VideoType || (exports.VideoType = {}));
 var PortFolioVideoLinks = /** @class */ (function () {
     function PortFolioVideoLinks() {
@@ -29,7 +30,6 @@ var PortFolioVideoLinks = /** @class */ (function () {
     ], PortFolioVideoLinks.prototype, "id", void 0);
     __decorate([
         (0, typeorm_1.Column)({
-            unique: true,
             nullable: true,
         }),
         __metadata("design:type", String)

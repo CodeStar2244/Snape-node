@@ -30,6 +30,10 @@ var Plans = /** @class */ (function () {
         __metadata("design:type", String)
     ], Plans.prototype, "description", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ nullable: true }),
+        __metadata("design:type", String)
+    ], Plans.prototype, "headline", void 0);
+    __decorate([
         (0, typeorm_1.Column)(),
         __metadata("design:type", Number)
     ], Plans.prototype, "amountPerMonth", void 0);

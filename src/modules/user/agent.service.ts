@@ -10,6 +10,7 @@ import EnterpriseSettings from "../../entities/enterpriseSettings";
 import { EnterPriseClient } from "../../entities/enterPriseClient";
 import bcrypt from "bcrypt";
 import { Tblimages } from "../../entities/Tblimages";
+import Plans from "../../entities/plans";
 export class AgentService {
   private passWordDecrypt: PasswordDecryptor;
   constructor() {
@@ -91,7 +92,6 @@ export class AgentService {
   }
   public async getAgentProfile(userDetails) {
     try {
-      console.log("riun");
       const agentRepo = AppDataSource.getRepository(Tblagent);
       const imageRepo = AppDataSource.getRepository(Tblimages);
       const agent = await agentRepo.findOne({
@@ -179,5 +179,36 @@ export class AgentService {
         agentSettingRepo.save(agentSettingCreate);
       }
     } catch (error) {}
+  }
+
+  public async getPlans(userDetails) {
+    try {
+      const planRepo = AppDataSource.getRepository(Plans);
+      const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
+      const plans = await planRepo.find({
+        order: {
+          id: "ASC",
+        },
+      });
+      const agentActivatedPlan = await agentSettingsRepo.findOne({
+        where: {
+          agentId: userDetails?.id,
+        },
+        relations: ["currentPlan"],
+      });
+      const plansToSend = JSON.parse(JSON.stringify(plans));
+      for (const plan of plansToSend) {
+        if (plan?.id === agentActivatedPlan?.currentPlan.id) {
+          plan["active"] = true;
+        } else {
+          plan["active"] = false;
+        }
+      }
+
+      return ResponseBuilder.data(plansToSend);
+    } catch (error) {
+      console.log(error, "Error");
+      throw error;
+    }
   }
 }

@@ -15,6 +15,7 @@ import PortFolios from "./Portfolio";
 export enum VideoType {
   YOUTUBE = "YOUTUBE",
   VIMEO = "VIMEO",
+  CUSTOM = "CUSTOM",
 }
 
 @Entity("portFolioVideoLinks", { schema: "public" })
@@ -23,7 +24,6 @@ export default class PortFolioVideoLinks {
   id: number;
 
   @Column({
-    unique: true,
     nullable: true,
   })
   url: string;

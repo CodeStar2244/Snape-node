@@ -25,6 +25,9 @@ export default class Plans {
   @Column({ nullable: true })
   description: string;
 
+  @Column({ nullable: true })
+  headline: string;
+
   @Column()
   amountPerMonth: number;
 

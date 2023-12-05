@@ -4,6 +4,7 @@ export const USER_ROUTES = {
   ENTERPRISE_REGISTER: "/enterprise-register",
   ENTERPRISE_LOGIN: "/enterprise-login",
   GET_PROFILE: "/profile",
+  GET_PLANS: "/plans",
 };
 export const COLLECTION_ROUTES = {
   CREATE_COLLECTION: "/",

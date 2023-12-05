@@ -7,6 +7,7 @@ exports.USER_ROUTES = {
     ENTERPRISE_REGISTER: "/enterprise-register",
     ENTERPRISE_LOGIN: "/enterprise-login",
     GET_PROFILE: "/profile",
+    GET_PLANS: "/plans",
 };
 exports.COLLECTION_ROUTES = {
     CREATE_COLLECTION: "/",

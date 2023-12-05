@@ -26,4 +26,9 @@ router.post(
   new Middleware().authenticateUser,
   userController.updateAgentProfile,
 );
+router.get(
+  USER_ROUTES.GET_PLANS,
+  new Middleware().authenticateUser,
+  userController.getPlans,
+);
 export const UserRoute: Router = router;

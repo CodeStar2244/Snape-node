@@ -18,8 +18,10 @@ export class UserController {
   public getRemaningBalance = async (req, res) => {
     try {
       const data = await this.agentService.getRemaningBalance(req.user);
+      console.log("res sent");
       return res.status(data.code).json(data);
     } catch (error) {
+      console.log("error");
       return res.status(error.code).json(error);
     }
   };
@@ -37,6 +39,14 @@ export class UserController {
         req.user,
         req.body,
       );
+      return res.status(data.code).json(data);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+  public getPlans = async (req, res) => {
+    try {
+      const data = await this.agentService.getPlans(req.user);
       return res.status(data.code).json(data);
     } catch (error) {
       return res.status(error.code).json(error);
