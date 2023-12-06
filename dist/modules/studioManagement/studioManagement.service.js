@@ -968,8 +968,68 @@ var StudioManagementService = /** @class */ (function () {
                 }
             });
         }); };
+        this.getInvoiceSummary = function (user) { return __awaiter(_this, void 0, void 0, function () {
+            var studioInvoiceRepo, totalPaidPro, totalCurrentOutstandingPro, totalOverDuePro, _a, totalPaid, totalCurrentOutstanding, totalOverDue, error_30;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        studioInvoiceRepo = db_config_1.AppDataSource.getRepository(studioInvoice_1.default);
+                        totalPaidPro = studioInvoiceRepo
+                            .createQueryBuilder("studioInvoice")
+                            .select("SUM(studioInvoice.totalAmount)", "sum")
+                            .where("studioInvoice.agentId = :agentId", {
+                            agentId: user === null || user === void 0 ? void 0 : user.id,
+                        })
+                            .andWhere("studioInvoice.status = :status", {
+                            status: "Paid",
+                        })
+                            .getRawOne();
+                        totalCurrentOutstandingPro = studioInvoiceRepo
+                            .createQueryBuilder("studioInvoice")
+                            .select("SUM(studioInvoice.totalAmount)", "sum")
+                            .where("studioInvoice.agentId = :agentId", {
+                            agentId: user === null || user === void 0 ? void 0 : user.id,
+                        })
+                            .andWhere("studioInvoice.status = :status", {
+                            status: "Outstanding",
+                        })
+                            .getRawOne();
+                        totalOverDuePro = studioInvoiceRepo
+                            .createQueryBuilder("studioInvoice")
+                            .select("SUM(studioInvoice.totalAmount)", "sum")
+                            .where("studioInvoice.agentId = :agentId", {
+                            agentId: user === null || user === void 0 ? void 0 : user.id,
+                        })
+                            .andWhere("studioInvoice.status = :status", {
+                            status: "PastDue",
+                        })
+                            .getRawOne();
+                        return [4 /*yield*/, Promise.all([
+                                totalPaidPro,
+                                totalCurrentOutstandingPro,
+                                totalOverDuePro,
+                            ])];
+                    case 1:
+                        _a = _b.sent(), totalPaid = _a[0], totalCurrentOutstanding = _a[1], totalOverDue = _a[2];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: {
+                                    totalPaid: totalPaid === null || totalPaid === void 0 ? void 0 : totalPaid.sum,
+                                    totalOutStanding: totalCurrentOutstanding === null || totalCurrentOutstanding === void 0 ? void 0 : totalCurrentOutstanding.sum,
+                                    totalPastDue: totalOverDue === null || totalOverDue === void 0 ? void 0 : totalOverDue.sum,
+                                },
+                                message: "Dashboard data get successfully",
+                            })];
+                    case 2:
+                        error_30 = _b.sent();
+                        console.log(error_30);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_30 === null || error_30 === void 0 ? void 0 : error_30.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.getClientQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, questionnarires, error_30;
+            var quesRepo, questionnarires, error_31;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -986,15 +1046,15 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries created successfully",
                             })];
                     case 2:
-                        error_30 = _a.sent();
-                        console.log(error_30);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_30 === null || error_30 === void 0 ? void 0 : error_30.message)];
+                        error_31 = _a.sent();
+                        console.log(error_31);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_31 === null || error_31 === void 0 ? void 0 : error_31.message)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.deleteQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, error_31;
+            var quesRepo, error_32;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1011,9 +1071,9 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries deleted successfully",
                             })];
                     case 2:
-                        error_31 = _a.sent();
-                        console.log(error_31);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_31 === null || error_31 === void 0 ? void 0 : error_31.message)];
+                        error_32 = _a.sent();
+                        console.log(error_32);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_32 === null || error_32 === void 0 ? void 0 : error_32.message)];
                     case 3: return [2 /*return*/];
                 }
             });

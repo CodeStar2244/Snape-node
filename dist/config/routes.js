@@ -80,6 +80,7 @@ exports.INVOICE_ROUTES = {
     CREATE_INVOICE: "/invoice",
     UPDATE_INVOICE: "/invoice/:id",
     DELETE_INVOICE: "/invoice/:id",
+    INVOICE_SUMMARY: "/invoicedashboard/summary",
 };
 exports.QUOTATION_ROUTES = {
     GET_QUOTATIONS: "/quotation",

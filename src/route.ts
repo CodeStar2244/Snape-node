@@ -11,49 +11,65 @@ import { StudioManagementRouter } from "./modules/studioManagement/studioManagem
 import { PortfolioRoute } from "./modules/agentPortfolio/portfolio.route";
 import { AgentPaymentRoute } from "./modules/agentPayment/agentPayment.route";
 export class Routes {
-  private middleware = new Middleware();
-  protected basePath: string;
+    private middleware = new Middleware();
+    protected basePath: string;
 
-  constructor(NODE_ENV: string) {
-    switch (NODE_ENV) {
-      case "production":
-        this.basePath = "/app/dist";
-        break;
-      case "development":
-        this.basePath = "/app/public";
-        break;
+    constructor(NODE_ENV: string) {
+        switch (NODE_ENV) {
+            case "production":
+                this.basePath = "/app/dist";
+                break;
+            case "development":
+                this.basePath = "/app/public";
+                break;
+        }
     }
-  }
 
-  public defaultRoute(req: Request, res: Response) {
-    res.json({
-      message: "Hello Snape!",
-    });
-  }
+    public defaultRoute(req: Request, res: Response) {
+        res.json({
+            message: "Hello Snape!",
+        });
+    }
 
-  public path() {
-    const router = express.Router();
-    router.use("/agent", UserRoute);
-    router.use(
-      "/collection",
-      this.middleware.authenticateUser,
-      CollectionRoute,
-    );
-    router.use("/dashboard", this.middleware.authenticateUser, DashboardRoute);
-    router.use("/portfolio", this.middleware.authenticateUser, PortfolioRoute);
-    router.use("/asset", this.middleware.authenticateUser, AssetRegistryRouter);
-    router.use("/payment", this.middleware.authenticateUser, AgentPaymentRoute);
-    router.use(
-      "/studiomanagement",
-      this.middleware.authenticateUser,
-      StudioManagementRouter,
-    );
-    router.use("/client", ClientRoute);
-    router.all("/*", (req: Request, res: Response) => {
-      return res.status(404).json({
-        message: "ERR_URL_NOT_FOUND",
-      });
-    });
-    return router;
-  }
+    public path() {
+        const router = express.Router();
+        router.use("/agent", UserRoute);
+        router.use(
+            "/collection",
+            this.middleware.authenticateUser,
+            CollectionRoute
+        );
+        router.use(
+            "/dashboard",
+            this.middleware.authenticateUser,
+            DashboardRoute
+        );
+        router.use(
+            "/portfolio",
+            this.middleware.authenticateUser,
+            PortfolioRoute
+        );
+        router.use(
+            "/asset",
+            this.middleware.authenticateUser,
+            AssetRegistryRouter
+        );
+        router.use(
+            "/payment",
+            this.middleware.authenticateUser,
+            AgentPaymentRoute
+        );
+        router.use(
+            "/studiomanagement",
+            this.middleware.authenticateUser,
+            StudioManagementRouter
+        );
+        router.use("/client", ClientRoute);
+        router.all("/*", (req: Request, res: Response) => {
+            return res.status(404).json({
+                message: "ERR_URL_NOT_FOUND",
+            });
+        });
+        return router;
+    }
 }
