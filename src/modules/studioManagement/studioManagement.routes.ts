@@ -178,4 +178,9 @@ router.delete(
   studioManagementController.deleteBooking,
 );
 
+router.get(
+  STUDIO_MANAGEMENT_ROUTES.DASHBOARD,
+  studioManagementController.getStudioDashboard,
+);
+
 export const StudioManagementRouter: Router = router;

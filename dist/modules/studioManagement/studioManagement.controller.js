@@ -151,7 +151,10 @@ var StudioManagementController = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_6 = _a.sent();
-                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        res.status(500).json({
+                            code: 500,
+                            message: "INTERNAL_SERVER_ERROR",
+                        });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -171,7 +174,10 @@ var StudioManagementController = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_7 = _a.sent();
-                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        res.status(500).json({
+                            code: 500,
+                            message: "INTERNAL_SERVER_ERROR",
+                        });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -190,7 +196,10 @@ var StudioManagementController = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_8 = _a.sent();
-                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        res.status(500).json({
+                            code: 500,
+                            message: "INTERNAL_SERVER_ERROR",
+                        });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -209,7 +218,10 @@ var StudioManagementController = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_9 = _a.sent();
-                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        res.status(500).json({
+                            code: 500,
+                            message: "INTERNAL_SERVER_ERROR",
+                        });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -342,7 +354,10 @@ var StudioManagementController = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_16 = _a.sent();
-                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        res.status(500).json({
+                            code: 500,
+                            message: "INTERNAL_SERVER_ERROR",
+                        });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -437,7 +452,10 @@ var StudioManagementController = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_21 = _a.sent();
-                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        res.status(500).json({
+                            code: 500,
+                            message: "INTERNAL_SERVER_ERROR",
+                        });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -531,7 +549,10 @@ var StudioManagementController = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_26 = _a.sent();
-                        res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+                        res.status(500).json({
+                            code: 500,
+                            message: "INTERNAL_SERVER_ERROR",
+                        });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -608,6 +629,24 @@ var StudioManagementController = /** @class */ (function () {
                     case 2:
                         error_30 = _a.sent();
                         return [2 /*return*/, res.status(error_30.code).json(error_30)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.getStudioDashboard = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userDetails, result, error_31;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userDetails = req.user;
+                        return [4 /*yield*/, this.clientService.getStudioDashboard(userDetails)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, res.status(result.code).json(result)];
+                    case 2:
+                        error_31 = _a.sent();
+                        return [2 /*return*/, res.status(error_31.code).json(error_31)];
                     case 3: return [2 /*return*/];
                 }
             });

@@ -60,6 +60,7 @@ export const STUDIO_MANAGEMENT_ROUTES = {
   GET_CLIENT: "/client/:id",
   UPDATE_CLIENT: "/client/:id",
   DELETE_CLIENT: "/client/:id",
+  DASHBOARD: "/dashboard",
 };
 
 export const TEMPLATES_ROUTES = {

@@ -292,16 +292,16 @@ var AgentService = /** @class */ (function () {
                         agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
                         return [4 /*yield*/, planRepo.find({
                                 order: {
-                                    id: "ASC"
-                                }
+                                    id: "ASC",
+                                },
                             })];
                     case 1:
                         plans = _a.sent();
                         return [4 /*yield*/, agentSettingsRepo.findOne({
                                 where: {
-                                    agentId: userDetails === null || userDetails === void 0 ? void 0 : userDetails.id
+                                    agentId: userDetails === null || userDetails === void 0 ? void 0 : userDetails.id,
                                 },
-                                relations: ["currentPlan"]
+                                relations: ["currentPlan"],
                             })];
                     case 2:
                         agentActivatedPlan = _a.sent();

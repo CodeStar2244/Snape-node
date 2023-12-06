@@ -68,7 +68,10 @@ export class StudioManagementController {
 
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({
+        code: 500,
+        message: "INTERNAL_SERVER_ERROR",
+      });
     }
   };
 
@@ -78,7 +81,10 @@ export class StudioManagementController {
       const result = await this.clientService.getSpeciality(req.user);
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({
+        code: 500,
+        message: "INTERNAL_SERVER_ERROR",
+      });
     }
   };
 
@@ -90,7 +96,10 @@ export class StudioManagementController {
       );
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({
+        code: 500,
+        message: "INTERNAL_SERVER_ERROR",
+      });
     }
   };
 
@@ -99,7 +108,10 @@ export class StudioManagementController {
       const result = await this.clientService.deleteSpeciality(req.params);
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({
+        code: 500,
+        message: "INTERNAL_SERVER_ERROR",
+      });
     }
   };
 
@@ -188,7 +200,10 @@ export class StudioManagementController {
       );
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({
+        code: 500,
+        message: "INTERNAL_SERVER_ERROR",
+      });
     }
   };
 
@@ -249,7 +264,10 @@ export class StudioManagementController {
       );
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({
+        code: 500,
+        message: "INTERNAL_SERVER_ERROR",
+      });
     }
   };
 
@@ -304,7 +322,10 @@ export class StudioManagementController {
       const result = await this.clientService.editBooking(req.params, req.body);
       res.status(result.code).json(result?.result || result?.error);
     } catch (error) {
-      res.status(500).json({ code: 500, message: "INTERNAL_SERVER_ERROR" });
+      res.status(500).json({
+        code: 500,
+        message: "INTERNAL_SERVER_ERROR",
+      });
     }
   };
 
@@ -351,6 +372,16 @@ export class StudioManagementController {
         userDetails,
         id,
       );
+      return res.status(result.code).json(result);
+    } catch (error) {
+      return res.status(error.code).json(error);
+    }
+  };
+
+  public getStudioDashboard = async (req, res) => {
+    try {
+      const userDetails = req.user;
+      const result = await this.clientService.getStudioDashboard(userDetails);
       return res.status(result.code).json(result);
     } catch (error) {
       return res.status(error.code).json(error);

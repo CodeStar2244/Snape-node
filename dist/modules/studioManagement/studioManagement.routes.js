@@ -45,5 +45,6 @@ router.get(routes_1.BOOKING_ROUTES.GET_BOOKINGS, studioManagementController.getB
 router.get(routes_1.BOOKING_ROUTES.GET_BOOKING, studioManagementController.getBooking);
 router.post(routes_1.BOOKING_ROUTES.UPDATE_BOOKING, studioManagementController.editBooking);
 router.delete(routes_1.BOOKING_ROUTES.DELETE_BOOKING, studioManagementController.deleteBooking);
+router.get(routes_1.STUDIO_MANAGEMENT_ROUTES.DASHBOARD, studioManagementController.getStudioDashboard);
 exports.StudioManagementRouter = router;
 //# sourceMappingURL=studioManagement.routes.js.map

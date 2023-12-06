@@ -63,6 +63,7 @@ var studioInvoice_1 = __importDefault(require("../../entities/studioInvoice"));
 var moment_timezone_1 = __importDefault(require("moment-timezone"));
 var studioQuotation_1 = __importDefault(require("../../entities/studioQuotation"));
 var studioBooking_1 = __importDefault(require("../../entities/studioBooking"));
+var typeorm_1 = require("typeorm");
 var StudioManagementService = /** @class */ (function () {
     function StudioManagementService() {
         var _this = this;
@@ -927,8 +928,48 @@ var StudioManagementService = /** @class */ (function () {
                 }
             });
         }); };
+        this.getStudioDashboard = function (user) { return __awaiter(_this, void 0, void 0, function () {
+            var specialitysRepo, specialityPro, bookingRepo, bookingPro, documentPro, _a, speciality, booking, document_1, error_29;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        specialitysRepo = db_config_1.AppDataSource.getRepository(studioSpeciality_1.StudioSpeciality);
+                        specialityPro = specialitysRepo.find({
+                            where: { createdBy: { id: user === null || user === void 0 ? void 0 : user.id } },
+                            order: { createdAt: "DESC" },
+                        });
+                        bookingRepo = db_config_1.AppDataSource.getRepository(studioBooking_1.default);
+                        bookingPro = bookingRepo.find({
+                            where: {
+                                createdBy: { id: user === null || user === void 0 ? void 0 : user.id },
+                                startDate: (0, typeorm_1.MoreThan)(new Date()),
+                            },
+                            relations: ["clientId"],
+                            order: { createdAt: "ASC" },
+                        });
+                        documentPro = bookingRepo.query("\n             SELECT mt.*,\n            sc.\"name\"\n              FROM   (SELECT si.\"id\",\n               si.\"createdAt\",\n               si.\"clientId\",\n               'INVOICE' AS source\n               FROM   studioinvoice si\n              WHERE  si.\"agentId\" = ".concat(user === null || user === void 0 ? void 0 : user.id, "\n              UNION\n              SELECT sq.\"id\",\n               sq.\"createdAt\",\n               sq.\"clientId\",\n               'QUOTATION' AS source\n             FROM   studioquotation sq\n            WHERE  sq.\"agentId\" = ").concat(user === null || user === void 0 ? void 0 : user.id, ") mt\n            INNER JOIN studioclient sc\n               ON mt.\"clientId\" = sc.id\n               ORDER  BY mt.\"createdAt\" DESC LIMIT 5\n            "));
+                        return [4 /*yield*/, Promise.all([
+                                specialityPro,
+                                bookingPro,
+                                documentPro,
+                            ])];
+                    case 1:
+                        _a = _b.sent(), speciality = _a[0], booking = _a[1], document_1 = _a[2];
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                data: { speciality: speciality, booking: booking, document: document_1 },
+                                message: "Dashboard data get successfully",
+                            })];
+                    case 2:
+                        error_29 = _b.sent();
+                        console.log(error_29);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_29 === null || error_29 === void 0 ? void 0 : error_29.message)];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
         this.getClientQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, questionnarires, error_29;
+            var quesRepo, questionnarires, error_30;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -945,15 +986,15 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries created successfully",
                             })];
                     case 2:
-                        error_29 = _a.sent();
-                        console.log(error_29);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_29 === null || error_29 === void 0 ? void 0 : error_29.message)];
+                        error_30 = _a.sent();
+                        console.log(error_30);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_30 === null || error_30 === void 0 ? void 0 : error_30.message)];
                     case 3: return [2 /*return*/];
                 }
             });
         }); };
         this.deleteQuestionnaries = function (user, id) { return __awaiter(_this, void 0, void 0, function () {
-            var quesRepo, error_30;
+            var quesRepo, error_31;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -970,9 +1011,9 @@ var StudioManagementService = /** @class */ (function () {
                                 message: "Questionnaries deleted successfully",
                             })];
                     case 2:
-                        error_30 = _a.sent();
-                        console.log(error_30);
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_30 === null || error_30 === void 0 ? void 0 : error_30.message)];
+                        error_31 = _a.sent();
+                        console.log(error_31);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_31 === null || error_31 === void 0 ? void 0 : error_31.message)];
                     case 3: return [2 /*return*/];
                 }
             });

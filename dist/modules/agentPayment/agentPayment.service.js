@@ -67,8 +67,8 @@ var AgentPaymentService = /** @class */ (function () {
                                 },
                                 relations: ["planId"],
                                 order: {
-                                    id: "DESC"
-                                }
+                                    id: "DESC",
+                                },
                             })];
                     case 1:
                         agentPlan = _b.sent();

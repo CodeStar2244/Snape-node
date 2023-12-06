@@ -62,6 +62,7 @@ exports.STUDIO_MANAGEMENT_ROUTES = {
     GET_CLIENT: "/client/:id",
     UPDATE_CLIENT: "/client/:id",
     DELETE_CLIENT: "/client/:id",
+    DASHBOARD: "/dashboard",
 };
 exports.TEMPLATES_ROUTES = {
     GET_TEMPLATE: "/templates",

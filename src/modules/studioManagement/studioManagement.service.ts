@@ -14,6 +14,7 @@ import StudioInvoice from "../../entities/studioInvoice";
 import moment from "moment-timezone";
 import StudioQuotation from "../../entities/studioQuotation";
 import StudioBooking from "../../entities/studioBooking";
+import { MoreThan } from "typeorm";
 export class StudioManagementService {
   public createClient = async (userDetails, body) => {
     try {
@@ -683,6 +684,63 @@ export class StudioManagementService {
       return ResponseBuilder.data({
         data: { questionnarires },
         message: "Questionnaries created successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return ResponseBuilder.badRequest(error?.message);
+    }
+  };
+
+  public getStudioDashboard = async (user) => {
+    try {
+      const specialitysRepo = AppDataSource.getRepository(StudioSpeciality);
+
+      const specialityPro = specialitysRepo.find({
+        where: { createdBy: { id: user?.id } },
+        order: { createdAt: "DESC" },
+      });
+
+      const bookingRepo = AppDataSource.getRepository(StudioBooking);
+
+      const bookingPro = bookingRepo.find({
+        where: {
+          createdBy: { id: user?.id },
+          startDate: MoreThan(new Date()),
+        },
+        relations: ["clientId"],
+        order: { createdAt: "ASC" },
+      });
+
+      const documentPro = bookingRepo.query(`
+             SELECT mt.*,
+            sc."name"
+              FROM   (SELECT si."id",
+               si."createdAt",
+               si."clientId",
+               'INVOICE' AS source
+               FROM   studioinvoice si
+              WHERE  si."agentId" = ${user?.id}
+              UNION
+              SELECT sq."id",
+               sq."createdAt",
+               sq."clientId",
+               'QUOTATION' AS source
+             FROM   studioquotation sq
+            WHERE  sq."agentId" = ${user?.id}) mt
+            INNER JOIN studioclient sc
+               ON mt."clientId" = sc.id
+               ORDER  BY mt."createdAt" DESC LIMIT 5
+            `);
+
+      const [speciality, booking, document] = await Promise.all([
+        specialityPro,
+        bookingPro,
+        documentPro,
+      ]);
+
+      return ResponseBuilder.data({
+        data: { speciality, booking, document },
+        message: "Dashboard data get successfully",
       });
     } catch (error) {
       console.log(error);
