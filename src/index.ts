@@ -11,13 +11,13 @@ const httpServer = http.createServer(App);
 const logger = new Log();
 
 AppDataSource.initialize()
-    .then(() => {
-        console.log("Data Source has been initialized!");
-    })
-    .catch((err) => {
-        console.error("Error during Data Source initialization", err);
-    });
+  .then(() => {
+    console.log("Data Source has been initialized!");
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization", err);
+  });
 
 httpServer.listen(PORT, () => {
-    logger.info(`Server is listing on port ${PORT}`);
+  logger.info(`Server is listing on port ${PORT}`);
 });

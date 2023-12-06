@@ -73,17 +73,12 @@ var Middleware = /** @class */ (function () {
                         if (!agent) {
                             unAuthPayload.error.message = req.i18n.t("USER_NOT_EXIST");
                             unAuthPayload.error.code = 404;
-                            return [2 /*return*/, res
-                                    .status(unAuthPayload.error.code)
-                                    .send(unAuthPayload.error)];
+                            return [2 /*return*/, res.status(unAuthPayload.error.code).send(unAuthPayload.error)];
                         }
                         if (!agent.isactive) {
-                            unAuthPayload.error.message =
-                                req.i18n.t("ERR_ACCESS_REMOVED");
+                            unAuthPayload.error.message = req.i18n.t("ERR_ACCESS_REMOVED");
                             unAuthPayload.error.code = 401;
-                            return [2 /*return*/, res
-                                    .status(unAuthPayload.error.code)
-                                    .send(unAuthPayload.error)];
+                            return [2 /*return*/, res.status(unAuthPayload.error.code).send(unAuthPayload.error)];
                         }
                         userObj = {
                             email: agent.email,
@@ -146,17 +141,12 @@ var Middleware = /** @class */ (function () {
                         if (!enterpriseUser) {
                             unAuthPayload.error.message = req.i18n.t("USER_NOT_EXIST");
                             unAuthPayload.error.code = 404;
-                            return [2 /*return*/, res
-                                    .status(unAuthPayload.error.code)
-                                    .send(unAuthPayload.error)];
+                            return [2 /*return*/, res.status(unAuthPayload.error.code).send(unAuthPayload.error)];
                         }
                         if (!enterpriseUser.isactive) {
-                            unAuthPayload.error.message =
-                                req.i18n.t("ERR_ACCESS_REMOVED");
+                            unAuthPayload.error.message = req.i18n.t("ERR_ACCESS_REMOVED");
                             unAuthPayload.error.code = 401;
-                            return [2 /*return*/, res
-                                    .status(unAuthPayload.error.code)
-                                    .send(unAuthPayload.error)];
+                            return [2 /*return*/, res.status(unAuthPayload.error.code).send(unAuthPayload.error)];
                         }
                         userObj = {
                             email: enterpriseUser.email,
