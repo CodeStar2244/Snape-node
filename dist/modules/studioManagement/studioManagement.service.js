@@ -1078,6 +1078,73 @@ var StudioManagementService = /** @class */ (function () {
                 }
             });
         }); };
+        this.cronDuePayment = function () { return __awaiter(_this, void 0, void 0, function () {
+            var studioInvoiceRepo, duePayment, _i, duePayment_1, payment, formattedDate, clientRepo, client, renderData, mailBody, error_33;
+            var _a, _b, _c, _d;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        _e.trys.push([0, 8, , 9]);
+                        studioInvoiceRepo = db_config_1.AppDataSource.getRepository(studioInvoice_1.default);
+                        return [4 /*yield*/, studioInvoiceRepo.find({
+                                where: {
+                                    paymentDue: (0, typeorm_1.LessThanOrEqual)(new Date()),
+                                    status: "Outstanding",
+                                },
+                                relations: ["clientId", "createdBy"],
+                            })];
+                    case 1:
+                        duePayment = _e.sent();
+                        _i = 0, duePayment_1 = duePayment;
+                        _e.label = 2;
+                    case 2:
+                        if (!(_i < duePayment_1.length)) return [3 /*break*/, 7];
+                        payment = duePayment_1[_i];
+                        payment.status = "PastDue";
+                        return [4 /*yield*/, studioInvoiceRepo.save(payment)];
+                    case 3:
+                        _e.sent();
+                        formattedDate = (0, moment_timezone_1.default)(payment === null || payment === void 0 ? void 0 : payment.paymentDue).format("MMMM D, YYYY");
+                        clientRepo = db_config_1.AppDataSource.getRepository(studioClient_1.default);
+                        return [4 /*yield*/, clientRepo.findOne({
+                                where: { id: (_a = payment === null || payment === void 0 ? void 0 : payment.clientId) === null || _a === void 0 ? void 0 : _a.id },
+                            })];
+                    case 4:
+                        client = _e.sent();
+                        renderData = {
+                            userName: ((_b = payment === null || payment === void 0 ? void 0 : payment.createdBy) === null || _b === void 0 ? void 0 : _b.firstname) +
+                                " " +
+                                ((_c = payment === null || payment === void 0 ? void 0 : payment.createdBy) === null || _c === void 0 ? void 0 : _c.lastname),
+                            invoiceName: payment === null || payment === void 0 ? void 0 : payment.name,
+                            invoiceAmount: payment === null || payment === void 0 ? void 0 : payment.totalAmount,
+                            invoiceDetails: payment === null || payment === void 0 ? void 0 : payment.invoiceDetails,
+                            dueDate: formattedDate,
+                            clientName: client === null || client === void 0 ? void 0 : client.name,
+                            currency: payment === null || payment === void 0 ? void 0 : payment.currency,
+                            userEmail: (_d = payment === null || payment === void 0 ? void 0 : payment.createdBy) === null || _d === void 0 ? void 0 : _d.email,
+                            subTotalAmount: payment === null || payment === void 0 ? void 0 : payment.subTotalAmount,
+                            totalAmount: payment === null || payment === void 0 ? void 0 : payment.totalAmount,
+                            discount: payment === null || payment === void 0 ? void 0 : payment.discount,
+                            tax: payment === null || payment === void 0 ? void 0 : payment.tax,
+                        };
+                        console.log(renderData, "===========");
+                        return [4 /*yield*/, mailer_1.Mailer.renderTemplate("Invoice", renderData)];
+                    case 5:
+                        mailBody = _e.sent();
+                        mailer_1.Mailer.sendMail(client === null || client === void 0 ? void 0 : client.email, "Your Invoice payment is due.", mailBody);
+                        _e.label = 6;
+                    case 6:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 7: return [3 /*break*/, 9];
+                    case 8:
+                        error_33 = _e.sent();
+                        console.log(error_33);
+                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest(error_33 === null || error_33 === void 0 ? void 0 : error_33.message)];
+                    case 9: return [2 /*return*/];
+                }
+            });
+        }); };
     }
     return StudioManagementService;
 }());
