@@ -155,7 +155,6 @@ var AgentPaymentService = /** @class */ (function () {
                                     agentId: {
                                         id: userDetails.id,
                                     },
-                                    status: "ongoing",
                                 },
                                 relations: ["agentId", "planId"],
                             })];

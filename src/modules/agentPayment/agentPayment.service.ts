@@ -105,7 +105,6 @@ export class AgentPaymentService {
           agentId: {
             id: userDetails.id,
           },
-          status: "ongoing",
         },
         relations: ["agentId", "planId"],
       });
