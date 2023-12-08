@@ -113,7 +113,6 @@ var AgentPaymentService = /** @class */ (function () {
                             currency: process.env.PAYSTACK_CURRENCY,
                             callback_url: process.env.PAYSTACK_CALLBACK,
                             metadata: JSON.stringify(additionalDetails),
-                            plan: plan.code,
                             amount: plan.amountPerMonth,
                         };
                         headers = {
@@ -147,7 +146,7 @@ var AgentPaymentService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 7, , 8]);
+                        _a.trys.push([0, 3, , 4]);
                         referenceId = query.reference;
                         transactionsRepo = db_config_1.AppDataSource.getRepository(transactions_1.default);
                         return [4 /*yield*/, transactionsRepo.findOne({
@@ -171,23 +170,14 @@ var AgentPaymentService = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default.get(process.env.PAYSTACK_API_URL + "verify/".concat(transaction.referenceId), { headers: headers })];
                     case 2:
                         data = (_a.sent()).data.data;
-                        if (!(data.status === constants_1.PAYSTACK_STATUS.SUCCESS)) return [3 /*break*/, 5];
-                        return [4 /*yield*/, transactionsRepo.update(transaction.id, {
-                                status: data.status,
-                                succeededAt: (0, moment_1.default)(data.paid_at),
-                            })];
-                    case 3:
-                        _a.sent();
-                        return [4 /*yield*/, this.updateAgentPlanDetails(transaction.agentId, transaction.planId, transaction.referenceId)];
-                    case 4:
-                        _a.sent();
-                        return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
-                                status: data.status,
-                                isSuccess: true,
-                                isPending: false,
-                            })];
-                    case 5:
-                        if (data.status === constants_1.PAYSTACK_STATUS.FAILED) {
+                        if (data.status === constants_1.PAYSTACK_STATUS.SUCCESS) {
+                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
+                                    status: data.status,
+                                    isSuccess: true,
+                                    isPending: false,
+                                })];
+                        }
+                        else if (data.status === constants_1.PAYSTACK_STATUS.FAILED) {
                             return [2 /*return*/, responseBuilder_1.ResponseBuilder.data({
                                     status: data.status,
                                     isSuccess: false,
@@ -201,12 +191,11 @@ var AgentPaymentService = /** @class */ (function () {
                                     isPending: true,
                                 })];
                         }
-                        _a.label = 6;
-                    case 6: return [3 /*break*/, 8];
-                    case 7:
+                        return [3 /*break*/, 4];
+                    case 3:
                         error_3 = _a.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_3);
-                    case 8: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
@@ -247,88 +236,6 @@ var AgentPaymentService = /** @class */ (function () {
                     case 3:
                         error_4 = _a.sent();
                         throw responseBuilder_1.ResponseBuilder.error(error_4);
-                    case 4: return [2 /*return*/];
-                }
-            });
-        }); };
-        this.updateAgentPlanDetails = function (agentId, planId, referenceId) { return __awaiter(_this, void 0, void 0, function () {
-            var agentPlansRepo, transactionsRepo, transaction, agentPlan, validTill, newAgentPlan, validTill, error_5;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 6, , 7]);
-                        agentPlansRepo = db_config_1.AppDataSource.getRepository(agentPlans_1.default);
-                        transactionsRepo = db_config_1.AppDataSource.getRepository(transactions_1.default);
-                        return [4 /*yield*/, transactionsRepo.findOne({
-                                where: {
-                                    referenceId: referenceId,
-                                    status: "success",
-                                },
-                            })];
-                    case 1:
-                        transaction = _a.sent();
-                        if (!transaction) {
-                            return [2 /*return*/, responseBuilder_1.ResponseBuilder.badRequest("Transaction Not Found with this Reference Id")];
-                        }
-                        return [4 /*yield*/, agentPlansRepo.findOne({
-                                where: {
-                                    agentId: { id: agentId.id },
-                                    planId: { id: planId.id },
-                                },
-                            })];
-                    case 2:
-                        agentPlan = _a.sent();
-                        if (!!agentPlan) return [3 /*break*/, 4];
-                        validTill = (0, moment_1.default)(transaction.succeededAt).add(1, "month");
-                        newAgentPlan = agentPlansRepo.create({
-                            agentId: agentId.id,
-                            planId: planId.id,
-                            validTill: validTill,
-                        });
-                        return [4 /*yield*/, agentPlansRepo.save(newAgentPlan)];
-                    case 3:
-                        _a.sent();
-                        return [3 /*break*/, 5];
-                    case 4:
-                        validTill = (0, moment_1.default)(transaction.succeededAt).add(1, "month");
-                        agentPlansRepo.update(agentPlan.id, { validTill: validTill });
-                        _a.label = 5;
-                    case 5:
-                        this.updateAgentStorage(agentId.id, planId.storageInPlan, planId);
-                        return [3 /*break*/, 7];
-                    case 6:
-                        error_5 = _a.sent();
-                        throw error_5;
-                    case 7: return [2 /*return*/];
-                }
-            });
-        }); };
-        this.updateAgentStorage = function (agent, storage, plan) { return __awaiter(_this, void 0, void 0, function () {
-            var agentSettingsRepo, agentSetting, error_6;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 3, , 4]);
-                        agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
-                        return [4 /*yield*/, agentSettingsRepo.findOne({
-                                where: {
-                                    agentId: {
-                                        id: agent,
-                                    },
-                                },
-                            })];
-                    case 1:
-                        agentSetting = _a.sent();
-                        return [4 /*yield*/, agentSettingsRepo.update(agentSetting.id, {
-                                totalStorage: storage,
-                                currentPlan: plan,
-                            })];
-                    case 2:
-                        _a.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_6 = _a.sent();
-                        throw error_6;
                     case 4: return [2 /*return*/];
                 }
             });

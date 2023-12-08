@@ -66,7 +66,6 @@ export class AgentPaymentService {
         currency: process.env.PAYSTACK_CURRENCY,
         callback_url: process.env.PAYSTACK_CALLBACK,
         metadata: JSON.stringify(additionalDetails),
-        plan: plan.code,
         amount: plan.amountPerMonth,
       };
       const headers = {
@@ -125,15 +124,6 @@ export class AgentPaymentService {
         { headers },
       );
       if (data.status === PAYSTACK_STATUS.SUCCESS) {
-        await transactionsRepo.update(transaction.id, {
-          status: data.status,
-          succeededAt: moment(data.paid_at),
-        });
-        await this.updateAgentPlanDetails(
-          transaction.agentId,
-          transaction.planId,
-          transaction.referenceId,
-        );
         return ResponseBuilder.data({
           status: data.status,
           isSuccess: true,
@@ -184,65 +174,6 @@ export class AgentPaymentService {
       return ResponseBuilder.data(dataToSend);
     } catch (error) {
       throw ResponseBuilder.error(error);
-    }
-  };
-
-  private updateAgentPlanDetails = async (agentId, planId, referenceId) => {
-    try {
-      const agentPlansRepo = AppDataSource.getRepository(AgentPlans);
-      const transactionsRepo = AppDataSource.getRepository(Transactions);
-
-      const transaction = await transactionsRepo.findOne({
-        where: {
-          referenceId,
-          status: "success",
-        },
-      });
-      if (!transaction) {
-        return ResponseBuilder.badRequest(
-          "Transaction Not Found with this Reference Id",
-        );
-      }
-      const agentPlan = await agentPlansRepo.findOne({
-        where: {
-          agentId: { id: agentId.id },
-          planId: { id: planId.id },
-        },
-      });
-      if (!agentPlan) {
-        const validTill = moment(transaction.succeededAt).add(1, "month");
-        const newAgentPlan = agentPlansRepo.create({
-          agentId: agentId.id,
-          planId: planId.id,
-          validTill,
-        });
-        await agentPlansRepo.save(newAgentPlan);
-      } else {
-        const validTill = moment(transaction.succeededAt).add(1, "month");
-        agentPlansRepo.update(agentPlan.id, { validTill });
-      }
-      this.updateAgentStorage(agentId.id, planId.storageInPlan, planId);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  private updateAgentStorage = async (agent, storage, plan) => {
-    try {
-      const agentSettingsRepo = AppDataSource.getRepository(AgentSettings);
-      const agentSetting = await agentSettingsRepo.findOne({
-        where: {
-          agentId: {
-            id: agent,
-          },
-        },
-      });
-      await agentSettingsRepo.update(agentSetting.id, {
-        totalStorage: storage,
-        currentPlan: plan,
-      });
-    } catch (error) {
-      throw error;
     }
   };
 }

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SPECIALITY_ROUTES = exports.AGENTPAYMENT_ROUTES = exports.PORTFOLIO_ROUTES = exports.BOOKING_ROUTES = exports.QUOTATION_ROUTES = exports.INVOICE_ROUTES = exports.QUESTIONNARIES_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
+exports.WEBHOOK = exports.SPECIALITY_ROUTES = exports.AGENTPAYMENT_ROUTES = exports.PORTFOLIO_ROUTES = exports.BOOKING_ROUTES = exports.QUOTATION_ROUTES = exports.INVOICE_ROUTES = exports.QUESTIONNARIES_ROUTES = exports.TEMPLATES_ROUTES = exports.STUDIO_MANAGEMENT_ROUTES = exports.AGENT_SERVICE = exports.ASSET_REGISTRY_ROUTES = exports.DASHBOARD_ROTUES = exports.CLIENT_ROUTES = exports.COLLECTION_ROUTES = exports.USER_ROUTES = void 0;
 exports.USER_ROUTES = {
     LOGIN: "/login",
     GET_REMANING_SPACE: "/get-remaining-space",
@@ -118,5 +118,8 @@ exports.SPECIALITY_ROUTES = {
     GET_SPECIALITY: "/speciality",
     EDIT_SPECIALITY: "/speciality/:id",
     DELETE_SPECIALITY: "/speciality/:id",
+};
+exports.WEBHOOK = {
+    PAYSTACK_WEBHOOK: "/paystack/webhook"
 };
 //# sourceMappingURL=routes.js.map

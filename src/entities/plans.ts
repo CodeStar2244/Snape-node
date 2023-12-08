@@ -19,9 +19,6 @@ export default class Plans {
   @Column()
   name: string;
 
-  @Column()
-  code: string;
-
   @Column({ nullable: true })
   description: string;
 

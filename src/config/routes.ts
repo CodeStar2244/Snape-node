@@ -125,3 +125,7 @@ export const SPECIALITY_ROUTES = {
   EDIT_SPECIALITY: "/speciality/:id",
   DELETE_SPECIALITY: "/speciality/:id",
 };
+
+export const WEBHOOK = {
+  PAYSTACK_WEBHOOK: "/paystack/webhook",
+};

@@ -34,6 +34,7 @@ var assetRegistry_route_1 = require("./modules/assetRegistry/assetRegistry.route
 var studioManagement_routes_1 = require("./modules/studioManagement/studioManagement.routes");
 var portfolio_route_1 = require("./modules/agentPortfolio/portfolio.route");
 var agentPayment_route_1 = require("./modules/agentPayment/agentPayment.route");
+var webhook_route_1 = require("./modules/webhooks/webhook.route");
 var Routes = /** @class */ (function () {
     function Routes(NODE_ENV) {
         this.middleware = new middleware_1.Middleware();
@@ -54,6 +55,7 @@ var Routes = /** @class */ (function () {
     Routes.prototype.path = function () {
         var router = express.Router();
         router.use("/agent", agent_route_1.UserRoute);
+        router.use("/webhook", webhook_route_1.WebhookRoute);
         router.use("/collection", this.middleware.authenticateUser, collections_route_1.CollectionRoute);
         router.use("/dashboard", this.middleware.authenticateUser, dashboard_routes_1.DashboardRoute);
         router.use("/portfolio", this.middleware.authenticateUser, portfolio_route_1.PortfolioRoute);

@@ -22,10 +22,6 @@ var Plans = /** @class */ (function () {
         __metadata("design:type", String)
     ], Plans.prototype, "name", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], Plans.prototype, "code", void 0);
-    __decorate([
         (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], Plans.prototype, "description", void 0);

@@ -10,6 +10,7 @@ import { EnterpriseCollectionRouter } from "./modules/enterpriseCollections/coll
 import { StudioManagementRouter } from "./modules/studioManagement/studioManagement.routes";
 import { PortfolioRoute } from "./modules/agentPortfolio/portfolio.route";
 import { AgentPaymentRoute } from "./modules/agentPayment/agentPayment.route";
+import { WebhookRoute } from "./modules/webhooks/webhook.route";
 export class Routes {
   private middleware = new Middleware();
   protected basePath: string;
@@ -34,6 +35,7 @@ export class Routes {
   public path() {
     const router = express.Router();
     router.use("/agent", UserRoute);
+    router.use("/webhook", WebhookRoute);
     router.use(
       "/collection",
       this.middleware.authenticateUser,

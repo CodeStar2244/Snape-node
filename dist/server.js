@@ -49,7 +49,6 @@ var i18next_fs_backend_1 = __importDefault(require("i18next-fs-backend"));
 var i18next_1 = __importDefault(require("i18next"));
 var i18next_http_middleware_1 = __importDefault(require("i18next-http-middleware"));
 var enterpriseroutes_1 = require("./enterpriseroutes");
-var Cron_1 = require("./helpers/Cron");
 dotenv_1.default.config();
 var App = /** @class */ (function () {
     function App() {
@@ -82,7 +81,6 @@ var App = /** @class */ (function () {
         });
         var routes = new route_1.Routes(NODE_ENV);
         var enterpriseRoutes = new enterpriseroutes_1.EnterpriseRoutes(NODE_ENV);
-        new Cron_1.Cron();
         this.app.all("/*", function (req, res, next) {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Request-Headers", "*");
