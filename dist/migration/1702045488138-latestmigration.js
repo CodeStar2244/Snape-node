@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Latestmigration1702045488138 = void 0;
 var Latestmigration1702045488138 = /** @class */ (function () {
     function Latestmigration1702045488138() {
-        this.name = 'Latestmigration1702045488138';
+        this.name = "Latestmigration1702045488138";
     }
     Latestmigration1702045488138.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {

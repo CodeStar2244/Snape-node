@@ -282,12 +282,13 @@ var AgentService = /** @class */ (function () {
         });
     };
     AgentService.prototype.getPlans = function (userDetails) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var planRepo, agentSettingsRepo, plans, agentActivatedPlan, plansToSend, _i, plansToSend_1, plan, error_6;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _b.trys.push([0, 3, , 4]);
                         planRepo = db_config_1.AppDataSource.getRepository(plans_1.default);
                         agentSettingsRepo = db_config_1.AppDataSource.getRepository(agentSettings_1.default);
                         return [4 /*yield*/, planRepo.find({
@@ -296,7 +297,7 @@ var AgentService = /** @class */ (function () {
                                 },
                             })];
                     case 1:
-                        plans = _a.sent();
+                        plans = _b.sent();
                         return [4 /*yield*/, agentSettingsRepo.findOne({
                                 where: {
                                     agentId: userDetails === null || userDetails === void 0 ? void 0 : userDetails.id,
@@ -304,20 +305,23 @@ var AgentService = /** @class */ (function () {
                                 relations: ["currentPlan"],
                             })];
                     case 2:
-                        agentActivatedPlan = _a.sent();
+                        agentActivatedPlan = _b.sent();
                         plansToSend = JSON.parse(JSON.stringify(plans));
                         for (_i = 0, plansToSend_1 = plansToSend; _i < plansToSend_1.length; _i++) {
                             plan = plansToSend_1[_i];
-                            if ((plan === null || plan === void 0 ? void 0 : plan.id) === (agentActivatedPlan === null || agentActivatedPlan === void 0 ? void 0 : agentActivatedPlan.currentPlan.id)) {
+                            if ((plan === null || plan === void 0 ? void 0 : plan.id) === ((_a = agentActivatedPlan === null || agentActivatedPlan === void 0 ? void 0 : agentActivatedPlan.currentPlan) === null || _a === void 0 ? void 0 : _a.id)) {
                                 plan["active"] = true;
                             }
                             else {
                                 plan["active"] = false;
                             }
                         }
+                        if ((agentActivatedPlan === null || agentActivatedPlan === void 0 ? void 0 : agentActivatedPlan.currentPlan) === null) {
+                            plansToSend[0].active = true;
+                        }
                         return [2 /*return*/, responseBuilder_1.ResponseBuilder.data(plansToSend)];
                     case 3:
-                        error_6 = _a.sent();
+                        error_6 = _b.sent();
                         console.log(error_6, "Error");
                         throw error_6;
                     case 4: return [2 /*return*/];

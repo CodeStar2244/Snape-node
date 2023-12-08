@@ -120,6 +120,6 @@ exports.SPECIALITY_ROUTES = {
     DELETE_SPECIALITY: "/speciality/:id",
 };
 exports.WEBHOOK = {
-    PAYSTACK_WEBHOOK: "/paystack/webhook"
+    PAYSTACK_WEBHOOK: "/paystack/webhook",
 };
 //# sourceMappingURL=routes.js.map

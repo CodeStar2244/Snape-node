@@ -198,11 +198,14 @@ export class AgentService {
       });
       const plansToSend = JSON.parse(JSON.stringify(plans));
       for (const plan of plansToSend) {
-        if (plan?.id === agentActivatedPlan?.currentPlan.id) {
+        if (plan?.id === agentActivatedPlan?.currentPlan?.id) {
           plan["active"] = true;
         } else {
           plan["active"] = false;
         }
+      }
+      if (agentActivatedPlan?.currentPlan === null) {
+        plansToSend[0].active = true;
       }
 
       return ResponseBuilder.data(plansToSend);
