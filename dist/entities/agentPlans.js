@@ -32,6 +32,10 @@ var AgentPlans = /** @class */ (function () {
         __metadata("design:type", Date)
     ], AgentPlans.prototype, "validTill", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ type: "boolean", default: false }),
+        __metadata("design:type", Boolean)
+    ], AgentPlans.prototype, "isExpired", void 0);
+    __decorate([
         (0, typeorm_1.ManyToOne)(function () { return Tblagent_1.Tblagent; }, function (agent) { return agent.id; }, { onDelete: "CASCADE" }),
         (0, typeorm_1.JoinColumn)({ name: "agentId" }),
         __metadata("design:type", Tblagent_1.Tblagent)

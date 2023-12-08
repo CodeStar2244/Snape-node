@@ -22,6 +22,9 @@ export default class AgentPlans {
   @Column({ type: "timestamptz" })
   validTill: Date;
 
+  @Column({ type: "boolean", default: false })
+  isExpired: Boolean;
+
   @ManyToOne(() => Tblagent, (agent) => agent.id, { onDelete: "CASCADE" })
   @JoinColumn({ name: "agentId" })
   agentId: Tblagent;

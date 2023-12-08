@@ -30,12 +30,14 @@ var server_1 = __importDefault(require("./server"));
 var http = __importStar(require("http"));
 var logger_1 = require("./helpers/logger");
 var db_config_1 = require("./db/db.config");
+var Cron_1 = require("./helpers/Cron");
 var PORT = process.env.PORT || 3000;
 var httpServer = http.createServer(server_1.default);
 var logger = new logger_1.Log();
 db_config_1.AppDataSource.initialize()
     .then(function () {
     console.log("Data Source has been initialized!");
+    new Cron_1.Cron();
 })
     .catch(function (err) {
     console.error("Error during Data Source initialization", err);
