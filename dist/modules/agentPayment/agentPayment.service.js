@@ -113,7 +113,7 @@ var AgentPaymentService = /** @class */ (function () {
                             currency: process.env.PAYSTACK_CURRENCY,
                             callback_url: process.env.PAYSTACK_CALLBACK,
                             metadata: JSON.stringify(additionalDetails),
-                            amount: plan.amountPerMonth,
+                            amount: plan.amountPerMonth * 100,
                         };
                         headers = {
                             authorization: "Bearer ".concat(process.env.PAYSTACK_SECRET),
