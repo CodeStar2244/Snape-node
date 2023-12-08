@@ -1112,9 +1112,7 @@ var StudioManagementService = /** @class */ (function () {
                     case 4:
                         client = _e.sent();
                         renderData = {
-                            userName: ((_b = payment === null || payment === void 0 ? void 0 : payment.createdBy) === null || _b === void 0 ? void 0 : _b.firstname) +
-                                " " +
-                                ((_c = payment === null || payment === void 0 ? void 0 : payment.createdBy) === null || _c === void 0 ? void 0 : _c.lastname),
+                            userName: ((_b = payment === null || payment === void 0 ? void 0 : payment.createdBy) === null || _b === void 0 ? void 0 : _b.firstname) + " " + ((_c = payment === null || payment === void 0 ? void 0 : payment.createdBy) === null || _c === void 0 ? void 0 : _c.lastname),
                             invoiceName: payment === null || payment === void 0 ? void 0 : payment.name,
                             invoiceAmount: payment === null || payment === void 0 ? void 0 : payment.totalAmount,
                             invoiceDetails: payment === null || payment === void 0 ? void 0 : payment.invoiceDetails,
@@ -1127,7 +1125,6 @@ var StudioManagementService = /** @class */ (function () {
                             discount: payment === null || payment === void 0 ? void 0 : payment.discount,
                             tax: payment === null || payment === void 0 ? void 0 : payment.tax,
                         };
-                        console.log(renderData, "===========");
                         return [4 /*yield*/, mailer_1.Mailer.renderTemplate("Invoice", renderData)];
                     case 5:
                         mailBody = _e.sent();
